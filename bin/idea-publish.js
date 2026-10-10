@@ -31,8 +31,8 @@ const IDEA_HOME = process.env.IDEA_HOME || path.resolve(__dirname, '..');
 const IDEAS_REPO = process.env.IDEA_REPO || 'idea-factory';
 const IDEAS_DIR = path.join(IDEA_HOME, 'ideas');
 const SEEDS_FILE = path.join(IDEA_HOME, 'seeds.jsonl');
-const STATUS = { idea: 'Idea', build: 'Build', created: 'Repo Created', pass: 'Pass' };
-const STATUS_COLORS = { Idea: 'blue', Build: 'green', 'Repo Created': 'purple', Pass: 'gray' };
+const STATUS = { idea: 'Idea', validate: 'Validate', build: 'Build', created: 'Repo Created', live: 'Live', pass: 'Pass' };
+const STATUS_COLORS = { Idea: 'blue', Validate: 'yellow', Build: 'green', 'Repo Created': 'purple', Live: 'pink', Pass: 'gray' };
 const DOCS = ['RESEARCH.md', 'PRD.md', 'ROADMAP.md'];
 const DOC_TITLES = { 'RESEARCH.md': 'Research', 'PRD.md': 'PRD', 'ROADMAP.md': 'Roadmap' };
 const REQUIRED_FILES = ['idea.json', ...DOCS];
@@ -91,6 +91,13 @@ async function ensureDatabaseProperties() {
   if (!props.Keywords) updates.Keywords = { multi_select: {} };
   if (!props.EffortEstimate) updates.EffortEstimate = { select: { options: LEVELS.map((name) => ({ name })) } };
   if (!props.AddedAt) updates.AddedAt = { date: {} };
+  // Pipeline fields (gstack review, demand test, revenue).
+  if (!props.Verdict) updates.Verdict = { select: { options: [{ name: 'validate', color: 'yellow' }, { name: 'pass', color: 'gray' }] } };
+  if (!props.Score) updates.Score = { number: {} };
+  if (!props.Page) updates.Page = { url: {} };
+  if (!props.Visitors) updates.Visitors = { number: {} };
+  if (!props.Signups) updates.Signups = { number: {} };
+  if (!props.MRR) updates.MRR = { number: { format: 'dollar' } };
   const statusOpts = props.Status?.select?.options || [];
   const missing = Object.values(STATUS).filter((name) => !statusOpts.some((o) => o.name === name));
   if (!props.Status || missing.length) {
@@ -121,6 +128,7 @@ async function allIdeas(filter) {
     oneLiner: plain(p.properties.Description).slice(0, 200),
     repo: p.properties.GitHub_URL?.url || '',
     docs: p.properties.Docs?.url || '',
+    page: p.properties.Page?.url || '',
   }));
 }
 
@@ -440,4 +448,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { validateDraft, pageBody, expectedPageText, docsUrl, Fail, appendBlocks, readPageBlocks, notionRequest, DATABASE_ID };
+module.exports = { validateDraft, pageBody, expectedPageText, docsUrl, Fail, appendBlocks, readPageBlocks, notionRequest, DATABASE_ID, STATUS, allIdeas, rowFor, ensureDatabaseProperties, promote, storeIdea, IDEAS_DIR, git };

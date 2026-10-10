@@ -29,9 +29,17 @@ test('API credentials never reach Claude Code', () => {
   }
 });
 
-test('tools: web research, writes only in drafts/, and only the publish script', () => {
+test('tools: web research, writes only in drafts/, and only the publish script and the context lookup', () => {
   assert.ok(ALLOWED_TOOLS.includes('WebSearch') && ALLOWED_TOOLS.includes('WebFetch'));
   assert.ok(ALLOWED_TOOLS.filter((t) => /^(Write|Edit)\(/.test(t)).every((t) => t.includes('/idea-factory/drafts/')));
-  assert.deepEqual(ALLOWED_TOOLS.filter((t) => t.startsWith('Bash')), [ALLOWED_TOOLS.find((t) => t.includes('idea-publish.js'))]);
+  const bash = ALLOWED_TOOLS.filter((t) => t.startsWith('Bash'));
+  assert.equal(bash.length, 2);
+  assert.ok(bash.every((t) => /idea-publish\.js:\*\)$|bin\/context:\*\)$/.test(t)), bash.join(' '));
   assert.ok(!ALLOWED_TOOLS.includes('Bash'), 'unrestricted Bash');
+});
+
+test('the context wrapper never lets a cloud model see work or financial data', () => {
+  const src = require('fs').readFileSync(require('path').join(__dirname, '..', 'bin', 'context'), 'utf8');
+  assert.match(src, /--classes" \]; then skip=1/);
+  assert.match(src, /search\) args\+=\("--classes" "public,personal"\)/);
 });

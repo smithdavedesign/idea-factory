@@ -1,0 +1,31 @@
+{
+  "_doc": "Guardrails for the idea pipeline: make things people use and pay for with near-zero owner overhead and no financial risk. Read by bin/idea-pipeline.js. See README.",
+  "maxMonthlySpendUsd": 0,
+  "hosting": "free tiers only (Vercel Hobby, Neon free); no paid domains, ads or services before an idea earns more than it costs",
+  "review": {
+    "minScore": 6,
+    "maxPerDay": 3
+  },
+  "validation": {
+    "days": 14,
+    "maxValidating": 5,
+    "minVisitorsToJudge": 50,
+    "maxExtensions": 1,
+    "build": {
+      "minSignups": 5,
+      "minSignupRate": 0.05
+    },
+    "buildEarly": {
+      "minSignups": 10,
+      "minSignupRate": 0.08
+    }
+  },
+  "build": {
+    "maxPerWeek": 1,
+    "timeoutMinutes": 45
+  },
+  "signalUrl": "https://repohq.vercel.app/api/ideas/signal",
+  "pagesProject": "idea-pages",
+  "pagesBaseUrl": "https://idea-pages-livid.vercel.app",
+  "vercelScope": "team_ONe0JJaVwgXIAUMHZ7OUgkku"
+}

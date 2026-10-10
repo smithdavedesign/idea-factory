@@ -1,6 +1,12 @@
+.DS_Store
+.pipeline-state.json
+.pipeline.lock
+.review-input.md
 drafts/
-seeds.jsonl
+node_modules/
+pipeline.log
+pipeline.out.log
 promote.log
 research.log
-node_modules/
-.DS_Store
+seeds.jsonl
+work/

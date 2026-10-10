@@ -5,5 +5,8 @@
   "scripts": {
     "test": "node --test test/",
     "test:live": "node test/live-notion.js"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^1.2.0"
   }
 }

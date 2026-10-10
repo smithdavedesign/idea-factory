@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# The owner's context index (RepoHQ factory/context), for idea research and review.
+# These callers are cloud models (Claude), so results are always limited to public + personal:
+# any --classes argument is dropped, and only search / interests / overview are allowed.
+#   bin/context interests | overview | search "<query>" [--sources repo,idea,bookmark,doc] [--limit n]
+set -euo pipefail
+app="$HOME/.repohq-factory/app"
+args=(); skip=0
+for a in "$@"; do
+  if [ "$skip" = 1 ]; then skip=0; continue; fi
+  if [ "$a" = "--classes" ]; then skip=1; continue; fi
+  args+=("$a")
+done
+cmd="${args[0]:-overview}"
+case "$cmd" in
+  search) args+=("--classes" "public,personal") ;;
+  interests|overview) ;;
+  *) echo "bin/context: only search, interests or overview" >&2; exit 2 ;;
+esac
+exec "$app/node_modules/.bin/tsx" "$app/factory/bin/context.ts" "${args[@]}"
