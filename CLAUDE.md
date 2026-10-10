@@ -13,3 +13,4 @@ The idea half of David's system: research → gstack review → $0 demand test �
   - no work or financial data (the `bin/context` wrapper enforces public + personal).
 - Tests: `npm test` (lossless Notion conversion, decision rules, landing-page escaping, Claude guards). Run them before committing.
 - If you change how the pipeline works, update RepoHQ `docs/idea-factory.md` (and the scorecard in `docs/system-overview.md`).
+- Log what the pipeline does with `lib/events.js` (`emit({component, event, status, message})`). It goes to the shared system log (RepoHQ `docs/logging.md`), and `status: 'fail'` alerts Slack #team-agents. Don't log quiet runs.

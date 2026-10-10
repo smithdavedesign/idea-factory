@@ -39,6 +39,10 @@ David's Status in Notion always wins: Pass, Build or Live.
 
 Each idea's lifecycle is in `ideas/<slug>/state.json`, which RepoHQ reads. The review is in `REVIEW.md` / `review.json`, and the launch post in `LAUNCH.md`.
 
+## Logs
+
+The pipeline, research, review and build write to the shared system log (`lib/events.js` → `~/.system-events/events.jsonl`). RepoHQ's collector ships it and alerts Slack #team-agents on failures. See RepoHQ `docs/logging.md`.
+
 ## Commands
 
 ```bash

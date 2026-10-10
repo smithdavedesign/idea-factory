@@ -167,3 +167,17 @@ test('idea builds ask the tier advisor; Claude stays first unless it acts and ra
   assert.deepEqual(engineOrder(1, 'act'), ['free', 'claude']);
   assert.equal(policy.build.advisor, 'report');
 });
+
+test('system log: events are one JSON line in the shared file, best-effort', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'events-'));
+  process.env.SYSTEM_EVENTS_DIR = dir;
+  delete require.cache[require.resolve('../lib/events')];
+  const { emit } = require('../lib/events');
+  emit({ component: 'pipeline', event: 'tick', status: 'fail', message: 'x', subject: { idea: 'permitly' } });
+  emit({ component: 'review', event: 'run', status: 'ok', message: 'pass 4/10' });
+  const lines = fs.readFileSync(path.join(dir, 'events.jsonl'), 'utf8').trim().split('\n').map((l) => JSON.parse(l));
+  assert.equal(lines.length, 2);
+  assert.deepEqual([lines[0].system, lines[0].component, lines[0].status, lines[0].level, lines[0].subject.idea], ['idea-factory', 'pipeline', 'fail', 'error', 'permitly']);
+  assert.equal(lines[1].level, 'info');
+  delete process.env.SYSTEM_EVENTS_DIR;
+});

@@ -12,6 +12,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { claudeTask } = require('../lib/claude');
 const P = require('../lib/pipeline');
+const { emit } = require('../lib/events');
 
 const ROOT = path.resolve(__dirname, '..');
 const IDEAS = path.join(ROOT, 'ideas');
@@ -83,7 +84,7 @@ async function reviewOne(slug) {
     'Write REVIEW.md and review.json there. Your final message: the verdict, the score and the summary, on one line.';
   const run = await claudeTask(prompt, { cwd: dir, tools: tools(dir), timeoutMs: 20 * 60_000, system: SYSTEM, addDirs: [GSTACK] });
   fs.rmSync(inputFile, { force: true });
-  if (!run.ok) return { ok: false, slug, reason: run.reason };
+  if (!run.ok) { emit({ component: 'review', event: 'run', status: 'fail', subject: { idea: slug }, message: run.reason }); return { ok: false, slug, reason: run.reason }; }
   let raw;
   try { raw = JSON.parse(fs.readFileSync(path.join(dir, 'review.json'), 'utf8')); } catch (e) { return { ok: false, slug, reason: `review.json unreadable: ${e.message}` }; }
   const checked = P.validateReview(raw, policy);
@@ -100,6 +101,7 @@ async function reviewOne(slug) {
     review: { verdict: review.verdict, score: review.score, summary: review.summary, at: now.toISOString(), ...(review.policyOverride ? { policyOverride: review.policyOverride } : {}) },
     ...(fresh && review.verdict === 'validate' ? { validation: P.startValidation(now, policy) } : {}),
   }, now);
+  emit({ component: 'review', event: 'run', status: 'ok', subject: { idea: slug }, message: `${review.verdict} ${review.score}/10${review.policyOverride ? ` (policy: ${review.policyOverride})` : ''}` });
   return { ok: true, slug, review, state: next, model: run.info.model };
 }
 

@@ -21,6 +21,7 @@ const { execFileSync } = require('child_process');
 const P = require('../lib/pipeline');
 const pub = require('./idea-publish');
 const { mdToBlocks } = require('../lib/notion-md');
+const { emit } = require('../lib/events');
 
 const ROOT = path.resolve(__dirname, '..');
 const IDEAS = path.join(ROOT, 'ideas');
@@ -294,6 +295,10 @@ async function tick({ forceDaily = false } = {}) {
   if (changed.size) out.commit = commitRecord(`pipeline: ${[...changed].join(', ')}`);
   out.ok = out.errors.length === 0;
   log(out);
+  // Quiet ticks aren't logged (launchd's exit code covers liveness): only changes, daily runs and failures.
+  if (!out.ok || out.changes.length || out.daily) emit({ component: 'pipeline', event: 'tick', status: out.ok ? 'ok' : 'fail', durationMs: Date.now() - now.getTime(),
+    message: out.ok ? `${out.changes.length} change(s)${out.daily ? ', daily steps ran' : ''}` : out.errors.join('; ').slice(0, 1500),
+    data: { changes: out.changes.slice(0, 20), daily: !!out.daily } });
   return out;
 }
 

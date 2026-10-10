@@ -15,6 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const base = require('../lib/claude');
 const { inspect, guard, cleanEnv } = base;
+const { emit } = require('../lib/events');
 
 const ROOT = path.resolve(__dirname, '..');
 const DRAFTS = path.join(ROOT, 'drafts');
@@ -71,6 +72,9 @@ async function research() {
   out.ok = !out.reason;
   if (out.ok) out.report = info.result.trim();
   log(out);
+  emit({ component: 'research', event: 'run', status: out.ok ? 'ok' : 'fail', durationMs: info.durationMs ?? undefined,
+    message: out.ok ? `recorded ${added.join(', ')} on ${info.model}` : `Claude research failed (scout falls back to free models): ${out.reason}`,
+    subject: added[0] ? { idea: added[0] } : undefined });
   return out;
 }
 

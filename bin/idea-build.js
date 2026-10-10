@@ -25,6 +25,7 @@ const path = require('path');
 const { execFileSync, spawnSync } = require('child_process');
 const { claudeTask } = require('../lib/claude');
 const P = require('../lib/pipeline');
+const { emit } = require('../lib/events');
 
 const ROOT = path.resolve(__dirname, '..');
 const policy = JSON.parse(fs.readFileSync(path.join(ROOT, 'policy.json'), 'utf8'));
@@ -123,6 +124,7 @@ async function buildOne(slug, { push = true, milestone = 'M1' } = {}) {
   const changed = sh('git', ['status', '--porcelain'], work);
   if (!changed) {
     const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: milestone === 'M1' ? 'repo' : 'building', build: { ...(state.build || {}), milestone, status: 'failed', at: now.toISOString(), reason: run.reason || 'no changes' } });
+    emit({ component: 'build', event: milestone, status: 'fail', subject: { idea: slug }, message: run.reason || 'no changes made' });
     return { ok: false, slug, reason: run.reason || 'Claude made no changes', state: s };
   }
   sh('git', ['add', '-A'], work);
@@ -140,6 +142,8 @@ async function buildOne(slug, { push = true, milestone = 'M1' } = {}) {
     prUrl = sh('gh', ['pr', 'create', '--draft', '--base', 'main', '--head', branch, '--title', `${milestone}: ${slug}`, '--body', body], work);
   }
   const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'building', build: { ...(state.build || {}), milestone, status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, at: now.toISOString(), ...(advice ? { advice } : {}) } });
+  emit({ component: 'build', event: milestone, status: testsPassing ? 'ok' : 'fail', subject: { idea: slug, pr: prUrl || undefined },
+    message: `${milestone} ${prUrl ? `PR ${prUrl}` : 'built locally'}, tests ${testsPassing ? 'passing' : 'failing'}, engine ${run.engine}${advice ? `, advisor ${advice.difficulty}` : ''}` });
   return { ok: true, slug, milestone, prUrl, testsPassing, engine: run.engine, model: run.info.model, builderReason: run.reason, state: s };
 }
 
