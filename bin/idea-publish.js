@@ -328,7 +328,12 @@ async function publish(dirArg) {
 function loadIdea(slug) {
   const dir = path.join(IDEAS_DIR, slug);
   if (!fs.existsSync(path.join(dir, 'idea.json'))) fail(`no stored idea ideas/${slug}`);
-  return { dir, idea: JSON.parse(fs.readFileSync(path.join(dir, 'idea.json'), 'utf8')) };
+  const idea = JSON.parse(fs.readFileSync(path.join(dir, 'idea.json'), 'utf8'));
+  // Ideas recorded before 2026-10-10 may lack these.
+  idea.slug = idea.slug || slug;
+  idea.repoName = idea.repoName || slug;
+  idea.sources = Array.isArray(idea.sources) ? idea.sources : [];
+  return { dir, idea };
 }
 
 async function rowFor(slug) {
