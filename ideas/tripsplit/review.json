@@ -1,0 +1,65 @@
+{
+  "verdict": "pass",
+  "score": 2,
+  "summary": "Offline trip expense splitting is a crowded space: the research itself lists five offline-first competitors, and one (Deudin) already has the claimed differentiator. There is no evidence of demand, and the stated stack (React Native, app stores) is not a $0 weekend build.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 1,
+      "evidence": "All 'evidence' in RESEARCH.md is competitors' own marketing copy (TripLedger, Deudin, Kitty, SpndX). No user quotes, no complaints, no behavior. Interest is not demand, and no one has asked for this."
+    },
+    "statusQuo": {
+      "score": 4,
+      "evidence": "Real status quo exists: Splitwise (free tier works for most trips), spreadsheets, chat threads, and 4-5 free offline-first apps. That proves the problem is real but already well served, so the workaround is not painful enough to switch from."
+    },
+    "specificity": {
+      "score": 1,
+      "evidence": "Target is 'organizers of group trips'. That is a category, not a person. No name, no role, no consequence. David has no stated trip-organizer contacts in his context, and his interests show no travel-expense focus."
+    },
+    "wedge": {
+      "score": 2,
+      "evidence": "The PRD's stated gap (no accounts + invite link + per-currency + offline) is exactly what Deudin already claims per RESEARCH.md. The M1 (single currency, equal splits, settle up) is the least differentiated part and is a free commodity. No one pays for it."
+    },
+    "futureFit": {
+      "score": 3,
+      "evidence": "Connectivity and eSIMs improve, which shrinks the offline pain over 3 years. Splitwise-style apps are commodity and AI/OS vendors can absorb splitting. No thesis for why this gets more essential."
+    }
+  },
+  "premises": [
+    "Offline is the pain that stops people using existing splitters. Not supported: no user says this; only competitor marketing does, and most trips have intermittent but usable connectivity.",
+    "Non-installers joining by link is unserved. Contradicted: Deudin already does this per RESEARCH.md.",
+    "Users will switch from Splitwise or a spreadsheet. Unsupported: the research names user acquisition as an open risk and offers no evidence of switching.",
+    "A trip splitter can earn money. Unsupported: competitors are mostly free or ad-supported, so there is no willingness-to-pay signal."
+  ],
+  "alternatives": [
+    "Minimal: a single static web page (client-side JS, localStorage, PWA) that splits expenses and shares the state in a URL. Zero backend, $0, a weekend. Still undifferentiated.",
+    "Extend an existing repo: David's Open-Travel / Open Fly Travel Assistant (live on Vercel, trips page) could add a split-expenses tab, getting distribution for free instead of launching a new app.",
+    "Lateral: a settle-up calculator only (paste a list of who paid what, in multiple currencies, get the minimal transfers). Narrower and shareable, but a free commodity with SEO competition.",
+    "Ideal architecture: local-first CRDT app with sync. Large effort and a high bar against Deudin, Kitty and Splitwise; not justified without demand."
+  ],
+  "wedge": "A zero-install, URL-state PWA: multi-currency trip splitter where the whole ledger lives in a shareable link, working offline after the first load. Even this is only worth testing if a landing page proves anyone cares; it does not today.",
+  "feasibility": {
+    "m1Weekend": false,
+    "zeroCost": false,
+    "notes": "The ROADMAP M1 as written (React Native/Expo + SQLite) is feasible in a weekend for one person, but the product only reaches users via App Store / Google Play, which cost money ($99/yr Apple, $25 Google) and have review delays. A web PWA would be $0 on Vercel Hobby. The single test that would prove M1 works: log 10 mixed-split expenses offline, run settle up, and check the transfers match a hand-computed minimum (unit tests on the settlement function)."
+  },
+  "risks": [
+    "Crowded market with at least five free offline-first competitors, one with the same differentiator",
+    "No demand evidence; the research is competitor marketing only",
+    "App store distribution costs money and breaks the $0 rule",
+    "Free-or-ads pricing everywhere means little to no revenue",
+    "CRDT sync and conflict resolution is heavy for a solo developer",
+    "Handling money, even without payments, invites trust and privacy questions"
+  ],
+  "killCriteria": "Pass now. If revived as a web PWA landing-page test: drop it if fewer than 50 visitors give under 5 signups in 14 days, or if even two real trip organizers David interviews say Splitwise or a spreadsheet is good enough.",
+  "landing": {
+    "headline": "",
+    "subhead": "",
+    "bullets": [],
+    "cta": "",
+    "audience": ""
+  },
+  "launch": {
+    "channels": [],
+    "post": ""
+  }
+}

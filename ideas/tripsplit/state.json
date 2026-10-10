@@ -1,0 +1,16 @@
+{
+  "stage": "repo",
+  "repo": "https://github.com/smithdavedesign/tripsplit",
+  "updatedAt": "2026-10-10T19:06:17.271Z",
+  "review": {
+    "verdict": "pass",
+    "score": 2,
+    "summary": "Offline trip expense splitting is a crowded space: the research itself lists five offline-first competitors, and one (Deudin) already has the claimed differentiator. There is no evidence of demand, and the stated stack (React Native, app stores) is not a $0 weekend build.",
+    "at": "2026-10-10T19:05:30.460Z",
+    "notionAt": "2026-10-10T19:06:17.271Z"
+  },
+  "revenue": {
+    "mrr": 0,
+    "updatedAt": "2026-10-10T19:06:17.271Z"
+  }
+}
