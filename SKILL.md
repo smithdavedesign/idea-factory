@@ -27,6 +27,11 @@ and `portfolio` (David's GitHub repos with descriptions).
   that already has trip expenses), do **not** propose a separate product: pick another idea, or — in seeded
   mode — frame it as an extension of that repo. You must name the closest repo in `idea.json.overlaps`.
 
+## Step 1b — Learn from earlier verdicts
+Read the `review.json` of every idea in `/Users/davidsmith/idea-factory/ideas/*/` (Read tool). The reviewer
+passes ideas for a reason. Don't propose another idea with the same weakness. As of 2026-10-10, four in a
+row were free developer CLIs with no one who would pay, in markets free tools already cover.
+
 ## Step 2 — Choose the idea
 - **Seeded**: research that idea. Sharpen it if needed, but keep David's intent.
 - **Discovery**: use `ollama_web_search` to find fresh pain points — recent complaints, "I wish
@@ -38,6 +43,10 @@ and `portfolio` (David's GitHub repos with descriptions).
 - it's a listicle headline or category ("AI app ideas", "SaaS for X") rather than a product
 - you can't name a specific user and a specific painful moment they have today
 - a free, well-known tool already does exactly this (say who, in Competitors)
+- **you can't name who pays, how much, and the evidence they pay for something like it today** (a paid
+  competitor's price, a paid workaround, a job someone is hired to do). The goal is revenue: an idea
+  people would only use for free is a pass. Prefer small businesses, professionals and prosumers with a
+  budget over developers who expect free tools.
 - David's portfolio already has it (Step 1)
 
 ## Step 3 — Research (4–8 searches, `ollama_web_search` / `ollama_web_fetch`)
@@ -58,8 +67,9 @@ Pick the **repo name first** — it's reserved now and used if David says "Build
 
 Create `/Users/davidsmith/idea-factory/drafts/<repoName>/` with:
 
-**`RESEARCH.md`** — Summary (3 lines) · Evidence of the problem · Competitors & alternatives (table:
-name, price, gap) · Technical notes · Risks & open questions · Sources (bulleted URLs, ≥ 3).
+**`RESEARCH.md`** — Summary (3 lines) · Evidence of the problem · **Who pays** (the buyer, a price point,
+and evidence they pay for a workaround today, with sources) · Competitors & alternatives (table: name,
+price, gap) · Technical notes · Risks & open questions · Sources (bulleted URLs, ≥ 3).
 
 **`PRD.md`** — these `##` sections, all specific to this idea and grounded in RESEARCH.md:
 `## Problem` · `## Target user` · `## Competitors & gap` · `## MVP scope` (5–8 bullet features) ·
