@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Rate a coding task 1–3 with RepoHQ's tier advisor (factory/lib/tier-advisor.ts; local model).
+#   bin/rate --kind idea-milestone --title "<title>" --objective-file <path>
+set -euo pipefail
+app="$HOME/.repohq-factory/app"
+exec "$app/node_modules/.bin/tsx" "$app/factory/bin/rate.ts" "$@"

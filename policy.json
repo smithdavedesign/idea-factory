@@ -25,7 +25,9 @@
     "timeoutMinutes": 45,
     "engine": "claude-subscription",
     "fallback": "free-agent",
-    "_why": "Coding a product from its PRD wants the strongest model: Claude Code on the subscription first; the free pool (LiteLLM free-agent) only when the subscription is out of capacity."
+    "_why": "Coding a product from its PRD wants the strongest model: Claude Code on the subscription first; the free pool (LiteLLM free-agent) only when the subscription is out of capacity.",
+    "advisor": "report",
+    "_advisor": "RepoHQ tier advisor rates each milestone 1-3 (local model). \"report\": recorded only, Claude first. \"act\": a milestone rated 1 starts on the free pool and moves up to Claude on failure. Switch when its score on the factory ladder earns it."
   },
   "signalUrl": "https://repohq.vercel.app/api/ideas/signal",
   "pagesProject": "idea-pages",

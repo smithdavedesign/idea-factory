@@ -66,6 +66,33 @@ function nextMilestone(roadmap, done = []) {
 
 const sh = (cmd, args, cwd) => execFileSync(cmd, args, { cwd, stdio: 'pipe' }).toString().trim();
 
+/** The milestone's section of ROADMAP.md ("## M2 …" up to the next "## "). */
+function milestoneText(roadmap, milestone) {
+  const lines = String(roadmap).split('\n');
+  const i = lines.findIndex((l) => new RegExp(`^#{2,3}\\s*${milestone}\\b`).test(l));
+  if (i < 0) return '';
+  const j = lines.findIndex((l, k) => k > i && /^#{2,3}\s/.test(l));
+  return lines.slice(i, j < 0 ? undefined : j).join('\n');
+}
+
+/** RepoHQ's tier advisor rates the milestone 1–3 (local model). Null when it isn't reachable. */
+function rateMilestone(ideaDir, slug, milestone) {
+  try {
+    const roadmap = fs.readFileSync(path.join(ideaDir, 'ROADMAP.md'), 'utf8');
+    const tmp = path.join(ROOT, 'work', `.rate-${slug}-${milestone}.md`);
+    fs.mkdirSync(path.dirname(tmp), { recursive: true });
+    fs.writeFileSync(tmp, milestoneText(roadmap, milestone) || roadmap.slice(0, 4000));
+    const out = execFileSync(path.join(ROOT, 'bin', 'rate'), ['--kind', 'idea-milestone', '--title', `${milestone}: ${slug}`, '--objective-file', tmp], { encoding: 'utf8', timeout: 180_000 });
+    fs.rmSync(tmp, { force: true });
+    return JSON.parse(out.trim().split('\n').pop());
+  } catch { return null; }
+}
+
+/** Engine order: Claude first, unless the advisor acts and rated the milestone routine (1). */
+function engineOrder(difficulty, mode) {
+  return mode === 'act' && difficulty === 1 ? ['free', 'claude'] : ['claude', 'free'];
+}
+
 async function buildOne(slug, { push = true, milestone = 'M1' } = {}) {
   const branch = milestone.toLowerCase();
   const ideaDir = path.join(ROOT, 'ideas', slug);
@@ -81,11 +108,14 @@ async function buildOne(slug, { push = true, milestone = 'M1' } = {}) {
   for (const f of ['REVIEW.md']) if (fs.existsSync(path.join(ideaDir, f)) && !fs.existsSync(path.join(work, f))) fs.copyFileSync(path.join(ideaDir, f), path.join(work, f));
 
   const now = new Date();
-  P.writeState(ideaDir, { ...state, stage: 'building', build: { ...(state.build || {}), milestone, status: 'running', at: now.toISOString() } }, now);
+  const advice = rateMilestone(ideaDir, slug, milestone);
+  const engines = engineOrder(advice?.difficulty ?? null, policy.build.advisor || 'report');
+  P.writeState(ideaDir, { ...state, stage: 'building', build: { ...(state.build || {}), milestone, status: 'running', at: now.toISOString(), ...(advice ? { advice } : {}) } }, now);
   const run = await claudeTask(prompt(slug, milestone), {
     cwd: work, tools: tools(work), timeoutMs: policy.build.timeoutMinutes * 60_000, system: SYSTEM,
     env: { npm_config_ignore_scripts: 'true', CI: '1' },
     fallback: policy.build.fallback !== 'none', // subscription first, the free pool only if it can't take the work
+    engines,
   });
   const engine = run.engine === 'free' ? `free pool (${run.info.model || 'free-agent'}) — the subscription couldn't take it: ${String(run.primaryReason).slice(0, 120)}` : `Claude subscription (${run.info.model})`;
   const test = spawnSync('npm', ['test', '--silent'], { cwd: work, encoding: 'utf8', timeout: 10 * 60_000, env: { ...process.env, CI: '1', npm_config_ignore_scripts: 'true' } });
@@ -109,11 +139,11 @@ async function buildOne(slug, { push = true, milestone = 'M1' } = {}) {
     ].join('\n');
     prUrl = sh('gh', ['pr', 'create', '--draft', '--base', 'main', '--head', branch, '--title', `${milestone}: ${slug}`, '--body', body], work);
   }
-  const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'building', build: { ...(state.build || {}), milestone, status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, at: now.toISOString() } });
+  const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'building', build: { ...(state.build || {}), milestone, status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, at: now.toISOString(), ...(advice ? { advice } : {}) } });
   return { ok: true, slug, milestone, prUrl, testsPassing, engine: run.engine, model: run.info.model, builderReason: run.reason, state: s };
 }
 
-module.exports = { buildOne, tools, milestones, nextMilestone, prompt };
+module.exports = { buildOne, tools, milestones, nextMilestone, prompt, milestoneText, engineOrder };
 
 if (require.main === module) {
   const slug = process.argv[2];

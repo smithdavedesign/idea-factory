@@ -155,3 +155,15 @@ test('milestones: read from ROADMAP.md headings, next after the merged ones', ()
   assert.match(prompt('x', 'M2'), /Build ROADMAP\.md's M2 and nothing beyond it \(earlier milestones are already merged/);
   assert.match(prompt('x'), /Scaffold the smallest stack/);
 });
+
+test('idea builds ask the tier advisor; Claude stays first unless it acts and rates the milestone routine', () => {
+  const { milestoneText, engineOrder } = require('../bin/idea-build');
+  const roadmap = '# Roadmap\n## M1 — MVP\nbuild the core\n- exit: x\n## M2: accounts\nlogins\n## Stack\nnext';
+  assert.equal(milestoneText(roadmap, 'M2'), '## M2: accounts\nlogins');
+  assert.match(milestoneText(roadmap, 'M1'), /build the core[\s\S]*exit: x/);
+  assert.equal(milestoneText(roadmap, 'M9'), '');
+  assert.deepEqual(engineOrder(1, 'report'), ['claude', 'free']);
+  assert.deepEqual(engineOrder(3, 'act'), ['claude', 'free']);
+  assert.deepEqual(engineOrder(1, 'act'), ['free', 'claude']);
+  assert.equal(policy.build.advisor, 'report');
+});
