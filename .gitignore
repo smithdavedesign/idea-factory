@@ -1,0 +1,6 @@
+drafts/
+seeds.jsonl
+promote.log
+research.log
+node_modules/
+.DS_Store

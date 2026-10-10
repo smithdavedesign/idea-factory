@@ -1,0 +1,19 @@
+{
+  "title": "Offline Group Splitter",
+  "oneLiner": "For trip organizers and travelers who need to split expenses without internet or app installs, tracking multiple currencies and settling up fairly when back online.",
+  "tags": [
+    "travel",
+    "finance",
+    "productivity"
+  ],
+  "effort": "Medium",
+  "confidence": "Medium",
+  "sources": [
+    "https://www.spndx.app/",
+    "https://www.splitie.app/",
+    "https://blacknwhitestudio.com/tripledger/",
+    "https://deudin.app/for/trips/",
+    "https://allthingsn.com/apps/kitty/"
+  ],
+  "repoName": "tripsplit"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "idea-factory",
+  "private": true,
+  "description": "Idea pipeline: research → ideas/<slug>/ (this repo, the record) → Notion Idea Board → Build → product repo",
+  "scripts": {
+    "test": "node --test test/",
+    "test:live": "node test/live-notion.js"
+  }
+}
