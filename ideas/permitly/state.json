@@ -12,9 +12,15 @@
     "decideAfter": "2026-10-24T19:21:10.764Z",
     "extensions": 0
   },
-  "updatedAt": "2026-10-10T19:21:10.764Z",
+  "updatedAt": "2026-10-10T19:24:09.418Z",
   "page": {
     "url": "https://idea-pages-livid.vercel.app/permitly/",
     "deployedAt": "2026-10-10T19:21:10.764Z"
+  },
+  "signals": {
+    "views": 0,
+    "uniqueVisitors": 0,
+    "signups": 0,
+    "updatedAt": "2026-10-10T19:24:09.418Z"
   }
 }
