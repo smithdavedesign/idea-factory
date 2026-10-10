@@ -258,14 +258,30 @@ async function tick({ forceDaily = false } = {}) {
         for (const [slug, state, url] of newPages) save(slug, { ...P.readState(path.join(IDEAS, slug)), page: { url, deployedAt: now.toISOString() }, validation: P.startValidation(now, policy) }, `landing page ${url}`);
       } catch (e) { fail('deploy pages', e); }
     }
-    // c. One M1 build per week, for a repo that hasn't been built.
-    const toBuild = states.filter(([, s]) => buildable(s));
-    if (toBuild.length && P.buildsThisWeek(states.map(([, s]) => s), now) < policy.build.maxPerWeek) {
-      const [slug] = toBuild[0];
-      const { buildOne } = require('./idea-build');
-      const r = await buildOne(slug);
+    // c. Builds: Claude Code on the subscription first, the free pool only as backup (idea-build.js).
+    // A merged milestone PR moves the idea on to its next milestone; M1 for new repos. One a week.
+    const { buildOne, nextMilestone } = require('./idea-build');
+    for (const [slug, s] of states) {
+      if (s.stage !== 'building' || s.build?.status !== 'pr-open' || !s.build.prUrl) continue;
+      let prState = null;
+      try { prState = JSON.parse(execFileSync('gh', ['pr', 'view', s.build.prUrl, '--json', 'state'], { encoding: 'utf8' })).state; } catch { continue; }
+      const m = s.build.milestone || 'M1';
+      if (prState === 'MERGED') save(slug, { ...s, build: { ...s.build, status: 'merged' }, milestonesDone: [...new Set([...(s.milestonesDone || []), m])] }, `${m} merged`);
+      else if (prState === 'CLOSED') save(slug, { ...s, build: { ...s.build, status: 'closed' } }, `${m} PR closed without merging`);
+    }
+    const fresh = ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]);
+    const queue = [
+      ...fresh.filter(([, s]) => buildable(s)).map(([slug]) => [slug, 'M1']),
+      ...fresh.filter(([, s]) => s.stage === 'building' && s.build?.status === 'merged').map(([slug, s]) => {
+        const roadmap = fs.existsSync(path.join(IDEAS, slug, 'ROADMAP.md')) ? fs.readFileSync(path.join(IDEAS, slug, 'ROADMAP.md'), 'utf8') : '';
+        return [slug, nextMilestone(roadmap, s.milestonesDone || [])];
+      }).filter(([, m]) => m),
+    ];
+    if (queue.length && P.buildsThisWeek(fresh.map(([, s]) => s), now) < policy.build.maxPerWeek) {
+      const [slug, milestone] = queue[0];
+      const r = await buildOne(slug, { milestone });
       changed.add(slug);
-      if (r.ok) note(slug, `M1 PR ${r.prUrl} (tests ${r.testsPassing ? 'passing' : 'failing'})`); else fail(`build ${slug}`, r.reason);
+      if (r.ok) note(slug, `${milestone} PR ${r.prUrl} (tests ${r.testsPassing ? 'passing' : 'failing'}, ${r.engine === 'free' ? 'free-pool backup' : 'Claude subscription'})`); else fail(`build ${slug} ${milestone}`, r.reason);
     }
     fs.writeFileSync(STATE_FILE, JSON.stringify({ ...pstate, lastDaily: now.toLocaleDateString('en-CA') }));
   }

@@ -22,7 +22,10 @@
   },
   "build": {
     "maxPerWeek": 1,
-    "timeoutMinutes": 45
+    "timeoutMinutes": 45,
+    "engine": "claude-subscription",
+    "fallback": "free-agent",
+    "_why": "Coding a product from its PRD wants the strongest model: Claude Code on the subscription first; the free pool (LiteLLM free-agent) only when the subscription is out of capacity."
   },
   "signalUrl": "https://repohq.vercel.app/api/ideas/signal",
   "pagesProject": "idea-pages",

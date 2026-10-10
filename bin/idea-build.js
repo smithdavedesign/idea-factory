@@ -1,7 +1,13 @@
 #!/usr/bin/env node
-// idea-build.js — build an approved idea's M1 on the Claude Pro subscription, tests first.
+// idea-build.js — build an approved idea's milestones with Claude Code, tests first.
 //
-//   node bin/idea-build.js <slug> [--no-push]
+//   node bin/idea-build.js <slug> [--milestone M2] [--no-push]
+//
+// Engine: Claude Code on David's Claude subscription first. Coding a product from its PRD needs the
+// strongest model available. Only when the subscription can't take the work (usage or rate limit,
+// logged out) does it fall back to the free pool through LiteLLM (owner's decision, 2026-10-10).
+// Idea repos hold generated code from public research, so the free fallback is allowed for them;
+// the factory's "private repos never go to free cloud models" rule protects the owner's own code.
 //
 // For an idea at stage "repo" (its private repo exists): clones it, then Claude Code
 //   1. turns ROADMAP.md's M1 exit criteria into failing tests,
@@ -36,20 +42,32 @@ function tools(dir) {
   ];
 }
 
-function prompt(slug) {
-  return `You are in the repo for the idea "${slug}". Read PRD.md, ROADMAP.md and REVIEW.md (if present) first.
-Build ROADMAP.md's M1 and nothing beyond it:
-1. Turn M1's exit criteria into automated tests (vitest or node:test) that fail now. Each exit criterion becomes at least one test.
-2. Scaffold the smallest stack that fits the roadmap's suggestion and runs at $0 (static site, Next.js or a small Node service; free tiers only). Add "test" to package.json scripts.
+function prompt(slug, milestone = 'M1') {
+  const first = milestone === 'M1';
+  return `You are in the repo for the idea "${slug}". Read PRD.md, ROADMAP.md, REVIEW.md and BUILD.md (if present) first.
+Build ROADMAP.md's ${milestone} and nothing beyond it${first ? '' : ' (earlier milestones are already merged; keep their tests passing)'}:
+1. Turn ${milestone}'s exit criteria into automated tests (vitest or node:test) that fail now. Each exit criterion becomes at least one test.
+2. ${first ? 'Scaffold the smallest stack that fits the roadmap\'s suggestion and runs at $0 (static site, Next.js or a small Node service; free tiers only). Add "test" to package.json scripts.' : 'Extend the existing code; keep the stack and the $0 rule.'}
 3. Implement until \`npm test\` passes. Don't weaken or delete a test to make it pass.
-4. Write BUILD.md: what M1 does, how to run it locally, how to deploy it on a free tier, which exit criteria pass, and what's left for M2.
+4. ${first ? 'Write' : 'Update'} BUILD.md: what the product does now, how to run it locally, how to deploy it on a free tier, which exit criteria pass, and what's left.
 Install scripts are disabled (npm_config_ignore_scripts); choose packages that work without them.
 Your final message: one line — tests passing or not, and the number of tests.`;
 }
 
+/** The milestones in ROADMAP.md, in order ("## M1 …", "## M2 …"). */
+function milestones(roadmap) {
+  return [...String(roadmap).matchAll(/^#{2,3}\s*(M\d+)\b/gm)].map((m) => m[1]).filter((m, i, a) => a.indexOf(m) === i);
+}
+
+/** The next milestone to build after the merged ones, or null when the roadmap is done. */
+function nextMilestone(roadmap, done = []) {
+  return milestones(roadmap).find((m) => !done.includes(m)) || null;
+}
+
 const sh = (cmd, args, cwd) => execFileSync(cmd, args, { cwd, stdio: 'pipe' }).toString().trim();
 
-async function buildOne(slug, { push = true } = {}) {
+async function buildOne(slug, { push = true, milestone = 'M1' } = {}) {
+  const branch = milestone.toLowerCase();
   const ideaDir = path.join(ROOT, 'ideas', slug);
   const state = P.readState(ideaDir);
   if (!state.repo) return { ok: false, slug, reason: 'no repo yet (stage must be "repo")' };
@@ -58,47 +76,50 @@ async function buildOne(slug, { push = true } = {}) {
   fs.rmSync(work, { recursive: true, force: true });
   fs.mkdirSync(path.dirname(work), { recursive: true });
   sh('gh', ['repo', 'clone', full, work, '--', '-q'], ROOT);
-  sh('git', ['checkout', '-q', '-b', 'm1'], work);
+  sh('git', ['checkout', '-q', '-b', branch], work);
   // The record has the review; the product repo gets a copy for the builder.
   for (const f of ['REVIEW.md']) if (fs.existsSync(path.join(ideaDir, f)) && !fs.existsSync(path.join(work, f))) fs.copyFileSync(path.join(ideaDir, f), path.join(work, f));
 
   const now = new Date();
-  P.writeState(ideaDir, { ...state, stage: 'building', build: { status: 'running', at: now.toISOString() } }, now);
-  const run = await claudeTask(prompt(slug), {
+  P.writeState(ideaDir, { ...state, stage: 'building', build: { ...(state.build || {}), milestone, status: 'running', at: now.toISOString() } }, now);
+  const run = await claudeTask(prompt(slug, milestone), {
     cwd: work, tools: tools(work), timeoutMs: policy.build.timeoutMinutes * 60_000, system: SYSTEM,
     env: { npm_config_ignore_scripts: 'true', CI: '1' },
+    fallback: policy.build.fallback !== 'none', // subscription first, the free pool only if it can't take the work
   });
+  const engine = run.engine === 'free' ? `free pool (${run.info.model || 'free-agent'}) — the subscription couldn't take it: ${String(run.primaryReason).slice(0, 120)}` : `Claude subscription (${run.info.model})`;
   const test = spawnSync('npm', ['test', '--silent'], { cwd: work, encoding: 'utf8', timeout: 10 * 60_000, env: { ...process.env, CI: '1', npm_config_ignore_scripts: 'true' } });
   const testsPassing = test.status === 0;
   const changed = sh('git', ['status', '--porcelain'], work);
   if (!changed) {
-    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'repo', build: { status: 'failed', at: now.toISOString(), reason: run.reason || 'no changes' } });
+    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: milestone === 'M1' ? 'repo' : 'building', build: { ...(state.build || {}), milestone, status: 'failed', at: now.toISOString(), reason: run.reason || 'no changes' } });
     return { ok: false, slug, reason: run.reason || 'Claude made no changes', state: s };
   }
   sh('git', ['add', '-A'], work);
-  sh('git', ['-c', 'user.name=idea-factory', '-c', 'user.email=idea-factory@users.noreply.github.com', 'commit', '-q', '-m', `M1: ${slug} (tests ${testsPassing ? 'passing' : 'failing'})`], work);
+  sh('git', ['-c', 'user.name=idea-factory', '-c', 'user.email=idea-factory@users.noreply.github.com', 'commit', '-q', '-m', `${milestone}: ${slug} (tests ${testsPassing ? 'passing' : 'failing'})`], work);
   let prUrl = null;
   if (push) {
-    sh('git', ['push', '-q', '-u', 'origin', 'm1'], work);
+    sh('git', ['push', '-q', '-u', 'origin', branch], work);
     const body = [
-      `M1 for **${slug}**, built by the idea pipeline on the Claude Pro subscription (tests first).`, '',
+      `${milestone} for **${slug}**, built by the idea pipeline, tests first. Engine: ${engine}.`, '',
       `Tests: ${testsPassing ? '✅ passing' : '❌ failing'} (\`npm test\` run by the pipeline after the build).`,
       run.reason ? `Builder note: ${run.reason}` : `Builder: ${run.info.result.slice(0, 300)}`, '',
       fs.existsSync(path.join(work, 'BUILD.md')) ? fs.readFileSync(path.join(work, 'BUILD.md'), 'utf8').slice(0, 6000) : '_No BUILD.md written._', '',
       '_Review it like any factory PR: merge if it does what M1 says. Nothing here spends money._',
     ].join('\n');
-    prUrl = sh('gh', ['pr', 'create', '--draft', '--base', 'main', '--head', 'm1', '--title', `M1: ${slug}`, '--body', body], work);
+    prUrl = sh('gh', ['pr', 'create', '--draft', '--base', 'main', '--head', branch, '--title', `${milestone}: ${slug}`, '--body', body], work);
   }
-  const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'building', build: { status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, at: now.toISOString() } });
-  return { ok: true, slug, prUrl, testsPassing, model: run.info.model, builderReason: run.reason, state: s };
+  const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'building', build: { ...(state.build || {}), milestone, status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, at: now.toISOString() } });
+  return { ok: true, slug, milestone, prUrl, testsPassing, engine: run.engine, model: run.info.model, builderReason: run.reason, state: s };
 }
 
-module.exports = { buildOne, tools };
+module.exports = { buildOne, tools, milestones, nextMilestone, prompt };
 
 if (require.main === module) {
   const slug = process.argv[2];
   if (!slug) { console.log(JSON.stringify({ ok: false, error: 'usage: idea-build.js <slug> [--no-push]' })); process.exit(1); }
-  buildOne(slug, { push: !process.argv.includes('--no-push') }).then((o) => {
+  const mi = process.argv.indexOf('--milestone');
+  buildOne(slug, { push: !process.argv.includes('--no-push'), milestone: mi > 0 ? process.argv[mi + 1] : 'M1' }).then((o) => {
     console.log(JSON.stringify({ ...o, state: undefined }));
     if (!o.ok) process.exitCode = 1;
   });

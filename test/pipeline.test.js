@@ -135,3 +135,23 @@ test('orchestrator: David\'s Notion status wins; daily steps once a day after 09
   assert.equal(buildable({ stage: 'repo', ownerApproved: true, build: { status: 'pr-open' } }), false);
   assert.equal(buildable({ stage: 'repo', ownerApproved: true, build: { status: 'failed', retried: true } }), false);
 });
+
+test('build engine: the subscription first; the free pool only when the subscription has no capacity', () => {
+  const { capacityFailure } = require('../lib/claude');
+  for (const r of ["Claude AI usage limit reached|1791700000", 'API Error: 429 rate_limit_error', 'Invalid API key · Please run /login', 'Claude Code not found at /x', 'API Error: 529 overloaded'])
+    assert.equal(capacityFailure(r), true, r);
+  for (const r of ['tests still failing after 3 attempts', 'timed out after 45 min', 'MCP servers/connectors were loaded', '', null])
+    assert.equal(capacityFailure(r), false, String(r));
+  assert.equal(policy.build.engine, 'claude-subscription');
+  assert.equal(policy.build.fallback, 'free-agent');
+});
+
+test('milestones: read from ROADMAP.md headings, next after the merged ones', () => {
+  const { milestones, nextMilestone, prompt } = require('../bin/idea-build');
+  const roadmap = '# Roadmap\n## M1 — weekend MVP\n...\n## M2: accounts\n...\n### M3 payments\n## Stack';
+  assert.deepEqual(milestones(roadmap), ['M1', 'M2', 'M3']);
+  assert.equal(nextMilestone(roadmap, ['M1']), 'M2');
+  assert.equal(nextMilestone(roadmap, ['M1', 'M2', 'M3']), null);
+  assert.match(prompt('x', 'M2'), /Build ROADMAP\.md's M2 and nothing beyond it \(earlier milestones are already merged/);
+  assert.match(prompt('x'), /Scaffold the smallest stack/);
+});
