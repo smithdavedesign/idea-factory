@@ -1,0 +1,53 @@
+{
+  "verdict": "pass",
+  "score": 5,
+  "summary": "A buildable, $0 tracker with a plausible flat-price gap, but demand rests only on vendor marketing, David has no healthcare network, and free CAQH reminders plus a spreadsheet are probably good enough. Not worth a demand test until someone real says they've been burned.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "No forum thread, interview or purchase signal; only vendor blogs (omnimd.com) and one unverified $38k anecdote. Per-provider prices of competitors show a market exists, but not that 1-10 clinician practices want a new tool. Stronger evidence: a practice manager describing a specific held claim, or paying/pre-paying $19."
+    },
+    "statusQuo": {
+      "score": 6,
+      "evidence": "Spreadsheets, calendar reminders, CAQH's own day-120 reminder, or $45-$500/provider/mo services. A real workaround is named, but it is free and mostly works; lapses are silent and infrequent, so pain is episodic."
+    },
+    "specificity": {
+      "score": 4,
+      "evidence": "Buyer is 'owner or practice manager of a 1-10 clinician practice': a category, not a named person. No individual, practice or quote. David cannot email a specific person today."
+    },
+    "wedge": {
+      "score": 6,
+      "evidence": "Pre-check 'which documents expire before the next attestation' is narrow and pure-function simple. But it is a spreadsheet formula; a customer may see little reason to pay $19/mo for it."
+    },
+    "futureFit": {
+      "score": 5,
+      "evidence": "Payer credentialing burden persists, but CAQH or EHR/practice-management vendors could add expiry alerts natively, and scraping/integration (the durable value) is ruled out."
+    }
+  },
+  "premises": [
+    "Small practices suffer costly lapses often enough to pay monthly: unsupported (vendor anecdote only).",
+    "CAQH does not warn about expired documents before a blocked attestation: plausible but sourced from one vendor blog, unverified.",
+    "A manual-entry tracker is enough; users will keep data current by hand: doubtful, manual entry is the same chore as the spreadsheet.",
+    "Practice managers will trust a new vendor with credential data and can be reached without a healthcare network: unsupported."
+  ],
+  "alternatives": [
+    "Minimal: a free spreadsheet/ICS template or single-page calculator (enter dates, see blockers) used as a lead magnet to find real users before building an app.",
+    "Ideal: full multi-clinician SaaS with CSV import, magic-link login, email reminders and Stripe (the PRD M1-M3), more than the evidence justifies.",
+    "Lateral: sell to credentialing consultants or billing firms who serve many small practices, one buyer with many clinicians and an existing channel.",
+    "No David repo overlap (context search found nothing relevant); extending an existing repo does not apply."
+  ],
+  "wedge": "A single-page calculator: enter last CAQH attestation and document expiries, get the next due date and a list of documents that will block it, with an ICS download. No accounts.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js on Vercel Hobby, SQLite/Turso or no DB at all, pure date functions. One test proves M1: nextAttestation('2026-10-01') = '2027-01-29' and blockers() flags a malpractice expiry of 2026-12-01 but not 2027-03-01."
+  },
+  "risks": [
+    "Demand unproven; vendor-only evidence.",
+    "No healthcare network or known channel to practice managers.",
+    "Free incumbents (CAQH reminders, spreadsheets) and RosterSafe at $25/provider.",
+    "Missed-alert liability and trust in storing credential data.",
+    "Manual data entry undermines retention; automation is blocked by CAQH terms."
+  ],
+  "killCriteria": "Drop if, after talking to 10 practice managers, fewer than 3 describe a real lapse or say they'd pay $19/month, or if a 14-day test brings under 5 waitlist signups from practices with 2+ clinicians."
+}
