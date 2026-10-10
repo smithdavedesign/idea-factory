@@ -1,0 +1,23 @@
+{
+  "title": "credclock — CAQH and credential expiry tracker for small clinics",
+  "repoName": "credclock",
+  "oneLiner": "For owners and managers of 1–10 clinician practices, it tracks each clinician's license, DEA and malpractice expiry plus the 120-day CAQH clock and flags documents that will block the next attestation, at a flat price instead of per-provider fees.",
+  "overlaps": "none — closest repo is RepoHQ/Github-HQ (portfolio dashboard), which does not track credentials",
+  "tags": [
+    "healthcare",
+    "compliance",
+    "small-business"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://omnimd.com/blog/caqh-profile-setup-maintenance-guide/",
+    "https://www.carepatron.com/blog/how-much-does-credentialing-cost",
+    "https://medwave.io/2026/03/how-much-does-medical-credentialing-cost/",
+    "https://www.spendbase.co/?p=37330",
+    "https://www.sprypt.com/blog/credentialing-software-healthcare-solutions",
+    "https://www.getapp.sg/software/115143/credentialmydoc"
+  ],
+  "slug": "credclock",
+  "recordedAt": "2026-10-10T19:30:25.964Z"
+}
