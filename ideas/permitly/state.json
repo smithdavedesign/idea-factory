@@ -1,0 +1,20 @@
+{
+  "stage": "validate",
+  "review": {
+    "verdict": "validate",
+    "score": 6,
+    "summary": "Short-term-rental operators with several units in different cities risk fines and delistings from missed permit renewals and rule changes, and there is a price gap between $27/property and $199+/month tools. Demand is only one forum thread, so run a $0 landing-page test before building.",
+    "at": "2026-10-10T19:21:54.869Z",
+    "notionAt": "2026-10-10T19:21:55.926Z"
+  },
+  "validation": {
+    "startedAt": "2026-10-10T19:21:10.764Z",
+    "decideAfter": "2026-10-24T19:21:10.764Z",
+    "extensions": 0
+  },
+  "updatedAt": "2026-10-10T19:21:10.764Z",
+  "page": {
+    "url": "https://idea-pages-livid.vercel.app/permitly/",
+    "deployedAt": "2026-10-10T19:21:10.764Z"
+  }
+}

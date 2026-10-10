@@ -1,0 +1,90 @@
+{
+  "verdict": "validate",
+  "score": 6,
+  "summary": "Short-term-rental operators with several units in different cities risk fines and delistings from missed permit renewals and rule changes, and there is a price gap between $27/property and $199+/month tools. Demand is only one forum thread, so run a $0 landing-page test before building.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "One BiggerPockets thread (RESEARCH.md source 1); no payer or behavior. Indirect: paying competitors (MyLodgeTax $27/property/mo, HostReady $199+/mo) and real enforcement (Las Vegas $72,900 fine)."
+    },
+    "statusQuo": {
+      "score": 6,
+      "evidence": "Spreadsheet plus calendar reminders; nobody watches ordinance pages. Cost is fines of $500-$10,000+ per violation (Hostaway) or a delisted client listing. Dates alone are well covered by a spreadsheet."
+    },
+    "specificity": {
+      "score": 5,
+      "evidence": "Independent co-host or small manager with 3-15 units in 2-5 jurisdictions, paid per unit managed. A role with a concrete consequence, but no named person and no interviews; segment unsized."
+    },
+    "wedge": {
+      "score": 6,
+      "evidence": "Ordinance-change diffs at a flat price are the sellable wedge; reminders alone are undifferentiated. Hand-run 10 ordinance watches for the first signups before building."
+    },
+    "futureFit": {
+      "score": 6,
+      "evidence": "More jurisdictions and rule churn (EU 2024/1028 from May 2026, Houston, Austin) raise the value of tracking; PMSs (Hostaway) and HostReady moving down-market are the threat."
+    }
+  },
+  "premises": [
+    "Operators with 3-15 units across several jurisdictions are a reachable, paying segment (weakly supported, unsized)",
+    "Fear of a missed renewal is strong enough to pay $19/mo over a free spreadsheet (unproven)",
+    "Ordinance-change diffs, not reminders, are the paid wedge (reasonable, but they are M2)",
+    "A reminder-only tool with no filing earns trust (open)",
+    "Ordinance pages can be fetched and diffed cheaply (partly; many are PDFs or JS-rendered)"
+  ],
+  "alternatives": [
+    "Minimal: landing page plus concierge, with David hand-running ordinance watches for the first signups (recommended)",
+    "M1 as specced: reminder tracker with ICS feed (builds the least differentiated part first)",
+    "Ideal: curated jurisdiction library with ordinance watch, priced per city (best moat, manual and stale-prone)",
+    "Lateral: paid rule-change newsletter for 10 cities (a Whop STR Compliance Hub already exists)",
+    "No existing David repo fits; only RepoHQ's idea-signal pipeline is reused for the landing page"
+  ],
+  "wedge": "A landing page plus one sample ordinance-diff email, then a hand-run ordinance watch for the first signups at a flat $19/mo.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js on Vercel Hobby, Turso or Supabase free, Resend free, cron on Actions or Vercel; no LLM, vercel.app subdomain. Test: dueReminders for a permit expiring 2026-12-31 returns the 90-day reminder on 2026-10-02 and none on 2026-10-03, and running the job twice sends each reminder once."
+  },
+  "risks": [
+    "Demand rests on one forum thread and no payer has been interviewed",
+    "Reminder-only M1 is not better than a spreadsheet and calendar",
+    "PDF and JS-rendered ordinance pages break naive hashing",
+    "Alert errors invite legal blame; needs a disclaimer and a source link",
+    "Jurisdiction data is manual and goes stale",
+    "HostReady or a PMS adds a low tier",
+    "At $19/mo it takes about 50 customers for $1k/mo",
+    "David has no STR-operator network"
+  ],
+  "killCriteria": "After 14 days and 50+ qualified visitors, fewer than 5 signups state 3+ properties; or fewer than 3 of 10 interviewed operators would pay $19/mo; or most target ordinance pages can't be fetched and diffed reliably.",
+  "landing": {
+    "headline": "Never miss an STR permit renewal or a city rule change",
+    "subhead": "Permit and lodging-tax deadlines for every property, plus an emailed diff when a city ordinance page changes. One flat price, no per-property fees.",
+    "bullets": [
+      "Email reminders 90, 60, 30 and 7 days before each permit and tax deadline",
+      "Ordinance watch: see exactly which lines changed on your city's page",
+      "All deadlines in your Google or Apple calendar",
+      "Flat monthly price for 3-15 properties, not per property"
+    ],
+    "cta": "Join the waitlist",
+    "audience": "Co-hosts and small property managers running 3-15 short-term rentals across 2+ cities"
+  },
+  "launch": {
+    "channels": [
+      {
+        "name": "BiggerPockets STR forum",
+        "url": "https://www.biggerpockets.com/forums/80",
+        "why": "The source thread is here; operators with multiple units discuss permits and compliance"
+      },
+      {
+        "name": "r/airbnb_hosts",
+        "url": "https://www.reddit.com/r/airbnb_hosts/",
+        "why": "Active host community; ask how people track renewals"
+      },
+      {
+        "name": "r/shortermrentals",
+        "url": "https://www.reddit.com/r/shortermrentals/",
+        "why": "Operators discuss regulation changes and compliance"
+      }
+    ],
+    "post": "If you run short-term rentals in more than one city: how do you keep track of permit renewals, lodging-tax deadlines and ordinance changes? I'm testing a simple flat-price tracker that emails reminders and shows a diff when a city's rule page changes. Page: {url}. What do you use today, and what has it cost you when you missed something?"
+  }
+}

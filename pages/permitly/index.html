@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Never miss an STR permit renewal or a city rule change</title>
+<meta name="description" content="Permit and lodging-tax deadlines for every property, plus an emailed diff when a city ordinance page changes. One flat price, no per-property fees.">
+<style>
+:root{--bg:#fafaf9;--fg:#1c1917;--mu:#57534e;--ac:#2563eb;--card:#fff;--bd:#e7e5e4}
+@media (prefers-color-scheme:dark){:root{--bg:#0c0a09;--fg:#f5f5f4;--mu:#a8a29e;--ac:#60a5fa;--card:#1c1917;--bd:#292524}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:640px;margin:0 auto;padding:72px 20px}
+h1{font-size:clamp(28px,6vw,44px);line-height:1.15;margin:0 0 16px;letter-spacing:-.02em}
+.sub{font-size:19px;color:var(--mu);margin:0 0 32px}
+ul{padding-left:20px;margin:0 0 36px}li{margin:6px 0}
+form{display:flex;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px}
+input[type=email]{flex:1 1 220px;padding:12px 14px;border:1px solid var(--bd);border-radius:8px;font:inherit;background:var(--bg);color:var(--fg)}
+button{padding:12px 18px;border:0;border-radius:8px;background:var(--ac);color:#fff;font:600 16px system-ui;cursor:pointer}
+.hp{position:absolute;left:-9999px}.note{font-size:13px;color:var(--mu);margin-top:12px}#ok{display:none;font-weight:600}
+</style></head>
+<body><main>
+<h1>Never miss an STR permit renewal or a city rule change</h1>
+<p class="sub">Permit and lodging-tax deadlines for every property, plus an emailed diff when a city ordinance page changes. One flat price, no per-property fees.</p>
+<ul><li>Email reminders 90, 60, 30 and 7 days before each permit and tax deadline</li><li>Ordinance watch: see exactly which lines changed on your city&#39;s page</li><li>All deadlines in your Google or Apple calendar</li><li>Flat monthly price for 3-15 properties, not per property</li></ul>
+<form id="f" novalidate>
+<input type="email" name="email" required placeholder="you@example.com" aria-label="Email">
+<input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+<button type="submit">Join the waitlist</button>
+</form>
+<p id="ok">Thanks — you're on the list. We'll email you once, when it's ready.</p>
+<p class="note">Not built yet: this page checks whether people want it. One email when it launches, nothing else.</p>
+</main>
+<script>
+(function(){var U="https://repohq.vercel.app/api/ideas/signal",S="permitly";
+function send(b){try{return fetch(U,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b),keepalive:true})}catch(e){}}
+send({slug:S,kind:'view',referrer:document.referrer||null});
+document.getElementById('f').addEventListener('submit',function(e){e.preventDefault();var f=e.target;
+var p=send({slug:S,kind:'signup',email:f.email.value,website:f.website.value});
+(p||Promise.resolve()).then(function(){f.style.display='none';document.getElementById('ok').style.display='block'})});})();
+</script>
+</body></html>
