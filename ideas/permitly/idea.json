@@ -1,0 +1,28 @@
+{
+  "title": "permitly — permit and rule-change tracker for short-term-rental operators",
+  "repoName": "permitly",
+  "oneLiner": "For co-hosts and small managers running 3–15 rentals across several cities, it tracks permit and lodging-tax deadlines and emails a diff when a city ordinance page changes, at a flat price instead of per-property or $199+/month.",
+  "overlaps": "none (closest in David's portfolio is Open-Travel, a travel planner, which does not cover host compliance)",
+  "tags": [
+    "proptech",
+    "compliance",
+    "saas"
+  ],
+  "effort": "Low",
+  "confidence": "Medium",
+  "sources": [
+    "https://www.biggerpockets.com/forums/80/topics/1288562-how-do-you-all-stay-on-top-of-str-permits-rules-across-multiple-properties",
+    "https://www.ownerrez.com/blog/integration-with-hostready",
+    "https://strhub.com/product/avalara-mylodgetax-2/",
+    "https://www.hostaway.com/glossary/str-permit/",
+    "https://www.rakidzich.com/articles/airbnb-str-regulation-tide-2026",
+    "https://conventuslaw.com/report/regulation-eu-2024-1028-on-short-term-rentals-impact-on-platforms-and-operators/",
+    "https://hanyc.org/las-vegas-homeowner-fined-72900-for-using-airbnb-without-license/",
+    "https://www.aol.com/93-short-term-rentals-kansas-113000212.html",
+    "https://www.capterra.in/software/1108231/Trippz-for-Hosts",
+    "https://pagecrawl.io/blog/visualping-vs-pagecrawl",
+    "https://whop.com/str-compliance-hub/"
+  ],
+  "slug": "permitly",
+  "recordedAt": "2026-10-10T19:21:03.254Z"
+}
