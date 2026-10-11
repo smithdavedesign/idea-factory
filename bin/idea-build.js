@@ -206,6 +206,9 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
   const advice = rateMilestone(ideaDir, slug, milestone);
   const engines = engineOrder(advice?.difficulty ?? null, policy.build.advisor || 'report');
   P.writeState(ideaDir, { ...state, stage: 'building', build: { ...(state.build || {}), milestone, status: 'running', at: now.toISOString(), manual, ...(advice ? { advice } : {}) } }, now);
+  // "Running now" on RepoHQ's Agents page comes from this event until the build's own ok/fail lands.
+  emit({ component: 'build', event: milestone, status: 'start', subject: { idea: slug }, message: `${milestone} started${manual ? ' (Start build now)' : ''} on ${policy.build.model || 'claude'}${policy.build.effort ? ` at ${policy.build.effort}` : ''}`,
+    data: { milestone, manual: !!manual, model: policy.build.model || null, effort: policy.build.effort || null, timeoutMinutes: policy.build.timeoutMinutes } });
   const ownerNote = String(note || '').trim() || (state.ownerDecision?.decision === 'build' ? state.ownerDecision.note : '');
   // The gstack frameworks go in a file outside the clone, so they're never committed to the product repo.
   const inputDir = path.join(ROOT, 'work', '.build-input');
@@ -222,12 +225,15 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
   });
   if (gstackFile) fs.rmSync(gstackFile, { force: true });
   const engine = engineLabel(run);
+  const usage = { milestone, manual: !!manual, model: run.info.model ?? null, engine: run.engine, effort: run.engine === 'free' ? null : policy.build.effort || null,
+    fellBack: run.engine === 'free' || (!!run.info.model && !!policy.build.model && !run.info.model.includes(policy.build.model)), ...(run.primaryReason ? { primaryReason: String(run.primaryReason).slice(0, 200) } : {}) };
+  const tookMs = Date.now() - now.getTime();
   const test = spawnSync('npm', ['test', '--silent'], { cwd: work, encoding: 'utf8', timeout: 10 * 60_000, env: { ...process.env, CI: '1', npm_config_ignore_scripts: 'true' } });
   const testsPassing = test.status === 0;
   const changed = sh('git', ['status', '--porcelain'], work);
   if (!changed) {
     const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: milestone === 'M1' ? 'repo' : 'building', build: { ...(state.build || {}), milestone, status: 'failed', at: now.toISOString(), manual: !!manual, reason: run.reason || 'no changes' } });
-    emit({ component: 'build', event: milestone, status: 'fail', subject: { idea: slug }, message: run.reason || 'no changes made' });
+    emit({ component: 'build', event: milestone, status: 'fail', subject: { idea: slug }, message: run.reason || 'no changes made', durationMs: tookMs, data: usage });
     return { ok: false, slug, reason: run.reason || 'Claude made no changes', state: s };
   }
   sh('git', ['add', '-A'], work);
@@ -245,7 +251,7 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     prUrl = sh('gh', ['pr', 'create', '--draft', '--base', 'main', '--head', branch, '--title', `${milestone}: ${slug}`, '--body', body], work);
   }
   const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'building', build: { ...(state.build || {}), milestone, status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : policy.build.effort || null, manual: !!manual, at: now.toISOString(), ...(advice ? { advice } : {}) } });
-  emit({ component: 'build', event: milestone, status: testsPassing ? 'ok' : 'fail', subject: { idea: slug, pr: prUrl || undefined },
+  emit({ component: 'build', event: milestone, status: testsPassing ? 'ok' : 'fail', subject: { idea: slug, pr: prUrl || undefined }, durationMs: Date.now() - now.getTime(), data: { ...usage, testsPassing, prUrl },
     message: `${milestone} ${prUrl ? `PR ${prUrl}` : 'built locally'}, tests ${testsPassing ? 'passing' : 'failing'}, engine ${run.engine}${advice ? `, advisor ${advice.difficulty}` : ''}` });
   return { ok: true, slug, milestone, prUrl, testsPassing, engine: run.engine, model: run.info.model, builderReason: run.reason, state: s };
 }
