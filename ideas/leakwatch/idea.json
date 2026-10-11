@@ -1,0 +1,22 @@
+{
+  "title": "leakwatch — weekly piracy sweep and takedown notices for digital-product sellers",
+  "repoName": "leakwatch",
+  "oneLiner": "For solo sellers of templates, ebooks and small courses on Gumroad/Etsy, it finds leaked copies each week and prepares the takedown notices for $19/mo instead of the $45–$99+ per month existing services charge.",
+  "overlaps": "none",
+  "tags": [
+    "creators",
+    "saas"
+  ],
+  "effort": "Medium",
+  "confidence": "Low",
+  "sources": [
+    "https://www.remove.tech/creator-protection",
+    "https://coursepiracy.com/blog/gumroad-course-piracy-prevention-guide-2026",
+    "https://bustem.com/blog/best-dmca-takedown-service",
+    "https://dmcamasters.com/platforms/telegram-takedown",
+    "https://www.pixsy.com/monitor",
+    "https://support.google.com/transparencyreport/answer/7347743"
+  ],
+  "slug": "leakwatch",
+  "recordedAt": "2026-10-11T18:38:04.803Z"
+}
