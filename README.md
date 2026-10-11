@@ -1,5 +1,7 @@
 # idea-factory
 
+**Visual map:** [smithdavedesign System Map](https://claude.ai/artifact/SdinhSGDxFhgMbWZsSPPso), covering architecture, the idea flow and each repo's code stack. It's a private snapshot from 2026-10-11. RepoHQ `docs/system-overview.md` and `docs/idea-factory.md` are the source of truth.
+
 The idea pipeline's home and **record**. Every researched idea lives here in full, in `ideas/<slug>/`:
 
 | File | Content |
