@@ -40,9 +40,14 @@ const ROOT = path.resolve(__dirname, '..');
 const policy = JSON.parse(fs.readFileSync(path.join(ROOT, 'policy.json'), 'utf8'));
 const GH_OWNER = process.env.IDEA_GH_OWNER || 'smithdavedesign';
 
+/** The credential broker (ai-stack bin/provision): fixed verbs, values never printed. */
+const PROVISION = path.join(process.env.HOME, 'ai-stack', 'bin', 'provision');
+
 const SYSTEM = 'You are building one milestone of a small product, tests first. Work only inside the current directory. ' +
   'Nobody will answer questions: decide from the PRD, roadmap and review, and write down what you decided. ' +
-  'No paid services, API keys, secrets or domains: everything must run on free tiers or locally. Never push, never touch git history; the caller commits.';
+  'No paid services or domains: everything must run on free tiers or locally. Never push, never touch git history; the caller commits. ' +
+  'Infrastructure (a database, an API key) comes only from the credential broker ' + PROVISION + ': it writes secrets to the keychain and Vercel env and never shows them. ' +
+  'Never read, print, write down or ask for a secret value; code reads them from environment variables, and tests never need real ones.';
 
 const GSTACK = path.join(process.env.HOME, '.claude', 'skills', 'gstack');
 /** gstack sections the builder applies: plan before coding, self-review after (from the installed copy). */
@@ -82,6 +87,7 @@ function tools(dir, extraRead = []) {
     'Bash(npm install:*)', 'Bash(npm i:*)', 'Bash(npm ci:*)', 'Bash(npm test:*)', 'Bash(npm run:*)',
     'Bash(npx vitest:*)', 'Bash(npx tsc:*)', 'Bash(npx eslint:*)', 'Bash(node:*)',
     'Bash(git status:*)', 'Bash(git diff:*)', 'Bash(ls:*)', 'Bash(mkdir:*)', 'Bash(cat:*)',
+    `Bash(${PROVISION}:*)`,
   ];
 }
 
@@ -107,6 +113,11 @@ Build ROADMAP.md's ${milestone} and nothing beyond it${first ? '' : ' (earlier m
 3. Implement until \`npm test\` passes. Don't weaken or delete a test to make it pass.
 4. ${first ? 'Write' : 'Update'} BUILD.md: what the product does now, how to run it locally, how to deploy it on a free tier, which exit criteria pass, and what's left.${selfReview}
 Install scripts are disabled (npm_config_ignore_scripts); choose packages that work without them.
+If ${milestone} needs a database or a Google API key, provision it for the repo "${slug}" (never by hand, never with a value in code):
+  ${PROVISION} neon db ${slug}            → DATABASE_URL (Postgres, free tier)
+  ${PROVISION} vercel project ${slug}     → the Vercel project, which gets every stored value as env
+  ${PROVISION} gcp key ${slug} <api>      → GOOGLE_API_KEY restricted to that API
+Anything else (another service, auth, payments): \`${PROVISION} request "<what> for ${slug}: <why>"\`, then build behind an env var and say so in BUILD.md. List what you provisioned in BUILD.md under "## Infrastructure".
 Your final message: one line — tests passing or not, and the number of tests.`;
 }
 
