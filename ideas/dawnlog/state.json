@@ -1,5 +1,5 @@
 {
-  "stage": "pass",
+  "stage": "repo",
   "review": {
     "verdict": "pass",
     "score": 5,
@@ -7,5 +7,12 @@
     "at": "2026-10-10T19:18:24.107Z",
     "notionAt": "2026-10-10T19:18:24.977Z"
   },
-  "updatedAt": "2026-10-10T19:18:24.977Z"
+  "updatedAt": "2026-10-11T19:43:35.618Z",
+  "ownerDecision": {
+    "decision": "build",
+    "at": "2026-10-11T19:43:35.618Z",
+    "source": "repohq"
+  },
+  "ownerApproved": true,
+  "repo": "https://github.com/smithdavedesign/dawnlog"
 }

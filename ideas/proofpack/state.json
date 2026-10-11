@@ -1,0 +1,10 @@
+{
+  "stage": "pass",
+  "ownerDecision": {
+    "decision": "pass",
+    "at": "2026-10-11T19:43:35.618Z",
+    "source": "repohq"
+  },
+  "passReason": "owner",
+  "updatedAt": "2026-10-11T19:43:35.618Z"
+}

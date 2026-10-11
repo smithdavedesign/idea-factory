@@ -7,5 +7,10 @@
     "at": "2026-10-11T16:43:16.555Z",
     "notionAt": "2026-10-11T16:43:17.580Z"
   },
-  "updatedAt": "2026-10-11T16:43:17.580Z"
+  "updatedAt": "2026-10-11T19:43:35.618Z",
+  "ownerDecision": {
+    "decision": "pass",
+    "at": "2026-10-11T19:43:35.618Z",
+    "source": "repohq"
+  }
 }
