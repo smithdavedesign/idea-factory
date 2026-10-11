@@ -1,0 +1,27 @@
+{
+  "title": "listvault — appeal-ready evidence vault for Google Business Profiles",
+  "repoName": "listvault",
+  "oneLiner": "For local-SEO agencies managing 10–100 Google Business Profiles, it keeps each client's matching license, SOS and bill evidence ready, scores the risk of an edit before it is made, and builds the appeal packet in minutes, at a flat monthly price instead of $599–$800 per reinstatement.",
+  "overlaps": "none (no existing repo covers local-SEO or document vaults)",
+  "tags": [
+    "local-seo",
+    "saas",
+    "agencies"
+  ],
+  "effort": "Low",
+  "confidence": "Medium",
+  "sources": [
+    "https://www.searchenginejournal.com/google-business-profile-suspensions-rise-appeals-are-delayed/542602/",
+    "https://localsearchforum.com/threads/is-it-too-dicey-to-change-address-right-now.63046/post-203180",
+    "https://www.brightlocal.com/learn/expert-tips-for-gbp-suspensions-verification-and-local-ranking/",
+    "https://whitespark.ca/gbp-reinstatement-service/",
+    "https://www.sterlingsky.ca/google-business-profile-suspension-help/",
+    "https://trustmrr.com/startup/omitted",
+    "https://fiverr.com/proconsultify/google-profile-suspension-recovery-and-restoration-service",
+    "https://steadydemand.com/?p=3735",
+    "https://www.g2.com/sellers/sevenoways-innovations",
+    "https://apify.com/moganes/gbp-monitor"
+  ],
+  "slug": "listvault",
+  "recordedAt": "2026-10-11T16:12:19.108Z"
+}
