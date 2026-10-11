@@ -448,4 +448,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { validateDraft, pageBody, expectedPageText, docsUrl, Fail, appendBlocks, readPageBlocks, notionRequest, DATABASE_ID, STATUS, allIdeas, rowFor, ensureDatabaseProperties, promote, storeIdea, IDEAS_DIR, git };
+module.exports = { seed, readSeeds, validateDraft, pageBody, expectedPageText, docsUrl, Fail, appendBlocks, readPageBlocks, notionRequest, DATABASE_ID, STATUS, allIdeas, rowFor, ensureDatabaseProperties, promote, storeIdea, IDEAS_DIR, git };
