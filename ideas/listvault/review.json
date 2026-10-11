@@ -1,0 +1,55 @@
+{
+  "verdict": "pass",
+  "score": 5,
+  "summary": "Real GBP suspension pain, but the evidence shows agencies paying for rescue after a suspension, not for a prevention vault; the status quo is a free Drive folder and checklist. The matcher needs manual data entry and the buyer is a category, so it falls below the bar.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "RESEARCH.md has only practitioner commentary (SEJ, LocalSearchForum) and rescue pricing (Whitespark $599, Sterling Sky $800). No interviews and no one asking for a vault; prevention spend is unproven."
+    },
+    "statusQuo": {
+      "score": 6,
+      "evidence": "BrightLocal checklist plus Drive folders and spreadsheets; a 60-minute upload window is a concrete cost, but the workaround is free and the pain is infrequent."
+    },
+    "specificity": {
+      "score": 4,
+      "evidence": "Buyer is 'local-SEO freelancer or small agency, 10-100 listings': a category. Findable on LocalSearchForum and r/LocalSEO, but no named person."
+    },
+    "wedge": {
+      "score": 5,
+      "evidence": "MVP is wide (vault, matcher, checklist, packet, score, dashboard). The narrowest sellable piece is the pre-edit risk checklist; the matcher needs manual retyping of document fields."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "Depends on a Google-created problem that may fade (one source notes a fix); monitoring incumbents at $19/mo could add a document store."
+    }
+  },
+  "premises": [
+    "Agencies will pay recurring fees for prevention, not only rescue (unsupported)",
+    "Exact document matching is the main cause of failed appeals (partly supported; Google rarely says which rule was broken)",
+    "The suspension wave continues into 2027 (unverified)",
+    "Agencies will trust a solo developer with business license scans (unverified)",
+    "Doing nothing hurts (real but infrequent per client)"
+  ],
+  "alternatives": [
+    "Minimal: free pre-edit GBP risk checklist page with email capture",
+    "Ideal: full vault with GBP API read access and expiry alerts (large, needs OAuth and document security)",
+    "Lateral: sell a one-off appeal-packet or template pack at $49-$99 per case",
+    "No existing David repo to extend; permitly is a different buyer"
+  ],
+  "wedge": "A single page: pick the planned edit, get the risk note and a have-these-ready list, plus a name/address matcher. No accounts, no storage.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js on Vercel Hobby with pure TypeScript normalizers and a rules table. Proof test: findMismatches returns exactly 1 address mismatch for the Ste 4 vs Ste 5 fixture and 0 for 'Acme Plumbing, LLC' vs 'Acme Plumbing LLC'. This proves the code, not demand. M2 storage of license scans is where cost and liability appear."
+  },
+  "risks": [
+    "Prevention is a hard sell with thin demand evidence",
+    "Incumbent monitors add a vault feature",
+    "Liability for storing license and bill scans",
+    "Cannot promise reinstatement",
+    "Small niche; about 35 customers needed for $1k/mo",
+    "Manual data entry may kill adoption"
+  ],
+  "killCriteria": "Fewer than 5 qualified signups (10+ locations) in 14 days with 50+ qualified visitors; fewer than 3 of 10 interviewed agencies would pay $29/mo; agencies say a free checklist is enough; an incumbent adds document storage."
+}

@@ -1,0 +1,53 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "Cheap to build, but demand for prevention (vs. cure after a suspension) is unproven, Google's triggers are unknown so the checks are guesses, and three cheap incumbents exist. David has no Shopify network to reach buyers.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "One Shopify Community thread shows post-suspension pain; RESEARCH.md admits no merchant says they pay monthly for prevention. Vendor stats are unsourced."
+    },
+    "statusQuo": {
+      "score": 4,
+      "evidence": "Fiverr fixers $50-$400 and GMC.APPS $9-$99/mo show people pay after a suspension; that one-off cure undercuts a $15/mo subscription for a rare event."
+    },
+    "specificity": {
+      "score": 3,
+      "evidence": "Target is a category (Shopify owner-operators and agencies), no named person or agency; the painful moment calls for a fix, not a monitor."
+    },
+    "wedge": {
+      "score": 5,
+      "evidence": "A free scan page plus snapshot diff is weekend-sized, but value depends on checks that may not predict suspensions (one reply says it is account-level trust)."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "Real signal lives in the Content API and Shopify/Google or GMC.APPS can add alerts natively; public-page checks have no moat."
+    }
+  },
+  "premises": [
+    "Merchants pay for prevention, not just cure: unsupported, all spend evidence is post-suspension.",
+    "Public storefront signals predict Misrepresentation suspensions: weakly supported by forum and vendor lists only.",
+    "$15/mo per store is the right price: unsupported, GMC.APPS starts at $9 and one-off fixes are cheap.",
+    "David can reach Shopify merchants without a network: plausible via Reddit/Community but cold."
+  ],
+  "alternatives": [
+    "Minimal: free GMC trust-check scan page, no accounts, collect URLs and emails.",
+    "Ideal: Merchant Center Content API account watch; real signal but needs Google OAuth verification, not weekend-sized.",
+    "Lateral: $29 one-off pre-flight audit sold to agencies before any subscription.",
+    "Extend existing repo: none overlap; permitly's page-change diff technique could share a library."
+  ],
+  "wedge": "A single free scan page running the 5 public checks against a Shopify URL, with an optional email-me-on-change box; no accounts or billing.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js + cheerio + Turso/SQLite + Resend free + GitHub Actions cron, no LLM. Proving test: diffSnapshots(compliant, broken) returns exactly returns-policy and contact-details. That proves the code, not that the checks predict suspensions."
+  },
+  "risks": [
+    "Prevention demand unproven; buyers may only pay after a suspension for a cheaper one-off tool.",
+    "Checks are guesses; an all-green result followed by a suspension is a trust liability.",
+    "At least three cheap incumbents; GMC.APPS already advertises monitoring.",
+    "Shopify or Google can ship the same alerts natively.",
+    "No Shopify network; communities punish promotion and buyers search at the cure moment."
+  ],
+  "killCriteria": "Under 50 qualified visitors or under 5% signups with a store URL in 14 days; fewer than 3 of 10 merchants say they would pay $15/mo for prevention; a competitor or Shopify ships monitoring; public checks would have caught fewer than half of 10 real reported suspensions."
+}
