@@ -25,18 +25,29 @@
 // The script then runs the tests itself and opens a draft PR (branch m1) that David merges, the same
 // human-merge rule as the factory. State: stage "building", build {prUrl, testsPassing}.
 //
-// Safety: no secrets or paid services; npm install scripts are disabled (npm_config_ignore_scripts);
-// Claude may only edit inside the clone and run npm/npx/node and read-only git. It still runs code it
-// writes on this Mac: the next step is running this inside the factory's Docker sandbox with a
-// subscription token (docs/idea-factory.md).
+// Where it runs (policy.build.sandbox):
+//   "docker" (default): Claude Code, npm install and npm test run in RepoHQ's factory sandbox
+//     (lib/sandbox.js → factory/bin/sandbox-session.ts): no mounts, no host environment, no
+//     credentials, network only to package registries and api.anthropic.com. Claude logs in with a
+//     subscription token from `claude setup-token`, kept in the keychain (policy.build.tokenService).
+//     The host only clones, applies the patch that comes back, commits, pushes and opens the PR.
+//   "host": the old way, on this Mac with install scripts off. Code the builder writes can read
+//     the Mac's files there, so use it only when the sandbox is down and a build can't wait.
+// Before any commit, the patch is scanned for credentials (lib/secret-scan.js): credential-shaped
+// strings (a fake key written as a literal still turns a PR's secret checks red) and the Mac's real
+// secrets by value. One repair round, then the build fails rather than open a PR with them.
 const fs = require('fs');
 const path = require('path');
 const { execFileSync, spawnSync } = require('child_process');
-const { claudeTask } = require('../lib/claude');
+const { claudeTask, FREE_MODEL } = require('../lib/claude');
+const { scanPatch, formatFindings, knownSecrets } = require('../lib/secret-scan');
+const { startSession } = require('../lib/sandbox');
 const P = require('../lib/pipeline');
 const { emit } = require('../lib/events');
 
 const ROOT = path.resolve(__dirname, '..');
+// The record and the build's scratch space; IDEA_PIPELINE_DATA points them elsewhere (tests), like the pipeline.
+const DATA = process.env.IDEA_PIPELINE_DATA || ROOT;
 const policy = JSON.parse(fs.readFileSync(path.join(ROOT, 'policy.json'), 'utf8'));
 const GH_OWNER = process.env.IDEA_GH_OWNER || 'smithdavedesign';
 
@@ -46,8 +57,11 @@ const PROVISION = path.join(process.env.HOME, 'ai-stack', 'bin', 'provision');
 const SYSTEM = 'You are building one milestone of a small product, tests first. Work only inside the current directory. ' +
   'Nobody will answer questions: decide from the PRD, roadmap and review, and write down what you decided. ' +
   'No paid services or domains: everything must run on free tiers or locally. Never push, never touch git history; the caller commits. ' +
-  'Infrastructure (a database, an API key) comes only from the credential broker ' + PROVISION + ': it writes secrets to the keychain and Vercel env and never shows them. ' +
-  'Never read, print, write down or ask for a secret value; code reads them from environment variables, and tests never need real ones.';
+  'Infrastructure (a database, an API key) comes only from the credential broker, the way the task says: it writes secrets to the keychain and Vercel env and never shows them. ' +
+  'Never read, print, write down or ask for a secret value; code reads them from environment variables, and tests never need real ones. ' +
+  'Never write anything shaped like a credential (API keys, tokens, private keys, JWTs, connection strings with passwords) into any file, tests and examples included: ' +
+  "when a test needs a fake one, build it at runtime from a prefix and a repeated filler, e.g. ['sk', 'ant', 'api03', 'A1b2C3d4'.repeat(6)].join('-'), so secret scanners don't flag the repo. " +
+  'Never read files outside the repository, and never print, log or save environment variables.';
 
 const GSTACK = path.join(process.env.HOME, '.claude', 'skills', 'gstack');
 /** gstack sections the builder applies: plan before coding, self-review after (from the installed copy). */
@@ -81,21 +95,50 @@ function buildInput(slug, milestone, gstack = GSTACK) {
     ...sections].join('\n');
 }
 
-function tools(dir, extraRead = []) {
+/**
+ * In the sandbox (`sandbox: true`): no WebFetch, since the egress allows no arbitrary hosts (WebSearch
+ * runs at Anthropic), and no credential broker, which lives on the Mac: the builder writes `.provision`
+ * instead and the host runs it (provisionCommands).
+ */
+function tools(dir, extraRead = [], { sandbox = false } = {}) {
   return [
-    `Read(/${dir}/**)`, ...extraRead.map((f) => `Read(/${f})`), `Write(/${dir}/**)`, `Edit(/${dir}/**)`, 'Glob', 'Grep', 'WebSearch', 'WebFetch',
+    `Read(/${dir}/**)`, ...extraRead.map((f) => `Read(/${f})`), `Write(/${dir}/**)`, `Edit(/${dir}/**)`, 'Glob', 'Grep', 'WebSearch', ...(sandbox ? [] : ['WebFetch']),
     'Bash(npm install:*)', 'Bash(npm i:*)', 'Bash(npm ci:*)', 'Bash(npm test:*)', 'Bash(npm run:*)',
     'Bash(npx vitest:*)', 'Bash(npx tsc:*)', 'Bash(npx eslint:*)', 'Bash(node:*)',
     'Bash(git status:*)', 'Bash(git diff:*)', 'Bash(ls:*)', 'Bash(mkdir:*)', 'Bash(cat:*)',
-    `Bash(${PROVISION}:*)`,
+    ...(sandbox ? [] : [`Bash(${PROVISION}:*)`]),
   ];
+}
+
+/**
+ * The broker commands a sandboxed build asked for in `.provision`, checked (pure): only the broker's
+ * verbs, only for this idea's repo, plain tokens; `request "<text>"` passes its text. One per line.
+ */
+function provisionCommands(text, slug) {
+  const ok = [];
+  const rejected = [];
+  const token = /^[A-Za-z0-9_.-]{1,64}$/;
+  for (const raw of String(text || '').split('\n')) {
+    const line = raw.trim().replace(new RegExp(`^${PROVISION.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s+`), '').replace(/^provision\s+/, '');
+    if (!line || line.startsWith('#')) continue;
+    const req = line.match(/^request\s+"([^"]{1,500})"$/);
+    if (req) { ok.push(['request', req[1]]); continue; }
+    const p = line.split(/\s+/);
+    const forSlug = p[2] === slug;
+    if (p[0] === 'neon' && p[1] === 'db' && forSlug && p.length === 3) ok.push(p);
+    else if (p[0] === 'vercel' && p[1] === 'project' && forSlug && p.length === 3) ok.push(p);
+    else if (p[0] === 'vercel' && p[1] === 'env' && forSlug && p.length === 4 && token.test(p[3])) ok.push(p);
+    else if (p[0] === 'gcp' && p[1] === 'key' && forSlug && (p.length === 4 || p.length === 5) && p.slice(3).every((x) => token.test(x))) ok.push(p);
+    else rejected.push(line.slice(0, 200));
+  }
+  return { ok, rejected };
 }
 
 /**
  * `ownerNote`: what David wrote when he approved the build (RepoHQ Ideas page). It steers the
  * build within the milestone: it can't widen the scope or break the $0 rule.
  */
-function prompt(slug, milestone = 'M1', ownerNote = '', { gstackFile = null } = {}) {
+function prompt(slug, milestone = 'M1', ownerNote = '', { gstackFile = null, provision = 'direct' } = {}) {
   const first = milestone === 'M1';
   const note = String(ownerNote || '').trim().slice(0, 1000);
   const plan = gstackFile ? `
@@ -113,11 +156,17 @@ Build ROADMAP.md's ${milestone} and nothing beyond it${first ? '' : ' (earlier m
 3. Implement until \`npm test\` passes. Don't weaken or delete a test to make it pass.
 4. ${first ? 'Write' : 'Update'} BUILD.md: what the product does now, how to run it locally, how to deploy it on a free tier, which exit criteria pass, and what's left.${selfReview}
 Install scripts are disabled (npm_config_ignore_scripts); choose packages that work without them.
-If ${milestone} needs a database or a Google API key, provision it for the repo "${slug}" (never by hand, never with a value in code):
+${provision === 'file' ? `If ${milestone} needs a database or a Google API key, you can't provision it from here (you're in a sandbox). Write what you need into \`.provision\` at the repo root, one per line; the pipeline runs it through the credential broker after the build:
+  neon db ${slug}            → DATABASE_URL (Postgres, free tier)
+  vercel project ${slug}     → the Vercel project, which gets every stored value as env
+  vercel env ${slug} <KEY>   → push a stored value to its Vercel env
+  gcp key ${slug} <api>      → GOOGLE_API_KEY restricted to that API
+  request "<what> for ${slug}: <why>"   → anything else (another service, auth, payments), for David
+Build against the env vars (DATABASE_URL, GOOGLE_API_KEY, …); tests never need the real values. List what you asked for in BUILD.md under "## Infrastructure".` : `If ${milestone} needs a database or a Google API key, provision it for the repo "${slug}" (never by hand, never with a value in code):
   ${PROVISION} neon db ${slug}            → DATABASE_URL (Postgres, free tier)
   ${PROVISION} vercel project ${slug}     → the Vercel project, which gets every stored value as env
   ${PROVISION} gcp key ${slug} <api>      → GOOGLE_API_KEY restricted to that API
-Anything else (another service, auth, payments): \`${PROVISION} request "<what> for ${slug}: <why>"\`, then build behind an env var and say so in BUILD.md. List what you provisioned in BUILD.md under "## Infrastructure".
+Anything else (another service, auth, payments): \`${PROVISION} request "<what> for ${slug}: <why>"\`, then build behind an env var and say so in BUILD.md. List what you provisioned in BUILD.md under "## Infrastructure".`}
 Your final message: one line — tests passing or not, and the number of tests.`;
 }
 
@@ -146,7 +195,7 @@ function milestoneText(roadmap, milestone) {
 function rateMilestone(ideaDir, slug, milestone) {
   try {
     const roadmap = fs.readFileSync(path.join(ideaDir, 'ROADMAP.md'), 'utf8');
-    const tmp = path.join(ROOT, 'work', `.rate-${slug}-${milestone}.md`);
+    const tmp = path.join(DATA, 'work', `.rate-${slug}-${milestone}.md`);
     fs.mkdirSync(path.dirname(tmp), { recursive: true });
     fs.writeFileSync(tmp, milestoneText(roadmap, milestone) || roadmap.slice(0, 4000));
     const out = execFileSync(path.join(ROOT, 'bin', 'rate'), ['--kind', 'idea-milestone', '--title', `${milestone}: ${slug}`, '--objective-file', tmp], { encoding: 'utf8', timeout: 180_000 });
@@ -201,11 +250,11 @@ function engineOrder(difficulty, mode) {
 /** `manual`: started from the Ideas page; `note`: what the owner wrote with that request (else his approval note). */
 async function buildOne(slug, { push = true, milestone = 'M1', manual = false, note = '' } = {}) {
   const branch = milestone.toLowerCase();
-  const ideaDir = path.join(ROOT, 'ideas', slug);
+  const ideaDir = path.join(DATA, 'ideas', slug);
   const state = P.readState(ideaDir);
   if (!state.repo) return { ok: false, slug, reason: 'no repo yet (stage must be "repo")' };
   const full = state.repo.replace('https://github.com/', '');
-  const work = path.join(ROOT, 'work', slug);
+  const work = path.join(DATA, 'work', slug);
   fs.rmSync(work, { recursive: true, force: true });
   fs.mkdirSync(path.dirname(work), { recursive: true });
   sh('gh', ['repo', 'clone', full, work, '--', '-q'], ROOT);
@@ -221,53 +270,151 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
   emit({ component: 'build', event: milestone, status: 'start', subject: { idea: slug }, message: `${milestone} started${manual ? ' (Start build now)' : ''} on ${policy.build.model || 'claude'}${policy.build.effort ? ` at ${policy.build.effort}` : ''}`,
     data: { milestone, manual: !!manual, model: policy.build.model || null, effort: policy.build.effort || null, timeoutMinutes: policy.build.timeoutMinutes } });
   const ownerNote = String(note || '').trim() || (state.ownerDecision?.decision === 'build' ? state.ownerDecision.note : '');
-  // The gstack frameworks go in a file outside the clone, so they're never committed to the product repo.
-  const inputDir = path.join(ROOT, 'work', '.build-input');
-  const input = buildInput(slug, milestone);
-  const gstackFile = input ? path.join(inputDir, `${slug}-${milestone}.md`) : null;
-  if (input) { fs.mkdirSync(inputDir, { recursive: true }); fs.writeFileSync(gstackFile, input); }
-  const run = await claudeTask(prompt(slug, milestone, ownerNote, { gstackFile }), {
-    cwd: work, tools: tools(work, gstackFile ? [gstackFile] : []), timeoutMs: policy.build.timeoutMinutes * 60_000, system: SYSTEM,
-    addDirs: gstackFile ? [inputDir] : [],
-    env: { npm_config_ignore_scripts: 'true', CI: '1' },
-    model: policy.build.model, effort: policy.build.effort, fallbackModel: policy.build.claudeFallbackModel,
-    fallback: policy.build.fallback !== 'none', // subscription first, the free pool only if it can't take the work
-    engines,
-  });
-  if (gstackFile) fs.rmSync(gstackFile, { force: true });
-  const engine = engineLabel(run);
-  const usage = { milestone, manual: !!manual, model: run.info.model ?? null, engine: run.engine, effort: run.engine === 'free' ? null : policy.build.effort || null,
-    fellBack: run.engine === 'free' || (!!run.info.model && !!policy.build.model && !run.info.model.includes(policy.build.model)), ...(run.primaryReason ? { primaryReason: String(run.primaryReason).slice(0, 200) } : {}) };
-  const tookMs = Date.now() - now.getTime();
-  const test = spawnSync('npm', ['test', '--silent'], { cwd: work, encoding: 'utf8', timeout: 10 * 60_000, env: { ...process.env, CI: '1', npm_config_ignore_scripts: 'true' } });
-  const testsPassing = test.status === 0;
-  const changed = sh('git', ['status', '--porcelain'], work);
-  if (!changed) {
-    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: milestone === 'M1' ? 'repo' : 'building', build: { ...(state.build || {}), milestone, status: 'failed', at: now.toISOString(), manual: !!manual, reason: run.reason || 'no changes' } });
-    emit({ component: 'build', event: milestone, status: 'fail', subject: { idea: slug }, message: run.reason || 'no changes made', durationMs: tookMs, data: usage });
-    return { ok: false, slug, reason: run.reason || 'Claude made no changes', state: s };
+  const failBuild = (reason, data = {}) => {
+    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: milestone === 'M1' ? 'repo' : 'building', build: { ...(state.build || {}), milestone, status: 'failed', at: now.toISOString(), manual: !!manual, reason } });
+    emit({ component: 'build', event: milestone, status: 'fail', subject: { idea: slug }, message: reason, durationMs: Date.now() - now.getTime(), data: { milestone, manual: !!manual, ...data } });
+    return { ok: false, slug, milestone, reason, state: s };
+  };
+
+  let ws;
+  try {
+    ws = await openWorkspace({ slug, milestone, work, input: buildInput(slug, milestone) });
+  } catch (e) {
+    return failBuild(`couldn't start the build ${(policy.build.sandbox || 'docker') === 'host' ? 'on the host' : 'sandbox'}: ${String(e.message).slice(0, 300)}`);
   }
-  sh('git', ['add', '-A'], work);
-  sh('git', ['-c', 'user.name=idea-factory', '-c', 'user.email=idea-factory@users.noreply.github.com', 'commit', '-q', '-m', `${milestone}: ${slug} (tests ${testsPassing ? 'passing' : 'failing'})`], work);
-  let prUrl = null;
-  if (push) {
-    sh('git', ['push', '-q', '-u', 'origin', branch], work);
-    const body = [
-      `${milestone} for **${slug}**, built by the idea pipeline, tests first. Engine: ${engine}.`, '',
-      `Tests: ${testsPassing ? '✅ passing' : '❌ failing'} (\`npm test\` run by the pipeline after the build).`,
-      run.reason ? `Builder note: ${run.reason}` : `Builder: ${run.info.result.slice(0, 300)}`, '',
-      fs.existsSync(path.join(work, 'BUILD.md')) ? fs.readFileSync(path.join(work, 'BUILD.md'), 'utf8').slice(0, 6000) : '_No BUILD.md written._', '',
-      '_Review it like any factory PR: merge if it does what M1 says. Nothing here spends money._',
-    ].join('\n');
-    prUrl = sh('gh', ['pr', 'create', '--draft', '--base', 'main', '--head', branch, '--title', `${milestone}: ${slug}`, '--body', body], work);
+  try {
+    const runOpts = { timeoutMs: policy.build.timeoutMinutes * 60_000, system: SYSTEM, env: { npm_config_ignore_scripts: 'true', CI: '1' },
+      model: policy.build.model, effort: policy.build.effort, fallbackModel: policy.build.claudeFallbackModel,
+      fallback: policy.build.fallback !== 'none' }; // subscription first, the free pool only if it can't take the work
+    const run = await ws.claude(prompt(slug, milestone, ownerNote, { gstackFile: ws.gstackFile, provision: ws.kind === 'docker' ? 'file' : 'direct' }), { ...runOpts, engines });
+    const engine = engineLabel(run);
+    const usage = { milestone, manual: !!manual, model: run.info.model ?? null, engine: run.engine, effort: run.engine === 'free' ? null : policy.build.effort || null, sandbox: ws.kind,
+      fellBack: run.engine === 'free' || (!!run.info.model && !!policy.build.model && !run.info.model.includes(policy.build.model)), ...(run.primaryReason ? { primaryReason: String(run.primaryReason).slice(0, 200) } : {}) };
+    let testsPassing = await ws.test();
+    let patch = await ws.patch();
+    if (!patch.trim()) return failBuild(run.reason || 'no changes made', usage);
+
+    // Credentials: one repair round, then no PR.
+    const known = knownSecrets(ws.secrets);
+    let findings = scanPatch(patch, { known });
+    let repaired = false;
+    if (findings.length) {
+      emit({ component: 'build', event: milestone, status: 'info', subject: { idea: slug }, message: `secret scan: ${findings.length} credential-shaped string(s), asking the builder to fix them`, data: { findings: findings.slice(0, 20) } });
+      await ws.claude(repairPrompt(findings), { ...runOpts, timeoutMs: 15 * 60_000, engines: run.engine === 'free' ? ['free'] : ['claude', 'free'] });
+      testsPassing = await ws.test();
+      patch = await ws.patch();
+      findings = scanPatch(patch, { known });
+      repaired = true;
+    }
+    if (findings.length) {
+      return failBuild(`secret scan: credential-shaped strings still in the changes after a repair round, so no PR was opened: ${formatFindings(findings, 5).replace(/\n/g, '; ')}`, { ...usage, findings: findings.slice(0, 20) });
+    }
+
+    // What a sandboxed builder asked the credential broker for: checked, then run here on the Mac.
+    const provisioned = [];
+    const provisionText = await ws.provisionFile();
+    if (provisionText) {
+      const { ok, rejected } = provisionCommands(provisionText, slug);
+      for (const args of ok) {
+        try { execFileSync(PROVISION, args, { stdio: 'pipe', timeout: 5 * 60_000 }); provisioned.push(`${args.join(' ')}: done`); } catch (e) { provisioned.push(`${args.join(' ')}: failed (${String(e.stderr || e.message).trim().split('\n').pop().slice(0, 160)})`); }
+      }
+      for (const line of rejected) provisioned.push(`${line}: refused (not a broker verb for ${slug})`);
+      emit({ component: 'build', event: milestone, status: 'info', subject: { idea: slug }, message: `provisioning for ${slug}: ${provisioned.join('; ').slice(0, 600)}` });
+    }
+
+    await ws.stage(patch);
+    sh('git', ['-c', 'user.name=idea-factory', '-c', 'user.email=idea-factory@users.noreply.github.com', 'commit', '-q', '-m', `${milestone}: ${slug} (tests ${testsPassing ? 'passing' : 'failing'})`], work);
+    let prUrl = null;
+    if (push) {
+      sh('git', ['push', '-q', '-u', 'origin', branch], work);
+      const body = [
+        `${milestone} for **${slug}**, built by the idea pipeline, tests first. Engine: ${engine}. Built in ${ws.kind === 'docker' ? 'the factory\'s Docker sandbox' : 'host mode (on the Mac)'}.`, '',
+        `Tests: ${testsPassing ? '✅ passing' : '❌ failing'} (\`npm test\` run by the pipeline after the build).`,
+        `Secret scan: clean${repaired ? ' after one repair round' : ''}.`,
+        ...(provisioned.length ? [`Provisioned through the credential broker: ${provisioned.join('; ')}.`] : []),
+        run.reason ? `Builder note: ${run.reason}` : `Builder: ${run.info.result.slice(0, 300)}`, '',
+        fs.existsSync(path.join(work, 'BUILD.md')) ? fs.readFileSync(path.join(work, 'BUILD.md'), 'utf8').slice(0, 6000) : '_No BUILD.md written._', '',
+        '_Review it like any factory PR: merge if it does what the milestone says. Nothing here spends money._',
+      ].join('\n');
+      prUrl = sh('gh', ['pr', 'create', '--draft', '--base', 'main', '--head', branch, '--title', `${milestone}: ${slug}`, '--body', body], work);
+    }
+    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'building', build: { ...(state.build || {}), milestone, status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : policy.build.effort || null, manual: !!manual, sandbox: ws.kind, at: now.toISOString(), ...(advice ? { advice } : {}) } });
+    emit({ component: 'build', event: milestone, status: testsPassing ? 'ok' : 'fail', subject: { idea: slug, pr: prUrl || undefined }, durationMs: Date.now() - now.getTime(), data: { ...usage, testsPassing, prUrl, repaired },
+      message: `${milestone} ${prUrl ? `PR ${prUrl}` : 'built locally'}, tests ${testsPassing ? 'passing' : 'failing'}, engine ${run.engine}${advice ? `, advisor ${advice.difficulty}` : ''}` });
+    return { ok: true, slug, milestone, prUrl, testsPassing, engine: run.engine, model: run.info.model, builderReason: run.reason, state: s };
+  } finally {
+    await ws.close();
   }
-  const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'building', build: { ...(state.build || {}), milestone, status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : policy.build.effort || null, manual: !!manual, at: now.toISOString(), ...(advice ? { advice } : {}) } });
-  emit({ component: 'build', event: milestone, status: testsPassing ? 'ok' : 'fail', subject: { idea: slug, pr: prUrl || undefined }, durationMs: Date.now() - now.getTime(), data: { ...usage, testsPassing, prUrl },
-    message: `${milestone} ${prUrl ? `PR ${prUrl}` : 'built locally'}, tests ${testsPassing ? 'passing' : 'failing'}, engine ${run.engine}${advice ? `, advisor ${advice.difficulty}` : ''}` });
-  return { ok: true, slug, milestone, prUrl, testsPassing, engine: run.engine, model: run.info.model, builderReason: run.reason, state: s };
 }
 
-module.exports = { buildOne, tools, milestones, nextMilestone, prompt, milestoneText, engineOrder, manualBuildTarget, buildMessage, engineLabel, buildInput, extractSection, GSTACK_BUILD_SECTIONS };
+/** What the builder gets when the secret scan finds something (pure). */
+function repairPrompt(findings) {
+  return `The pipeline's secret scan found credential-shaped strings in your changes. Fix every one, and change nothing else:
+- a fake value in a test, fixture or example: build it at runtime from a prefix and a repeated filler, e.g. ['sk', 'ant', 'api03', 'A1b2C3d4'.repeat(6)].join('-'), so the literal never appears in the source (a shared helper file is fine);
+- anything that could be a real credential: delete it and read it from an environment variable instead.
+Then run \`npm test\` again and keep it passing. Findings (file:line, kind):
+${formatFindings(findings, 40)}`;
+}
+
+/** The Claude subscription token for the sandbox (`claude setup-token`), from the keychain. Null if unset. */
+function sandboxToken(service = policy.build.tokenService || 'idea-build-claude-token') {
+  if (process.env.IDEA_BUILD_CLAUDE_TOKEN) return process.env.IDEA_BUILD_CLAUDE_TOKEN;
+  try { return execFileSync('security', ['find-generic-password', '-s', service, '-w'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim() || null; } catch { return null; }
+}
+
+/**
+ * Where the builder works: { kind, gstackFile, secrets, claude(prompt, opts), test(), patch(), provisionFile(), stage(patch), close() }.
+ * docker (default): everything that runs code runs in the factory sandbox; host: the clone on this Mac.
+ */
+async function openWorkspace({ slug, milestone, work, input, startSessionFn = startSession, token = sandboxToken }) {
+  if ((policy.build.sandbox || 'docker') === 'host') {
+    const inputDir = path.join(DATA, 'work', '.build-input');
+    const gstackFile = input ? path.join(inputDir, `${slug}-${milestone}.md`) : null;
+    if (input) { fs.mkdirSync(inputDir, { recursive: true }); fs.writeFileSync(gstackFile, input); }
+    return {
+      kind: 'host', gstackFile, secrets: [],
+      claude: (text, opts) => claudeTask(text, { ...opts, cwd: work, tools: tools(work, gstackFile ? [gstackFile] : []), addDirs: gstackFile ? [inputDir] : [] }),
+      test: async () => spawnSync('npm', ['test', '--silent'], { cwd: work, encoding: 'utf8', timeout: 10 * 60_000, env: { ...process.env, CI: '1', npm_config_ignore_scripts: 'true' } }).status === 0,
+      patch: async () => { sh('git', ['add', '-A', '--', '.', ':(exclude)node_modules'], work); return execFileSync('git', ['diff', '--cached', '--binary'], { cwd: work, encoding: 'utf8', maxBuffer: 200 * 1024 * 1024 }); },
+      provisionFile: async () => null, // on the host the builder runs the broker itself
+      stage: async () => {},
+      close: async () => { if (gstackFile) fs.rmSync(gstackFile, { force: true }); },
+    };
+  }
+  const oauthToken = token();
+  if (!oauthToken) throw new Error(`no Claude subscription token for the sandbox: run \`claude setup-token\`, then \`security add-generic-password -U -s ${policy.build.tokenService || 'idea-build-claude-token'} -a "$USER" -w <token>\``);
+  const sb = startSessionFn({ log: () => {} });
+  try {
+    const info = await sb.open(work, { allowHosts: ['api.anthropic.com'], allowModels: policy.build.fallback === 'none' ? [] : [FREE_MODEL] });
+    const inputDir = '/home/worker/build-input';
+    const gstackFile = input ? `${inputDir}/${slug}-${milestone}.md` : null;
+    if (input) await sb.put(gstackFile, input);
+    const sandbox = { exec: sb.exec, workdir: info.workdir, relayUrl: info.relayUrl, modelKey: info.modelKey };
+    return {
+      kind: 'docker', gstackFile, secrets: [oauthToken],
+      claude: (text, opts) => claudeTask(text, { ...opts, sandbox, oauthToken, cwd: info.workdir, tools: tools(info.workdir, gstackFile ? [gstackFile] : [], { sandbox: true }), addDirs: gstackFile ? [inputDir] : [] }),
+      test: async () => (await sb.exec('npm', ['test', '--silent'], { env: { CI: '1', npm_config_ignore_scripts: 'true' }, timeoutMs: 10 * 60_000 })).code === 0,
+      // .provision is a request to the host, never part of the product repo.
+      patch: async () => fs.readFileSync(await sb.patch(['.provision']), 'utf8'),
+      provisionFile: async () => { const r = await sb.exec('cat', ['.provision'], { timeoutMs: 30_000 }); return r.code === 0 ? r.output : null; },
+      // The clone on the host is still at the base commit: apply the sandbox's diff and stage it.
+      stage: async (patch) => {
+        const file = path.join(DATA, 'work', `.${slug}-${milestone}.patch`);
+        fs.writeFileSync(file, patch);
+        // Anything the host put in the clone before the sandbox opened (REVIEW.md) is in the patch too.
+        sh('git', ['checkout', '-q', '--', '.'], work);
+        sh('git', ['clean', '-fdq'], work);
+        try { sh('git', ['apply', '--binary', '--index', file], work); } finally { fs.rmSync(file, { force: true }); }
+      },
+      close: () => sb.close(),
+    };
+  } catch (e) {
+    await sb.close();
+    throw e;
+  }
+}
+
+module.exports = { buildOne, tools, milestones, nextMilestone, prompt, milestoneText, engineOrder, manualBuildTarget, buildMessage, engineLabel, buildInput, extractSection, GSTACK_BUILD_SECTIONS, repairPrompt, openWorkspace, sandboxToken, provisionCommands };
 
 if (require.main === module) {
   const slug = process.argv[2];
