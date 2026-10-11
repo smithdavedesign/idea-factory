@@ -93,6 +93,7 @@ async function researchLocked(trigger) {
   const fallback = trigger === 'seed' ? 'the seed stays queued and is retried' : 'scout falls back to free models';
   emit({ component: 'research', event: 'run', status: out.ok ? 'ok' : 'fail', durationMs: info.durationMs ?? undefined,
     message: out.ok ? `recorded ${added.join(', ')} on ${info.model}${trigger === 'seed' ? ' (seeded)' : ''}` : `Claude research failed (${fallback}): ${out.reason}`,
+    data: { model: info.model ?? null, engine: 'claude', trigger, capacity: !out.ok && base.capacityFailure(out.reason) },
     subject: added[0] ? { idea: added[0] } : undefined });
   return out;
 }

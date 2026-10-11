@@ -84,7 +84,8 @@ async function reviewOne(slug) {
     'Write REVIEW.md and review.json there. Your final message: the verdict, the score and the summary, on one line.';
   const run = await claudeTask(prompt, { cwd: dir, tools: tools(dir), timeoutMs: 20 * 60_000, system: SYSTEM, addDirs: [GSTACK] });
   fs.rmSync(inputFile, { force: true });
-  if (!run.ok) { emit({ component: 'review', event: 'run', status: 'fail', subject: { idea: slug }, message: run.reason }); return { ok: false, slug, reason: run.reason }; }
+  const usage = { model: run.info.model ?? null, engine: run.engine, fellBack: run.engine === 'free', ...(run.primaryReason ? { primaryReason: String(run.primaryReason).slice(0, 200) } : {}) };
+  if (!run.ok) { emit({ component: 'review', event: 'run', status: 'fail', subject: { idea: slug }, message: run.reason, durationMs: run.info.durationMs ?? undefined, data: usage }); return { ok: false, slug, reason: run.reason }; }
   let raw;
   try { raw = JSON.parse(fs.readFileSync(path.join(dir, 'review.json'), 'utf8')); } catch (e) { return { ok: false, slug, reason: `review.json unreadable: ${e.message}` }; }
   const checked = P.validateReview(raw, policy);
@@ -101,7 +102,8 @@ async function reviewOne(slug) {
     review: { verdict: review.verdict, score: review.score, summary: review.summary, at: now.toISOString(), ...(review.policyOverride ? { policyOverride: review.policyOverride } : {}) },
     ...(fresh && review.verdict === 'validate' ? { validation: P.startValidation(now, policy) } : {}),
   }, now);
-  emit({ component: 'review', event: 'run', status: 'ok', subject: { idea: slug }, message: `${review.verdict} ${review.score}/10${review.policyOverride ? ` (policy: ${review.policyOverride})` : ''}` });
+  emit({ component: 'review', event: 'run', status: 'ok', subject: { idea: slug }, message: `${review.verdict} ${review.score}/10${review.policyOverride ? ` (policy: ${review.policyOverride})` : ''}`,
+    durationMs: run.info.durationMs ?? undefined, data: usage });
   return { ok: true, slug, review, state: next, model: run.info.model };
 }
 
