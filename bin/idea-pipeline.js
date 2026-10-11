@@ -5,7 +5,8 @@
 //   node bin/idea-pipeline.js tick --daily    # force the daily steps now
 //
 // Every tick (no model calls):
-//   0. Decisions from RepoHQ's Ideas page → the Notion Status David would have set (lib/repohq.js).
+//   0. Decisions from RepoHQ's Ideas page → the Notion Status David would have set; new ideas typed
+//      there → the research queue (seeds.jsonl, like "idea: …" on Slack/WhatsApp) (lib/repohq.js).
 //   1. Notion → state: David's own Status changes win (Pass, Build, Validate, Live).
 //   2. Demand signals from RepoHQ (idea_signals) → state + Notion (Visitors, Signups).
 //   3. Validation decisions (policy.json): build / pass / extend. Build → Notion "Build".
@@ -209,6 +210,16 @@ async function tick({ forceDaily = false } = {}) {
       await notionReview(row, dir);
       save(slug, { ...state, review: { ...state.review, notionAt: now.toISOString() } }, 'review posted to Notion');
     } catch (e) { fail(`notion review ${slug}`, e); }
+  }
+
+  // 0b. New ideas from the Ideas page → the research queue; researched ones marked with their slug.
+  if (sql) {
+    try {
+      const slugForSeed = (id) => ideaDirs().find((slug) => {
+        try { return JSON.parse(fs.readFileSync(path.join(IDEAS, slug, 'idea.json'), 'utf8')).seedId === id; } catch { return false; }
+      }) || null;
+      for (const n of await R.syncSeeds(sql, { seed: pub.seed, seeds: pub.readSeeds(), slugForSeed })) note('seeds', n);
+    } catch (e) { fail('seeds', R.explain(e)); }
   }
 
   // 2–3. Demand signals and validation decisions.

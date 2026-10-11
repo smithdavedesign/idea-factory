@@ -40,7 +40,7 @@ Everything runs from `bin/idea-pipeline.js tick` (launchd `com.user.idea-pipelin
 
 David's Status always wins, whether set on the Ideas page or in Notion: Pass, Build, Validate or Live.
 
-**RepoHQ sync** (`lib/repohq.js`): every tick mirrors each changed idea (idea.json, state.json, review.json, the markdown) to RepoHQ's `ideas` table and writes a heartbeat to `idea_pipeline`. It also applies the pending `idea_decisions` rows. The tables are defined in RepoHQ (`src/lib/db/schema.ts`, `npm run db:push`).
+**RepoHQ sync** (`lib/repohq.js`): every tick mirrors each changed idea (idea.json, state.json, review.json, the markdown) to RepoHQ's `ideas` table and writes a heartbeat to `idea_pipeline`. It also applies the pending `idea_decisions` rows, and moves ideas typed in the page's New idea box (`idea_seeds`) into `seeds.jsonl`, the same research queue as `idea: …` on Slack/WhatsApp. The tables are defined in RepoHQ (`src/lib/db/schema.ts`, `npm run db:push`).
 
 Each idea's lifecycle is in `ideas/<slug>/state.json`, which RepoHQ reads. The review is in `REVIEW.md` / `review.json`, and the launch post in `LAUNCH.md`. The `launch` skill adds `LAUNCH-KIT.md` and `launch-log.json`.
 

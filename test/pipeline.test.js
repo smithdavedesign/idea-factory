@@ -215,3 +215,21 @@ test('RepoHQ Ideas page: the record mirrored per idea, unchanged ideas skipped, 
   assert.deepEqual(calls.find((c) => c.text.startsWith('DELETE FROM ideas')).values, [['gone']]);
   assert.match(R.explain({ code: '42P01', message: 'relation "ideas" does not exist' }).message, /db:push/);
 });
+
+test('RepoHQ Ideas page: a new idea goes into the research queue, and is marked researched with its slug', async () => {
+  const R = require('../lib/repohq');
+  const rows = { pending: [{ id: 1, text: 'warn co-hosts about rule changes' }, { id: 2, text: 'x' }], queued: [{ id: 3, seed_id: 'seed-old' }] };
+  const writes = [];
+  const sql = async (strings, ...values) => {
+    const text = strings.join('?').replace(/\s+/g, ' ').trim();
+    if (text.startsWith("SELECT id, text FROM idea_seeds")) return rows.pending;
+    if (text.startsWith('SELECT id, seed_id FROM idea_seeds')) return rows.queued;
+    writes.push({ text, values });
+    return text.includes('RETURNING') ? [{ id: values[values.length - 1] }] : [];
+  };
+  const seed = (t) => { if (t.length < 8) throw new Error('too short'); return { id: 'seed-new' }; };
+  const notes = await R.syncSeeds(sql, { seed, seeds: [{ id: 'seed-old', status: 'done' }], slugForSeed: (id) => (id === 'seed-old' ? 'leakwatch' : null) });
+  assert.deepEqual(notes, ['queued seed-new', 'researched seed-old → leakwatch']);
+  assert.match(writes.find((w) => w.values.includes('too short')).text, /status = 'failed'/);
+  assert.deepEqual(writes.find((w) => /status = 'researched'/.test(w.text)).values, ['leakwatch', 3]);
+});
