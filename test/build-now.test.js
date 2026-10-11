@@ -80,3 +80,13 @@ test('PR and Slack name the engine; a failed manual build says so', () => {
   assert.match(ok, /^🔨 M1 for \*pr-split\* is ready for review: https:\/\/github\.com\/o\/pr-split\/pull\/1\nTests passing ✅ · claude-opus-5-5, effort xhigh/);
   assert.match(B.buildMessage({ slug: 'pr-split', milestone: 'M1', r: { ok: false, reason: 'tests never ran' } }), /M1 build for \*pr-split\* failed: tests never ran\nTry again from https:\/\/repohq\.vercel\.app\/ideas\/pr-split/);
 });
+
+test('builds get infrastructure only through the credential broker', () => {
+  const tools = B.tools('/w/clone');
+  assert.ok(tools.some((t) => /^Bash\(.*ai-stack\/bin\/provision:\*\)$/.test(t)));
+  assert.ok(!tools.some((t) => /security|keychain/.test(t)));
+  const p = B.prompt('grantgate', 'M2');
+  assert.match(p, /bin\/provision neon db grantgate/);
+  assert.match(p, /provision request "<what> for grantgate: <why>"/);
+  assert.match(p, /"## Infrastructure"/);
+});
