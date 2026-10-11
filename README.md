@@ -25,6 +25,7 @@ idea ──gstack review──▶ validate ──14-day $0 demand test──▶ 
 | Research | `bin/idea-research.js` (Claude Pro) → `bin/idea-publish.js publish`; scout (free models) as fallback | OpenClaw cron 09:00 |
 | Review | `bin/idea-review.js` + `skills/idea-review/SKILL.md`: the gstack frameworks, non-interactive | daily, after 09:30 |
 | Demand test | `lib/pipeline.js` `renderLanding` → `pages/<slug>/` (Vercel `idea-pages`); signals in RepoHQ `idea_signals`; `decideValidation` | landing page daily; decisions every tick |
+| Launch | `skills/launch/SKILL.md`: David runs `/launch <slug>` for verified channels and posts (`LAUNCH-KIT.md`), then `/launch <slug> posted` to log each post (`launch-log.json`) | by hand, while validating |
 | Build | `bin/idea-publish.js promote` (repo), `bin/idea-build.js` (M1, tests first, draft PR) | every tick / daily, ≤ 1 a week |
 | Revenue | MRR and lifecycle from RepoHQ → `state.json`, Notion, the morning email | every tick |
 
@@ -37,7 +38,7 @@ Everything runs from `bin/idea-pipeline.js tick` (launchd `com.user.idea-pipelin
 
 David's Status in Notion always wins: Pass, Build or Live.
 
-Each idea's lifecycle is in `ideas/<slug>/state.json`, which RepoHQ reads. The review is in `REVIEW.md` / `review.json`, and the launch post in `LAUNCH.md`.
+Each idea's lifecycle is in `ideas/<slug>/state.json`, which RepoHQ reads. The review is in `REVIEW.md` / `review.json`, and the launch post in `LAUNCH.md`. The `launch` skill adds `LAUNCH-KIT.md` and `launch-log.json`.
 
 ## Logs
 
