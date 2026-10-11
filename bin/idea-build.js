@@ -43,9 +43,18 @@ function tools(dir) {
   ];
 }
 
-function prompt(slug, milestone = 'M1') {
+/**
+ * `ownerNote`: what David wrote when he approved the build (RepoHQ Ideas page). It steers the
+ * build within the milestone: it can't widen the scope or break the $0 rule.
+ */
+function prompt(slug, milestone = 'M1', ownerNote = '') {
   const first = milestone === 'M1';
-  return `You are in the repo for the idea "${slug}". Read PRD.md, ROADMAP.md, REVIEW.md and BUILD.md (if present) first.
+  const note = String(ownerNote || '').trim().slice(0, 1000);
+  return `You are in the repo for the idea "${slug}". Read PRD.md, ROADMAP.md, REVIEW.md and BUILD.md (if present) first.${note ? `
+The owner approved this build with a note; follow it where it fits ${milestone}'s scope and the $0 rule:
+---
+${note}
+---` : ''}
 Build ROADMAP.md's ${milestone} and nothing beyond it${first ? '' : ' (earlier milestones are already merged; keep their tests passing)'}:
 1. Turn ${milestone}'s exit criteria into automated tests (vitest or node:test) that fail now. Each exit criterion becomes at least one test.
 2. ${first ? 'Scaffold the smallest stack that fits the roadmap\'s suggestion and runs at $0 (static site, Next.js or a small Node service; free tiers only). Add "test" to package.json scripts.' : 'Extend the existing code; keep the stack and the $0 rule.'}
@@ -112,7 +121,8 @@ async function buildOne(slug, { push = true, milestone = 'M1' } = {}) {
   const advice = rateMilestone(ideaDir, slug, milestone);
   const engines = engineOrder(advice?.difficulty ?? null, policy.build.advisor || 'report');
   P.writeState(ideaDir, { ...state, stage: 'building', build: { ...(state.build || {}), milestone, status: 'running', at: now.toISOString(), ...(advice ? { advice } : {}) } }, now);
-  const run = await claudeTask(prompt(slug, milestone), {
+  const ownerNote = state.ownerDecision?.decision === 'build' ? state.ownerDecision.note : '';
+  const run = await claudeTask(prompt(slug, milestone, ownerNote), {
     cwd: work, tools: tools(work), timeoutMs: policy.build.timeoutMinutes * 60_000, system: SYSTEM,
     env: { npm_config_ignore_scripts: 'true', CI: '1' },
     fallback: policy.build.fallback !== 'none', // subscription first, the free pool only if it can't take the work

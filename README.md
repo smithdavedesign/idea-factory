@@ -9,9 +9,11 @@ The idea pipeline's home and **record**. Every researched idea lives here in ful
 | `ROADMAP.md` | Milestones; M1 buildable in a weekend, exit criteria written as testable checks |
 | `idea.json` | Title, repo name, one-liner, closest existing repo (`overlaps`), tags, effort, confidence, sources |
 
-Git is the record because it never truncates, keeps history, and agents read it natively. The
-Notion **Idea Board** is where David decides (`Idea` → `Build` / `Pass`); each page carries the same
-full text and links back here. `Build` creates a private product repo, a copy of the idea's folder.
+Git is the record because it never truncates, keeps history, and agents read it natively. David
+decides on RepoHQ's **Ideas page** (https://repohq.vercel.app/ideas): Approve build, Demand test first
+or Pass. The pipeline applies each decision on its next tick by setting the Notion **Idea Board**
+Status, the board it follows (David can still set it there too). `Build` creates a private product
+repo, a copy of the idea's folder, and starts M1 on the same tick.
 
 ## Flow
 
@@ -35,7 +37,9 @@ Everything runs from `bin/idea-pipeline.js tick` (launchd `com.user.idea-pipelin
 - build at ≥ 5 signups and ≥ 5% conversion;
 - at most one build a week.
 
-David's Status in Notion always wins: Pass, Build or Live.
+David's Status always wins, whether set on the Ideas page or in Notion: Pass, Build, Validate or Live.
+
+**RepoHQ sync** (`lib/repohq.js`): every tick mirrors each changed idea (idea.json, state.json, review.json, the markdown) to RepoHQ's `ideas` table and writes a heartbeat to `idea_pipeline`. It also applies the pending `idea_decisions` rows. The tables are defined in RepoHQ (`src/lib/db/schema.ts`, `npm run db:push`).
 
 Each idea's lifecycle is in `ideas/<slug>/state.json`, which RepoHQ reads. The review is in `REVIEW.md` / `review.json`, and the launch post in `LAUNCH.md`.
 

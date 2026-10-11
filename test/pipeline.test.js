@@ -123,6 +123,9 @@ test('orchestrator: David\'s Notion status wins; daily steps once a day after 09
   assert.equal(ownerOverride('validate', 'Validate'), null);  // in sync
   assert.equal(ownerOverride('repo', 'Repo Created'), null);
   assert.equal(ownerOverride('building', 'Build'), null);     // already past build
+  assert.equal(ownerOverride('pass', 'Validate'), 'validate'); // David sends a passed idea to a demand test
+  assert.equal(ownerOverride('idea', 'Validate', { reviewed: false }), null); // the landing page needs the review's copy
+  assert.equal(ownerOverride('building', 'Validate'), null);
   const at = (h, m, d = 10) => new Date(2026, 9, d, h, m);
   assert.equal(dailyDue(undefined, at(9, 29)), false);
   assert.equal(dailyDue(undefined, at(9, 30)), true);
@@ -154,6 +157,8 @@ test('milestones: read from ROADMAP.md headings, next after the merged ones', ()
   assert.equal(nextMilestone(roadmap, ['M1', 'M2', 'M3']), null);
   assert.match(prompt('x', 'M2'), /Build ROADMAP\.md's M2 and nothing beyond it \(earlier milestones are already merged/);
   assert.match(prompt('x'), /Scaffold the smallest stack/);
+  assert.doesNotMatch(prompt('x'), /owner approved this build with a note/);
+  assert.match(prompt('x', 'M1', 'Target co-hosts, not owners'), /owner approved this build with a note[\s\S]*Target co-hosts, not owners/);
 });
 
 test('idea builds ask the tier advisor; Claude stays first unless it acts and rates the milestone routine', () => {
@@ -180,4 +185,33 @@ test('system log: events are one JSON line in the shared file, best-effort', () 
   assert.deepEqual([lines[0].system, lines[0].component, lines[0].status, lines[0].level, lines[0].subject.idea], ['idea-factory', 'pipeline', 'fail', 'error', 'permitly']);
   assert.equal(lines[1].level, 'info');
   delete process.env.SYSTEM_EVENTS_DIR;
+});
+
+test('RepoHQ Ideas page: the record mirrored per idea, unchanged ideas skipped, decisions map to Notion', async () => {
+  const R = require('../lib/repohq');
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'repohq-'));
+  const dir = path.join(home, 'permitly');
+  fs.mkdirSync(dir);
+  fs.writeFileSync(path.join(dir, 'idea.json'), JSON.stringify({ title: 'permitly — permit tracker', oneLiner: 'x' }));
+  fs.writeFileSync(path.join(dir, 'state.json'), JSON.stringify({ stage: 'validate', updatedAt: '2026-10-11T00:00:00Z' }));
+  fs.writeFileSync(path.join(dir, 'PRD.md'), '# PRD');
+  const rec = R.ideaRecord(dir, 'permitly', 'https://notion.so/p');
+  assert.deepEqual([rec.title, rec.stage, rec.review, rec.docs, rec.notionUrl, rec.updatedAt], ['permitly — permit tracker', 'validate', null, { prd: '# PRD' }, 'https://notion.so/p', '2026-10-11T00:00:00Z']);
+  assert.equal(R.ideaRecord(dir, 'permitly', 'https://notion.so/p').hash, rec.hash); // stable
+  fs.writeFileSync(path.join(dir, 'state.json'), JSON.stringify({ stage: 'pass' }));
+  assert.notEqual(R.ideaRecord(dir, 'permitly', 'https://notion.so/p').hash, rec.hash);
+  assert.deepEqual(R.DECISION_STATUS, { build: 'Build', validate: 'Validate', pass: 'Pass' });
+
+  // A stand-in for the neon tagged template: SELECT returns the stored hashes, writes are recorded.
+  const calls = [];
+  const sql = async (strings, ...values) => {
+    const text = strings.join('?').replace(/\s+/g, ' ').trim();
+    calls.push({ text, values });
+    return text.startsWith('SELECT slug, hash') ? [{ slug: 'same', hash: 'h1' }, { slug: 'gone', hash: 'h2' }] : [];
+  };
+  const written = await R.syncIdeas(sql, [{ ...rec, slug: 'same', hash: 'h1' }, { ...rec, slug: 'new' }]);
+  assert.deepEqual(written, ['new']);
+  assert.equal(calls.filter((c) => c.text.startsWith('INSERT INTO ideas')).length, 1);
+  assert.deepEqual(calls.find((c) => c.text.startsWith('DELETE FROM ideas')).values, [['gone']]);
+  assert.match(R.explain({ code: '42P01', message: 'relation "ideas" does not exist' }).message, /db:push/);
 });
