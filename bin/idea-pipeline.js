@@ -17,6 +17,9 @@
 //   6. State → Notion (Status, Verdict, Score, Page, MRR), commit the record.
 //   7. The record → RepoHQ (ideas, idea_pipeline) for the Ideas page.
 // An idea David approves is built on the tick that creates its repo, not at the next daily run.
+//  4c. "Start build now" on the Ideas page (idea_build_requests) builds the next milestone on this
+//      tick, outside the weekly slot: oldest request first, policy.build.manualPerDay in 24 hours,
+//      one build per tick. The result goes back to the request row and to Slack.
 // Daily (Claude Pro subscription, capped by policy):
 //   a. Review new ideas with the gstack frameworks (bin/idea-review.js) → Validate or Pass.
 //   b. Landing page for each new Validate idea (pages/<slug>/), deployed to the free pages project.
@@ -32,11 +35,13 @@ const R = require('../lib/repohq');
 const S = require('../lib/seeds');
 
 const ROOT = path.resolve(__dirname, '..');
-const IDEAS = path.join(ROOT, 'ideas');
-const PAGES = path.join(ROOT, 'pages');
-const LOCK = path.join(ROOT, '.pipeline.lock');
-const STATE_FILE = path.join(ROOT, '.pipeline-state.json');
-const LOG = path.join(ROOT, 'pipeline.log');
+// The record and the pipeline's own files. IDEA_PIPELINE_DATA points them elsewhere (the tick tests).
+const DATA = process.env.IDEA_PIPELINE_DATA || ROOT;
+const IDEAS = path.join(DATA, 'ideas');
+const PAGES = path.join(DATA, 'pages');
+const LOCK = path.join(DATA, '.pipeline.lock');
+const STATE_FILE = path.join(DATA, '.pipeline-state.json');
+const LOG = path.join(DATA, 'pipeline.log');
 const policy = JSON.parse(fs.readFileSync(path.join(ROOT, 'policy.json'), 'utf8'));
 const OWNER = process.env.IDEA_GH_OWNER || 'smithdavedesign';
 
@@ -377,21 +382,72 @@ async function tick({ forceDaily = false } = {}) {
     await R.heartbeat(sql, { at: new Date().toISOString(), ok: out.errors.length === 0, errors: out.errors, policy }).catch(() => {});
   };
 
-  const startBuild = async (slug, milestone) => {
+  const startBuild = async (slug, milestone, opts = {}) => {
     const { buildOne } = require('./idea-build');
     // A build holds the tick for up to an hour: sync and beat first, so the Ideas page is current meanwhile.
     await syncRepoHQ();
-    const r = await buildOne(slug, { milestone });
+    let r;
+    try { r = await buildOne(slug, { milestone, ...opts }); } catch (e) {
+      // A crash (clone, push, gh) mustn't leave the idea "running" forever: record it as failed.
+      const dir = path.join(IDEAS, slug);
+      const s = P.readState(dir);
+      const reason = String(e && (e.stderr || e.message) || e).slice(0, 300);
+      if (s.build?.status === 'running') P.writeState(dir, { ...s, stage: milestone === 'M1' ? 'repo' : 'building', build: { ...s.build, status: 'failed', reason } });
+      r = { ok: false, slug, milestone, reason };
+    }
     changed.add(slug);
-    if (r.ok) note(slug, `${milestone} PR ${r.prUrl} (tests ${r.testsPassing ? 'passing' : 'failing'}, ${r.engine === 'free' ? 'free-pool backup' : 'Claude subscription'})`); else fail(`build ${slug} ${milestone}`, r.reason);
+    if (r.ok) note(slug, `${milestone} PR ${r.prUrl} (tests ${r.testsPassing ? 'passing' : 'failing'}, ${r.engine === 'free' ? 'free-pool backup' : `Claude subscription${r.model ? ` ${r.model}` : ''}`}${opts.manual ? ', started from the Ideas page' : ''})`); else fail(`build ${slug} ${milestone}`, r.reason);
+    // A weekly-slot build answers any "Start build now" still waiting for this idea.
+    if (!opts.manual && sql) {
+      await R.settleBuildRequests(sql, slug, { ok: r.ok, result: r.ok ? `${milestone} PR opened by the weekly build slot` : `the weekly build slot tried ${milestone}: ${String(r.reason).slice(0, 200)}`, prUrl: r.prUrl || null })
+        .catch((e) => { if (!R.isMissingTable(e)) fail(`settle build requests ${slug}`, e); });
+    }
+    return r;
+  };
+
+  /** 4c. The oldest "Start build now" request the cap allows. True when a build ran this tick. */
+  const runBuildRequest = async () => {
+    const { manualBuildTarget, buildMessage } = require('./idea-build');
+    const cap = policy.build.manualPerDay ?? 2;
+    for (const req of await R.pendingBuildRequests(sql)) {
+      const dir = path.join(IDEAS, req.slug);
+      if (!fs.existsSync(path.join(dir, 'idea.json'))) { await R.finishBuildRequest(sql, req.id, 'failed', { result: 'no such idea in the record' }); continue; }
+      const roadmap = fs.existsSync(path.join(dir, 'ROADMAP.md')) ? fs.readFileSync(path.join(dir, 'ROADMAP.md'), 'utf8') : '';
+      const target = manualBuildTarget(P.readState(dir), roadmap);
+      if (!target.ok) {
+        await R.finishBuildRequest(sql, req.id, 'failed', { result: `can't build: ${target.reason}` });
+        note(req.slug, `build request refused: ${target.reason}`);
+        continue;
+      }
+      const used = await R.manualStartsSince(sql, 24);
+      if (used >= cap) {
+        await R.noteBuildRequest(sql, req.id, `waiting: ${used} manual builds started in the last 24 h (the cap is ${cap})`);
+        return false;
+      }
+      if (!(await R.claimBuildRequest(sql, req.id, target.milestone))) continue; // withdrawn meanwhile
+      const r = await startBuild(req.slug, target.milestone, { manual: true, note: req.note || '' });
+      await R.finishBuildRequest(sql, req.id, r.ok ? 'done' : 'failed', {
+        result: r.ok ? `${target.milestone} PR opened, tests ${r.testsPassing ? 'passing' : 'failing'}` : String(r.reason || 'build failed'),
+        prUrl: r.prUrl || null, engine: r.ok ? (r.engine === 'free' ? `free pool (${r.model || 'free-agent'})` : `${r.model || policy.build.model}${policy.build.effort ? ` · ${policy.build.effort}` : ''}`) : null,
+      }).catch((e) => fail(`build request ${req.id}`, R.explain(e)));
+      try { S.notify('slack', buildMessage({ slug: req.slug, milestone: target.milestone, r, effort: policy.build.effort })); } catch (e) { fail(`notify build ${req.slug}`, e); }
+      return true;
+    }
+    return false;
   };
 
   // Daily steps.
   const dailyNow = forceDaily || dailyDue(pstate.lastDaily, now);
 
+  // 4c. "Start build now" requests come first; a tick runs at most one build.
+  let manualRan = false;
+  if (sql) {
+    try { manualRan = await runBuildRequest(); } catch (e) { fail('build requests', R.explain(e)); }
+  }
+
   // 4b. An idea David approved (Notion Build, or the Ideas page) is built now, not at the next daily
   // run: approving is the signal he wants it. Still at most policy.build.maxPerWeek.
-  if (!dailyNow) {
+  if (!dailyNow && !manualRan) {
     const all = ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]);
     const approved = all.filter(([, s]) => s.ownerApproved && buildable(s));
     if (approved.length && P.buildsThisWeek(all.map(([, s]) => s), now) < policy.build.maxPerWeek) await startBuild(approved[0][0], 'M1');
@@ -429,7 +485,7 @@ async function tick({ forceDaily = false } = {}) {
         return [slug, nextMilestone(roadmap, s.milestonesDone || [])];
       }).filter(([, m]) => m),
     ];
-    if (queue.length && P.buildsThisWeek(fresh.map(([, s]) => s), now) < policy.build.maxPerWeek) {
+    if (!manualRan && queue.length && P.buildsThisWeek(fresh.map(([, s]) => s), now) < policy.build.maxPerWeek) {
       const [slug, milestone] = queue[0];
       await startBuild(slug, milestone);
     }

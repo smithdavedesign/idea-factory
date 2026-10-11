@@ -29,7 +29,7 @@ idea ──gstack review──▶ validate ──14-day $0 demand test──▶ 
 | Review | `bin/idea-review.js` + `skills/idea-review/SKILL.md`: the gstack frameworks, non-interactive | daily, after 09:30 |
 | Demand test | `lib/pipeline.js` `renderLanding` → `pages/<slug>/` (Vercel `idea-pages`); signals in RepoHQ `idea_signals`; `decideValidation` | landing page daily; decisions every tick |
 | Launch | `skills/launch/SKILL.md`: David runs `/launch <slug>` for verified channels and posts (`LAUNCH-KIT.md`), then `/launch <slug> posted` to log each post (`launch-log.json`) | by hand, while validating |
-| Build | `bin/idea-publish.js promote` (repo), `bin/idea-build.js` (M1, tests first, draft PR) | every tick / daily, ≤ 1 a week |
+| Build | `bin/idea-publish.js promote` (repo), `bin/idea-build.js` (one milestone: a gstack plan-eng-review plan, tests first, code, gstack's review checklist on its own diff, draft PR). Claude Code `--model opus --effort xhigh`; Sonnet if Opus is unavailable; the free pool only when the subscription can't take it; no local model | every tick / daily, ≤ 1 a week; **Start build now** on RepoHQ's Ideas page (`idea_build_requests`) skips the weekly slot, ≤ 2 a day |
 | Revenue | MRR and lifecycle from RepoHQ → `state.json`, Notion, the morning email | every tick |
 
 Everything runs from `bin/idea-pipeline.js tick` (launchd `com.user.idea-pipeline`, every 15 min). The rules are in **`policy.json`**:
@@ -38,7 +38,7 @@ Everything runs from `bin/idea-pipeline.js tick` (launchd `com.user.idea-pipelin
 - review score ≥ 6;
 - a 14-day validation window, at least 50 visitors to judge;
 - build at ≥ 5 signups and ≥ 5% conversion;
-- at most one build a week.
+- at most one build a week from the weekly slot, plus up to 2 a day you start yourself (Start build now).
 
 David's Status always wins, whether set on the Ideas page or in Notion: Pass, Build, Validate or Live.
 

@@ -1,0 +1,150 @@
+// System test of one pipeline tick for "Start build now" (RepoHQ idea_build_requests): a temporary
+// record (IDEA_PIPELINE_DATA), RepoHQ's database faked in memory, Notion, the builder and OpenClaw
+// stubbed. Checks the request is claimed, the build runs with the owner's note, the row and Slack get
+// the result, the 24-hour cap holds, and an idea that can't be built is refused. Run: npm test
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const Module = require('module');
+
+const ROOT = path.resolve(__dirname, '..');
+const DATA = fs.mkdtempSync(path.join(os.tmpdir(), 'pipeline-'));
+const HOME = fs.mkdtempSync(path.join(os.tmpdir(), 'home-'));
+fs.mkdirSync(path.join(HOME, '.openclaw'));
+fs.writeFileSync(path.join(HOME, '.openclaw', 'openclaw.json'), JSON.stringify({ channels: { slack: { enabled: true, channels: { C_TEST: {} } } } }));
+
+// Real build rules (manualBuildTarget, buildMessage); only buildOne is faked.
+const realBuild = require('../bin/idea-build');
+const builds = [];
+let buildResult = null;
+const sent = [];
+let db = null; // per test: { requests, startsLast24h, log }
+
+function fakeSql(strings, ...values) {
+  const q = strings.join('?').replace(/\s+/g, ' ');
+  db.log.push({ q, values });
+  if (/FROM idea_build_requests WHERE status = 'pending'/.test(q)) return Promise.resolve(db.requests.filter((r) => r.status === 'pending'));
+  if (/count\(\*\)::int AS n FROM idea_build_requests/.test(q)) return Promise.resolve([{ n: db.startsLast24h }]);
+  if (/UPDATE idea_build_requests SET status = 'running'/.test(q)) {
+    const r = db.requests.find((x) => x.id === values[2] && x.status === 'pending');
+    if (r) Object.assign(r, { status: 'running', milestone: values[0] });
+    return Promise.resolve(r ? [{ id: r.id }] : []);
+  }
+  if (/UPDATE idea_build_requests SET result = .* AND status = 'pending'/.test(q)) {
+    const r = db.requests.find((x) => x.id === values[1]);
+    if (r) r.result = values[0];
+    return Promise.resolve([]);
+  }
+  if (/UPDATE idea_build_requests SET status = .* WHERE slug = /.test(q)) {
+    for (const r of db.requests.filter((x) => x.slug === values[3] && x.status === 'pending')) Object.assign(r, { status: values[0], result: values[1], pr_url: values[2] });
+    return Promise.resolve([]);
+  }
+  if (/UPDATE idea_build_requests SET status = \?/.test(q)) {
+    const r = db.requests.find((x) => x.id === values[4]);
+    if (r) Object.assign(r, { status: values[0], result: values[1], pr_url: values[2], engine: values[3] });
+    return Promise.resolve([]);
+  }
+  return Promise.resolve([]); // decisions, seeds, signals, ideas sync, heartbeat: nothing to do here
+}
+
+const stubs = {
+  './idea-publish': {
+    ensureDatabaseProperties: async () => {}, allIdeas: async () => [], readSeeds: () => [], seed: () => ({ id: 's' }),
+    promote: async () => ({ promoted: [], errors: [] }), notionRequest: async () => ({}), appendBlocks: async () => {}, git: () => '',
+  },
+  '../lib/events': { emit: () => {} },
+  '@neondatabase/serverless': { neon: () => fakeSql },
+  './idea-build': { ...realBuild, buildOne: async (slug, opts) => { builds.push({ slug, ...opts }); return { slug, ...buildResult }; } },
+};
+const realLoad = Module._load;
+Module._load = function (request, parent, ...rest) {
+  if (parent && parent.filename.startsWith(ROOT) && !parent.filename.includes(`${path.sep}test${path.sep}`)) {
+    if (stubs[request]) return stubs[request];
+    if (request === 'child_process') return { execFileSync: (cmd, args) => { if (cmd === 'openclaw') sent.push(args); return ''; }, spawnSync: () => ({ status: 0 }), spawn: () => { throw new Error('no spawn in tests'); } };
+  }
+  return realLoad.call(this, request, parent, ...rest);
+};
+process.env.IDEA_PIPELINE_DATA = DATA;
+process.env.IDEA_DATABASE_URL = 'postgres://fake';
+process.env.HOME = HOME;
+const { tick } = require('../bin/idea-pipeline');
+
+function idea(slug, state) {
+  const dir = path.join(DATA, 'ideas', slug);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'idea.json'), JSON.stringify({ title: `${slug} — test idea` }));
+  fs.writeFileSync(path.join(dir, 'state.json'), JSON.stringify(state));
+  fs.writeFileSync(path.join(dir, 'ROADMAP.md'), '## M1 — core\n\n## M2 — more\n');
+}
+
+test.beforeEach(() => {
+  fs.rmSync(path.join(DATA, 'ideas'), { recursive: true, force: true });
+  // The daily steps ran today already, so the tick does only the every-tick steps.
+  fs.writeFileSync(path.join(DATA, '.pipeline-state.json'), JSON.stringify({ lastDaily: new Date().toLocaleDateString('en-CA') }));
+  builds.length = 0; sent.length = 0;
+  buildResult = { ok: true, milestone: 'M1', prUrl: 'https://github.com/o/pr-x/pull/1', testsPassing: true, engine: 'claude', model: 'claude-opus-5-5' };
+});
+test.after(() => { Module._load = realLoad; fs.rmSync(DATA, { recursive: true, force: true }); fs.rmSync(HOME, { recursive: true, force: true }); });
+
+test('a request for an approved idea builds M1 now, with the note, and reports to the row and Slack', async () => {
+  idea('pr-x', { stage: 'repo', repo: 'https://github.com/o/pr-x', ownerApproved: true });
+  db = { requests: [{ id: 7, slug: 'pr-x', milestone: null, note: 'focus on the CLI', status: 'pending' }], startsLast24h: 0, log: [] };
+  const out = await tick();
+  assert.deepEqual(out.errors, []);
+  assert.deepEqual(builds, [{ slug: 'pr-x', milestone: 'M1', manual: true, note: 'focus on the CLI' }], 'one build: the weekly slot stays out of a tick that ran a manual one');
+  assert.equal(db.requests[0].status, 'done');
+  assert.equal(db.requests[0].pr_url, 'https://github.com/o/pr-x/pull/1');
+  assert.equal(db.requests[0].engine, 'claude-opus-5-5 · xhigh');
+  assert.match(db.requests[0].result, /M1 PR opened, tests passing/);
+  assert.equal(sent.length, 1);
+  assert.deepEqual(sent[0].slice(0, 6), ['message', 'send', '--channel', 'slack', '--target', 'C_TEST']);
+  assert.match(sent[0][7], /M1 for \*pr-x\* is ready for review: https:\/\/github\.com\/o\/pr-x\/pull\/1/);
+  assert.ok(out.changes.some((c) => /pr-x: M1 PR .*started from the Ideas page/.test(c)));
+});
+
+test('over the 24-hour cap the request waits, with the reason on the row', async () => {
+  idea('pr-x', { stage: 'repo', repo: 'https://github.com/o/pr-x', ownerApproved: true });
+  // This week's automatic slot is used too, so nothing builds this tick.
+  idea('other', { stage: 'building', repo: 'https://github.com/o/other', build: { milestone: 'M1', status: 'pr-open', at: new Date().toISOString() } });
+  db = { requests: [{ id: 8, slug: 'pr-x', status: 'pending' }], startsLast24h: 2, log: [] };
+  await tick();
+  assert.equal(builds.length, 0);
+  assert.equal(db.requests[0].status, 'pending');
+  assert.match(db.requests[0].result, /waiting: 2 manual builds started in the last 24 h \(the cap is 2\)/);
+  assert.equal(sent.length, 0);
+});
+
+test('a weekly-slot build of the same idea settles a request that was waiting', async () => {
+  idea('pr-x', { stage: 'repo', repo: 'https://github.com/o/pr-x', ownerApproved: true });
+  db = { requests: [{ id: 12, slug: 'pr-x', status: 'pending' }], startsLast24h: 2, log: [] };
+  await tick();
+  assert.deepEqual(builds, [{ slug: 'pr-x', milestone: 'M1' }], 'the weekly slot builds it (not a manual start)');
+  assert.equal(db.requests[0].status, 'done');
+  assert.match(db.requests[0].result, /M1 PR opened by the weekly build slot/);
+  assert.equal(db.requests[0].pr_url, 'https://github.com/o/pr-x/pull/1');
+});
+
+test('an idea that can\'t be built is refused, and the next request still runs', async () => {
+  idea('passed', { stage: 'pass' });
+  idea('pr-x', { stage: 'building', repo: 'https://github.com/o/pr-x', milestonesDone: ['M1'], build: { milestone: 'M1', status: 'merged' } });
+  buildResult = { ...buildResult, milestone: 'M2', prUrl: 'https://github.com/o/pr-x/pull/2' };
+  db = { requests: [{ id: 9, slug: 'passed', status: 'pending' }, { id: 10, slug: 'pr-x', status: 'pending' }], startsLast24h: 1, log: [] };
+  await tick();
+  assert.equal(db.requests[0].status, 'failed');
+  assert.match(db.requests[0].result, /can't build: no repo yet/);
+  assert.deepEqual(builds.map((b) => `${b.slug} ${b.milestone}`), ['pr-x M2'], 'a merged M1 moves on to M2');
+  assert.equal(db.requests[1].status, 'done');
+});
+
+test('a failed build marks the request failed and says so in Slack', async () => {
+  idea('pr-x', { stage: 'repo', repo: 'https://github.com/o/pr-x', ownerApproved: true });
+  buildResult = { ok: false, milestone: 'M1', reason: 'Claude made no changes' };
+  db = { requests: [{ id: 11, slug: 'pr-x', status: 'pending' }], startsLast24h: 0, log: [] };
+  const out = await tick();
+  assert.equal(db.requests[0].status, 'failed');
+  assert.equal(db.requests[0].result, 'Claude made no changes');
+  assert.match(sent[0][7], /M1 build for \*pr-x\* failed: Claude made no changes/);
+  assert.ok(out.errors.some((e) => /build pr-x M1/.test(e)), 'the tick reports it, so the system log alerts');
+});
