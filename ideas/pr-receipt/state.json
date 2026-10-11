@@ -7,12 +7,16 @@
     "at": "2026-10-10T19:04:13.883Z",
     "notionAt": "2026-10-10T19:06:17.271Z"
   },
-  "updatedAt": "2026-10-11T19:43:35.618Z",
+  "updatedAt": "2026-10-11T20:19:11.963Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
     "source": "repohq"
   },
   "ownerApproved": true,
-  "repo": "https://github.com/smithdavedesign/pr-receipt"
+  "repo": "https://github.com/smithdavedesign/pr-receipt",
+  "revenue": {
+    "mrr": 0,
+    "updatedAt": "2026-10-11T20:19:11.963Z"
+  }
 }

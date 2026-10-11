@@ -1,5 +1,5 @@
 {
-  "stage": "pass",
+  "stage": "repo",
   "review": {
     "verdict": "pass",
     "score": 4,
@@ -7,5 +7,12 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-11T20:03:37.382Z"
+  "updatedAt": "2026-10-11T20:19:11.963Z",
+  "ownerDecision": {
+    "decision": "build",
+    "at": "2026-10-11T20:19:11.963Z",
+    "source": "repohq"
+  },
+  "ownerApproved": true,
+  "repo": "https://github.com/smithdavedesign/tiebreak"
 }
