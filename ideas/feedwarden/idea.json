@@ -1,0 +1,25 @@
+{
+  "title": "feedwarden — daily Merchant Center suspension watch for Shopify stores",
+  "repoName": "feedwarden",
+  "oneLiner": "For Shopify store owners and the freelancers who run their stores, it checks the store's trust signals daily and emails a plain-English alert when something Google's Misrepresentation checks look at breaks, instead of after the account is suspended.",
+  "overlaps": "none in David's portfolio; market competitors are GMC Scout, GMC.APPS and AdNabu",
+  "tags": [
+    "ecommerce",
+    "saas"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://community.shopify.com/t/google-merchant-center-suspended/581972",
+    "https://www.gmcscout.com/guides/disapproved-vs-suspended",
+    "https://apps.evotech.au/",
+    "https://www.microns.io/startup-listings/google-merchant-center-compliance-service",
+    "https://fiverr.com/seo_kunal/fix-google-merchant-center-suspension-gmc-misrepresentation-feed-errors",
+    "https://wiserreview.com/blog/datafeedwatch-alternatives/",
+    "https://searchengineland.com/fix-suspended-google-merchant-center-account-474404",
+    "https://fiverr.com/shawntellefeg/fix-google-merchant-centre-misinterpretation-fix-suspension-or-reinstate-gmc",
+    "https://apps.shopify.com/google-shopping-feed"
+  ],
+  "slug": "feedwarden",
+  "recordedAt": "2026-10-11T16:13:03.685Z"
+}
