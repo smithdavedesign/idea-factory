@@ -1,0 +1,24 @@
+{
+  "title": "proofpack — app-log evidence packets for Stripe SaaS disputes",
+  "repoName": "proofpack",
+  "oneLiner": "For founders of Stripe-billed SaaS, it turns their own login, usage and ToS logs into a dispute evidence packet Stripe's automation can't build, at a flat monthly price instead of 25–30% of wins.",
+  "overlaps": "none",
+  "tags": [
+    "saas",
+    "payments"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://docs.stripe.com/disputes/smart-disputes",
+    "https://docs.stripe.com/api/disputes/update",
+    "https://www.chargeflow.io/blog/what-stripe-smart-disputes-covers-and-what-it-doesnt",
+    "https://www.chargeflow.io/blog/stripe-dispute-fees",
+    "https://www.chargeflow.io/pricing",
+    "https://redo.com/resources/articles/chargebacks/saas-chargebacks",
+    "https://apps.shopify.com/disputepack",
+    "https://payproglobal.com/answers/what-is-saas-chargeback-reversal/"
+  ],
+  "slug": "proofpack",
+  "recordedAt": "2026-10-11T16:02:49.554Z"
+}
