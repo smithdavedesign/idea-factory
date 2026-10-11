@@ -7,6 +7,8 @@
 // Every tick (no model calls):
 //   0. Decisions from RepoHQ's Ideas page → the Notion Status David would have set; new ideas typed
 //      there → the research queue (seeds.jsonl, like "idea: …" on Slack/WhatsApp) (lib/repohq.js).
+//  0c. Ideas David sent are researched and reviewed now (Claude Pro, policy.research.seeded), and the
+//      verdict goes back where he sent it (lib/seeds.js). The one model call outside the daily steps.
 //   1. Notion → state: David's own Status changes win (Pass, Build, Validate, Live).
 //   2. Demand signals from RepoHQ (idea_signals) → state + Notion (Visitors, Signups).
 //   3. Validation decisions (policy.json): build / pass / extend. Build → Notion "Build".
@@ -27,6 +29,7 @@ const pub = require('./idea-publish');
 const { mdToBlocks } = require('../lib/notion-md');
 const { emit } = require('../lib/events');
 const R = require('../lib/repohq');
+const S = require('../lib/seeds');
 
 const ROOT = path.resolve(__dirname, '..');
 const IDEAS = path.join(ROOT, 'ideas');
@@ -143,6 +146,43 @@ async function tick({ forceDaily = false } = {}) {
   const save = (slug, state, what) => { P.writeState(path.join(IDEAS, slug), state, now); changed.add(slug); note(slug, what); };
   let sql = null;
   try { sql = dbSql(); } catch (e) { fail('database', e); }
+  const pstate = fs.existsSync(STATE_FILE) ? JSON.parse(fs.readFileSync(STATE_FILE, 'utf8')) : {};
+  const writePstate = () => fs.writeFileSync(STATE_FILE, JSON.stringify(pstate));
+
+  /** Landing pages for Validate ideas without one, within policy.validation.maxValidating. Returns [{slug, url}]. */
+  const landingPages = () => {
+    const states = ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]);
+    let live = states.filter(([, s]) => s.stage === 'validate' && s.page).length;
+    const newPages = [];
+    for (const [slug, state] of states) {
+      if (state.stage !== 'validate' || state.page || live >= policy.validation.maxValidating) continue;
+      try {
+        const review = JSON.parse(fs.readFileSync(path.join(IDEAS, slug, 'review.json'), 'utf8'));
+        fs.mkdirSync(path.join(PAGES, slug), { recursive: true });
+        fs.writeFileSync(path.join(PAGES, slug, 'index.html'), P.renderLanding({ slug, landing: review.landing, signalUrl: policy.signalUrl }));
+        const url = `${policy.pagesBaseUrl}/${slug}/`;
+        fs.writeFileSync(path.join(IDEAS, slug, 'LAUNCH.md'), `# Launch post for ${slug}\n\nPage: ${url}\n\nWhere to post:\n${review.launch.channels.map((c) => `- ${c.name}${c.url ? ` (${c.url})` : ''}${c.why ? `: ${c.why}` : ''}`).join('\n')}\n\nPost:\n\n${review.launch.post.replace(/\{url\}/g, url)}\n`);
+        newPages.push({ slug, url });
+        live++;
+      } catch (e) { fail(`page ${slug}`, e); }
+    }
+    if (!newPages.length) return [];
+    try {
+      deployPages();
+      for (const { slug, url } of newPages) save(slug, { ...P.readState(path.join(IDEAS, slug)), page: { url, deployedAt: now.toISOString() }, validation: P.startValidation(now, policy) }, `landing page ${url}`);
+      return newPages;
+    } catch (e) { fail('deploy pages', e); return []; }
+  };
+
+  /** Post an idea's review to its Notion page once, and record that it's there. */
+  const postReview = async (slug) => {
+    const row = rows.get(slug);
+    if (!row) return;
+    const dir = path.join(IDEAS, slug);
+    await notionReview(row, dir)
+      .then(() => P.writeState(dir, { ...P.readState(dir), review: { ...P.readState(dir).review, notionAt: new Date().toISOString() } }))
+      .catch((e) => fail(`notion review ${slug}`, e));
+  };
 
   // 0. Decisions from RepoHQ's Ideas page: set the Notion Status exactly as David would, so step 1
   // applies them like any other owner decision and Notion stays the board the pipeline follows.
@@ -218,8 +258,54 @@ async function tick({ forceDaily = false } = {}) {
       const slugForSeed = (id) => ideaDirs().find((slug) => {
         try { return JSON.parse(fs.readFileSync(path.join(IDEAS, slug, 'idea.json'), 'utf8')).seedId === id; } catch { return false; }
       }) || null;
-      for (const n of await R.syncSeeds(sql, { seed: pub.seed, seeds: pub.readSeeds(), slugForSeed })) note('seeds', n);
+      for (const n of await R.syncSeeds(sql, { seed: (text) => pub.seed(text, { source: 'page' }), seeds: pub.readSeeds(), slugForSeed })) note('seeds', n);
     } catch (e) { fail('seeds', R.explain(e)); }
+  }
+
+  // 0c. An idea David sent is researched and reviewed now, oldest first, and the verdict goes back where
+  // he sent it. Claude Pro only: a failed run leaves the seed queued for a later tick (no free-model fallback).
+  const rules = policy.research?.seeded;
+  const queued = pub.readSeeds().filter((s) => s.status === 'queued');
+  const due = rules ? S.seededDue({ queued: queued.length, seeded: pstate.seeded, now, rules }) : { due: false };
+  if (due.due) {
+    const oldest = queued[0];
+    const { research } = require('./idea-research');
+    const r = await research({ trigger: 'seed' });
+    if (r.busy) note('seeds', 'research already running; next tick');
+    else {
+      const seedNow = pub.readSeeds().find((s) => s.id === oldest.id) || oldest;
+      const slug = r.recorded?.[0];
+      pstate.seeded = S.countRun(pstate.seeded, now, { failed: !slug && seedNow.status !== 'done' });
+      writePstate();
+      if (slug) {
+        // A recorded idea: review it now, give a Validate its page, and reply.
+        const dir = path.join(IDEAS, slug);
+        const idea = JSON.parse(fs.readFileSync(path.join(dir, 'idea.json'), 'utf8'));
+        const source = (pub.readSeeds().find((s) => s.id === idea.seedId) || seedNow).source;
+        changed.add(slug); note(slug, `researched now (seed ${idea.seedId || oldest.id})`);
+        const row = (await pub.allIdeas().catch(() => [])).find((x) => x.slug === slug);
+        if (row) rows.set(slug, row);
+        const { reviewOne } = require('./idea-review');
+        const rv = await reviewOne(slug);
+        let pageUrl = null;
+        if (rv.ok) {
+          note(slug, `reviewed now: ${rv.review.verdict} ${rv.review.score}/10`);
+          await postReview(slug);
+          if (P.readState(dir).stage === 'validate') pageUrl = landingPages().find((p) => p.slug === slug)?.url ?? null;
+        } else fail(`review ${slug}`, rv.reason);
+        try {
+          const to = S.notify(source, S.seedMessage({ idea, slug, review: rv.ok ? rv.review : null, reviewError: rv.reason, pageUrl }));
+          note(slug, `verdict sent to ${to.channel}`);
+        } catch (e) { fail(`notify ${slug}`, e); }
+      } else if (seedNow.status === 'done' && seedNow.notionUrl) {
+        // Research found it's already on the Idea Board.
+        try { S.notify(seedNow.source, `💡 That idea is already on the Idea Board: ${seedNow.notionUrl}\nDecide: ${S.IDEAS_PAGE}`); } catch (e) { fail('notify seed', e); }
+        note('seeds', `${oldest.id} already on the board`);
+      } else {
+        // research.js logged and alerted the failure; the seed waits policy.research.seeded.retryMinutes.
+        note('seeds', `${oldest.id} not researched yet: ${String(r.reason).slice(0, 160)}`);
+      }
+    }
   }
 
   // 2–3. Demand signals and validation decisions.
@@ -301,7 +387,6 @@ async function tick({ forceDaily = false } = {}) {
   };
 
   // Daily steps.
-  const pstate = fs.existsSync(STATE_FILE) ? JSON.parse(fs.readFileSync(STATE_FILE, 'utf8')) : {};
   const dailyNow = forceDaily || dailyDue(pstate.lastDaily, now);
 
   // 4b. An idea David approved (Notion Build, or the Ideas page) is built now, not at the next daily
@@ -320,35 +405,11 @@ async function tick({ forceDaily = false } = {}) {
       const r = await reviewOne(slug);
       if (!r.ok) { fail(`review ${slug}`, r.reason); continue; }
       changed.add(slug); note(slug, `reviewed: ${r.review.verdict} ${r.review.score}/10`);
-      const row = rows.get(slug);
-      if (row) {
-        await notionReview(row, path.join(IDEAS, slug))
-          .then(() => P.writeState(path.join(IDEAS, slug), { ...P.readState(path.join(IDEAS, slug)), review: { ...P.readState(path.join(IDEAS, slug)).review, notionAt: new Date().toISOString() } }))
-          .catch((e) => fail(`notion review ${slug}`, e));
-      }
+      await postReview(slug);
     }
     // b. Landing pages for new Validate ideas, within the cap.
+    landingPages();
     const states = ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]);
-    let live = states.filter(([, s]) => s.stage === 'validate' && s.page).length;
-    const newPages = [];
-    for (const [slug, state] of states) {
-      if (state.stage !== 'validate' || state.page || live >= policy.validation.maxValidating) continue;
-      try {
-        const review = JSON.parse(fs.readFileSync(path.join(IDEAS, slug, 'review.json'), 'utf8'));
-        fs.mkdirSync(path.join(PAGES, slug), { recursive: true });
-        fs.writeFileSync(path.join(PAGES, slug, 'index.html'), P.renderLanding({ slug, landing: review.landing, signalUrl: policy.signalUrl }));
-        const url = `${policy.pagesBaseUrl}/${slug}/`;
-        fs.writeFileSync(path.join(IDEAS, slug, 'LAUNCH.md'), `# Launch post for ${slug}\n\nPage: ${url}\n\nWhere to post:\n${review.launch.channels.map((c) => `- ${c.name}${c.url ? ` (${c.url})` : ''}${c.why ? `: ${c.why}` : ''}`).join('\n')}\n\nPost:\n\n${review.launch.post.replace(/\{url\}/g, url)}\n`);
-        newPages.push([slug, state, url]);
-        live++;
-      } catch (e) { fail(`page ${slug}`, e); }
-    }
-    if (newPages.length) {
-      try {
-        deployPages();
-        for (const [slug, state, url] of newPages) save(slug, { ...P.readState(path.join(IDEAS, slug)), page: { url, deployedAt: now.toISOString() }, validation: P.startValidation(now, policy) }, `landing page ${url}`);
-      } catch (e) { fail('deploy pages', e); }
-    }
     // c. Builds: Claude Code on the subscription first, the free pool only as backup (idea-build.js).
     // A merged milestone PR moves the idea on to its next milestone; M1 for new repos. One a week.
     const { nextMilestone } = require('./idea-build');

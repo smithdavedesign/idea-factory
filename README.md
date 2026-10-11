@@ -25,6 +25,7 @@ idea ──gstack review──▶ validate ──14-day $0 demand test──▶ 
 | Step | Code | Runs |
 |---|---|---|
 | Research | `bin/idea-research.js` (Claude Pro) → `bin/idea-publish.js publish`; scout (free models) as fallback | OpenClaw cron 09:00 |
+| Your ideas | `idea: …` on Slack or WhatsApp, or the Ideas page's New idea box → `seeds.jsonl` (with its `source`). The next tick researches and reviews it on Claude Pro and sends the verdict back there (`lib/seeds.js`, `policy.research.seeded`: ≤ 3 a day, none 08:30–09:45, no free-model fallback) | every tick |
 | Review | `bin/idea-review.js` + `skills/idea-review/SKILL.md`: the gstack frameworks, non-interactive | daily, after 09:30 |
 | Demand test | `lib/pipeline.js` `renderLanding` → `pages/<slug>/` (Vercel `idea-pages`); signals in RepoHQ `idea_signals`; `decideValidation` | landing page daily; decisions every tick |
 | Launch | `skills/launch/SKILL.md`: David runs `/launch <slug>` for verified channels and posts (`LAUNCH-KIT.md`), then `/launch <slug> posted` to log each post (`launch-log.json`) | by hand, while validating |
@@ -33,6 +34,7 @@ idea ──gstack review──▶ validate ──14-day $0 demand test──▶ 
 
 Everything runs from `bin/idea-pipeline.js tick` (launchd `com.user.idea-pipeline`, every 15 min). The rules are in **`policy.json`**:
 - $0 spend;
+- ideas you send researched right away, at most 3 a day;
 - review score ≥ 6;
 - a 14-day validation window, at least 50 visitors to judge;
 - build at ≥ 5 signups and ≥ 5% conversion;
