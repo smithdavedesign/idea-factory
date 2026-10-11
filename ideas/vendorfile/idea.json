@@ -1,0 +1,26 @@
+{
+  "title": "vendorfile — Reg S-P vendor-oversight file for small RIAs",
+  "repoName": "vendorfile",
+  "oneLiner": "For principals of 1–10 person SEC-registered advisers, it sends and chases the Reg S-P vendor requests (72-hour breach notice, security attestation) and produces the dated exam-ready binder, at a flat price instead of consultant hours.",
+  "overlaps": "none in the portfolio; nearest market tool is COMPLY's vendor due diligence (free up to 5 vendors, part of a $6k+/yr platform)",
+  "tags": [
+    "compliance",
+    "fintech",
+    "saas"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://www.sidley.com/en/insights/newsupdates/2026/04/us-sec-regulation-s-p-compliance-deadline-approaching-for-smaller-entities",
+    "https://www.sec.gov/files/rules/final/2024/regulation-s-p-small-entity-compliance-guide.pdf",
+    "https://www.wealthmanagement.com/regulation-compliance/rias-scramble-to-meet-reg-s-p-compliance-deadline",
+    "https://techvera.com/resources/blog/what-it-costs-to-run-compliant-ria-technology-stack-in-2026",
+    "https://comply.com/?p=6143",
+    "https://www.sec.gov/files/34-100155-fact-sheet.pdf",
+    "https://www.dwt.com/blogs/privacy--security-law-blog/2026/05/reg-sp-smaller-entities-june-2026-deadline",
+    "https://www.kroll.com/en/publications/financial-compliance-regulation/regulation-s-p-amendments",
+    "https://www.capterra.com/p/158544/Smart-RIA/"
+  ],
+  "slug": "vendorfile",
+  "recordedAt": "2026-10-11T18:36:30.659Z"
+}
