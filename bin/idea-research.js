@@ -21,6 +21,7 @@ const ROOT = path.resolve(__dirname, '..');
 const DRAFTS = path.join(ROOT, 'drafts');
 const IDEAS = path.join(ROOT, 'ideas');
 const LOG = path.join(ROOT, 'research.log');
+const LOCK = path.join(ROOT, '.research.lock');
 const PUBLISH = path.join(ROOT, 'bin', 'idea-publish.js');
 const CONTEXT = path.join(ROOT, 'bin', 'context');
 const TIMEOUT_MS = Number(process.env.IDEA_RESEARCH_TIMEOUT_MS || 20 * 60_000);
@@ -52,8 +53,24 @@ async function check() {
     ...(ok ? {} : { reason: bad || info.result.slice(0, 300) || r.err.slice(0, 300) || `exit ${r.code}` }) };
 }
 
-async function research() {
+/** One research run at a time: the 09:00 run and a seeded run from the pipeline must not overlap. */
+function takeLock() {
+  if (fs.existsSync(LOCK)) {
+    const pid = Number(fs.readFileSync(LOCK, 'utf8'));
+    try { process.kill(pid, 0); return false; } catch { /* stale */ }
+  }
+  fs.writeFileSync(LOCK, String(process.pid));
+  return true;
+}
+
+/** `trigger`: 'daily' (the 09:00 run, which falls back to free models) or 'seed' (the pipeline, which keeps the seed queued). */
+async function research({ trigger = 'daily' } = {}) {
   if (!fs.existsSync(base.CLAUDE)) return { ok: false, engine: 'claude-pro', reason: `Claude Code not found at ${base.CLAUDE}` };
+  if (!takeLock()) return { ok: false, busy: true, engine: 'claude-pro', reason: 'another research run is in progress' };
+  try { return await researchLocked(trigger); } finally { fs.rmSync(LOCK, { force: true }); }
+}
+
+async function researchLocked(trigger) {
   const before = new Set(listIdeas());
   const prompt = `Read ${path.join(ROOT, 'SKILL.md')} and follow it exactly: Step 0 decides SEEDED or DISCOVERY mode. ` +
     `Research and record ONE idea. Use WebSearch/WebFetch for research. Your final message is the Step 6 report, nothing else.`;
@@ -71,9 +88,11 @@ async function research() {
   else if (!added.length) out.reason = `no new idea recorded: ${info.result.slice(0, 300)}`;
   out.ok = !out.reason;
   if (out.ok) out.report = info.result.trim();
+  out.trigger = trigger;
   log(out);
+  const fallback = trigger === 'seed' ? 'the seed stays queued and is retried' : 'scout falls back to free models';
   emit({ component: 'research', event: 'run', status: out.ok ? 'ok' : 'fail', durationMs: info.durationMs ?? undefined,
-    message: out.ok ? `recorded ${added.join(', ')} on ${info.model}` : `Claude research failed (scout falls back to free models): ${out.reason}`,
+    message: out.ok ? `recorded ${added.join(', ')} on ${info.model}${trigger === 'seed' ? ' (seeded)' : ''}` : `Claude research failed (${fallback}): ${out.reason}`,
     subject: added[0] ? { idea: added[0] } : undefined });
   return out;
 }
@@ -85,4 +104,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { inspect, guard, cleanEnv, ALLOWED_TOOLS };
+module.exports = { research, inspect, guard, cleanEnv, ALLOWED_TOOLS };

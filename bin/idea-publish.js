@@ -3,7 +3,7 @@
 // docs; this script validates them, stores them, and creates product repos only when David asks.
 //
 //   node bin/idea-publish.js list                  # {ideas, portfolio}: Idea Board rows + David's GitHub repos (dedupe)
-//   node bin/idea-publish.js seed "<text>"         # queue an idea David sent ("idea: …") for the next research run
+//   node bin/idea-publish.js seed "<text>" [--source slack|whatsapp|page]   # queue an idea David sent ("idea: …"); the pipeline researches it on its next tick and replies there
 //   node bin/idea-publish.js seeds                 # queued seeds, oldest first
 //   node bin/idea-publish.js publish <draft-dir>   # validate → ideas/<slug>/ committed to the idea-factory repo
 //                                                  #   → Notion row (Status "Idea", full research/PRD/roadmap in the page)
@@ -22,6 +22,7 @@ const os = require('os');
 const crypto = require('crypto');
 const { execFileSync } = require('child_process');
 const { mdToBlocks, batches, blocksText, markdownText } = require('../lib/notion-md');
+const { parseSeedArgs } = require('../lib/seeds');
 
 const HOME = process.env.HOME;
 const DATABASE_ID = process.env.IDEA_BOARD_ID || '3f5bf9bf-93e4-81b7-8036-fc1cd59fd48f';
@@ -146,20 +147,20 @@ function portfolio() {
   }
 }
 
-// ─── Seeds: ideas David sends on WhatsApp ("idea: …"). The companion only queues them; research
-// happens on the next run, without David's personal context.
+// ─── Seeds: ideas David sends ("idea: …" on Slack or WhatsApp, or the Ideas page). The companion only
+// queues them; the pipeline researches each on its next tick (lib/seeds.js), without his personal context.
 function readSeeds() {
   if (!fs.existsSync(SEEDS_FILE)) return [];
   return fs.readFileSync(SEEDS_FILE, 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
 }
 
-function seed(textArg) {
+function seed(textArg, { source = null } = {}) {
   const t = String(textArg || '').replace(/^\s*idea:\s*/i, '').trim();
   if (t.length < 8) fail('usage: idea-publish.js seed "<idea text, at least 8 characters>"');
   fs.mkdirSync(IDEA_HOME, { recursive: true });
-  const entry = { id: `seed-${crypto.randomBytes(3).toString('hex')}`, text: t.slice(0, 2000), at: new Date().toISOString(), status: 'queued' };
+  const entry = { id: `seed-${crypto.randomBytes(3).toString('hex')}`, text: t.slice(0, 2000), at: new Date().toISOString(), status: 'queued', ...(source ? { source } : {}) };
   fs.appendFileSync(SEEDS_FILE, JSON.stringify(entry) + '\n');
-  return { ok: true, id: entry.id, note: 'queued — researched in the next idea run' };
+  return { ok: true, id: entry.id, note: 'queued — researched within about 15 minutes; the verdict comes back where it was sent' };
 }
 
 function markSeed(id, status, extra = {}) {
@@ -428,13 +429,13 @@ async function promote(dryRun = false) {
 async function main(argv) {
   const [cmd, ...rest] = argv;
   if (cmd === 'list') return { ideas: await allIdeas(), portfolio: portfolio() };
-  if (cmd === 'seed') return seed(rest.join(' '));
+  if (cmd === 'seed') { const a = parseSeedArgs(rest); return seed(a.text, { source: a.source }); }
   if (cmd === 'seeds') return readSeeds().filter((s) => s.status === 'queued');
   if (cmd === 'publish') return publish(rest[0]);
   if (cmd === 'promote') return promote(rest.includes('--dry-run'));
   if (cmd === 'sync-page') return syncPage(rest[0]);
   if (cmd === 'verify-page') return verifyPage(rest[0]);
-  fail('usage: idea-publish.js list | seed "<text>" | seeds | publish <draft-dir> | promote [--dry-run] | sync-page <slug> | verify-page <slug>');
+  fail('usage: idea-publish.js list | seed "<text>" [--source slack|whatsapp|page] | seeds | publish <draft-dir> | promote [--dry-run] | sync-page <slug> | verify-page <slug>');
 }
 
 if (require.main === module) {
