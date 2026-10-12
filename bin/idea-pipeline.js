@@ -573,9 +573,13 @@ async function tick({ forceDaily = false } = {}) {
   out.ok = out.errors.length === 0;
   log(out);
   // Quiet ticks aren't logged (launchd's exit code covers liveness): only changes, daily runs and failures.
-  if (!out.ok || out.changes.length || out.daily) emit({ component: 'pipeline', event: 'tick', status: out.ok ? 'ok' : 'fail', durationMs: Date.now() - now.getTime(),
-    message: out.ok ? `${out.changes.length} change(s)${out.daily ? ', daily steps ran' : ''}` : out.errors.join('; ').slice(0, 1500),
+  // Quiet ticks aren't logged, except the first good one after a failure: RepoHQ shows the failure
+  // as "failing now" until an ok tick arrives.
+  const recovered = out.ok && pstate.tickFailed;
+  if (!out.ok || out.changes.length || out.daily || recovered) emit({ component: 'pipeline', event: 'tick', status: out.ok ? 'ok' : 'fail', durationMs: Date.now() - now.getTime(),
+    message: out.ok ? `${out.changes.length} change(s)${out.daily ? ', daily steps ran' : ''}${recovered ? '; recovered' : ''}` : out.errors.join('; ').slice(0, 1500),
     data: { changes: out.changes.slice(0, 20), daily: !!out.daily } });
+  if (!!pstate.tickFailed !== !out.ok) { pstate.tickFailed = !out.ok; writePstate(); }
   return out;
 }
 
