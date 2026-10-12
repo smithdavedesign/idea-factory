@@ -49,6 +49,8 @@ function fakeSql(strings, ...values) {
     return Promise.resolve([]);
   }
   if (/FROM repositories WHERE full_name = ANY/.test(q)) return Promise.resolve(db.repos || []);
+  if (/FROM idea_signals GROUP BY slug, kind/.test(q)) return Promise.resolve(db.funnelRows || []);
+  if (/AS host/.test(q)) return Promise.resolve(db.referrerRows || []);
   return Promise.resolve([]); // decisions, seeds, signals, ideas sync, heartbeat: nothing to do here
 }
 
@@ -376,4 +378,30 @@ test('while new builds are held, an approved idea waits but a started MVP carrie
   assert.deepEqual(builds, [], 'the approval waits for a focus product with traction');
   await tick({ forceDaily: true });
   assert.deepEqual(builds.map((b) => `${b.slug} ${b.milestone}`), ['started MVP'], 'the daily slot finishes what it started');
+});
+
+test("a built product's funnel is saved, and rewritten only when it changes; a demand test's signals are as before", async () => {
+  idea('pr-f', { stage: 'building', repo: 'https://github.com/o/pr-f', milestonesDone: ['M1', 'M2'], golive: { mergedAt: 'x' }, build: { milestone: 'GOLIVE', status: 'merged' } });
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-f', 'revenue.json'), '{}');
+  idea('pr-v', { stage: 'validate', page: { url: 'https://idea-pages/pr-v/' }, validation: { startedAt: new Date().toISOString(), decideAfter: new Date(Date.now() + 5 * 86_400_000).toISOString() } });
+  db = { requests: [], startsLast24h: 0, log: [],
+    funnelRows: [
+      { slug: 'pr-f', kind: 'view', events: 4, all_time: 2, d7: 2, prev7: 0 },
+      { slug: 'pr-f', kind: 'reach', events: 4, all_time: 2, d7: 2, prev7: 0 },
+      { slug: 'pr-v', kind: 'view', events: 5, all_time: 3, d7: 3, prev7: 0 },
+      { slug: 'pr-v', kind: 'signup', events: 1, all_time: 1, d7: 1, prev7: 0 },
+      { slug: 'pr-v', kind: 'reach', events: 5, all_time: 3, d7: 3, prev7: 0 },
+    ],
+    referrerRows: [{ slug: 'pr-f', host: 'news.ycombinator.com', visitors: 2 }] };
+  const out = await tick();
+  assert.deepEqual(out.errors, []);
+  const f = readState('pr-f').funnel;
+  assert.deepEqual(f.d7, { visit: 2, signup: 0, activate: 0, checkout: 0 });
+  assert.deepEqual(f.referrers7d, [{ host: 'news.ycombinator.com', visitors: 2 }]);
+  assert.ok(out.changes.includes('pr-f: funnel: 2 visitors this week (0 the week before), 0 activations, 0 Buy clicks'), out.changes.join('\n'));
+  const v = readState('pr-v');
+  assert.deepEqual([v.signals.views, v.signals.uniqueVisitors, v.signals.signups], [5, 3, 1]);
+  assert.equal(v.funnel, undefined, 'a demand test has no funnel');
+  const again = await tick();
+  assert.ok(!again.changes.some((c) => c.startsWith('pr-f: funnel')), 'unchanged: not rewritten');
 });

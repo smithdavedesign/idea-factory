@@ -115,3 +115,10 @@ test('the revenue plan run gets the record and gstack\'s startup frameworks, and
   assert.ok(tools(dir).includes(`Write(/${dir}/revenue.json)`));
   assert.ok(!tools(dir).some((t) => t.startsWith('Bash')), 'the planner runs no commands');
 });
+
+test('the first user can be an activation from the product beacon, not only a signup', () => {
+  const step = (facts) => R.launchChecklist({ milestonesDone: [] }, facts).steps.find((s) => s.id === 'firstUser');
+  assert.deepEqual([step({ activations: 2 }).done, step({ activations: 2 }).evidence], [true, '2 active users']);
+  assert.equal(step({ signups: 1, activations: 1 }).evidence, '1 signup · 1 active user');
+  assert.deepEqual([step({}).done, step({}).evidence], [false, '']);
+});

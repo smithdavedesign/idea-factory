@@ -10,7 +10,8 @@
 //  0c. Ideas David sent are researched and reviewed now (Claude Pro, policy.research.seeded), and the
 //      verdict goes back where he sent it (lib/seeds.js). The one model call outside the daily steps.
 //   1. Notion → state: David's own Status changes win (Pass, Build, Validate, Live).
-//   2. Demand signals from RepoHQ (idea_signals) → state + Notion (Visitors, Signups).
+//   2. Demand signals from RepoHQ (idea_signals) → state + Notion (Visitors, Signups); each built
+//      product's funnel (visits, activations, Buy clicks, sources) → state.funnel (lib/growth.js).
 //   3. Validation decisions (policy.json): build / pass / extend. Build → Notion "Build".
 //   4. Promote: "Build" rows get their private repo (stage repo).
 //   5. Revenue: MRR and lifecycle of idea repos from RepoHQ; RepoHQ marks new idea repos "building".
@@ -46,6 +47,7 @@ const S = require('../lib/seeds');
 const REV = require('../lib/revenue');
 const LF = require('../lib/launch-facts');
 const GL = require('../lib/golive');
+const G = require('../lib/growth');
 
 const ROOT = path.resolve(__dirname, '..');
 // The record and the pipeline's own files. IDEA_PIPELINE_DATA points them elsewhere (the tick tests).
@@ -108,15 +110,6 @@ function dbSql() {
   const { neon } = require('@neondatabase/serverless');
   const url = process.env.IDEA_DATABASE_URL || execFileSync('security', ['find-generic-password', '-s', 'repohq-factory-database-url', '-w'], { encoding: 'utf8' }).trim();
   return neon(url);
-}
-
-async function signalsBySlug(sql) {
-  const rows = await sql`SELECT slug,
-      count(*) FILTER (WHERE kind = 'view')::int AS views,
-      count(DISTINCT ip_hash) FILTER (WHERE kind = 'view')::int AS unique_visitors,
-      count(DISTINCT email) FILTER (WHERE kind = 'signup')::int AS signups
-    FROM idea_signals GROUP BY slug`;
-  return new Map(rows.map((r) => [r.slug, { views: r.views, uniqueVisitors: r.unique_visitors, signups: r.signups }]));
 }
 
 async function notionProps(row, state) {
@@ -326,14 +319,20 @@ async function tick({ forceDaily = false } = {}) {
     }
   }
 
-  // 2–3. Demand signals and validation decisions.
+  // 2–3. Demand signals and validation decisions, and each built product's funnel (lib/growth.js).
   let signals = new Map();
   if (sql) {
     try {
-      signals = await signalsBySlug(sql);
+      const funnels = await R.funnelBySlug(sql);
+      signals = new Map([...funnels].map(([slug, row]) => [slug, G.signalsOf(row)]));
       for (const slug of ideaDirs()) {
         const dir = path.join(IDEAS, slug);
         const state = P.readState(dir);
+        if (G.tracksFunnel(state, funnels.get(slug))) {
+          const funnel = G.funnelOf(funnels.get(slug), state);
+          if (!G.sameFunnel(state.funnel, funnel)) save(slug, { ...state, funnel: { at: now.toISOString(), ...funnel } }, `funnel: ${G.funnelText(funnel)}`);
+          continue;
+        }
         if (state.stage !== 'validate' || !state.page) continue;
         const s = signals.get(slug) ?? { views: 0, uniqueVisitors: 0, signups: 0 };
         const prev = state.signals;
@@ -434,6 +433,7 @@ async function tick({ forceDaily = false } = {}) {
         liveUrl: pstate.live[slug].url, legal: pstate.legal[slug].found,
         launchPosts: Array.isArray(launchLog?.posts) ? launchLog.posts.length : 0,
         signups: signals.get(slug)?.signups ?? state.signals?.signups ?? 0,
+        activations: state.funnel?.all?.activate ?? 0,
         audit: pstate.audit[slug]?.result ?? null,
       });
       if (!REV.sameChecklist(state.launch, checklist)) save(slug, { ...P.readState(dir), launch: { ...checklist, updatedAt: now.toISOString() } }, `launch checklist ${checklist.done}/${checklist.total}${checklist.next ? `, next: ${checklist.next.label}` : ''}`);
