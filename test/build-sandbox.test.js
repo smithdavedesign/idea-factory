@@ -286,7 +286,12 @@ test('go-live: one launch-readiness run in the sandbox, the broker gets the Verc
   assert.deepEqual(state.milestonesDone, ['M1']);
   const p = B.goLivePrompt('demo', { price: '$9/month', signalUrl: 'https://repohq.vercel.app/api/ideas/signal', provision: 'file' });
   assert.match(p, /JSON-LD \(SoftwareApplication, with an Offer for \$9\/month\)/);
-  assert.match(p, /POST JSON \{"slug": "demo", "kind": "view"/);
+  assert.match(p, /POST JSON \{"slug": "demo", "kind": "<kind>"/);
+  for (const kind of ['visit', 'activate', 'checkout']) assert.match(p, new RegExp(`- "${kind}" `), `the beacon sends ${kind}`);
+  assert.match(p, /navigator\.webdriver/, 'bots and screenshot runs are not visitors');
+  assert.match(p, /repohq:notrack/, "the owner's own browser can opt out");
+  assert.match(p, /VERCEL_ENV isn't "production"/, 'previews send nothing');
+  assert.match(p, /The privacy page names the three events/);
   assert.match(p, /STRIPE_PAYMENT_LINK env var .* hidden when the variable is unset/);
   assert.match(p, /request "Stripe payment link for demo: \$9\/month, per REVENUE\.md"/);
   assert.match(B.goLivePrompt('demo', {}), /no plan with a price yet: skip payments/);

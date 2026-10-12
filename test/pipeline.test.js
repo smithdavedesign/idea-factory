@@ -92,6 +92,25 @@ test('validation windows and the weekly build cap', () => {
   assert.equal(P.buildsThisWeek([{ build: { at: '2026-10-18T00:00:00Z' } }, { build: { at: '2026-10-01T00:00:00Z' } }, {}], now), 1);
 });
 
+test('the weekly cap counts roadmap builds only', () => {
+  const at = '2026-10-18T00:00:00Z';
+  assert.equal(P.buildsThisWeek([{ build: { at, milestone: 'MVP' } }, { build: { at, milestone: 'GOLIVE' } }, { build: { at, milestone: 'GROWTH' } }], now), 1, 'go-live and growth builds have their own caps');
+  assert.equal(P.isRoadmapBuild('M2'), true);
+  assert.equal(P.isRoadmapBuild(undefined), true, 'old records without a milestone were M1 builds');
+  assert.equal(P.isRoadmapBuild('GOLIVE'), false);
+});
+
+test('new builds wait until a focus product has traction (policy.build.startNew false)', () => {
+  const held = { build: { startNew: false }, growth: { focus: ['tb'], minVisitorsPerWeek: 50 } };
+  assert.equal(P.newBuildsHeld(held, [['tb', { stage: 'live' }]]), true, 'no funnel yet: held');
+  assert.equal(P.newBuildsHeld(held, [['tb', { funnel: { d7: { visit: 49 } } }]]), true);
+  assert.equal(P.newBuildsHeld(held, [['tb', { funnel: { d7: { visit: 50 } } }]]), false, 'a focus product with traction lifts the hold');
+  assert.equal(P.newBuildsHeld(held, [['other', { funnel: { d7: { visit: 500 } } }]]), true, 'only focus products count');
+  assert.equal(P.newBuildsHeld({ build: {} }, []), false, 'without the setting nothing is held');
+  assert.equal(policy.build.startNew, false, "David's call on 2026-10-12: distribution before more MVPs");
+  assert.ok(policy.growth.focus.includes('tiebreak'));
+});
+
 test('state records round-trip and reject unknown stages', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'state-'));
   assert.deepEqual(P.readState(dir), { stage: 'idea' });

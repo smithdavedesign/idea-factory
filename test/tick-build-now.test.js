@@ -49,6 +49,8 @@ function fakeSql(strings, ...values) {
     return Promise.resolve([]);
   }
   if (/FROM repositories WHERE full_name = ANY/.test(q)) return Promise.resolve(db.repos || []);
+  if (/FROM idea_signals GROUP BY slug, kind/.test(q)) return Promise.resolve(db.funnelRows || []);
+  if (/AS host/.test(q)) return Promise.resolve(db.referrerRows || []);
   return Promise.resolve([]); // decisions, seeds, signals, ideas sync, heartbeat: nothing to do here
 }
 
@@ -73,6 +75,8 @@ const stubs = {
   '../lib/events': { emit: (e) => emitted.push(e) },
   '@neondatabase/serverless': { neon: () => fakeSql },
   './idea-build': { ...realBuild, buildOne: async (slug, opts) => { builds.push({ slug, ...opts }); return { slug, ...buildResult }; } },
+  // idea-review reads the real record (not IDEA_PIPELINE_DATA): a test that forces the daily steps reviews nothing.
+  './idea-review': { pendingSlugs: () => [], reviewOne: async () => ({ ok: false, reason: 'not in tests' }) },
 };
 const realLoad = Module._load;
 Module._load = function (request, parent, ...rest) {
@@ -101,7 +105,7 @@ process.env.IDEA_DATABASE_URL = 'postgres://fake';
 process.env.HOME = HOME;
 // The launch checklist probes live URLs: never reach the network from tests.
 globalThis.fetch = async () => ({ status: 404 });
-const { tick } = require('../bin/idea-pipeline');
+const { tick, policy } = require('../bin/idea-pipeline');
 
 function idea(slug, state) {
   const dir = path.join(DATA, 'ideas', slug);
@@ -118,6 +122,8 @@ test.beforeEach(() => {
   builds.length = 0; sent.length = 0; revenueRuns.length = 0; gh.prs = {}; gh.files = ''; gh.edits = []; gh.homepage = ''; vercelOut.ls = ''; vercelOut.inspect = '';
   globalThis.fetch = async () => ({ status: 404 });
   buildResult = { ok: true, milestone: 'M1', prUrl: 'https://github.com/o/pr-x/pull/1', testsPassing: true, engine: 'claude', model: 'claude-opus-5-5' };
+  // These tests build new ideas in the weekly slot; the new-build hold (policy.build.startNew) has its own test.
+  policy.build.startNew = true;
 });
 test.after(() => { Module._load = realLoad; fs.rmSync(DATA, { recursive: true, force: true }); fs.rmSync(HOME, { recursive: true, force: true }); });
 
@@ -336,4 +342,66 @@ test('a merged build PR is logged ok, so a failure from when it opened stops sho
   assert.ok(ok, JSON.stringify(emitted.map((e) => [e.component, e.event, e.status])));
   assert.equal(ok.message, 'pr-m: MVP (M1, M2) PR merged https://github.com/o/pr-m/pull/1');
   assert.deepEqual(ok.subject, { idea: 'pr-m' });
+});
+
+test("the daily steps run once a day: a later write of the pipeline state keeps today's date", async () => {
+  // Daily steps due; then step 5c writes a road-to-revenue plan, which writes the pipeline state again.
+  idea('pr-d', { stage: 'building', repo: 'https://github.com/o/pr-d', milestonesDone: ['M1', 'M2'], golive: { mergedAt: 'x' }, build: { milestone: 'GOLIVE', status: 'merged' } });
+  fs.writeFileSync(path.join(DATA, '.pipeline-state.json'), JSON.stringify({ lastDaily: '2000-01-01' }));
+  db = { requests: [], startsLast24h: 0, log: [] };
+  const out = await tick({ forceDaily: true });
+  assert.equal(out.daily, true);
+  assert.deepEqual(revenueRuns, ['pr-d'], 'the plan was written after the daily steps');
+  const ps = JSON.parse(fs.readFileSync(path.join(DATA, '.pipeline-state.json'), 'utf8'));
+  assert.equal(ps.lastDaily, new Date().toLocaleDateString('en-CA'), 'otherwise the daily steps run again on the next tick');
+});
+
+test('a go-live PR on a live product is followed: its merge is recorded and the product stays live', async () => {
+  idea('pr-l', { stage: 'live', repo: 'https://github.com/o/pr-l', milestonesDone: ['M1', 'M2'], build: { milestone: 'GOLIVE', milestones: [], status: 'pr-open', prUrl: 'https://github.com/o/pr-l/pull/7' } });
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-l', 'revenue.json'), '{}');
+  gh.prs['https://github.com/o/pr-l/pull/7'] = 'MERGED';
+  db = { requests: [], startsLast24h: 0, log: [] };
+  await tick();
+  const s = readState('pr-l');
+  assert.equal(s.build.status, 'merged');
+  assert.equal(s.golive.prUrl, 'https://github.com/o/pr-l/pull/7');
+  assert.equal(s.stage, 'live');
+});
+
+test('while new builds are held, an approved idea waits but a started MVP carries on', async () => {
+  policy.build.startNew = false; // growth.focus is tiebreak, which has no traction in this record
+  idea('fresh', { stage: 'repo', repo: 'https://github.com/o/fresh', ownerApproved: true });
+  idea('started', { stage: 'building', repo: 'https://github.com/o/started', milestonesDone: ['M1'], build: { milestone: 'M1', status: 'merged' } });
+  fs.writeFileSync(path.join(DATA, 'ideas', 'started', 'revenue.json'), '{}');
+  db = { requests: [], startsLast24h: 0, log: [] };
+  await tick();
+  assert.deepEqual(builds, [], 'the approval waits for a focus product with traction');
+  await tick({ forceDaily: true });
+  assert.deepEqual(builds.map((b) => `${b.slug} ${b.milestone}`), ['started MVP'], 'the daily slot finishes what it started');
+});
+
+test("a built product's funnel is saved, and rewritten only when it changes; a demand test's signals are as before", async () => {
+  idea('pr-f', { stage: 'building', repo: 'https://github.com/o/pr-f', milestonesDone: ['M1', 'M2'], golive: { mergedAt: 'x' }, build: { milestone: 'GOLIVE', status: 'merged' } });
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-f', 'revenue.json'), '{}');
+  idea('pr-v', { stage: 'validate', page: { url: 'https://idea-pages/pr-v/' }, validation: { startedAt: new Date().toISOString(), decideAfter: new Date(Date.now() + 5 * 86_400_000).toISOString() } });
+  db = { requests: [], startsLast24h: 0, log: [],
+    funnelRows: [
+      { slug: 'pr-f', kind: 'view', events: 4, all_time: 2, d7: 2, prev7: 0 },
+      { slug: 'pr-f', kind: 'reach', events: 4, all_time: 2, d7: 2, prev7: 0 },
+      { slug: 'pr-v', kind: 'view', events: 5, all_time: 3, d7: 3, prev7: 0 },
+      { slug: 'pr-v', kind: 'signup', events: 1, all_time: 1, d7: 1, prev7: 0 },
+      { slug: 'pr-v', kind: 'reach', events: 5, all_time: 3, d7: 3, prev7: 0 },
+    ],
+    referrerRows: [{ slug: 'pr-f', host: 'news.ycombinator.com', visitors: 2 }] };
+  const out = await tick();
+  assert.deepEqual(out.errors, []);
+  const f = readState('pr-f').funnel;
+  assert.deepEqual(f.d7, { visit: 2, signup: 0, activate: 0, checkout: 0 });
+  assert.deepEqual(f.referrers7d, [{ host: 'news.ycombinator.com', visitors: 2 }]);
+  assert.ok(out.changes.includes('pr-f: funnel: 2 visitors this week (0 the week before), 0 activations, 0 Buy clicks'), out.changes.join('\n'));
+  const v = readState('pr-v');
+  assert.deepEqual([v.signals.views, v.signals.uniqueVisitors, v.signals.signups], [5, 3, 1]);
+  assert.equal(v.funnel, undefined, 'a demand test has no funnel');
+  const again = await tick();
+  assert.ok(!again.changes.some((c) => c.startsWith('pr-f: funnel')), 'unchanged: not rewritten');
 });

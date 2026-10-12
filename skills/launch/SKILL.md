@@ -52,7 +52,8 @@ From `/Users/davidsmith/idea-factory/ideas/<slug>/`:
 Then get the live picture: the MCP tool `get_idea_pipeline` with the slug (repohq server) gives
 visitors, signups, days left, visitors by source, posts already logged and, for a built idea, its road
 to revenue (`state.launch`). The go-live build adds a visit beacon, so a live product's visitors count too. If the tool isn't
-available, use `state.json` → `signals` and `launch-log.json`.
+available, use `state.json` → `signals` (a demand test) or `funnel` (a built product: visitors, activations and Buy clicks
+for the last 7 days, the 7 before and all time, and the week's top sources), and `launch-log.json`.
 
 ## 2. Check and widen the channels
 

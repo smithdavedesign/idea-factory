@@ -10,7 +10,8 @@
 //  0c. Ideas David sent are researched and reviewed now (Claude Pro, policy.research.seeded), and the
 //      verdict goes back where he sent it (lib/seeds.js). The one model call outside the daily steps.
 //   1. Notion → state: David's own Status changes win (Pass, Build, Validate, Live).
-//   2. Demand signals from RepoHQ (idea_signals) → state + Notion (Visitors, Signups).
+//   2. Demand signals from RepoHQ (idea_signals) → state + Notion (Visitors, Signups); each built
+//      product's funnel (visits, activations, Buy clicks, sources) → state.funnel (lib/growth.js).
 //   3. Validation decisions (policy.json): build / pass / extend. Build → Notion "Build".
 //   4. Promote: "Build" rows get their private repo (stage repo).
 //   5. Revenue: MRR and lifecycle of idea repos from RepoHQ; RepoHQ marks new idea repos "building".
@@ -46,6 +47,7 @@ const S = require('../lib/seeds');
 const REV = require('../lib/revenue');
 const LF = require('../lib/launch-facts');
 const GL = require('../lib/golive');
+const G = require('../lib/growth');
 
 const ROOT = path.resolve(__dirname, '..');
 // The record and the pipeline's own files. IDEA_PIPELINE_DATA points them elsewhere (the tick tests).
@@ -108,15 +110,6 @@ function dbSql() {
   const { neon } = require('@neondatabase/serverless');
   const url = process.env.IDEA_DATABASE_URL || execFileSync('security', ['find-generic-password', '-s', 'repohq-factory-database-url', '-w'], { encoding: 'utf8' }).trim();
   return neon(url);
-}
-
-async function signalsBySlug(sql) {
-  const rows = await sql`SELECT slug,
-      count(*) FILTER (WHERE kind = 'view')::int AS views,
-      count(DISTINCT ip_hash) FILTER (WHERE kind = 'view')::int AS unique_visitors,
-      count(DISTINCT email) FILTER (WHERE kind = 'signup')::int AS signups
-    FROM idea_signals GROUP BY slug`;
-  return new Map(rows.map((r) => [r.slug, { views: r.views, uniqueVisitors: r.unique_visitors, signups: r.signups }]));
 }
 
 async function notionProps(row, state) {
@@ -326,14 +319,20 @@ async function tick({ forceDaily = false } = {}) {
     }
   }
 
-  // 2–3. Demand signals and validation decisions.
+  // 2–3. Demand signals and validation decisions, and each built product's funnel (lib/growth.js).
   let signals = new Map();
   if (sql) {
     try {
-      signals = await signalsBySlug(sql);
+      const funnels = await R.funnelBySlug(sql);
+      signals = new Map([...funnels].map(([slug, row]) => [slug, G.signalsOf(row)]));
       for (const slug of ideaDirs()) {
         const dir = path.join(IDEAS, slug);
         const state = P.readState(dir);
+        if (G.tracksFunnel(state, funnels.get(slug))) {
+          const funnel = G.funnelOf(funnels.get(slug), state);
+          if (!G.sameFunnel(state.funnel, funnel)) save(slug, { ...state, funnel: { at: now.toISOString(), ...funnel } }, `funnel: ${G.funnelText(funnel)}`);
+          continue;
+        }
         if (state.stage !== 'validate' || !state.page) continue;
         const s = signals.get(slug) ?? { views: 0, uniqueVisitors: 0, signups: 0 };
         const prev = state.signals;
@@ -434,6 +433,7 @@ async function tick({ forceDaily = false } = {}) {
         liveUrl: pstate.live[slug].url, legal: pstate.legal[slug].found,
         launchPosts: Array.isArray(launchLog?.posts) ? launchLog.posts.length : 0,
         signups: signals.get(slug)?.signups ?? state.signals?.signups ?? 0,
+        activations: state.funnel?.all?.activate ?? 0,
         audit: pstate.audit[slug]?.result ?? null,
       });
       if (!REV.sameChecklist(state.launch, checklist)) save(slug, { ...P.readState(dir), launch: { ...checklist, updatedAt: now.toISOString() } }, `launch checklist ${checklist.done}/${checklist.total}${checklist.next ? `, next: ${checklist.next.label}` : ''}`);
@@ -467,7 +467,7 @@ async function tick({ forceDaily = false } = {}) {
       const dir = path.join(IDEAS, slug);
       const s = P.readState(dir);
       const reason = String(e && (e.stderr || e.message) || e).slice(0, 300);
-      if (s.build?.status === 'running') P.writeState(dir, { ...s, stage: milestone === 'M1' ? 'repo' : 'building', build: { ...s.build, status: 'failed', reason } });
+      if (s.build?.status === 'running') P.writeState(dir, { ...s, stage: s.stage === 'live' ? 'live' : milestone === 'M1' ? 'repo' : 'building', build: { ...s.build, status: 'failed', reason } });
       r = { ok: false, slug, milestone, reason };
     }
     changed.add(slug);
@@ -519,9 +519,10 @@ async function tick({ forceDaily = false } = {}) {
 
   // 4a. Milestone PRs merged or closed (every tick, so the next build is offered right away). A merge
   // marks the milestones that build completed as done (an MVP run's `milestones`, else its milestone).
+  // Live products too: step 5 keeps them "live" while a go-live or growth PR is open.
   for (const slug of ideaDirs()) {
     const s = P.readState(path.join(IDEAS, slug));
-    if (s.stage !== 'building' || s.build?.status !== 'pr-open' || !s.build.prUrl) continue;
+    if (!['building', 'live'].includes(s.stage) || s.build?.status !== 'pr-open' || !s.build.prUrl) continue;
     let prState = null;
     try { prState = JSON.parse(execFileSync('gh', ['pr', 'view', s.build.prUrl, '--json', 'state'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })).state; } catch { continue; }
     const m = s.build.milestone || 'M1';
@@ -541,10 +542,11 @@ async function tick({ forceDaily = false } = {}) {
   }
 
   // 4b. An idea David approved (Notion Build, or the Ideas page) is built now, not at the next daily
-  // run: approving is the signal he wants it. Still at most policy.build.maxPerWeek.
+  // run: approving is the signal he wants it. Still at most policy.build.maxPerWeek, and not while new
+  // builds are held (policy.build.startNew, P.newBuildsHeld).
   if (!dailyNow && !manualRan) {
     const all = ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]);
-    const approved = byRevenue(all.filter(([, s]) => s.ownerApproved && buildable(s)));
+    const approved = P.newBuildsHeld(policy, all) ? [] : byRevenue(all.filter(([, s]) => s.ownerApproved && buildable(s)));
     if (approved.length && P.buildsThisWeek(all.map(([, s]) => s), now) < policy.build.maxPerWeek) await startBuild(approved[0][0], mvpMode ? 'MVP' : 'M1', mvpMode ? { mvp: true } : {});
   }
 
@@ -581,13 +583,18 @@ async function tick({ forceDaily = false } = {}) {
     const fresh = ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]);
     const nextOf = (slug, s) => nextMilestone(fs.existsSync(path.join(IDEAS, slug, 'ROADMAP.md')) ? fs.readFileSync(path.join(IDEAS, slug, 'ROADMAP.md'), 'utf8') : '', s.milestonesDone || []);
     // Closest to money first (revenueScore); an MVP run builds everything left, else the next milestone.
-    const queue = byRevenue([...fresh.filter(([, s]) => buildable(s)), ...fresh.filter(([slug, s]) => s.stage === 'building' && s.build?.status === 'merged' && nextOf(slug, s))])
+    // While new builds are held (P.newBuildsHeld), only ideas already being built are continued.
+    const firstBuilds = P.newBuildsHeld(policy, fresh) ? [] : fresh.filter(([, s]) => buildable(s));
+    const queue = byRevenue([...firstBuilds, ...fresh.filter(([slug, s]) => s.stage === 'building' && s.build?.status === 'merged' && nextOf(slug, s))])
       .map(([slug, s]) => [slug, mvpMode ? 'MVP' : (buildable(s) ? 'M1' : nextOf(slug, s))]);
     if (!manualRan && queue.length && P.buildsThisWeek(fresh.map(([, s]) => s), now) < policy.build.maxPerWeek) {
       const [slug, milestone] = queue[0];
       await startBuild(slug, milestone, milestone === 'MVP' ? { mvp: true } : {});
     }
-    fs.writeFileSync(STATE_FILE, JSON.stringify({ ...pstate, lastDaily: now.toLocaleDateString('en-CA') }));
+    // In memory too: a later writePstate() (the revenue cap, the tick's failure flag) would otherwise write
+    // the old date back, and the daily steps would run again on the next tick.
+    pstate.lastDaily = now.toLocaleDateString('en-CA');
+    writePstate();
   }
 
   // 5c. The road-to-revenue plan for an idea whose M1 is merged and that has none yet: one per tick, only
@@ -632,7 +639,8 @@ async function tick({ forceDaily = false } = {}) {
   return out;
 }
 
-module.exports = { ownerOverride, dailyDue, buildable, STAGE_TO_STATUS, tick };
+// `policy` is exported so the tick tests can change a setting (policy.build.startNew) for one test.
+module.exports = { ownerOverride, dailyDue, buildable, STAGE_TO_STATUS, tick, policy };
 
 if (require.main === module) {
   const [cmd, ...rest] = process.argv.slice(2);
