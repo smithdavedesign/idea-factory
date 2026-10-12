@@ -43,6 +43,10 @@ test('a manual start builds M1 of an approved idea, the next milestone after a m
   assert.deepEqual(B.manualBuildTarget({ stage: 'building', repo, milestonesDone: ['M1'], build: { milestone: 'M2', status: 'closed' } }, ROADMAP), { ok: true, milestone: 'M2' });
   assert.match(B.manualBuildTarget({ stage: 'building', repo, milestonesDone: ['M1', 'M2'], build: { milestone: 'M2', status: 'merged' } }, ROADMAP).reason, /every roadmap milestone/);
   assert.match(B.manualBuildTarget({ stage: 'live', repo }, ROADMAP).reason, /nothing to build/);
+  // A go-live or growth build isn't on the roadmap: after one, Start build now goes back to the roadmap, live products too.
+  assert.deepEqual(B.manualBuildTarget({ stage: 'live', repo, milestonesDone: ['M1'], build: { milestone: 'GOLIVE', status: 'failed' } }, ROADMAP), { ok: true, milestone: 'M2' });
+  assert.match(B.manualBuildTarget({ stage: 'live', repo, milestonesDone: ['M1', 'M2'], build: { milestone: 'GOLIVE', status: 'merged' } }, ROADMAP).reason, /every roadmap milestone/);
+  assert.match(B.manualBuildTarget({ stage: 'building', repo, milestonesDone: ['M1', 'M2'], build: { milestone: 'GROWTH', status: 'closed' } }, ROADMAP).reason, /every roadmap milestone/);
 });
 
 test('the builder plans and self-reviews with gstack sections read from the installed copy', () => {
@@ -70,7 +74,7 @@ test('the builder plans and self-reviews with gstack sections read from the inst
 test('manual builds have their own cap: the weekly slot ignores them', () => {
   const now = new Date('2026-10-11T12:00:00Z');
   const at = '2026-10-10T12:00:00Z';
-  assert.equal(P.buildsThisWeek([{ build: { at } }, { build: { at, manual: true } }], now), 1);
+  assert.equal(P.buildsThisWeek([{ build: { at } }, { build: { at, manual: true } }, { build: { at, milestone: 'GOLIVE' } }], now), 1, 'nor go-lives');
 });
 
 test('PR and Slack name the engine; a failed manual build says so', () => {

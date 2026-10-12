@@ -212,7 +212,11 @@ ${note}
 1. Search and sharing: every public page gets a unique <title> and meta description, Open Graph and Twitter card tags with a 1200×630 share image, a canonical URL, and JSON-LD (SoftwareApplication${price ? `, with an Offer for ${price}` : ''}). Add robots.txt (allow indexing, point at the sitemap) and sitemap.xml listing the public pages. Use the framework's own conventions (e.g. Next.js metadata, opengraph-image, robots.ts, sitemap.ts). The share image is generated at build time or drawn with code; never copy an image from the web.
 2. A /privacy page and a /terms page, plain and honest: what the product collects (say "nothing" if that's true), cookies (none unless needed), the visit beacon below, and contact through the GitHub repo's issues. Terms: no warranty${price ? `, and the price and refund line from REVENUE.md` : ''}. Link both from the footer.
 3. Payment: ${price ? `a clear "Buy" button (or "Get Pro") linking to the URL in the STRIPE_PAYMENT_LINK env var (NEXT_PUBLIC_STRIPE_PAYMENT_LINK if it must reach the browser), hidden when the variable is unset.` : 'no plan with a price yet: skip payments.'} Never hard-code a payment link or key.
-4. Visit beacon: on the home page, POST JSON {"slug": "${slug}", "kind": "view", "referrer": document.referrer || null} to ${signalUrl || 'the RepoHQ signal URL'} (fire-and-forget, keepalive, no cookies), so RepoHQ counts real visitors. Say so on the privacy page.
+4. Visit beacon, so RepoHQ counts real use: POST JSON {"slug": "${slug}", "kind": "<kind>", "referrer": <referrer>} to ${signalUrl || 'the RepoHQ signal URL'} (fire-and-forget, keepalive, no cookies) for three events:
+   - "visit" on every public page, once per browser session (sessionStorage);
+   - "activate" the first time someone uses the product's core action, once per browser (localStorage); name that action in LAUNCH-READY.md;
+   - "checkout" when someone clicks Buy.
+   The referrer is document.referrer only when it comes from another site (its origin differs from location.origin), else null, so share links never leave the page. Send nothing when navigator.webdriver is true (bots, screenshot runs), on preview deployments (Vercel's VERCEL_ENV isn't "production"; Next.js sees it as NEXT_PUBLIC_VERCEL_ENV), or when localStorage "repohq:notrack" is set (the owner's browser). The privacy page names the three events.
 5. Deployment: ${provision === 'file' ? `you can't provision from here; write \`.provision\` at the repo root with these lines, and the pipeline runs them through the credential broker after the build:
 ${provisionLines.map((l) => `  ${l}`).join('\n')}` : `run ${provisionLines.map((l) => `\`${PROVISION} ${l}\``).join(' and ')}.`}
 6. Keep \`npm test\` passing, and add tests for what you can: the pages render, robots.txt and the sitemap exist, and the Buy button is hidden without the env var.
@@ -273,8 +277,10 @@ function manualBuildTarget(state, roadmap = '') {
     if (!approved) return { ok: false, reason: 'not approved: approve the build first' };
     return { ok: true, milestone: b.status === 'failed' && b.milestone ? b.milestone : 'M1' };
   }
-  if (state.stage === 'building' && ['merged', 'failed', 'closed'].includes(b.status)) {
-    if (b.status !== 'merged') return { ok: true, milestone: b.milestone || 'M1' };
+  // A live product can still have roadmap milestones left. A go-live or growth build isn't on the roadmap,
+  // so after one (merged or not) the next roadmap milestone is what's left to build.
+  if (['building', 'live'].includes(state.stage) && ['merged', 'failed', 'closed'].includes(b.status)) {
+    if (b.status !== 'merged' && P.isRoadmapBuild(b.milestone)) return { ok: true, milestone: b.milestone || 'M1' };
     const next = nextMilestone(roadmap, state.milestonesDone || []);
     return next ? { ok: true, milestone: next } : { ok: false, reason: 'every roadmap milestone is merged' };
   }
@@ -357,15 +363,18 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
   for (const f of ['REVIEW.md', 'REVENUE.md']) if (fs.existsSync(path.join(ideaDir, f)) && !fs.existsSync(path.join(work, f))) fs.copyFileSync(path.join(ideaDir, f), path.join(work, f));
 
   const now = new Date();
-  const advice = rateMilestone(ideaDir, slug, planned[0]);
+  // The tier advisor rates roadmap milestones; a go-live has none to rate.
+  const advice = golive ? null : rateMilestone(ideaDir, slug, planned[0]);
   const engines = engineOrder(advice?.difficulty ?? null, policy.build.advisor || 'report');
-  P.writeState(ideaDir, { ...state, stage: 'building', build: { ...(state.build || {}), milestone, ...(mvp ? { planned } : {}), status: 'running', at: now.toISOString(), manual, ...(advice ? { advice } : {}) } }, now);
+  // A live product stays live while it's being improved (step 4a still follows its PR).
+  const stageNow = state.stage === 'live' ? 'live' : 'building';
+  P.writeState(ideaDir, { ...state, stage: stageNow, build: { ...(state.build || {}), milestone, ...(mvp ? { planned } : {}), status: 'running', at: now.toISOString(), manual, ...(advice ? { advice } : {}) } }, now);
   // "Running now" on RepoHQ's Agents page comes from this event until the build's own ok/fail lands.
   emit({ component: 'build', event: milestone, status: 'start', subject: { idea: slug }, message: `${mvp ? `MVP (${rangeText(planned)})` : milestone} started${manual ? ' (Start build now)' : ''} on ${policy.build.model || 'claude'}${policy.build.effort ? ` at ${policy.build.effort}` : ''}`,
     data: { milestone, manual: !!manual, model: policy.build.model || null, effort: policy.build.effort || null, timeoutMinutes: mvp ? mvpPolicy.maxMinutes : policy.build.timeoutMinutes, ...(mvp ? { planned } : {}) } });
   const ownerNote = String(note || '').trim() || (state.ownerDecision?.decision === 'build' ? state.ownerDecision.note : '');
   const failBuild = (reason, data = {}) => {
-    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: (state.milestonesDone || []).length ? 'building' : 'repo', build: { ...(state.build || {}), milestone, ...(mvp ? { planned } : {}), status: 'failed', at: now.toISOString(), manual: !!manual, reason } });
+    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: state.stage === 'live' ? 'live' : (state.milestonesDone || []).length ? 'building' : 'repo', build: { ...(state.build || {}), milestone, ...(mvp ? { planned } : {}), status: 'failed', at: now.toISOString(), manual: !!manual, reason } });
     emit({ component: 'build', event: milestone, status: 'fail', subject: { idea: slug }, message: reason, durationMs: Date.now() - now.getTime(), data: { milestone, manual: !!manual, ...data } });
     return { ok: false, slug, milestone, reason, state: s };
   };
@@ -479,7 +488,7 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
       prUrl = sh('gh', ['pr', 'create', '--draft', '--base', 'main', '--head', branch, '--title', title, '--body', body], work);
     }
     // On merge, the pipeline marks `milestones` done: the ones that completed, not every one attempted.
-    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'building', build: { ...(state.build || {}), milestone, milestones: golive ? [] : mvp ? completed : [milestone], ...(mvp ? { planned, stopped } : {}), status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : policy.build.effort || null, manual: !!manual, sandbox: ws.kind, at: now.toISOString(), ...(advice ? { advice } : {}) } });
+    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: stageNow, build: { ...(state.build || {}), milestone, milestones: golive ? [] : mvp ? completed : [milestone], ...(mvp ? { planned, stopped } : {}), status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : policy.build.effort || null, manual: !!manual, sandbox: ws.kind, at: now.toISOString(), ...(advice ? { advice } : {}) } });
     emit({ component: 'build', event: milestone, status: testsPassing ? 'ok' : 'fail', subject: { idea: slug, pr: prUrl || undefined }, durationMs: Date.now() - now.getTime(), data: { ...usage, testsPassing, prUrl, repaired, shotsReminded },
       message: `${mvp ? `MVP (${completed.join(', ') || 'nothing complete'}${stopped ? `; stopped: ${stopped.slice(0, 120)}` : ''})` : milestone} ${prUrl ? `PR ${prUrl}` : 'built locally'}, tests ${testsPassing ? 'passing' : 'failing'}, engine ${run.engine}${advice ? `, advisor ${advice.difficulty}` : ''}` });
     return { ok: true, slug, milestone, prUrl, testsPassing, engine: run.engine, model: run.info.model, builderReason: run.reason, state: s, ...(mvp ? { planned, completed, stopped } : {}) };
