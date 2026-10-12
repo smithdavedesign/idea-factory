@@ -1,0 +1,91 @@
+{
+  "verdict": "validate",
+  "score": 6,
+  "summary": "Real, dated trigger (EU PPWR applies since 12 Aug 2026; Etsy now asks for EPR IDs but tells sellers to work out the rules themselves), and a $29 plan is cheap against 190 EUR/country representatives. Demand for a plan (vs. having it done for them) is unproven, so it earns only a two-week waitlist test.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 4,
+      "evidence": "No evidence anyone pays a third party for a plan. Evidence is pain and confusion: Etsy's petition post says sellers must determine requirements themselves; UK Business Forums and Etsy community threads show conflicting advice (400 EUR fee vs. 'file yourself'), though dated. Representatives at 190 EUR/yr and the EUReady app show adjacent spend. Interest, not demand."
+    },
+    "statusQuo": {
+      "score": 7,
+      "evidence": "Real workaround: free generic guides (Listadum), forum threads, paying a representative per country, or a spreadsheet. The cost of the status quo is concrete (570+ EUR/yr for 3 countries; fines up to 100k EUR DE, 30k EUR FR, vendor-sourced). Sellers are being asked for IDs by Etsy now, so inaction has a consequence."
+    },
+    "specificity": {
+      "score": 5,
+      "evidence": "Buyer is a category with a moment: non-EU Etsy/Shopify owner, $20k-$300k/yr, 2-6 EU countries, who just got the Etsy EPR prompt. No named person yet; reachable via Etsy seller forums and subreddits, but self-promotion risk."
+    },
+    "wedge": {
+      "score": 7,
+      "evidence": "Narrow and shippable: Germany and France (plus ES, IT) rules table with a pure buildPlan function, no accounts or DB. A free calculator lead magnet fits the test. The ledger, reminders and pay gate can wait."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "Rules churn helps a maintained source of truth, but an EU simplification, a platform pay-on-behalf scheme, or the Etsy petition could shrink the problem within a year. The Commission proposal to suspend the representative requirement is not adopted. Likely a 1-2 year window, not a durable business."
+    }
+  },
+  "premises": [
+    "Small non-EU sellers must act on EPR now: supported by PPWR timing and Etsy's ID collection, but enforcement against micro-sellers is unproven.",
+    "They want to understand and decide (which countries, what cost, whether to stop shipping) rather than have someone do it for them: unsupported; the research itself flags this as open.",
+    "A neutral $29 plan is worth paying for next to free guides: unproven; a free Listadum article covers much of the generic content.",
+    "A solo dev can keep the rules table accurate: plausible for 4 countries, a growing burden beyond that."
+  ],
+  "alternatives": [
+    "Minimal: free per-country calculator and a one-page checklist with an email capture, monetised later by affiliate referral to a representative or scheme operator.",
+    "Ideal: the full packpass with questionnaire, rules table for 8 countries, ledger, reminders and Stripe paywall: more work and more maintenance before any demand proof.",
+    "Lateral: a paid, dated 'EU EPR rules digest' newsletter or Notion template for Etsy/Shopify sellers, with no app to run.",
+    "Extend an existing repo: feedwarden and permitly in David's portfolio share the 'rules change, alert the small operator' pattern, so the rules-table and diff scaffold can be reused."
+  ],
+  "wedge": "A free Germany + France questionnaire that outputs an ordered checklist and a cost range for a US/UK Etsy self-shipper, with a $29 waitlist for the full multi-country plan and ID ledger.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js on Vercel Hobby, rules.json in the repo, a pure buildPlan function, no database or accounts. One test proves M1: buildPlan with countries DE, FR, ES totals the sum of per-country mins, and every rules row has an https source plus an ISO verified date. The effort is in verifying the rules, not the code. A not-legal-advice disclaimer is required."
+  },
+  "risks": [
+    "Legal-advice liability and stale rows are a trust failure; every row needs a source and a last-verified date.",
+    "Vendor-sourced cost figures conflict, so show ranges only.",
+    "Buyers may want the registration done, not a plan; the plan alone may not convert.",
+    "EU simplification or platform pay-on-behalf could end the need within a year.",
+    "Distribution: seller forums are hostile to promotion, and the buyers are scattered.",
+    "Free guides and Etsy's own help capture much of the generic value."
+  ],
+  "killCriteria": "Drop it if, after 14 days and about 200 targeted visitors, fewer than 10 sign up or click the $29 pre-pay (5%) and no one replies that they would pay; or if replies show sellers just stop shipping to the EU or only want a representative; or if the EU adopts the suspension or a platform takes over registration.",
+  "landing": {
+    "headline": "Etsy asked for your EU EPR number. Now what?",
+    "subhead": "Answer a few questions and get a country-by-country packaging registration plan with costs, labels and deadlines, for $29 instead of 190 EUR per country.",
+    "bullets": [
+      "Which EU countries you must register in, and in what order",
+      "A cost range per country, and a flag when shipping there stops being worth it",
+      "Labels you need to print (e.g. Triman and Info-tri for France)",
+      "A ledger of your LUCID, IDU and representative IDs with filing reminders"
+    ],
+    "cta": "Join the waitlist",
+    "audience": "Non-EU (US, UK, Canada, Australia) Etsy and Shopify shop owners who ship their own parcels to 2-6 EU countries."
+  },
+  "launch": {
+    "channels": [
+      {
+        "name": "r/Etsy",
+        "url": "https://www.reddit.com/r/Etsy/",
+        "why": "Sellers discussing Etsy's EU EPR prompts; ask before promoting."
+      },
+      {
+        "name": "r/EtsySellers",
+        "url": "https://www.reddit.com/r/EtsySellers/",
+        "why": "Active seller community asking about EU compliance."
+      },
+      {
+        "name": "Etsy Community forums",
+        "url": "https://community.etsy.com/",
+        "why": "Existing threads about EPR numbers and shipping to France and Germany."
+      },
+      {
+        "name": "Shopify Community",
+        "url": "https://community.shopify.com/",
+        "why": "Merchants already asking about LUCID and VerpackG registration."
+      }
+    ],
+    "post": "Etsy now asks for EPR numbers for France, Germany and Spain, but says sellers have to work out which rules apply. I'm trying to build a simple tool: you answer a few questions about where you ship and it gives you a checklist of what to register, roughly what it costs and what labels you need. It is information only, not legal advice, with sources. Early page: {url}. If you ship to the EU from outside it, what's the part you're most stuck on, and would you pay for a plan or would you rather have someone do the registration?"
+  }
+}

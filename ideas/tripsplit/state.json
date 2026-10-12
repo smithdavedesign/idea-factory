@@ -13,12 +13,6 @@
     "mrr": 0,
     "updatedAt": "2026-10-10T19:06:17.271Z"
   },
-  "localM1": {
-    "path": "work/tripsplit",
-    "branch": "m1",
-    "testsPassing": true,
-    "note": "built by the 2026-10-10 builder test (--no-push); review said pass, so not pushed"
-  },
   "launch": {
     "steps": [
       {

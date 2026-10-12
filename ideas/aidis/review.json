@@ -1,0 +1,53 @@
+{
+  "verdict": "pass",
+  "score": 3,
+  "summary": "Hawaii-only chatbot compliance is a tiny, unquantified market with no sign anyone will pay, and its valuable parts (suicide detection, guardian portal) are liability-heavy and not weekend builds. The M1 banner is trivial and proves nothing about demand.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 2,
+      "evidence": "Only a statute and two vendor case studies (Akia, Romaix) exist; the $29/month price is a guess. No payer, no outreach, and Act 248's scope for ordinary customer-service bots is unconfirmed."
+    },
+    "statusQuo": {
+      "score": 3,
+      "evidence": "Status quo is a disclaimer plus a 988 link, or DIY in 20-60 hours; generic widgets (Disclosed €19, Normis free) exist. Attestly's $500-2,000 is for broad platforms, not proof of willingness to pay here."
+    },
+    "specificity": {
+      "score": 2,
+      "evidence": "Buyer is a category (operators of conversational AI in Hawaii). No named person, role or consequence; the named firms are vendors, not customers."
+    },
+    "wedge": {
+      "score": 3,
+      "evidence": "Eight features across seven milestones. M1 is a disclaimer banner nobody pays for; the paid parts are liability-heavy. The honest wedge is a free checklist plus snippet and report template."
+    },
+    "futureFit": {
+      "score": 3,
+      "evidence": "More state chatbot laws make only a multi-state version viable, which is a different, crowded idea. A Hawaii-only product depends on one statute that may change."
+    }
+  },
+  "premises": [
+    "Act 248 creates real obligations for ordinary Hawaiian chatbot operators: unsupported, scope looks narrower",
+    "Operators will pay about $29/month instead of adding a disclaimer themselves: a guess",
+    "A widget can detect suicide ideation reliably enough to lean on legally: doubtful",
+    "The Hawaii market is big enough: no operator count in the research",
+    "A script tag can see chat content: it can't without an SDK or proxy integration"
+  ],
+  "alternatives": [
+    "Free static page: Act 248 checklist, disclosure snippet and DOH report template (S, tests interest)",
+    "Extend permitly/vendorfile into a multi-state chatbot-law tracker with an evidence log",
+    "Multi-state chatbot-safety SDK with audit logs (XL, crowded, high liability): not recommended"
+  ],
+  "wedge": "Act 248 checklist plus audit-log and annual-report generator for companion-style chatbot operators, with no detection or classifier claims.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Static JS widget on Vercel Hobby with localStorage; a Playwright test of the three M1 exit criteria. It proves the banner works, not demand. M2-M5 need NLP/moderation APIs and auth, which breaks zero cost and weekend scope."
+  },
+  "risks": [
+    "Liability for crisis-handling and compliance claims from a keyword list",
+    "Tiny unquantified market",
+    "Statute scope unclear and may be amended or challenged",
+    "Operators can comply with a prompt change and a disclaimer",
+    "Guardian portal needs age and parent verification a widget can't do"
+  ],
+  "killCriteria": "Drop it if after two weeks of a free checklist page there are fewer than 50 relevant visitors, fewer than 3 operators ask for the paid tool, or no operator confirms Act 248 applies to them."
+}

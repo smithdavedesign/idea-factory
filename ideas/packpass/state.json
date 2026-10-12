@@ -1,0 +1,20 @@
+{
+  "stage": "validate",
+  "review": {
+    "verdict": "validate",
+    "score": 6,
+    "summary": "Real, dated trigger (EU PPWR applies since 12 Aug 2026; Etsy now asks for EPR IDs but tells sellers to work out the rules themselves), and a $29 plan is cheap against 190 EUR/country representatives. Demand for a plan (vs. having it done for them) is unproven, so it earns only a two-week waitlist test.",
+    "at": "2026-10-12T16:35:12.170Z",
+    "notionAt": "2026-10-12T16:35:13.330Z"
+  },
+  "validation": {
+    "startedAt": "2026-10-12T16:33:05.029Z",
+    "decideAfter": "2026-10-26T16:33:05.029Z",
+    "extensions": 0
+  },
+  "updatedAt": "2026-10-12T16:33:05.029Z",
+  "page": {
+    "url": "https://idea-pages-livid.vercel.app/packpass/",
+    "deployedAt": "2026-10-12T16:33:05.029Z"
+  }
+}
