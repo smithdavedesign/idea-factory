@@ -283,6 +283,7 @@ test('go-live: one launch-readiness run in the sandbox, the broker gets the Verc
   const state = JSON.parse(fs.readFileSync(path.join(idea, 'state.json'), 'utf8'));
   assert.equal(state.build.milestone, 'GOLIVE');
   assert.deepEqual(state.build.milestones, [], 'nothing on the roadmap is marked done by a go-live');
+  assert.equal(state.build.beacon, 'funnel', 'go-lives now install the funnel beacon');
   assert.deepEqual(state.milestonesDone, ['M1']);
   const p = B.goLivePrompt('demo', { price: '$9/month', signalUrl: 'https://repohq.vercel.app/api/ideas/signal', provision: 'file' });
   assert.match(p, /JSON-LD \(SoftwareApplication, with an Offer for \$9\/month\)/);
