@@ -583,6 +583,38 @@ test("an agent's merge that breaks the live site's launch checks is reverted, an
   assert.deepEqual([s.growth.experiments[0].status, s.growth.experiments[0].decision], ['decided', 'revert']);
   assert.ok(emitted.some((e) => e.component === 'autonomy' && e.event === 'revert' && e.status === 'fail'), 'a revert alerts Slack');
   assert.ok(out.changes.some((c) => c.startsWith(`pr-v: reverted its own merge ${url}`)), out.changes.join('\n'));
+
+  // The revert deployed: the next tick audits again, and the alert is closed ("recovered" on Slack), once.
+  const page = '<title>pr-v — a product</title><meta name="description" content="d"><meta property="og:image" content="/og.png">';
+  globalThis.fetch = async (u) => (u.startsWith('https://pr-v.vercel.app') ? { status: 200, text: async () => page } : { status: 404, text: async () => '' });
+  emitted.length = 0;
+  const after = await tick();
+  assert.ok(emitted.some((e) => e.component === 'autonomy' && e.event === 'revert' && e.status === 'ok'), emitted.map((e) => `${e.event} ${e.status}`).join(', '));
+  assert.ok(after.changes.includes('pr-v: the live site passes its launch checks again after the revert'), after.changes.join('\n'));
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(DATA, '.pipeline-state.json'), 'utf8')).revertAlerts, {});
+  emitted.length = 0;
+  await tick();
+  assert.ok(!emitted.some((e) => e.event === 'revert'), 'closed once');
+});
+
+test('a first-screen experiment the judge finds clearly worse is reverted, as news for the morning email, not an alert', async () => {
+  policy.autonomy.revert = true;
+  policy.growth.focus = ['pr-w'];
+  policy.growth.auto = false;
+  const url = 'https://github.com/o/pr-w/pull/4';
+  const e = { id: 'pr-w-20260901-landing', kind: 'landing', executor: 'build', metric: 'activate', hypothesis: 'A clearer first screen gets more people to try it.', baseline: 0.2, target: 0.3, windowDays: 14,
+    status: 'running', createdAt: '2026-09-01T00:00:00Z', startedAt: '2026-09-01T00:00:00Z', endsAt: '2026-09-15T00:00:00Z', prUrl: url };
+  liveProduct('pr-w', { growth: { experiments: [e] } });
+  // 20 of 100 visitors activated before it, 5 of 100 after: 75% worse.
+  db = { requests: [], startsLast24h: 0, log: [], window: (from, to) => (to === '2026-09-01T00:00:00Z' ? [{ kind: 'reach', n: 100 }, { kind: 'activate', n: 20 }] : [{ kind: 'reach', n: 100 }, { kind: 'activate', n: 5 }]) };
+  emitted.length = 0;
+  await tick();
+  assert.deepEqual(gh.calls, ['git revert', 'pr create --base', 'pr merge revert-9']);
+  const decided = readState('pr-w').growth.experiments[0];
+  assert.deepEqual([decided.status, decided.decision, decided.reverted.url], ['decided', 'revert', 'https://github.com/o/revert/pull/99']);
+  const rv = emitted.filter((x) => x.component === 'autonomy' && x.event === 'revert');
+  assert.deepEqual(rv.map((x) => x.status), ['info'], 'a planned revert is not a failure: no Slack alert left open');
+  assert.equal(JSON.parse(fs.readFileSync(path.join(DATA, '.pipeline-state.json'), 'utf8')).revertAlerts, undefined);
 });
 
 test('an experiment past its window is judged: a line in LEARNINGS.md, and a kept one proposed for the playbook', async () => {

@@ -167,9 +167,11 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
   const save = (slug, state, what) => { P.writeState(path.join(IDEAS, slug), state, now); changed.add(slug); note(slug, what); };
   /**
    * Undo a PR an agent merged (lib/autonomy.js revertSteps, policy.autonomy.revert): a revert commit on a
-   * branch, a PR that says why, merged. Logged as a failure, so Slack hears of it. {ok, url} or {ok: false}.
+   * branch, a PR that says why, merged. {ok, url} or {ok: false}. A revert because the live site broke
+   * (`breakage`) is logged as a failure, so Slack hears of it, and as recovered once the site passes its
+   * launch checks again (5b); one the judge decided on is news for the morning email only.
    */
-  const revertMerged = (slug, prUrl, reason) => {
+  const revertMerged = (slug, prUrl, reason, { breakage = false } = {}) => {
     const full = P.readState(path.join(IDEAS, slug)).repo.replace('https://github.com/', '');
     const work = path.join(DATA, 'work', `revert-${slug}`);
     const gh = (args) => String(execFileSync('gh', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 120_000 }));
@@ -184,7 +186,7 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
         const out = String(execFileSync(cmd, args, { cwd: cwd || DATA, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 180_000 }));
         if (cmd === 'gh' && args[0] === 'pr' && args[1] === 'create') url = out.trim() || null;
       }
-      emit({ component: 'autonomy', event: 'revert', status: 'fail', subject: { idea: slug, pr: prUrl }, message: `${slug}: reverted ${prUrl}: ${reason}${url ? ` (${url})` : ''}` });
+      emit({ component: 'autonomy', event: 'revert', status: breakage ? 'fail' : 'info', subject: { idea: slug, pr: prUrl }, message: `${slug}: reverted ${prUrl}: ${reason}${url ? ` (${url})` : ''}` });
       return { ok: true, url };
     } catch (e) { fail(`revert ${slug} ${prUrl}`, e); return { ok: false }; }
     finally { fs.rmSync(work, { recursive: true, force: true }); }
@@ -455,14 +457,23 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
         pstate.audit[slug] = { at: now.toISOString(), url: liveNow, result };
         // Log a change, not every audit: newly launch-ready, or a check that used to pass now failing.
         if (result.ready && was !== true) note(slug, `launch-ready: ${result.passed}/${result.total} launch checks pass on ${liveNow}`);
+        // The site passes again after a breakage revert: the revert's Slack alert is closed ("recovered").
+        if (result.ready && pstate.revertAlerts?.[slug]) {
+          emit({ component: 'autonomy', event: 'revert', status: 'ok', subject: { idea: slug }, message: `${slug}: the live site passes its launch checks again after the revert of ${pstate.revertAlerts[slug].prUrl}` });
+          note(slug, 'the live site passes its launch checks again after the revert');
+          delete pstate.revertAlerts[slug];
+        }
         if (!result.ready && was === true) {
           note(slug, `launch checks regressed on ${liveNow}: missing ${result.missing.join(', ')}`);
           // An agent's merge in the last day broke the live site: undo it (policy.autonomy.revert).
           const b = state.build || {};
           if (policy.autonomy?.revert && b.mergedBy === 'agent' && b.prUrl && !b.reverted && now - new Date(b.mergedAt) < 24 * 3_600_000) {
             const reason = `the live site's launch checks failed after it merged (missing ${result.missing.join(', ')})`;
-            const r = revertMerged(slug, b.prUrl, reason);
+            const r = revertMerged(slug, b.prUrl, reason, { breakage: true });
             if (r.ok) {
+              // Watched until the site passes again (above); audited again on the next tick, after the redeploy.
+              pstate.revertAlerts = { ...(pstate.revertAlerts || {}), [slug]: { at: now.toISOString(), prUrl: b.prUrl } };
+              pstate.audit[slug].at = '1970-01-01T00:00:00.000Z';
               const cur = P.readState(dir);
               save(slug, { ...cur, build: { ...cur.build, reverted: { at: now.toISOString(), url: r.url, reason } }, ...(cur.growth ? { growth: G.markReverted(cur.growth, b.prUrl, { url: r.url, reason, now }) } : {}) }, `reverted its own merge ${b.prUrl}: ${reason}`);
             }
