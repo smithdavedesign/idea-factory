@@ -31,6 +31,9 @@
 //  4c. "Start build now" on the Ideas page (idea_build_requests) builds the next milestone on this
 //      tick, outside the weekly slot: oldest request first, policy.build.manualPerDay in 24 hours,
 //      one build per tick. The result goes back to the request row and to Slack.
+//  5d. The growth loop (lib/growth.js, policy.growth): each focus product's growth record every tick; once a
+//      day per product, the funnel's bottleneck starts one mission: a growth build (draft PR) or a launch
+//      kit (bin/idea-growth.js, posts David publishes). A merged growth PR starts its experiment (4a).
 // Daily (Claude Pro subscription, capped by policy):
 //   a. Review new ideas with the gstack frameworks (bin/idea-review.js) → Validate or Pass.
 //   b. Landing page for each new Validate idea (pages/<slug>/), deployed to the free pages project.
@@ -146,7 +149,8 @@ function commitRecord(message) {
   return pub.git(['rev-parse', '--short', 'HEAD']);
 }
 
-async function tick({ forceDaily = false } = {}) {
+/** `forceGrowth`: the growth step (5d) ignores policy.growth.notBefore; its caps still hold (`--growth`). */
+async function tick({ forceDaily = false, forceGrowth = false } = {}) {
   const now = new Date();
   const out = { at: now.toISOString(), changes: [], errors: [] };
   const note = (slug, what) => out.changes.push(`${slug}: ${what}`);
@@ -472,8 +476,9 @@ async function tick({ forceDaily = false } = {}) {
     }
     changed.add(slug);
     if (r.ok) note(slug, `${milestone} PR ${r.prUrl} (tests ${r.testsPassing ? 'passing' : 'failing'}, ${r.engine === 'free' ? 'free-pool backup' : `Claude subscription${r.model ? ` ${r.model}` : ''}`}${opts.manual ? ', started from the Ideas page' : ''})`); else fail(`build ${slug} ${milestone}`, r.reason);
-    // A weekly-slot build answers any "Start build now" still waiting for this idea.
-    if (!opts.manual && sql) {
+    // A weekly-slot build answers any "Start build now" still waiting for this idea. A growth build doesn't:
+    // nobody asks for one on the Ideas page.
+    if (!opts.manual && !opts.growth && sql) {
       await R.settleBuildRequests(sql, slug, { ok: r.ok, result: r.ok ? `${milestone} PR opened by the weekly build slot` : `the weekly build slot tried ${milestone}: ${String(r.reason).slice(0, 200)}`, prUrl: r.prUrl || null })
         .catch((e) => { if (!R.isMissingTable(e)) fail(`settle build requests ${slug}`, e); });
     }
@@ -526,7 +531,17 @@ async function tick({ forceDaily = false } = {}) {
     let prState = null;
     try { prState = JSON.parse(execFileSync('gh', ['pr', 'view', s.build.prUrl, '--json', 'state'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })).state; } catch { continue; }
     const m = s.build.milestone || 'M1';
-    const doneNow = (Array.isArray(s.build.milestones) ? s.build.milestones : [m]).filter((x) => x !== 'MVP' && x !== 'GOLIVE');
+    const doneNow = (Array.isArray(s.build.milestones) ? s.build.milestones : [m]).filter((x) => P.isRoadmapBuild(x) && x !== 'MVP');
+    // A growth PR merged starts its experiment's window; closed, the experiment is abandoned (lib/growth.js).
+    if (m === 'GROWTH' && (prState === 'MERGED' || prState === 'CLOSED')) {
+      const merged = prState === 'MERGED';
+      const growth = merged ? G.onMerge(s.growth, s.build.experiment, now) : G.onClose(s.growth, s.build.experiment, now);
+      const e = (growth?.experiments || []).find((x) => x.id === s.build.experiment);
+      save(slug, { ...s, build: { ...s.build, status: merged ? 'merged' : 'closed' }, growth },
+        merged ? `growth PR merged: the ${e?.kind || 'growth'} experiment runs until ${e?.endsAt?.slice(0, 10) || '?'}` : `growth PR closed: the ${e?.kind || 'growth'} experiment is abandoned`);
+      if (merged) emit({ component: 'build', event: 'GROWTH', status: 'ok', subject: { idea: slug }, message: `${slug}: growth PR merged ${s.build.prUrl}` });
+      continue;
+    }
     if (prState === 'MERGED' && m === 'GOLIVE') save(slug, { ...s, build: { ...s.build, status: 'merged' }, golive: { mergedAt: now.toISOString(), prUrl: s.build.prUrl } }, 'go-live merged: launch-ready changes are in; the live audit takes it from here');
     else if (prState === 'MERGED') save(slug, { ...s, build: { ...s.build, status: 'merged' }, milestonesDone: [...new Set([...(s.milestonesDone || []), ...doneNow])] }, `${m === 'MVP' ? `MVP (${doneNow.join(', ')})` : m} merged`);
     // A merged PR settles its build: a "tests failing" failure logged when it opened would otherwise
@@ -599,6 +614,7 @@ async function tick({ forceDaily = false } = {}) {
 
   // 5c. The road-to-revenue plan for an idea whose M1 is merged and that has none yet: one per tick, only
   // on a tick that didn't build (a build already held it long), at most policy.revenue.maxPerDay.
+  let planRan = false;
   if (!builtThisTick) {
     const cap = policy.revenue?.maxPerDay ?? 2;
     const today = now.toLocaleDateString('en-CA');
@@ -610,10 +626,70 @@ async function tick({ forceDaily = false } = {}) {
     if (due && runsToday < cap) {
       pstate.revenue = { date: today, runs: runsToday + 1 };
       writePstate();
+      planRan = true;
       const { revenueOne } = require('./idea-revenue');
       const r = await revenueOne(due);
       changed.add(due);
       if (r.ok) note(due, `revenue plan: ${REV.priceText(r.plan.price)} · ${r.plan.buyer.slice(0, 80)}`); else fail(`revenue plan ${due}`, r.reason);
+    }
+  }
+
+  // 5d. The growth loop (lib/growth.js, RepoHQ docs/growth-loop-prd.md). Every tick, each focus product's
+  // growth record is kept current: a kit's experiment runs from its first post, stale proposals are dropped,
+  // and the funnel's bottleneck picks the next mission. Once a day per product, on a tick that ran nothing
+  // long and within policy.growth's caps, that mission starts: a growth build (a draft PR) or a launch kit
+  // (posts David publishes). Owner missions go to the morning email's Today block. Nothing here posts,
+  // spends or merges.
+  const gp = policy.growth || {};
+  const readText = (f) => (fs.existsSync(f) ? fs.readFileSync(f, 'utf8') : '');
+  const readLog = (dir) => { try { return JSON.parse(fs.readFileSync(path.join(dir, 'launch-log.json'), 'utf8')); } catch { return null; } };
+  for (const slug of gp.focus || []) {
+    const dir = path.join(IDEAS, slug);
+    if (!fs.existsSync(path.join(dir, 'idea.json'))) continue;
+    const s = P.readState(dir);
+    const log = readLog(dir);
+    const experiments = G.advance(s.growth?.experiments || [], { posts: log?.posts || [], now, gp });
+    const b = G.bottleneck({ ...s, growth: { ...s.growth, experiments } }, { kit: G.kitFacts(readText(path.join(dir, 'LAUNCH-KIT.md')), log), gp, now });
+    const growth = { ...(s.growth || {}), stage: b.stage, bottleneck: b.bottleneck, next: b.action, experiments };
+    if (!G.sameGrowth(s.growth, growth)) save(slug, { ...s, growth: { ...growth, checkedAt: now.toISOString() } }, `growth: ${b.stage}, ${b.bottleneck}${b.action ? `; next: ${b.action.kind} (${b.action.executor})` : ''}`);
+  }
+  if (!builtThisTick && !planRan && sql && G.growthDue(pstate.growth, now, gp, { force: forceGrowth })) {
+    const today = now.toLocaleDateString('en-CA');
+    const pg = pstate.growth?.date === today ? pstate.growth : { date: today, runs: 0, slugs: [] };
+    const weekBuilds = G.growthBuildsThisWeek(ideaDirs().map((slug) => P.readState(path.join(IDEAS, slug))), now);
+    for (const slug of gp.focus || []) {
+      const dir = path.join(IDEAS, slug);
+      if (pg.slugs.includes(slug) || !fs.existsSync(path.join(dir, 'idea.json'))) continue;
+      const s = P.readState(dir);
+      const next = s.growth?.next;
+      if (!next || next.executor === 'owner' || !G.KINDS[next.kind] || !G.canStart(s)) continue;
+      if (next.executor === 'build' && weekBuilds >= (gp.maxBuildsPerWeek ?? 2)) continue;
+      const exp = G.newExperiment(slug, next, s, gp, now);
+      // Recorded before it starts, so a crash mid-run can't start it twice: the day's counter, then the proposed experiment.
+      pstate.growth = { date: today, runs: pg.runs + 1, slugs: [...pg.slugs, slug] };
+      writePstate();
+      save(slug, { ...s, growth: { ...s.growth, experiments: [...(s.growth?.experiments || []), exp] } }, `growth mission: ${G.KINDS[exp.kind].label} (${exp.executor === 'build' ? 'a draft PR' : 'posts for David'}): ${exp.hypothesis}`);
+      const record = (change) => {
+        const cur = P.readState(dir);
+        P.writeState(dir, { ...cur, growth: { ...cur.growth, experiments: (cur.growth?.experiments || []).map((e) => (e.id === exp.id ? { ...e, ...change, updatedAt: new Date().toISOString() } : e)) } }, now);
+        changed.add(slug);
+      };
+      if (exp.executor === 'build') {
+        const task = G.missionTask(exp.kind, { slug, signalUrl: policy.signalUrl });
+        // How the same kind of experiment went on other products: their records, never their visitors.
+        const others = ideaDirs().filter((x) => x !== slug).flatMap((x) => (P.readState(path.join(IDEAS, x)).growth?.experiments || [])
+          .filter((e) => e.kind === exp.kind && e.status !== 'proposed').map((e) => ({ slug: x, hypothesis: e.hypothesis, decision: e.decision, status: e.status, reason: e.reason })));
+        const brief = G.brief({ slug, exp, state: s, task, learnings: readText(path.join(dir, 'LEARNINGS.md')), playbook: readText(path.join(DATA, 'PLAYBOOK.md')), others });
+        const r = await startBuild(slug, 'GROWTH', { growth: { experiment: exp, task, brief } });
+        record(r.ok && r.prUrl ? { prUrl: r.prUrl } : { status: 'abandoned', reason: String(r.reason || 'no PR was opened').slice(0, 300) });
+      } else {
+        const { distributionKitOne } = require('./idea-growth');
+        let r;
+        try { r = await distributionKitOne(slug); } catch (e) { r = { ok: false, reason: String(e.message || e).slice(0, 300) }; }
+        if (r.ok) { record({ artifact: 'LAUNCH-KIT.md', channels: r.channels.length }); note(slug, `launch kit ready for David: ${r.channels.join(', ')}`); }
+        else { record({ status: 'abandoned', reason: String(r.reason).slice(0, 300) }); fail(`growth kit ${slug}`, r.reason); }
+      }
+      break; // one mission per tick
     }
   }
 
@@ -644,9 +720,9 @@ module.exports = { ownerOverride, dailyDue, buildable, STAGE_TO_STATUS, tick, po
 
 if (require.main === module) {
   const [cmd, ...rest] = process.argv.slice(2);
-  if (cmd !== 'tick') { console.log(JSON.stringify({ ok: false, error: 'usage: idea-pipeline.js tick [--daily]' })); process.exit(1); }
+  if (cmd !== 'tick') { console.log(JSON.stringify({ ok: false, error: 'usage: idea-pipeline.js tick [--daily] [--growth]' })); process.exit(1); }
   if (!lock()) { console.log(JSON.stringify({ ok: true, skipped: 'another run is in progress' })); process.exit(0); }
-  tick({ forceDaily: rest.includes('--daily') })
+  tick({ forceDaily: rest.includes('--daily'), forceGrowth: rest.includes('--growth') })
     .then((o) => { console.log(JSON.stringify(o)); if (!o.ok) process.exitCode = 1; })
     .catch((e) => { console.log(JSON.stringify({ ok: false, error: e.message })); process.exitCode = 1; })
     .finally(() => fs.rmSync(LOCK, { force: true }));

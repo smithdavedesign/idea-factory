@@ -58,6 +58,7 @@ function fakeSql(strings, ...values) {
 const gh = { prs: {}, files: '', edits: [], homepage: '' };
 const vercelOut = { ls: '', inspect: '' };
 const revenueRuns = [];
+const kitRuns = [];
 const realRevenue = require('../bin/idea-revenue');
 
 const stubs = {
@@ -75,6 +76,12 @@ const stubs = {
   '../lib/events': { emit: (e) => emitted.push(e) },
   '@neondatabase/serverless': { neon: () => fakeSql },
   './idea-build': { ...realBuild, buildOne: async (slug, opts) => { builds.push({ slug, ...opts }); return { slug, ...buildResult }; } },
+  // The growth loop's launch kit (bin/idea-growth.js): a kit with two channels, as the launch skill writes it.
+  './idea-growth': { distributionKitOne: async (slug) => {
+    kitRuns.push(slug);
+    fs.writeFileSync(path.join(DATA, 'ideas', slug, 'LAUNCH-KIT.md'), '# Launch kit\n\n## Order\n1. **r/SideProject**, Tue.\n2. **Indie Hackers**: Thu.\n');
+    return { ok: true, slug, channels: ['r/SideProject', 'Indie Hackers'] };
+  } },
   // idea-review reads the real record (not IDEA_PIPELINE_DATA): a test that forces the daily steps reviews nothing.
   './idea-review': { pendingSlugs: () => [], reviewOne: async () => ({ ok: false, reason: 'not in tests' }) },
 };
@@ -124,6 +131,9 @@ test.beforeEach(() => {
   buildResult = { ok: true, milestone: 'M1', prUrl: 'https://github.com/o/pr-x/pull/1', testsPassing: true, engine: 'claude', model: 'claude-opus-5-5' };
   // These tests build new ideas in the weekly slot; the new-build hold (policy.build.startNew) has its own test.
   policy.build.startNew = true;
+  // No focus products unless a growth test names one (policy.growth.focus is tiebreak in the real policy).
+  policy.growth.focus = [];
+  kitRuns.length = 0;
 });
 test.after(() => { Module._load = realLoad; fs.rmSync(DATA, { recursive: true, force: true }); fs.rmSync(HOME, { recursive: true, force: true }); });
 
@@ -404,4 +414,89 @@ test("a built product's funnel is saved, and rewritten only when it changes; a d
   assert.equal(v.funnel, undefined, 'a demand test has no funnel');
   const again = await tick();
   assert.ok(!again.changes.some((c) => c.startsWith('pr-f: funnel')), 'unchanged: not rewritten');
+});
+
+// ── The growth loop (step 5d) ─────────────────────────────────────────────────────────────────────────
+// A live, launch-ready product: the pipeline's cached production URL, live probe, legal pages and a 9/9 audit.
+function liveProduct(slug, extra = {}) {
+  idea(slug, { stage: 'building', repo: `https://github.com/o/${slug}`, milestonesDone: ['M1', 'M2'], golive: { mergedAt: 'x' }, build: { milestone: 'GOLIVE', status: 'merged' }, ...extra });
+  fs.writeFileSync(path.join(DATA, 'ideas', slug, 'revenue.json'), '{}');
+  const at = new Date().toISOString();
+  const url = `https://${slug}.vercel.app`;
+  fs.writeFileSync(path.join(DATA, '.pipeline-state.json'), JSON.stringify({ lastDaily: new Date().toLocaleDateString('en-CA'),
+    prod: { [slug]: { at, url, homepageSet: true } }, live: { [slug]: { at, url } }, legal: { [slug]: { at, found: { privacy: true, terms: true } } },
+    audit: { [slug]: { at, url, result: { ready: true, passed: 9, total: 9, missing: [], checks: [{ id: 'privacy', ok: true }, { id: 'terms', ok: true }] } } } }));
+}
+const visitsOf = (slug, kind, n) => [{ slug, kind, events: n, all_time: n, d7: n, prev7: 0 }, { slug, kind: 'reach', events: n, all_time: n, d7: n, prev7: 0 }];
+
+test('a focus product gets one growth mission a day: the funnel beacon first, as a draft PR', async () => {
+  policy.growth.focus = ['pr-g'];
+  liveProduct('pr-g');
+  buildResult = { ...buildResult, milestone: 'GROWTH', prUrl: 'https://github.com/o/pr-g/pull/9' };
+  db = { requests: [], startsLast24h: 0, log: [], funnelRows: visitsOf('pr-g', 'view', 3) };
+  const out = await tick({ forceGrowth: true });
+  assert.deepEqual(out.errors, []);
+  assert.deepEqual(builds.map((b) => [b.slug, b.milestone, b.growth?.experiment.kind]), [['pr-g', 'GROWTH', 'instrumentation']]);
+  assert.match(builds[0].growth.brief, /^# Growth brief: pr-g, funnel beacon/);
+  assert.match(builds[0].growth.task, /"activate" the first time/);
+  const g = readState('pr-g').growth;
+  assert.equal(g.stage, 'instrument');
+  assert.deepEqual(g.experiments.map((e) => [e.kind, e.status, e.prUrl]), [['instrumentation', 'proposed', 'https://github.com/o/pr-g/pull/9']]);
+  assert.ok(out.changes.some((c) => /^pr-g: growth mission: funnel beacon \(a draft PR\)/.test(c)), out.changes.join('\n'));
+  await tick({ forceGrowth: true });
+  assert.equal(builds.length, 1, 'one mission per product per day, and nothing new while its PR waits');
+});
+
+test('no growth mission for a product outside the focus, or on a tick that already built', async () => {
+  liveProduct('pr-g');
+  db = { requests: [], startsLast24h: 0, log: [], funnelRows: visitsOf('pr-g', 'view', 3) };
+  await tick({ forceGrowth: true });
+  assert.deepEqual(builds, [], 'not in policy.growth.focus');
+  assert.equal(readState('pr-g').growth, undefined);
+  policy.growth.focus = ['pr-g'];
+  idea('pr-x', { stage: 'repo', repo: 'https://github.com/o/pr-x', ownerApproved: true });
+  db = { requests: [{ id: 50, slug: 'pr-x', status: 'pending' }], startsLast24h: 0, log: [], funnelRows: visitsOf('pr-g', 'view', 3) };
+  await tick({ forceGrowth: true });
+  assert.deepEqual(builds.map((b) => `${b.slug} ${b.milestone}`), ['pr-x M1'], 'the manual build ran; the growth mission waits for a quiet tick');
+  assert.equal(readState('pr-g').growth.next.kind, 'instrumentation', 'still recorded as the next mission');
+});
+
+test('a merged growth PR starts its experiment; a closed one abandons it', async () => {
+  const proposed = (slug, n) => ({ stage: 'live', repo: `https://github.com/o/${slug}`, milestonesDone: ['M1'],
+    build: { milestone: 'GROWTH', milestones: [], experiment: `${slug}-20261013-seo`, kind: 'seo', status: 'pr-open', prUrl: `https://github.com/o/${slug}/pull/${n}` },
+    growth: { experiments: [{ id: `${slug}-20261013-seo`, kind: 'seo', executor: 'build', status: 'proposed', windowDays: 28, createdAt: '2026-10-13T10:00:00Z', prUrl: `https://github.com/o/${slug}/pull/${n}` }] } });
+  idea('pr-m', proposed('pr-m', 3));
+  idea('pr-c', proposed('pr-c', 4));
+  for (const s of ['pr-m', 'pr-c']) fs.writeFileSync(path.join(DATA, 'ideas', s, 'revenue.json'), '{}');
+  gh.prs['https://github.com/o/pr-m/pull/3'] = 'MERGED';
+  gh.prs['https://github.com/o/pr-c/pull/4'] = 'CLOSED';
+  db = { requests: [], startsLast24h: 0, log: [] };
+  emitted.length = 0;
+  const out = await tick();
+  const m = readState('pr-m');
+  assert.deepEqual([m.stage, m.build.status, m.growth.experiments[0].status], ['live', 'merged', 'running']);
+  assert.equal(new Date(m.growth.experiments[0].endsAt) - new Date(m.growth.experiments[0].startedAt), 28 * 86_400_000, 'its window, from the merge');
+  assert.deepEqual(m.milestonesDone, ['M1'], 'a growth merge marks no milestone');
+  const c = readState('pr-c');
+  assert.deepEqual([c.build.status, c.growth.experiments[0].status], ['closed', 'abandoned']);
+  assert.ok(out.changes.some((x) => /^pr-m: growth PR merged: the seo experiment runs until \d{4}-\d{2}-\d{2}$/.test(x)), out.changes.join('\n'));
+  assert.ok(emitted.some((e) => e.component === 'build' && e.event === 'GROWTH' && e.status === 'ok'));
+});
+
+test('short of visitors with no kit: a launch kit for David, whose experiment runs from his first post', async () => {
+  policy.growth.focus = ['pr-k'];
+  liveProduct('pr-k');
+  db = { requests: [], startsLast24h: 0, log: [], funnelRows: visitsOf('pr-k', 'visit', 3) };
+  const out = await tick({ forceGrowth: true });
+  assert.deepEqual(builds, []);
+  assert.deepEqual(kitRuns, ['pr-k']);
+  const e = readState('pr-k').growth.experiments[0];
+  assert.deepEqual([e.kind, e.executor, e.status, e.channels, e.artifact], ['kit', 'claude', 'proposed', 2, 'LAUNCH-KIT.md']);
+  assert.ok(out.changes.includes('pr-k: launch kit ready for David: r/SideProject, Indie Hackers'), out.changes.join('\n'));
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-k', 'launch-log.json'), JSON.stringify({ posts: [{ channel: 'r/SideProject', postedAt: new Date(Date.now() + 1000).toISOString() }] }));
+  await tick({ forceGrowth: true });
+  const g = readState('pr-k').growth;
+  assert.equal(g.experiments[0].status, 'running', "the kit's experiment runs from the first post");
+  assert.equal(g.next.kind, 'seo', 'with a kit out, search pages are next (tomorrow: one mission a day)');
+  assert.deepEqual([kitRuns, builds], [['pr-k'], []]);
 });

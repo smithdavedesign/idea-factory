@@ -119,13 +119,14 @@ function buildInput(slug, milestone, gstack = GSTACK) {
  * runs at Anthropic), and no credential broker, which lives on the Mac: the builder writes `.provision`
  * instead and the host runs it (provisionCommands).
  */
-function tools(dir, extraRead = [], { sandbox = false } = {}) {
+function tools(dir, extraRead = [], { sandbox = false, broker = true } = {}) {
   return [
     `Read(/${dir}/**)`, ...extraRead.map((f) => `Read(/${f})`), `Write(/${dir}/**)`, `Edit(/${dir}/**)`, 'Glob', 'Grep', 'WebSearch', ...(sandbox ? [] : ['WebFetch']),
     'Bash(npm install:*)', 'Bash(npm i:*)', 'Bash(npm ci:*)', 'Bash(npm test:*)', 'Bash(npm run:*)',
     'Bash(npx vitest:*)', 'Bash(npx tsc:*)', 'Bash(npx eslint:*)', 'Bash(node:*)',
     'Bash(git status:*)', 'Bash(git diff:*)', 'Bash(ls:*)', 'Bash(mkdir:*)', 'Bash(cat:*)',
-    ...(sandbox ? [] : [`Bash(${PROVISION}:*)`]),
+    // A growth build may only file a request with the broker (`broker: false`), never create anything.
+    ...(sandbox ? [] : [broker ? `Bash(${PROVISION}:*)` : `Bash(${PROVISION} request:*)`]),
   ];
 }
 
@@ -226,6 +227,29 @@ ${SCREENSHOT_STEPS}
 9. Self-review your diff (\`git status\`, \`git diff\`) against gstack's pre-landing checklist in ${gstackFile} ("Review Categories", "Fix-First Heuristic"), and fix every CRITICAL finding.` : ''}
 Install scripts are disabled (npm_config_ignore_scripts); choose packages that work without them, and prefer none.
 Your final message: one line — tests passing or not, and what's left for David.`;
+}
+
+/**
+ * A growth build (buildOne({growth}), the growth loop's step 5d): one change to a live product, to test one
+ * idea about its funnel (pure). `exp` is the experiment (lib/growth.js newExperiment), `task` the mission
+ * (missionTask), `briefFile` the brief with the funnel, lessons and the playbook's rules.
+ */
+function growthPrompt(slug, { exp, task, briefFile = null, signalUrl = '', provision = 'direct', ui = true } = {}) {
+  const { valueText } = require('../lib/growth');
+  return `You are in the repo for "${slug}", a live product. Make one change, to test one idea about its funnel, and nothing else. Read README.md, PRD.md, REVENUE.md, BUILD.md and GROWTH.md (if present) first${briefFile ? `, then the brief in ${briefFile}: the mission, the product's funnel numbers, what earlier experiments taught, the playbook's rules and gstack's review checklist` : ''}.
+The mission: ${task}
+The experiment: ${exp.hypothesis} Metric: ${valueText(exp.metric, exp.baseline)} now; the target is ${valueText(exp.metric, exp.target)} within ${exp.windowDays} days of the merge.
+1. Make the change, and keep to the mission: no refactors, no features beyond it, no new dependencies unless the mission needs one. Never change a price or hard-code a payment link or key.
+2. Keep the beacon to ${signalUrl || 'the RepoHQ signal URL'} working (visit, activate, checkout): if you move the core action or the Buy button, their events move with them.
+3. Add tests for what you changed and keep \`npm test\` passing. Don't weaken or delete a test.
+4. Honest copy only: no invented numbers, quotes, testimonials, user counts or claims the product can't back. Use the buyer's words from RESEARCH.md and REVENUE.md.
+5. Append to GROWTH.md (create it if missing): the date, the mission, what you changed and why, and how the metric is measured. Keep earlier entries.${ui ? `
+6. Screenshot proof of what changed, with the tests passing (the main flow included):
+${SCREENSHOT_STEPS}` : ''}${briefFile ? `
+${ui ? 7 : 6}. Self-review your diff (\`git status\`, \`git diff\`) against gstack's pre-landing checklist in the brief ("Review Categories", "Fix-First Heuristic"), and fix every CRITICAL finding.` : ''}
+Provisioning: you can't create services or keys in a growth build. If the change needs something only David can set up, ${provision === 'file' ? 'write one line to `.provision` at the repo root:' : 'run'} ${provision === 'file' ? '' : `${PROVISION} `}request "<what> for ${slug}: <why>"${provision === 'file' ? '' : ' (nothing else from the broker)'}, build behind an env var, and say so in GROWTH.md.
+Install scripts are disabled (npm_config_ignore_scripts); choose packages that work without them, and prefer none.
+Your final message: one line — tests passing or not, and what you changed.`;
 }
 
 /** The milestones in ROADMAP.md, in order ("## M1 …", "## M2 …"). */
@@ -337,7 +361,12 @@ function engineOrder(difficulty, mode) {
  * subscription (policy.build.mvp.stopOnFallback), or past policy.build.mvp.maxMinutes; the PR has
  * what's done and the next build starts where it stopped.
  */
-async function buildOne(slug, { push = true, milestone = 'M1', manual = false, note = '', mvp = false, golive = false } = {}) {
+/**
+ * `growth: {experiment, task, brief}` (the growth loop's step 5d): one change to a live product
+ * (growthPrompt), branch growth-<experiment id>, on policy.growth's model and effort with no free-pool
+ * fallback, the brief in the build-input file; nothing on the roadmap is marked done.
+ */
+async function buildOne(slug, { push = true, milestone = 'M1', manual = false, note = '', mvp = false, golive = false, growth = null } = {}) {
   const ideaDir = path.join(DATA, 'ideas', slug);
   const state = P.readState(ideaDir);
   if (!state.repo) return { ok: false, slug, reason: 'no repo yet (stage must be "repo")' };
@@ -352,7 +381,12 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
   }
   // Go-live: one launch-readiness run (goLivePrompt), branch go-live; nothing on the roadmap is marked done.
   if (golive) { planned = ['GOLIVE']; milestone = 'GOLIVE'; }
-  const branch = golive ? 'go-live' : milestone.toLowerCase();
+  if (growth) { planned = ['GROWTH']; milestone = 'GROWTH'; }
+  const branch = golive ? 'go-live' : growth ? `growth-${growth.experiment.id}` : milestone.toLowerCase();
+  const eng = growth
+    ? { model: policy.growth?.model || 'sonnet', effort: policy.growth?.effort || null, timeoutMinutes: policy.growth?.timeoutMinutes ?? 40, fallbackModel: undefined, fallback: false }
+    : { model: policy.build.model, effort: policy.build.effort, timeoutMinutes: policy.build.timeoutMinutes, fallbackModel: policy.build.claudeFallbackModel, fallback: policy.build.fallback !== 'none' };
+  const growthLabel = growth ? require('../lib/growth').KINDS[growth.experiment.kind]?.label || growth.experiment.kind : null;
   const full = state.repo.replace('https://github.com/', '');
   const work = path.join(DATA, 'work', slug);
   fs.rmSync(work, { recursive: true, force: true });
@@ -363,15 +397,15 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
   for (const f of ['REVIEW.md', 'REVENUE.md']) if (fs.existsSync(path.join(ideaDir, f)) && !fs.existsSync(path.join(work, f))) fs.copyFileSync(path.join(ideaDir, f), path.join(work, f));
 
   const now = new Date();
-  // The tier advisor rates roadmap milestones; a go-live has none to rate.
-  const advice = golive ? null : rateMilestone(ideaDir, slug, planned[0]);
+  // The tier advisor rates roadmap milestones; a go-live or growth build has none to rate.
+  const advice = golive || growth ? null : rateMilestone(ideaDir, slug, planned[0]);
   const engines = engineOrder(advice?.difficulty ?? null, policy.build.advisor || 'report');
   // A live product stays live while it's being improved (step 4a still follows its PR).
   const stageNow = state.stage === 'live' ? 'live' : 'building';
   P.writeState(ideaDir, { ...state, stage: stageNow, build: { ...(state.build || {}), milestone, ...(mvp ? { planned } : {}), status: 'running', at: now.toISOString(), manual, ...(advice ? { advice } : {}) } }, now);
   // "Running now" on RepoHQ's Agents page comes from this event until the build's own ok/fail lands.
-  emit({ component: 'build', event: milestone, status: 'start', subject: { idea: slug }, message: `${mvp ? `MVP (${rangeText(planned)})` : milestone} started${manual ? ' (Start build now)' : ''} on ${policy.build.model || 'claude'}${policy.build.effort ? ` at ${policy.build.effort}` : ''}`,
-    data: { milestone, manual: !!manual, model: policy.build.model || null, effort: policy.build.effort || null, timeoutMinutes: mvp ? mvpPolicy.maxMinutes : policy.build.timeoutMinutes, ...(mvp ? { planned } : {}) } });
+  emit({ component: 'build', event: milestone, status: 'start', subject: { idea: slug }, message: `${mvp ? `MVP (${rangeText(planned)})` : growth ? `Growth build (${growthLabel})` : milestone} started${manual ? ' (Start build now)' : ''} on ${eng.model || 'claude'}${eng.effort ? ` at ${eng.effort}` : ''}`,
+    data: { milestone, manual: !!manual, model: eng.model || null, effort: eng.effort || null, timeoutMinutes: mvp ? mvpPolicy.maxMinutes : eng.timeoutMinutes, ...(mvp ? { planned } : {}), ...(growth ? { experiment: growth.experiment.id } : {}) } });
   const ownerNote = String(note || '').trim() || (state.ownerDecision?.decision === 'build' ? state.ownerDecision.note : '');
   const failBuild = (reason, data = {}) => {
     const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: state.stage === 'live' ? 'live' : (state.milestonesDone || []).length ? 'building' : 'repo', build: { ...(state.build || {}), milestone, ...(mvp ? { planned } : {}), status: 'failed', at: now.toISOString(), manual: !!manual, reason } });
@@ -381,16 +415,17 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
 
   let ws;
   try {
-    const minutes = (mvp ? mvpPolicy.maxMinutes + policy.build.timeoutMinutes + 20 : policy.build.timeoutMinutes + 30) + SCREENSHOT_ROUND_MINUTES;
-    ws = await openWorkspace({ slug, milestone, work, input: buildInput(slug, mvp ? `the MVP (${rangeText(planned)})` : milestone), lifetimeMs: minutes * 60_000 });
+    const minutes = (mvp ? mvpPolicy.maxMinutes + policy.build.timeoutMinutes + 20 : eng.timeoutMinutes + 30) + SCREENSHOT_ROUND_MINUTES;
+    const input = growth ? [growth.brief, buildInput(slug, `a growth change (${growthLabel})`) || ''].join('\n\n') : buildInput(slug, mvp ? `the MVP (${rangeText(planned)})` : milestone);
+    ws = await openWorkspace({ slug, milestone, work, input, lifetimeMs: minutes * 60_000, fallback: eng.fallback, broker: !growth });
   } catch (e) {
     return failBuild(`couldn't start the build ${(policy.build.sandbox || 'docker') === 'host' ? 'on the host' : 'sandbox'}: ${String(e.message).slice(0, 300)}`);
   }
   try {
-    const runOpts = { timeoutMs: policy.build.timeoutMinutes * 60_000, system: SYSTEM, env: { npm_config_ignore_scripts: 'true', CI: '1' },
-      model: policy.build.model, effort: policy.build.effort, fallbackModel: policy.build.claudeFallbackModel,
-      fallback: policy.build.fallback !== 'none' }; // subscription first, the free pool only if it can't take the work
-    const fellBackOf = (r) => r.engine === 'free' || (!!r.info.model && !!policy.build.model && !r.info.model.includes(policy.build.model));
+    const runOpts = { timeoutMs: eng.timeoutMinutes * 60_000, system: SYSTEM, env: { npm_config_ignore_scripts: 'true', CI: '1' },
+      model: eng.model, effort: eng.effort, fallbackModel: eng.fallbackModel,
+      fallback: eng.fallback }; // subscription first, the free pool only if it can't take the work (never for growth builds)
+    const fellBackOf = (r) => r.engine === 'free' || (!!r.info.model && !!eng.model && !r.info.model.includes(eng.model));
     const deadline = now.getTime() + mvpPolicy.maxMinutes * 60_000;
     const steps = []; // one per milestone attempted: {milestone, ok, testsPassing, engine, model, fellBack}
     let run = null;
@@ -398,7 +433,9 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     let stopped = null;
     for (const [k, m] of planned.entries()) {
       if (k > 0 && Date.now() > deadline) { stopped = `time budget (${mvpPolicy.maxMinutes} min) used before ${m}`; break; }
-      const text = golive
+      const text = growth
+        ? growthPrompt(slug, { exp: growth.experiment, task: growth.task, briefFile: ws.gstackFile, signalUrl: policy.signalUrl, provision: ws.kind === 'docker' ? 'file' : 'direct', ui: growth.experiment.kind !== 'instrumentation' })
+        : golive
         ? goLivePrompt(slug, { price: priceOf(ideaDir), signalUrl: policy.signalUrl, gstackFile: ws.gstackFile, provision: ws.kind === 'docker' ? 'file' : 'direct', ownerNote })
         : prompt(slug, m, ownerNote, { gstackFile: ws.gstackFile, provision: ws.kind === 'docker' ? 'file' : 'direct', mvp: mvp ? { all: planned, index: k } : null });
       run = await ws.claude(text, { ...runOpts, engines });
@@ -413,8 +450,8 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     const last = steps[steps.length - 1];
     if (mvp && !stopped && last && !(last.ok && last.testsPassing)) stopped = `${last.milestone}: ${last.ok ? 'tests failing' : 'the builder stopped'}`;
     const completed = steps.filter((x) => x.ok && x.testsPassing).map((x) => x.milestone);
-    const engine = engineLabel(run);
-    const usage = { milestone, manual: !!manual, model: run.info.model ?? null, engine: run.engine, effort: run.engine === 'free' ? null : policy.build.effort || null, sandbox: ws.kind,
+    const engine = engineLabel(run, growth ? { model: eng.model, effort: eng.effort } : policy.build);
+    const usage = { milestone, manual: !!manual, model: run.info.model ?? null, engine: run.engine, effort: run.engine === 'free' ? null : eng.effort || null, sandbox: ws.kind,
       fellBack: steps.some((x) => x.fellBack), ...(mvp ? { planned, completed, stopped } : {}), ...(run.primaryReason ? { primaryReason: String(run.primaryReason).slice(0, 200) } : {}) };
     let patch = await ws.patch();
     if (!patch.trim()) return failBuild(run.reason || 'no changes made', usage);
@@ -454,15 +491,18 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     const provisionText = await ws.provisionFile();
     if (provisionText) {
       const { ok, rejected } = provisionCommands(provisionText, slug);
-      for (const args of ok) {
+      // A growth build may only file requests for David; it never creates a service or a key.
+      const allowed = growth ? ok.filter((args) => args[0] === 'request') : ok;
+      for (const args of allowed) {
         try { execFileSync(PROVISION, args, { stdio: 'pipe', timeout: 5 * 60_000 }); provisioned.push(`${args.join(' ')}: done`); } catch (e) { provisioned.push(`${args.join(' ')}: failed (${String(e.stderr || e.message).trim().split('\n').pop().slice(0, 160)})`); }
       }
+      for (const args of ok.filter((a) => !allowed.includes(a))) provisioned.push(`${args.join(' ')}: refused (a growth build may only file requests)`);
       for (const line of rejected) provisioned.push(`${line}: refused (not a broker verb for ${slug})`);
       emit({ component: 'build', event: milestone, status: 'info', subject: { idea: slug }, message: `provisioning for ${slug}: ${provisioned.join('; ').slice(0, 600)}` });
     }
 
     await ws.stage(patch);
-    const title = golive ? `Go live: ${slug} (launch-ready)` : mvp ? `MVP: ${slug} (${rangeText(completed.length ? completed : planned)})` : `${milestone}: ${slug}`;
+    const title = golive ? `Go live: ${slug} (launch-ready)` : growth ? `Growth: ${slug} (${growthLabel})` : mvp ? `MVP: ${slug} (${rangeText(completed.length ? completed : planned)})` : `${milestone}: ${slug}`;
     sh('git', ['-c', 'user.name=idea-factory', '-c', 'user.email=idea-factory@users.noreply.github.com', 'commit', '-q', '-m', `${title} (tests ${testsPassing ? 'passing' : 'failing'})`], work);
     let prUrl = null;
     if (push) {
@@ -470,8 +510,13 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
       // Pinned to the commit, so the PR's images outlive the branch.
       const sha = sh('git', ['rev-parse', 'HEAD'], work);
       const gallery = shots.ok ? [shots.files.slice(0, 6).map((f) => `<img src="https://github.com/${full}/blob/${sha}/${f}?raw=true" alt="${f}" height="320">`).join(' '), ''] : [];
+      const { valueText } = require('../lib/growth');
+      const exp = growth?.experiment;
       const body = [
-        `${golive ? `**${slug}**, made launch-ready (SEO basics, privacy and terms, payment link, visit beacon, Vercel project)` : mvp ? `The MVP for **${slug}** (${planned.join(', ')} in one run)` : `${milestone} for **${slug}**`}, built by the idea pipeline${golive ? '' : ', tests first'}. Engine: ${engine}. Built in ${ws.kind === 'docker' ? 'the factory\'s Docker sandbox' : 'host mode (on the Mac)'}.`, '',
+        `${golive ? `**${slug}**, made launch-ready (SEO basics, privacy and terms, payment link, visit beacon, Vercel project)` : growth ? `One growth change to **${slug}** (${growthLabel}), from the growth loop` : mvp ? `The MVP for **${slug}** (${planned.join(', ')} in one run)` : `${milestone} for **${slug}**`}, built by the idea pipeline${golive || growth ? '' : ', tests first'}. Engine: ${engine}. Built in ${ws.kind === 'docker' ? 'the factory\'s Docker sandbox' : 'host mode (on the Mac)'}.`, '',
+        ...(exp ? [`**The experiment** (\`${exp.id}\`): ${exp.hypothesis}`,
+          `- Metric: ${valueText(exp.metric, exp.baseline)} now; the target is ${valueText(exp.metric, exp.target)} within ${exp.windowDays} days of the merge.`,
+          '- **Merging starts the experiment; closing this PR abandons it.** The pipeline judges it when the window ends.', ''] : []),
         ...(mvp ? [...steps.map((x) => `- ${x.milestone}: ${x.ok && x.testsPassing ? '✅ built, tests passing' : x.ok ? '❌ built, tests failing' : '❌ the builder stopped'} (${x.engine === 'free' ? 'free pool' : x.model || 'Claude'})`),
           ...planned.filter((m) => !steps.some((x) => x.milestone === m)).map((m) => `- ${m}: not started`),
           ...(stopped ? [`Stopped: ${stopped}. Merging marks ${completed.length ? completed.join(', ') : 'nothing'} done; the next build starts at the first one that isn't.`] : []), ''] : []),
@@ -482,13 +527,14 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
         ...(provisioned.length ? [`Provisioned through the credential broker: ${provisioned.join('; ')}.`] : []),
         run.reason ? `Builder note: ${run.reason}` : `Builder: ${run.info.result.slice(0, 300)}`, '',
         golive ? (fs.existsSync(path.join(work, 'LAUNCH-READY.md')) ? fs.readFileSync(path.join(work, 'LAUNCH-READY.md'), 'utf8').slice(0, 6000) : '_No LAUNCH-READY.md written._')
+          : growth ? (fs.existsSync(path.join(work, 'GROWTH.md')) ? fs.readFileSync(path.join(work, 'GROWTH.md'), 'utf8').slice(-6000) : '_No GROWTH.md written._')
           : fs.existsSync(path.join(work, 'BUILD.md')) ? fs.readFileSync(path.join(work, 'BUILD.md'), 'utf8').slice(0, 6000) : '_No BUILD.md written._', '',
-        '_Review it like any factory PR: merge if it does what the milestone says. Nothing here spends money._',
+        `_Review it like any factory PR: merge if it does what the ${growth ? 'mission' : 'milestone'} says. Nothing here spends money._`,
       ].join('\n');
       prUrl = sh('gh', ['pr', 'create', '--draft', '--base', 'main', '--head', branch, '--title', title, '--body', body], work);
     }
     // On merge, the pipeline marks `milestones` done: the ones that completed, not every one attempted.
-    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: stageNow, build: { ...(state.build || {}), milestone, milestones: golive ? [] : mvp ? completed : [milestone], ...(mvp ? { planned, stopped } : {}), status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : policy.build.effort || null, manual: !!manual, sandbox: ws.kind, at: now.toISOString(), ...(advice ? { advice } : {}) } });
+    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: stageNow, build: { ...(state.build || {}), milestone, milestones: golive || growth ? [] : mvp ? completed : [milestone], ...(mvp ? { planned, stopped } : {}), ...(growth ? { experiment: growth.experiment.id, kind: growth.experiment.kind } : {}), status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : eng.effort || null, manual: !!manual, sandbox: ws.kind, at: now.toISOString(), ...(advice ? { advice } : {}) } });
     emit({ component: 'build', event: milestone, status: testsPassing ? 'ok' : 'fail', subject: { idea: slug, pr: prUrl || undefined }, durationMs: Date.now() - now.getTime(), data: { ...usage, testsPassing, prUrl, repaired, shotsReminded },
       message: `${mvp ? `MVP (${completed.join(', ') || 'nothing complete'}${stopped ? `; stopped: ${stopped.slice(0, 120)}` : ''})` : milestone} ${prUrl ? `PR ${prUrl}` : 'built locally'}, tests ${testsPassing ? 'passing' : 'failing'}, engine ${run.engine}${advice ? `, advisor ${advice.difficulty}` : ''}` });
     return { ok: true, slug, milestone, prUrl, testsPassing, engine: run.engine, model: run.info.model, builderReason: run.reason, state: s, ...(mvp ? { planned, completed, stopped } : {}) };
@@ -549,7 +595,11 @@ function sandboxToken(service = policy.build.tokenService || 'idea-build-claude-
  * Where the builder works: { kind, gstackFile, secrets, claude(prompt, opts), test(), patch(), readFile(rel), fileSizes(rels), provisionFile(), stage(patch), close() }.
  * docker (default): everything that runs code runs in the factory sandbox; host: the clone on this Mac.
  */
-async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSessionFn = startSession, token = sandboxToken }) {
+/**
+ * `fallback: false` keeps the free pool out of the sandbox (growth builds); `broker: false` lets a host-mode
+ * builder file broker requests only.
+ */
+async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSessionFn = startSession, token = sandboxToken, fallback = policy.build.fallback !== 'none', broker = true }) {
   if ((policy.build.sandbox || 'docker') === 'host') {
     const inputDir = path.join(DATA, 'work', '.build-input');
     const gstackFile = input ? path.join(inputDir, `${slug}-${milestone}.md`) : null;
@@ -557,7 +607,7 @@ async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSe
     return {
       kind: 'host', gstackFile, secrets: [],
       // The screenshot run uses the Mac's Chrome here (the sandbox has its own Chromium).
-      claude: (text, opts) => claudeTask(text, { ...opts, env: { ...opts.env, ...(fs.existsSync(MAC_CHROME) ? { CHROMIUM_PATH: MAC_CHROME } : {}) }, cwd: work, tools: tools(work, gstackFile ? [gstackFile] : []), addDirs: gstackFile ? [inputDir] : [] }),
+      claude: (text, opts) => claudeTask(text, { ...opts, env: { ...opts.env, ...(fs.existsSync(MAC_CHROME) ? { CHROMIUM_PATH: MAC_CHROME } : {}) }, cwd: work, tools: tools(work, gstackFile ? [gstackFile] : [], { broker }), addDirs: gstackFile ? [inputDir] : [] }),
       test: async () => spawnSync('npm', ['test', '--silent'], { cwd: work, encoding: 'utf8', timeout: 10 * 60_000, env: { ...process.env, CI: '1', npm_config_ignore_scripts: 'true' } }).status === 0,
       // Stage all, then reset node_modules: an :(exclude) pathspec on an ignored path makes git 2.5x exit 1.
       patch: async () => { sh('git', ['add', '-A', '--', '.'], work); sh('git', ['reset', '-q', '--', 'node_modules'], work); return execFileSync('git', ['diff', '--cached', '--binary'], { cwd: work, encoding: 'utf8', maxBuffer: 200 * 1024 * 1024 }); },
@@ -572,7 +622,7 @@ async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSe
   if (!oauthToken) throw new Error(`no Claude subscription token for the sandbox: run \`claude setup-token\`, then \`security add-generic-password -U -s ${policy.build.tokenService || 'idea-build-claude-token'} -a "$USER" -w <token>\``);
   const sb = startSessionFn({ log: () => {} });
   try {
-    const info = await sb.open(work, { allowHosts: ['api.anthropic.com'], allowModels: policy.build.fallback === 'none' ? [] : [FREE_MODEL], lifetimeMs });
+    const info = await sb.open(work, { allowHosts: ['api.anthropic.com'], allowModels: fallback ? [FREE_MODEL] : [], lifetimeMs });
     const inputDir = '/home/worker/build-input';
     const gstackFile = input ? `${inputDir}/${slug}-${milestone}.md` : null;
     if (input) await sb.put(gstackFile, input);
@@ -608,7 +658,7 @@ async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSe
   }
 }
 
-module.exports = { buildOne, goLivePrompt, mvpMilestones, rangeText, tools, milestones, nextMilestone, prompt, milestoneText, engineOrder, manualBuildTarget, buildMessage, engineLabel, buildInput, extractSection, GSTACK_BUILD_SECTIONS, repairPrompt, openWorkspace, sandboxToken, provisionCommands, screenshotRefs, screenshotProof, screenshotPrompt };
+module.exports = { buildOne, goLivePrompt, growthPrompt, mvpMilestones, rangeText, tools, milestones, nextMilestone, prompt, milestoneText, engineOrder, manualBuildTarget, buildMessage, engineLabel, buildInput, extractSection, GSTACK_BUILD_SECTIONS, repairPrompt, openWorkspace, sandboxToken, provisionCommands, screenshotRefs, screenshotProof, screenshotPrompt };
 
 if (require.main === module) {
   const slug = process.argv[2];
