@@ -50,7 +50,8 @@ function fakeSql(strings, ...values) {
 }
 
 // GitHub answers: PR states by URL, and the files in a repo (for the legal-pages check).
-const gh = { prs: {}, files: '' };
+const gh = { prs: {}, files: '', edits: [], homepage: '' };
+const vercelOut = { ls: '', inspect: '' };
 const revenueRuns = [];
 const realRevenue = require('../bin/idea-revenue');
 
@@ -78,6 +79,10 @@ Module._load = function (request, parent, ...rest) {
       if (cmd === 'openclaw') sent.push(args);
       if (cmd === 'gh' && args[0] === 'pr' && args[1] === 'view') return JSON.stringify({ state: gh.prs[args[2]] || 'OPEN' });
       if (cmd === 'gh' && args[0] === 'api') return gh.files;
+      if (cmd === 'gh' && args[0] === 'repo' && args[1] === 'edit') { gh.edits.push(args); return ''; }
+      if (cmd === 'gh' && args[0] === 'repo' && args[1] === 'view') return JSON.stringify({ homepageUrl: gh.homepage || '' });
+      if (cmd === 'vercel' && args[0] === 'ls') return vercelOut.ls;
+      if (cmd === 'vercel' && args[0] === 'inspect') { if (!vercelOut.inspect) throw new Error('not ours'); return vercelOut.inspect; }
       return '';
     }, spawnSync: () => ({ status: 0 }), spawn: () => { throw new Error('no spawn in tests'); } };
   }
@@ -102,7 +107,8 @@ test.beforeEach(() => {
   fs.rmSync(path.join(DATA, 'ideas'), { recursive: true, force: true });
   // The daily steps ran today already, so the tick does only the every-tick steps.
   fs.writeFileSync(path.join(DATA, '.pipeline-state.json'), JSON.stringify({ lastDaily: new Date().toLocaleDateString('en-CA') }));
-  builds.length = 0; sent.length = 0; revenueRuns.length = 0; gh.prs = {}; gh.files = '';
+  builds.length = 0; sent.length = 0; revenueRuns.length = 0; gh.prs = {}; gh.files = ''; gh.edits = []; gh.homepage = ''; vercelOut.ls = ''; vercelOut.inspect = '';
+  globalThis.fetch = async () => ({ status: 404 });
   buildResult = { ok: true, milestone: 'M1', prUrl: 'https://github.com/o/pr-x/pull/1', testsPassing: true, engine: 'claude', model: 'claude-opus-5-5' };
 });
 test.after(() => { Module._load = realLoad; fs.rmSync(DATA, { recursive: true, force: true }); fs.rmSync(HOME, { recursive: true, force: true }); });
@@ -202,7 +208,7 @@ test('the launch checklist is written to the record, and the plan is written onc
   assert.ok(out.changes.some((c) => /^pr-x: revenue plan: \$9\/month · Indie devs/.test(c)));
   const s = readState('pr-x');
   assert.ok(s.launch, 'checklist saved');
-  assert.equal(s.launch.total, 9);
+  assert.equal(s.launch.total, 10);
   assert.equal(s.launch.steps.find((x) => x.id === 'legal').evidence, 'privacy ✓ · terms ✗');
   assert.equal(s.launch.steps.find((x) => x.id === 'deployed').done, false, 'nothing answered (fetch is stubbed to 404)');
   await tick();
@@ -217,4 +223,52 @@ test('the weekly slot goes to the approved idea closest to money, not the first 
   await tick();
   assert.deepEqual(builds.map((b) => b.slug), ['b-demand']);
   assert.equal(builds[0].mvp, true);
+});
+
+test('a go-live request builds the launch-ready changes; its merge is recorded, not as a milestone', async () => {
+  idea('pr-x', { stage: 'building', repo: 'https://github.com/o/pr-x', milestonesDone: ['M1'], build: { milestone: 'M1', status: 'merged' } });
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-x', 'revenue.json'), '{}'); // no plan run in this test
+  buildResult = { ...buildResult, milestone: 'GOLIVE', prUrl: 'https://github.com/o/pr-x/pull/5' };
+  db = { requests: [{ id: 30, slug: 'pr-x', milestone: 'GOLIVE', note: null, status: 'pending' }], startsLast24h: 0, log: [] };
+  await tick();
+  assert.deepEqual(builds, [{ slug: 'pr-x', milestone: 'GOLIVE', manual: true, note: '', golive: true }]);
+  assert.match(db.requests[0].result, /^Go-live PR opened/);
+
+  idea('pr-y', { stage: 'building', repo: 'https://github.com/o/pr-y', milestonesDone: ['M1'], build: { milestone: 'GOLIVE', milestones: [], status: 'pr-open', prUrl: 'https://github.com/o/pr-y/pull/6' } });
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-y', 'revenue.json'), '{}');
+  gh.prs['https://github.com/o/pr-y/pull/6'] = 'MERGED';
+  db = { requests: [], startsLast24h: 0, log: [] };
+  builds.length = 0;
+  await tick();
+  const y = readState('pr-y');
+  assert.equal(y.golive.prUrl, 'https://github.com/o/pr-y/pull/6');
+  assert.deepEqual(y.milestonesDone, ['M1'], 'a go-live doesn\'t mark a roadmap milestone done');
+});
+
+test('once the MVP is complete the pipeline starts the go-live itself; then the production URL, homepage and live audit fill in', async () => {
+  idea('pr-x', { stage: 'building', repo: 'https://github.com/o/pr-x', milestonesDone: ['M1', 'M2'], build: { milestone: 'MVP', status: 'merged' } });
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-x', 'revenue.json'), '{}');
+  buildResult = { ...buildResult, milestone: 'GOLIVE' };
+  db = { requests: [], startsLast24h: 0, log: [] };
+  await tick();
+  assert.deepEqual(builds, [{ slug: 'pr-x', milestone: 'GOLIVE', golive: true }], 'MVP complete and not launch-ready: go-live starts');
+
+  // After the go-live merged and Vercel deployed: the production URL is found, set as the homepage, audited.
+  idea('pr-x', { stage: 'building', repo: 'https://github.com/o/pr-x', milestonesDone: ['M1', 'M2'], golive: { mergedAt: 'x' }, build: { milestone: 'GOLIVE', status: 'merged' } });
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-x', 'revenue.json'), '{}');
+  fs.writeFileSync(path.join(DATA, '.pipeline-state.json'), JSON.stringify({ lastDaily: new Date().toLocaleDateString('en-CA') }));
+  vercelOut.ls = 'https://pr-x-abc123def-team.vercel.app ● Ready Production';
+  vercelOut.inspect = 'Aliases\n  https://pr-x-seven.vercel.app\n';
+  const page = '<title>pr-x — a product</title><meta name="description" content="d"><meta property="og:image" content="/og.png">';
+  globalThis.fetch = async (u) => (u.replace(/\/$/, '') === 'https://pr-x-seven.vercel.app' ? { status: 200, text: async () => page } : { status: 404, text: async () => '' });
+  builds.length = 0;
+  const out = await tick();
+  assert.deepEqual(gh.edits[0], ['repo', 'edit', 'o/pr-x', '--homepage', 'https://pr-x-seven.vercel.app']);
+  assert.ok(out.changes.some((c) => c === 'pr-x: homepage set to https://pr-x-seven.vercel.app'));
+  const s = readState('pr-x');
+  assert.equal(s.launch.steps.find((x) => x.id === 'deployed').evidence, 'https://pr-x-seven.vercel.app');
+  const ready = s.launch.steps.find((x) => x.id === 'launchReady');
+  assert.equal(ready.done, false);
+  assert.match(ready.evidence, /^5\/9 launch checks · missing: robots\.txt, sitemap\.xml, Privacy page, Terms page$/);
+  assert.equal(builds.length, 0, 'no second go-live: after one, the audit says what\'s left');
 });

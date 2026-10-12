@@ -35,7 +35,7 @@ function claude(args, env) {
   log({ op: 'claude', call: claudeCalls, tokenOk: env.CLAUDE_CODE_OAUTH_TOKEN === process.env.FAKE_EXPECT_TOKEN, envKeys: Object.keys(env).sort(),
     model: args[args.indexOf('--model') + 1], effort: args[args.indexOf('--effort') + 1],
     tools: (() => { const i = args.indexOf('--allowedTools') + 1; const j = args.findIndex((a, k) => k >= i && a.startsWith('--')); return args.slice(i, j < 0 ? undefined : j); })(),
-    repair: /secret scan found/.test(prompt), fileMode: /\\.provision/.test(prompt), mvpNow: (prompt.match(/Now: (M\\d+) \\((\\d+) of (\\d+)\\)/) || [])[0] || null });
+    repair: /secret scan found/.test(prompt), fileMode: /\\.provision/.test(prompt), golive: /ready for a public launch/.test(prompt), mvpNow: (prompt.match(/Now: (M\\d+) \\((\\d+) of (\\d+)\\)/) || [])[0] || null });
   fs.mkdirSync(path.join(ws, 'src'), { recursive: true });
   fs.mkdirSync(path.join(ws, 'test'), { recursive: true });
   fs.writeFileSync(path.join(ws, 'src', 'app.js'), 'module.exports = () => 42;\\n');
@@ -47,7 +47,8 @@ function claude(args, env) {
     ? "const KEY = '" + literalKey() + "';\\n" + (scenario === 'stays-dirty' ? "const T = '" + process.env.FAKE_EXPECT_TOKEN + "';\\n" : '')
     : "const KEY = ['sk', 'ant', 'api03', 'A1b2'.repeat(12)].join('-');\\n";
   fs.writeFileSync(path.join(ws, 'test', 'app.test.js'), fixture);
-  if (claudeCalls === 1) fs.writeFileSync(path.join(ws, '.provision'), 'neon db demo\\nneon db someone-else\\nrequest "Stripe test keys for demo: checkout"\\n');
+  if (scenario === 'golive') { fs.writeFileSync(path.join(ws, 'LAUNCH-READY.md'), '# Launch-ready\\nLeft for David: STRIPE_PAYMENT_LINK.\\n'); fs.writeFileSync(path.join(ws, '.provision'), 'vercel project demo\\n'); }
+  else if (claudeCalls === 1) fs.writeFileSync(path.join(ws, '.provision'), 'neon db demo\\nneon db someone-else\\nrequest "Stripe test keys for demo: checkout"\\n');
   const out = [{ type: 'system', subtype: 'init', apiKeySource: 'none', model: 'claude-opus-5-5', mcp_servers: [], tools: ['Read'] },
     { type: 'result', is_error: false, result: 'tests passing: 1', num_turns: 3, duration_ms: 1000 }];
   return out.map((e) => JSON.stringify(e)).join('\\n');
@@ -243,4 +244,33 @@ test('mvpMilestones: from where a single build would start, every remaining mile
   assert.deepEqual(B.mvpMilestones({ stage: 'building', repo, milestonesDone: ['M1', 'M2'], build: { milestone: 'MVP', status: 'merged' } }, roadmap).milestones, ['M3', 'M4']);
   assert.match(B.mvpMilestones({ stage: 'building', repo, milestonesDone: ['M1', 'M2', 'M3', 'M4'], build: { status: 'merged' } }, roadmap).reason, /every roadmap milestone/);
   assert.equal(B.rangeText(['M1', 'M2', 'M3']), 'M1–M3');
+});
+
+test('go-live: one launch-readiness run in the sandbox, the broker gets the Vercel project, a "Go live" PR', async () => {
+  setup('golive');
+  const idea = path.join(DATA, 'ideas', 'demo');
+  fs.writeFileSync(path.join(idea, 'state.json'), JSON.stringify({ stage: 'building', repo: 'https://github.com/o/demo', milestonesDone: ['M1'], build: { milestone: 'M1', status: 'merged' } }));
+  fs.writeFileSync(path.join(idea, 'revenue.json'), JSON.stringify({ buyer: 'Indie devs running agents overnight', paymentMethod: 'Stripe payment link', price: { amount: 9, currency: 'USD', interval: 'month' },
+    mvpScope: 'the CLI and a digest page', mustHaveBeforeCharging: ['checkout'], launchChannels: [{ name: 'r/ClaudeAI' }], firstTenUsers: 'GitHub discussions' }));
+  process.env.IDEA_BUILD_CLAUDE_TOKEN = TOKEN;
+  const r = await B.buildOne('demo', { golive: true, manual: true });
+  assert.equal(r.ok, true, r.reason);
+  const runs = sessionLog().filter((e) => e.op === 'claude');
+  assert.equal(runs.length, 1);
+  assert.equal(runs[0].golive, true, 'the go-live prompt, not a milestone prompt');
+  assert.deepEqual(host.provision, [['vercel', 'project', 'demo']], 'the Vercel project comes from the broker, on the host');
+  assert.match(host.prs[0], /\*\*demo\*\*, made launch-ready \(SEO basics, privacy and terms, payment link, visit beacon, Vercel project\)/);
+  assert.match(host.prs[0], /Left for David: STRIPE_PAYMENT_LINK/, 'LAUNCH-READY.md is in the PR');
+  const subject = realExec('git', ['log', '-1', '--format=%s', 'go-live'], { cwd: REMOTE, encoding: 'utf8' }).trim();
+  assert.equal(subject, 'Go live: demo (launch-ready) (tests passing)');
+  const state = JSON.parse(fs.readFileSync(path.join(idea, 'state.json'), 'utf8'));
+  assert.equal(state.build.milestone, 'GOLIVE');
+  assert.deepEqual(state.build.milestones, [], 'nothing on the roadmap is marked done by a go-live');
+  assert.deepEqual(state.milestonesDone, ['M1']);
+  const p = B.goLivePrompt('demo', { price: '$9/month', signalUrl: 'https://repohq.vercel.app/api/ideas/signal', provision: 'file' });
+  assert.match(p, /JSON-LD \(SoftwareApplication, with an Offer for \$9\/month\)/);
+  assert.match(p, /POST JSON \{"slug": "demo", "kind": "view"/);
+  assert.match(p, /STRIPE_PAYMENT_LINK env var .* hidden when the variable is unset/);
+  assert.match(p, /request "Stripe payment link for demo: \$9\/month, per REVENUE\.md"/);
+  assert.match(B.goLivePrompt('demo', {}), /no plan with a price yet: skip payments/);
 });

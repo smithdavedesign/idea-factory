@@ -30,7 +30,7 @@ test('the plan is validated and normalized', () => {
 test('the checklist: each step is someone\'s, done or not, with the evidence', () => {
   const plan = R.validatePlan(PLAN).plan;
   const start = R.launchChecklist({ milestonesDone: ['M1'] }, { roadmap: ROADMAP });
-  assert.equal(start.total, 9);
+  assert.equal(start.total, 10);
   assert.equal(start.done, 0);
   assert.deepEqual(start.next, { id: 'plan', label: 'Road-to-revenue plan written', owner: 'agent' });
   assert.equal(start.steps.find((s) => s.id === 'mvp').evidence, '1/3 milestones merged');
@@ -39,15 +39,20 @@ test('the checklist: each step is someone\'s, done or not, with the evidence', (
     plan, roadmap: ROADMAP, repo: { homepage: 'https://dawnlog.vercel.app', stripeProductId: null, mrr: 0 },
     liveUrl: 'https://dawnlog.vercel.app', legal: { privacy: true, terms: true }, launchPosts: 0, signups: 0,
   });
-  assert.equal(later.done, 5);
-  assert.deepEqual(later.next, { id: 'payments', label: 'Stripe product created and mapped to the repo in RepoHQ', owner: 'david' });
+  assert.equal(later.done, 5, 'launch-ready waits for the live audit');
+  assert.deepEqual(later.next, { id: 'launchReady', label: 'Launch-ready: SEO basics, share image, sitemap, privacy and terms live', owner: 'agent' }, 'live but not audited yet: the go-live work comes before payments');
   assert.equal(later.price, '$9/month');
   assert.equal(later.steps.find((s) => s.id === 'price').label, 'Price: $9/month (from the plan)');
 
+  const audit = { ready: true, passed: 9, total: 9, missing: [], checks: [{ id: 'privacy', ok: true }, { id: 'terms', ok: true }] };
   const paid = R.launchChecklist({ milestonesDone: ['M1', 'M2', 'M3'] }, {
-    plan, roadmap: ROADMAP, repo: { stripeProductId: 'prod_123', mrr: 18 }, liveUrl: 'https://x', legal: { privacy: true, terms: true }, launchPosts: 2, signups: 3,
+    plan, roadmap: ROADMAP, repo: { stripeProductId: 'prod_123', mrr: 18 }, liveUrl: 'https://x', legal: { privacy: false, terms: false }, launchPosts: 2, signups: 3, audit,
   });
-  assert.equal(paid.done, 9);
+  assert.equal(paid.done, 10);
+  assert.equal(paid.steps.find((s) => s.id === 'legal').evidence, 'live on the site', 'live legal pages count even if the repo check missed them');
+  assert.equal(paid.steps.find((s) => s.id === 'launchReady').evidence, '9/9 launch checks');
+  const half = R.launchChecklist({}, { audit: { ready: false, passed: 6, total: 9, missing: ['Social share image (og:image)', 'robots.txt', 'sitemap.xml'], checks: [] } });
+  assert.equal(half.steps.find((s) => s.id === 'launchReady').evidence, '6/9 launch checks · missing: Social share image (og:image), robots.txt, sitemap.xml');
   assert.equal(paid.next, null);
   assert.equal(paid.steps.find((s) => s.id === 'firstDollar').evidence, '$18.00 MRR');
   assert.equal(R.sameChecklist({ ...paid, updatedAt: 'a' }, { ...paid, updatedAt: 'b' }), true);
@@ -58,7 +63,7 @@ test('build queues go to the idea closest to money; ties keep approval order', (
   const plan = R.validatePlan(PLAN).plan;
   const passedNoPlan = { review: { verdict: 'pass', score: 3 } };
   const validatedWithSignups = { review: { verdict: 'validate', score: 6 }, validation: { decision: 'build' } };
-  const planned = { review: { verdict: 'pass', score: 5 }, launch: { done: 3, total: 9 } };
+  const planned = { review: { verdict: 'pass', score: 5 }, launch: { done: 3, total: 9 } }; // (score uses done/total, whatever the length)
   assert.equal(R.revenueScore(passedNoPlan), 0);
   assert.equal(R.revenueScore(validatedWithSignups, { signups: 7 }), 30 + 7 + 6);
   assert.equal(R.revenueScore(planned, { plan }), 15 + 5 + 7 + 5 - 5);

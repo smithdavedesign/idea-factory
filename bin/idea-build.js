@@ -175,6 +175,31 @@ Anything else (another service, auth, payments): \`${PROVISION} request "<what> 
 Your final message: one line — tests passing or not, and the number of tests.`;
 }
 
+/**
+ * The go-live build (buildOne({golive})): make a built product ready for a public launch without
+ * changing what it does (pure). `price` from the revenue plan, `signalUrl` RepoHQ's visit endpoint.
+ */
+function goLivePrompt(slug, { price = '', signalUrl = '', gstackFile = null, provision = 'direct', ownerNote = '' } = {}) {
+  const note = String(ownerNote || '').trim().slice(0, 1000);
+  const provisionLines = [`vercel project ${slug}`, ...(price ? [`request "Stripe payment link for ${slug}: ${price}, per REVENUE.md"`] : [])];
+  return `You are in the repo for "${slug}", a built product. Make it ready for a public launch without changing what it does. Read README.md, PRD.md, BUILD.md and REVENUE.md (if present) first.${note ? `
+The owner asked for this with a note; follow it where it fits:
+---
+${note}
+---` : ''}
+1. Search and sharing: every public page gets a unique <title> and meta description, Open Graph and Twitter card tags with a 1200×630 share image, a canonical URL, and JSON-LD (SoftwareApplication${price ? `, with an Offer for ${price}` : ''}). Add robots.txt (allow indexing, point at the sitemap) and sitemap.xml listing the public pages. Use the framework's own conventions (e.g. Next.js metadata, opengraph-image, robots.ts, sitemap.ts). The share image is generated at build time or drawn with code; never copy an image from the web.
+2. A /privacy page and a /terms page, plain and honest: what the product collects (say "nothing" if that's true), cookies (none unless needed), the visit beacon below, and contact through the GitHub repo's issues. Terms: no warranty${price ? `, and the price and refund line from REVENUE.md` : ''}. Link both from the footer.
+3. Payment: ${price ? `a clear "Buy" button (or "Get Pro") linking to the URL in the STRIPE_PAYMENT_LINK env var (NEXT_PUBLIC_STRIPE_PAYMENT_LINK if it must reach the browser), hidden when the variable is unset.` : 'no plan with a price yet: skip payments.'} Never hard-code a payment link or key.
+4. Visit beacon: on the home page, POST JSON {"slug": "${slug}", "kind": "view", "referrer": document.referrer || null} to ${signalUrl || 'the RepoHQ signal URL'} (fire-and-forget, keepalive, no cookies), so RepoHQ counts real visitors. Say so on the privacy page.
+5. Deployment: ${provision === 'file' ? `you can't provision from here; write \`.provision\` at the repo root with these lines, and the pipeline runs them through the credential broker after the build:
+${provisionLines.map((l) => `  ${l}`).join('\n')}` : `run ${provisionLines.map((l) => `\`${PROVISION} ${l}\``).join(' and ')}.`}
+6. Keep \`npm test\` passing, and add tests for what you can: the pages render, robots.txt and the sitemap exist, and the Buy button is hidden without the env var.
+7. Write LAUNCH-READY.md: what you did, how to check it, and what's left for David (the Stripe payment link to paste into the Vercel env as STRIPE_PAYMENT_LINK; a custom domain if he wants one).${gstackFile ? `
+8. Self-review your diff (\`git status\`, \`git diff\`) against gstack's pre-landing checklist in ${gstackFile} ("Review Categories", "Fix-First Heuristic"), and fix every CRITICAL finding.` : ''}
+Install scripts are disabled (npm_config_ignore_scripts); choose packages that work without them, and prefer none.
+Your final message: one line — tests passing or not, and what's left for David.`;
+}
+
 /** The milestones in ROADMAP.md, in order ("## M1 …", "## M2 …"). */
 function milestones(roadmap) {
   return [...String(roadmap).matchAll(/^#{2,3}\s*(M\d+)\b/gm)].map((m) => m[1]).filter((m, i, a) => a.indexOf(m) === i);
@@ -247,6 +272,11 @@ function mvpMilestones(state, roadmap = '', max = 6) {
   return list.length ? { ok: true, milestone: 'MVP', milestones: list } : { ok: false, reason: 'every roadmap milestone is merged' };
 }
 
+/** The plan's price text ("$9/month"), or '' without a plan. */
+function priceOf(ideaDir) {
+  try { const { validatePlan, priceText } = require('../lib/revenue'); const c = validatePlan(JSON.parse(fs.readFileSync(path.join(ideaDir, 'revenue.json'), 'utf8'))); return c.ok ? priceText(c.plan.price) : ''; } catch { return ''; }
+}
+
 /** "M1–M3" or "M2" (pure). */
 const rangeText = (ms) => (ms.length > 1 ? `${ms[0]}–${ms[ms.length - 1]}` : ms[0] || '');
 
@@ -277,7 +307,7 @@ function engineOrder(difficulty, mode) {
  * subscription (policy.build.mvp.stopOnFallback), or past policy.build.mvp.maxMinutes; the PR has
  * what's done and the next build starts where it stopped.
  */
-async function buildOne(slug, { push = true, milestone = 'M1', manual = false, note = '', mvp = false } = {}) {
+async function buildOne(slug, { push = true, milestone = 'M1', manual = false, note = '', mvp = false, golive = false } = {}) {
   const ideaDir = path.join(DATA, 'ideas', slug);
   const state = P.readState(ideaDir);
   if (!state.repo) return { ok: false, slug, reason: 'no repo yet (stage must be "repo")' };
@@ -290,7 +320,9 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     planned = t.milestones;
     milestone = 'MVP';
   }
-  const branch = milestone.toLowerCase();
+  // Go-live: one launch-readiness run (goLivePrompt), branch go-live; nothing on the roadmap is marked done.
+  if (golive) { planned = ['GOLIVE']; milestone = 'GOLIVE'; }
+  const branch = golive ? 'go-live' : milestone.toLowerCase();
   const full = state.repo.replace('https://github.com/', '');
   const work = path.join(DATA, 'work', slug);
   fs.rmSync(work, { recursive: true, force: true });
@@ -333,7 +365,10 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     let stopped = null;
     for (const [k, m] of planned.entries()) {
       if (k > 0 && Date.now() > deadline) { stopped = `time budget (${mvpPolicy.maxMinutes} min) used before ${m}`; break; }
-      run = await ws.claude(prompt(slug, m, ownerNote, { gstackFile: ws.gstackFile, provision: ws.kind === 'docker' ? 'file' : 'direct', mvp: mvp ? { all: planned, index: k } : null }), { ...runOpts, engines });
+      const text = golive
+        ? goLivePrompt(slug, { price: priceOf(ideaDir), signalUrl: policy.signalUrl, gstackFile: ws.gstackFile, provision: ws.kind === 'docker' ? 'file' : 'direct', ownerNote })
+        : prompt(slug, m, ownerNote, { gstackFile: ws.gstackFile, provision: ws.kind === 'docker' ? 'file' : 'direct', mvp: mvp ? { all: planned, index: k } : null });
+      run = await ws.claude(text, { ...runOpts, engines });
       testsPassing = await ws.test();
       steps.push({ milestone: m, ok: run.ok, testsPassing, engine: run.engine, model: run.info.model ?? null, fellBack: fellBackOf(run) });
       if (!mvp || k === planned.length - 1) break;
@@ -380,13 +415,13 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     }
 
     await ws.stage(patch);
-    const title = mvp ? `MVP: ${slug} (${rangeText(completed.length ? completed : planned)})` : `${milestone}: ${slug}`;
+    const title = golive ? `Go live: ${slug} (launch-ready)` : mvp ? `MVP: ${slug} (${rangeText(completed.length ? completed : planned)})` : `${milestone}: ${slug}`;
     sh('git', ['-c', 'user.name=idea-factory', '-c', 'user.email=idea-factory@users.noreply.github.com', 'commit', '-q', '-m', `${title} (tests ${testsPassing ? 'passing' : 'failing'})`], work);
     let prUrl = null;
     if (push) {
       sh('git', ['push', '-q', '-u', 'origin', branch], work);
       const body = [
-        `${mvp ? `The MVP for **${slug}** (${planned.join(', ')} in one run)` : `${milestone} for **${slug}**`}, built by the idea pipeline, tests first. Engine: ${engine}. Built in ${ws.kind === 'docker' ? 'the factory\'s Docker sandbox' : 'host mode (on the Mac)'}.`, '',
+        `${golive ? `**${slug}**, made launch-ready (SEO basics, privacy and terms, payment link, visit beacon, Vercel project)` : mvp ? `The MVP for **${slug}** (${planned.join(', ')} in one run)` : `${milestone} for **${slug}**`}, built by the idea pipeline${golive ? '' : ', tests first'}. Engine: ${engine}. Built in ${ws.kind === 'docker' ? 'the factory\'s Docker sandbox' : 'host mode (on the Mac)'}.`, '',
         ...(mvp ? [...steps.map((x) => `- ${x.milestone}: ${x.ok && x.testsPassing ? '✅ built, tests passing' : x.ok ? '❌ built, tests failing' : '❌ the builder stopped'} (${x.engine === 'free' ? 'free pool' : x.model || 'Claude'})`),
           ...planned.filter((m) => !steps.some((x) => x.milestone === m)).map((m) => `- ${m}: not started`),
           ...(stopped ? [`Stopped: ${stopped}. Merging marks ${completed.length ? completed.join(', ') : 'nothing'} done; the next build starts at the first one that isn't.`] : []), ''] : []),
@@ -394,13 +429,14 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
         `Secret scan: clean${repaired ? ' after one repair round' : ''}.`,
         ...(provisioned.length ? [`Provisioned through the credential broker: ${provisioned.join('; ')}.`] : []),
         run.reason ? `Builder note: ${run.reason}` : `Builder: ${run.info.result.slice(0, 300)}`, '',
-        fs.existsSync(path.join(work, 'BUILD.md')) ? fs.readFileSync(path.join(work, 'BUILD.md'), 'utf8').slice(0, 6000) : '_No BUILD.md written._', '',
+        golive ? (fs.existsSync(path.join(work, 'LAUNCH-READY.md')) ? fs.readFileSync(path.join(work, 'LAUNCH-READY.md'), 'utf8').slice(0, 6000) : '_No LAUNCH-READY.md written._')
+          : fs.existsSync(path.join(work, 'BUILD.md')) ? fs.readFileSync(path.join(work, 'BUILD.md'), 'utf8').slice(0, 6000) : '_No BUILD.md written._', '',
         '_Review it like any factory PR: merge if it does what the milestone says. Nothing here spends money._',
       ].join('\n');
       prUrl = sh('gh', ['pr', 'create', '--draft', '--base', 'main', '--head', branch, '--title', title, '--body', body], work);
     }
     // On merge, the pipeline marks `milestones` done: the ones that completed, not every one attempted.
-    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'building', build: { ...(state.build || {}), milestone, milestones: mvp ? completed : [milestone], ...(mvp ? { planned, stopped } : {}), status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : policy.build.effort || null, manual: !!manual, sandbox: ws.kind, at: now.toISOString(), ...(advice ? { advice } : {}) } });
+    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'building', build: { ...(state.build || {}), milestone, milestones: golive ? [] : mvp ? completed : [milestone], ...(mvp ? { planned, stopped } : {}), status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : policy.build.effort || null, manual: !!manual, sandbox: ws.kind, at: now.toISOString(), ...(advice ? { advice } : {}) } });
     emit({ component: 'build', event: milestone, status: testsPassing ? 'ok' : 'fail', subject: { idea: slug, pr: prUrl || undefined }, durationMs: Date.now() - now.getTime(), data: { ...usage, testsPassing, prUrl, repaired },
       message: `${mvp ? `MVP (${completed.join(', ') || 'nothing complete'}${stopped ? `; stopped: ${stopped.slice(0, 120)}` : ''})` : milestone} ${prUrl ? `PR ${prUrl}` : 'built locally'}, tests ${testsPassing ? 'passing' : 'failing'}, engine ${run.engine}${advice ? `, advisor ${advice.difficulty}` : ''}` });
     return { ok: true, slug, milestone, prUrl, testsPassing, engine: run.engine, model: run.info.model, builderReason: run.reason, state: s, ...(mvp ? { planned, completed, stopped } : {}) };
@@ -476,7 +512,7 @@ async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSe
   }
 }
 
-module.exports = { buildOne, mvpMilestones, rangeText, tools, milestones, nextMilestone, prompt, milestoneText, engineOrder, manualBuildTarget, buildMessage, engineLabel, buildInput, extractSection, GSTACK_BUILD_SECTIONS, repairPrompt, openWorkspace, sandboxToken, provisionCommands };
+module.exports = { buildOne, goLivePrompt, mvpMilestones, rangeText, tools, milestones, nextMilestone, prompt, milestoneText, engineOrder, manualBuildTarget, buildMessage, engineLabel, buildInput, extractSection, GSTACK_BUILD_SECTIONS, repairPrompt, openWorkspace, sandboxToken, provisionCommands };
 
 if (require.main === module) {
   const slug = process.argv[2];
