@@ -86,7 +86,12 @@ Module._load = function (request, parent, ...rest) {
       if (cmd === 'vercel' && args[0] === 'ls') return vercelOut.ls;
       if (cmd === 'vercel' && args[0] === 'inspect') { if (!vercelOut.inspect) throw new Error('not ours'); return vercelOut.inspect; }
       return '';
-    }, spawnSync: () => ({ status: 0 }), spawn: () => { throw new Error('no spawn in tests'); } };
+    }, spawnSync: (cmd, args) => {
+      // productionUrl reads both streams; the real CLI prints inspect's aliases on stderr.
+      if (cmd === 'vercel' && args[0] === 'ls') return { status: 0, stdout: vercelOut.ls, stderr: '' };
+      if (cmd === 'vercel' && args[0] === 'inspect') return vercelOut.inspect ? { status: 0, stdout: '', stderr: vercelOut.inspect } : { status: 1, stdout: '', stderr: 'not ours' };
+      return { status: 0 };
+    }, spawn: () => { throw new Error('no spawn in tests'); } };
   }
   return realLoad.call(this, request, parent, ...rest);
 };

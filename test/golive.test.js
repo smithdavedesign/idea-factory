@@ -33,16 +33,23 @@ test('the live audit: every required check, what\'s missing, and speed', async (
 
 test('the production URL is the newest production deployment\'s shortest alias in the owner\'s team', () => {
   const calls = [];
-  const exec = (cmd, args) => {
+  // As the real CLI does: the ls table on stdout, inspect's whole report (aliases included) on stderr.
+  const spawn = (cmd, args) => {
     calls.push([cmd, ...args].join(' '));
-    if (args[0] === 'ls') return 'Age  Deployment\n1h   https://grantgate-ab12cd34e-david-smiths-projects.vercel.app  ● Ready  Production\n';
-    return 'Aliases\n  ╶ https://grantgate-two.vercel.app\n  ╶ https://grantgate-david-smiths-projects.vercel.app\n  ╶ https://grantgate-git-main-david-smiths-projects.vercel.app\n';
+    if (args[0] === 'ls') return { status: 0, stdout: 'Age  Deployment\n1h   https://grantgate-ab12cd34e-david-smiths-projects.vercel.app  ● Ready  Production\n', stderr: '> Production deployments' };
+    return { status: 0, stdout: '', stderr: 'url  https://grantgate-ab12cd34e-david-smiths-projects.vercel.app\nAliases\n  ╶ https://grantgate-two.vercel.app\n  ╶ https://grantgate-david-smiths-projects.vercel.app\n  ╶ https://grantgate-git-main-david-smiths-projects.vercel.app\n' };
   };
-  assert.equal(G.productionUrl('grantgate', 'team_1', { exec }), 'https://grantgate-two.vercel.app');
+  assert.equal(G.productionUrl('grantgate', 'team_1', { spawn }), 'https://grantgate-two.vercel.app');
   assert.deepEqual(calls, ['vercel ls grantgate --prod --scope team_1', 'vercel inspect https://grantgate-ab12cd34e-david-smiths-projects.vercel.app --scope team_1']);
-  assert.equal(G.productionUrl('x', 'team_1', { exec: () => '> No deployments found' }), null, 'before the first deploy');
-  assert.equal(G.productionUrl('x', '', { exec }), null);
-  assert.equal(G.productionUrl('x', 'team_1', { exec: () => { throw new Error('auth'); } }), null);
+  assert.equal(G.productionUrl('x', 'team_1', { spawn: () => ({ status: 0, stdout: '', stderr: '> No deployments found' }) }), null, 'before the first deploy');
+  assert.equal(G.productionUrl('x', '', { spawn }), null);
+  assert.equal(G.productionUrl('x', 'team_1', { spawn: () => ({ status: 1, stdout: '', stderr: 'Error: not authorized' }) }), null);
+  assert.equal(G.productionUrl('x', 'team_1', { spawn: () => ({ error: new Error('ENOENT') }) }), null, 'no CLI');
+  // A deployment with no alias yet: null, never the deployment's own URL (it changes every deploy and is protected).
+  const noAlias = (cmd, args) => (args[0] === 'ls'
+    ? { status: 0, stdout: 'https://tiebreak-mh5fswqjn-team.vercel.app ● Ready Production', stderr: '' }
+    : { status: 0, stdout: '', stderr: 'url  https://tiebreak-mh5fswqjn-team.vercel.app\nAliases\n  ╶ https://tiebreak-git-main-team.vercel.app\n' });
+  assert.equal(G.productionUrl('tiebreak', 'team_1', { spawn: noAlias }), null);
 });
 
 test('go-live can run after M1 when nothing is in flight; it starts by itself once the MVP is complete and not launch-ready', () => {
