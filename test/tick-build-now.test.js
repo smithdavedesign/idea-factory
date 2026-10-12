@@ -48,6 +48,7 @@ function fakeSql(strings, ...values) {
     if (r) Object.assign(r, { status: values[0], result: values[1], pr_url: values[2], engine: values[3] });
     return Promise.resolve([]);
   }
+  if (/FROM repositories WHERE full_name = ANY/.test(q)) return Promise.resolve(db.repos || []);
   return Promise.resolve([]); // decisions, seeds, signals, ideas sync, heartbeat: nothing to do here
 }
 
@@ -250,6 +251,21 @@ test('a go-live request builds the launch-ready changes; its merge is recorded, 
   const y = readState('pr-y');
   assert.equal(y.golive.prUrl, 'https://github.com/o/pr-y/pull/6');
   assert.deepEqual(y.milestonesDone, ['M1'], 'a go-live doesn\'t mark a roadmap milestone done');
+});
+
+test("a homepage already set on GitHub is never replaced, even when RepoHQ's copy hasn't synced it", async () => {
+  idea('pr-x', { stage: 'building', repo: 'https://github.com/o/pr-x', milestonesDone: ['M1', 'M2'], golive: { mergedAt: 'x' }, build: { milestone: 'GOLIVE', status: 'merged' } });
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-x', 'revenue.json'), '{}');
+  db = { requests: [], startsLast24h: 0, log: [], repos: [{ full_name: 'o/pr-x', mrr: 0, lifecycle_status: null, homepage: '', stripe_product_id: null }] };
+  gh.homepage = 'https://pr-x.example.com';
+  vercelOut.ls = 'https://pr-x-abc123def-team.vercel.app ● Ready Production';
+  vercelOut.inspect = 'Aliases\n  https://pr-x-seven.vercel.app\n';
+  await tick();
+  assert.deepEqual(gh.edits, [], 'GitHub already has a homepage: leave it');
+  gh.homepage = '';
+  fs.writeFileSync(path.join(DATA, '.pipeline-state.json'), JSON.stringify({ lastDaily: new Date().toLocaleDateString('en-CA') }));
+  await tick();
+  assert.deepEqual(gh.edits[0], ['repo', 'edit', 'o/pr-x', '--homepage', 'https://pr-x-seven.vercel.app'], 'empty on GitHub too: set it');
 });
 
 test('once the MVP is complete the pipeline starts the go-live itself; then the production URL, homepage and live audit fill in', async () => {
