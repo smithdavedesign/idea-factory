@@ -20,11 +20,13 @@ const realBuild = require('../bin/idea-build');
 const builds = [];
 let buildResult = null;
 const sent = [];
+const emitted = [];
 let db = null; // per test: { requests, startsLast24h, log }
 
 function fakeSql(strings, ...values) {
   const q = strings.join('?').replace(/\s+/g, ' ');
   db.log.push({ q, values });
+  if (db.failSync && /SELECT slug, hash/.test(q)) return Promise.reject(new Error('neon: connection reset'));
   if (/FROM idea_build_requests WHERE status = 'pending'/.test(q)) return Promise.resolve(db.requests.filter((r) => r.status === 'pending'));
   if (/count\(\*\)::int AS n FROM idea_build_requests/.test(q)) return Promise.resolve([{ n: db.startsLast24h }]);
   if (/UPDATE idea_build_requests SET status = 'running'/.test(q)) {
@@ -67,7 +69,7 @@ const stubs = {
     ensureDatabaseProperties: async () => {}, allIdeas: async () => [], readSeeds: () => [], seed: () => ({ id: 's' }),
     promote: async () => ({ promoted: [], errors: [] }), notionRequest: async () => ({}), appendBlocks: async () => {}, git: () => '',
   },
-  '../lib/events': { emit: () => {} },
+  '../lib/events': { emit: (e) => emitted.push(e) },
   '@neondatabase/serverless': { neon: () => fakeSql },
   './idea-build': { ...realBuild, buildOne: async (slug, opts) => { builds.push({ slug, ...opts }); return { slug, ...buildResult }; } },
 };
@@ -283,4 +285,21 @@ test('once the MVP is complete the pipeline starts the go-live itself; then the 
   globalThis.fetch = async (u) => (/\/terms$/.test(u) ? { status: 404, text: async () => '' } : u.startsWith('https://pr-x-seven.vercel.app') ? { status: 200, text: async () => page } : { status: 404, text: async () => '' });
   age();
   assert.ok((await tick()).changes.includes('pr-x: launch checks regressed on https://pr-x-seven.vercel.app: missing Terms page'));
+});
+test('the first quiet tick after a failed one is logged, so RepoHQ stops showing the failure', async () => {
+  idea('quiet', { stage: 'pass' });
+  db = { requests: [], startsLast24h: 0, log: [], failSync: true };
+  emitted.length = 0;
+  const bad = await tick();
+  assert.equal(bad.ok, false);
+  assert.equal(emitted.at(-1).status, 'fail');
+  db.failSync = false; emitted.length = 0;
+  const good = await tick();
+  assert.equal(good.ok, true);
+  assert.equal(emitted.length, 1);
+  assert.equal(emitted[0].status, 'ok');
+  assert.match(emitted[0].message, /recovered/);
+  emitted.length = 0;
+  const quiet = await tick();
+  if (!quiet.changes.length) assert.equal(emitted.length, 0, 'later quiet ticks stay quiet');
 });

@@ -473,7 +473,8 @@ async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSe
       kind: 'host', gstackFile, secrets: [],
       claude: (text, opts) => claudeTask(text, { ...opts, cwd: work, tools: tools(work, gstackFile ? [gstackFile] : []), addDirs: gstackFile ? [inputDir] : [] }),
       test: async () => spawnSync('npm', ['test', '--silent'], { cwd: work, encoding: 'utf8', timeout: 10 * 60_000, env: { ...process.env, CI: '1', npm_config_ignore_scripts: 'true' } }).status === 0,
-      patch: async () => { sh('git', ['add', '-A', '--', '.', ':(exclude)node_modules'], work); return execFileSync('git', ['diff', '--cached', '--binary'], { cwd: work, encoding: 'utf8', maxBuffer: 200 * 1024 * 1024 }); },
+      // Stage all, then reset node_modules: an :(exclude) pathspec on an ignored path makes git 2.5x exit 1.
+      patch: async () => { sh('git', ['add', '-A', '--', '.'], work); sh('git', ['reset', '-q', '--', 'node_modules'], work); return execFileSync('git', ['diff', '--cached', '--binary'], { cwd: work, encoding: 'utf8', maxBuffer: 200 * 1024 * 1024 }); },
       provisionFile: async () => null, // on the host the builder runs the broker itself
       stage: async () => {},
       close: async () => { if (gstackFile) fs.rmSync(gstackFile, { force: true }); },
