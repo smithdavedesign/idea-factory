@@ -683,13 +683,14 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
           .filter((e) => e.kind === exp.kind && e.status !== 'proposed').map((e) => ({ slug: x, hypothesis: e.hypothesis, decision: e.decision, status: e.status, reason: e.reason })));
         const brief = G.brief({ slug, exp, state: s, task, learnings: readText(path.join(dir, 'LEARNINGS.md')), playbook: readText(path.join(DATA, 'PLAYBOOK.md')), others });
         const r = await startBuild(slug, 'GROWTH', { growth: { experiment: exp, task, brief } });
-        record(r.ok && r.prUrl ? { prUrl: r.prUrl } : { status: 'abandoned', reason: String(r.reason || 'no PR was opened').slice(0, 300) });
+        // A run that failed is tried again the next day (lib/growth.js failedRun); a PR David closes isn't.
+        record(r.ok && r.prUrl ? { prUrl: r.prUrl } : { status: 'abandoned', failed: true, reason: String(r.reason || 'no PR was opened').slice(0, 300) });
       } else {
         const { distributionKitOne } = require('./idea-growth');
         let r;
         try { r = await distributionKitOne(slug); } catch (e) { r = { ok: false, reason: String(e.message || e).slice(0, 300) }; }
         if (r.ok) { record({ artifact: 'LAUNCH-KIT.md', channels: r.channels.length }); note(slug, `launch kit ready for David: ${r.channels.join(', ')}`); }
-        else { record({ status: 'abandoned', reason: String(r.reason).slice(0, 300) }); fail(`growth kit ${slug}`, r.reason); }
+        else { record({ status: 'abandoned', failed: true, reason: String(r.reason).slice(0, 300) }); fail(`growth kit ${slug}`, r.reason); }
       }
       break; // one mission per tick
     }
