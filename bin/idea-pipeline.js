@@ -542,7 +542,9 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
       if (merged) emit({ component: 'build', event: 'GROWTH', status: 'ok', subject: { idea: slug }, message: `${slug}: growth PR merged ${s.build.prUrl}` });
       continue;
     }
-    if (prState === 'MERGED' && m === 'GOLIVE') save(slug, { ...s, build: { ...s.build, status: 'merged' }, golive: { mergedAt: now.toISOString(), prUrl: s.build.prUrl } }, 'go-live merged: launch-ready changes are in; the live audit takes it from here');
+    // A go-live built with the funnel beacon (build.beacon, goLivePrompt step 4) says so: the growth loop
+    // doesn't wait for the first visit to know the product is measured (lib/growth.js beaconLive).
+    if (prState === 'MERGED' && m === 'GOLIVE') save(slug, { ...s, build: { ...s.build, status: 'merged' }, golive: { mergedAt: now.toISOString(), prUrl: s.build.prUrl, ...(s.build.beacon ? { beacon: s.build.beacon } : {}) } }, 'go-live merged: launch-ready changes are in; the live audit takes it from here');
     else if (prState === 'MERGED') save(slug, { ...s, build: { ...s.build, status: 'merged' }, milestonesDone: [...new Set([...(s.milestonesDone || []), ...doneNow])] }, `${m === 'MVP' ? `MVP (${doneNow.join(', ')})` : m} merged`);
     // A merged PR settles its build: a "tests failing" failure logged when it opened would otherwise
     // stay "failing now" in RepoHQ until some other build of that milestone succeeded (tiebreak, 2026-10-12).

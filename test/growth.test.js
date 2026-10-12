@@ -144,3 +144,11 @@ test("a kit's channels and how many were posted; the brief a growth build reads"
   assert.match(b, /- codespend: Search pages bring visitors\. → keep/);
   assert.match(G.missionTask('instrumentation', { slug: 'tiebreak', signalUrl: 'https://repohq.vercel.app/api/ideas/signal' }), /"activate" the first time.*navigator\.webdriver.*repohq:notrack/s);
 });
+
+test("a fresh funnel beacon that hasn't seen a visit yet doesn't hold the product at instrument", () => {
+  const quiet = funnelWith({ visit: 0 }, false);
+  assert.deepEqual(next({ ...ready, funnel: quiet, golive: { mergedAt: 'x', beacon: 'funnel' } }), ['acquire', 'kit:claude'], 'a go-live built with the funnel beacon');
+  assert.deepEqual(next({ ...ready, funnel: quiet, growth: { experiments: [exp('instrumentation', 'running')] } }), ['acquire', 'kit:claude'], 'its beacon build merged');
+  assert.deepEqual(next({ ...ready, funnel: quiet, growth: { experiments: [exp('instrumentation', 'proposed')] } }), ['instrument', null], 'still waiting for the merge');
+  assert.equal(G.beaconLive({ golive: { mergedAt: 'x' } }), false, 'a go-live from before the funnel beacon');
+});

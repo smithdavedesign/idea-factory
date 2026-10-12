@@ -367,7 +367,7 @@ test("the daily steps run once a day: a later write of the pipeline state keeps 
 });
 
 test('a go-live PR on a live product is followed: its merge is recorded and the product stays live', async () => {
-  idea('pr-l', { stage: 'live', repo: 'https://github.com/o/pr-l', milestonesDone: ['M1', 'M2'], build: { milestone: 'GOLIVE', milestones: [], status: 'pr-open', prUrl: 'https://github.com/o/pr-l/pull/7' } });
+  idea('pr-l', { stage: 'live', repo: 'https://github.com/o/pr-l', milestonesDone: ['M1', 'M2'], build: { milestone: 'GOLIVE', milestones: [], status: 'pr-open', prUrl: 'https://github.com/o/pr-l/pull/7', beacon: 'funnel' } });
   fs.writeFileSync(path.join(DATA, 'ideas', 'pr-l', 'revenue.json'), '{}');
   gh.prs['https://github.com/o/pr-l/pull/7'] = 'MERGED';
   db = { requests: [], startsLast24h: 0, log: [] };
@@ -375,6 +375,7 @@ test('a go-live PR on a live product is followed: its merge is recorded and the 
   const s = readState('pr-l');
   assert.equal(s.build.status, 'merged');
   assert.equal(s.golive.prUrl, 'https://github.com/o/pr-l/pull/7');
+  assert.equal(s.golive.beacon, 'funnel', 'built with the funnel beacon: the growth loop needn\'t wait for a visit');
   assert.equal(s.stage, 'live');
 });
 
