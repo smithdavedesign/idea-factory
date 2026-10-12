@@ -59,7 +59,17 @@
   "growth": {
     "focus": ["tiebreak"],
     "minVisitorsPerWeek": 50,
-    "_why": "The growth loop (RepoHQ docs/growth-loop-prd.md): the live products that get a daily growth step, most important first. Until that step ships, focus and minVisitorsPerWeek only decide when the build.startNew hold lifts."
+    "auto": true,
+    "maxMissionsPerDay": 2,
+    "maxBuildsPerWeek": 2,
+    "notBefore": "10:00",
+    "model": "sonnet",
+    "effort": "high",
+    "timeoutMinutes": 40,
+    "experimentDays": { "default": 14, "seo": 28, "instrumentation": 7 },
+    "proposedMaxDays": 7,
+    "parkAfterNoLift": 2,
+    "_why": "The growth loop (RepoHQ docs/growth-loop-prd.md, idea-pipeline step 5d, lib/growth.js). focus: the live products that get a daily growth step, most important first. Each day, the first matching rule picks one mission per product: a growth build (a draft PR, one change), a launch kit (posts David publishes) or an item in the morning email's Today block. At most maxMissionsPerDay missions a day, one per product, maxBuildsPerWeek growth builds a week, none before notBefore, never on a tick that built; nothing new on a product while something waits for David (an open growth PR, an unposted kit). Growth runs use model at effort on the subscription and never fall back to the free pool. auto false stops new missions. minVisitorsPerWeek is the traction bar, which also lifts build.startNew's hold."
   },
   "signalUrl": "https://repohq.vercel.app/api/ideas/signal",
   "pagesProject": "idea-pages",

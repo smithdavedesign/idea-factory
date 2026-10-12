@@ -35,7 +35,7 @@ function claude(args, env) {
   log({ op: 'claude', call: claudeCalls, tokenOk: env.CLAUDE_CODE_OAUTH_TOKEN === process.env.FAKE_EXPECT_TOKEN, envKeys: Object.keys(env).sort(),
     model: args[args.indexOf('--model') + 1], effort: args[args.indexOf('--effort') + 1],
     tools: (() => { const i = args.indexOf('--allowedTools') + 1; const j = args.findIndex((a, k) => k >= i && a.startsWith('--')); return args.slice(i, j < 0 ? undefined : j); })(),
-    repair: /secret scan found/.test(prompt), fileMode: /\\.provision/.test(prompt), golive: /ready for a public launch/.test(prompt), mvpNow: (prompt.match(/Now: (M\\d+) \\((\\d+) of (\\d+)\\)/) || [])[0] || null,
+    repair: /secret scan found/.test(prompt), fileMode: /\\.provision/.test(prompt), golive: /ready for a public launch/.test(prompt), growth: /Make one change, to test one idea/.test(prompt), mvpNow: (prompt.match(/Now: (M\\d+) \\((\\d+) of (\\d+)\\)/) || [])[0] || null,
     shots: /Screenshot proof/.test(prompt), shotsRound: /checked README\\.md for screenshot proof/.test(prompt) });
   fs.mkdirSync(path.join(ws, 'src'), { recursive: true });
   fs.mkdirSync(path.join(ws, 'test'), { recursive: true });
@@ -341,4 +341,38 @@ test('screenshotRefs / screenshotProof: local images at the top of the README, p
   assert.doesNotMatch(B.prompt('x', 'M1', '', { mvp: { all: ['M1', 'M2'], index: 0 } }), /Screenshot proof/, 'not mid-run');
   assert.match(B.prompt('x', 'M2', '', { mvp: { all: ['M1', 'M2'], index: 1 } }), /5\. Screenshot proof that it works/);
   assert.match(B.goLivePrompt('demo', {}), /7\. Screenshot proof of the launch-ready site[\s\S]*8\. Write LAUNCH-READY\.md/);
+});
+
+test('a growth build: one change on a live product, on policy.growth\'s model with no free pool, broker requests only, a "Growth" PR', async () => {
+  setup('growth');
+  const idea = path.join(DATA, 'ideas', 'demo');
+  fs.writeFileSync(path.join(idea, 'state.json'), JSON.stringify({ stage: 'live', repo: 'https://github.com/o/demo', milestonesDone: ['M1'], build: { milestone: 'GOLIVE', status: 'merged' } }));
+  process.env.IDEA_BUILD_CLAUDE_TOKEN = TOKEN;
+  const G = require('../lib/growth');
+  const experiment = G.newExperiment('demo', { kind: 'seo' }, { funnel: { d7: { visit: 3 } } }, { minVisitorsPerWeek: 50, experimentDays: { seo: 28 } }, new Date('2026-10-13T10:00:00Z'));
+  const r = await B.buildOne('demo', { growth: { experiment, task: G.missionTask('seo', { slug: 'demo' }), brief: '# Growth brief: demo, search pages\n' } });
+  assert.equal(r.ok, true, r.reason);
+  const log = sessionLog();
+  assert.deepEqual(log.find((e) => e.op === 'open').allowModels, [], 'no free pool in a growth build');
+  assert.ok(log.some((e) => e.op === 'put' && /build-input\/demo-GROWTH\.md$/.test(e.path)), 'the brief goes in the build-input file, outside the repo');
+  const runs = log.filter((e) => e.op === 'claude');
+  assert.equal(runs[0].growth, true, 'the growth prompt');
+  assert.deepEqual([runs[0].model, runs[0].effort], ['sonnet', 'high'], "policy.growth's model and effort");
+  assert.deepEqual(host.provision, [['request', 'Stripe test keys for demo: checkout']], 'only the request reaches the broker');
+  assert.match(host.prs[0], /neon db demo: refused \(a growth build may only file requests\)/);
+  assert.match(host.prs[0], /One growth change to \*\*demo\*\* \(search pages\), from the growth loop/);
+  assert.match(host.prs[0], /Merging starts the experiment; closing this PR abandons it/);
+  assert.match(host.prs[0], /3 visitors a week now; the target is 50 visitors a week within 28 days of the merge/);
+  const subject = realExec('git', ['log', '-1', '--format=%s', `growth-${experiment.id}`], { cwd: REMOTE, encoding: 'utf8' }).trim();
+  assert.equal(subject, 'Growth: demo (search pages) (tests passing)', 'pushed to branch growth-<experiment id>');
+  const state = JSON.parse(fs.readFileSync(path.join(idea, 'state.json'), 'utf8'));
+  assert.equal(state.stage, 'live', 'a live product stays live');
+  assert.deepEqual([state.build.milestone, state.build.experiment, state.build.kind, state.build.effort], ['GROWTH', experiment.id, 'seo', 'high']);
+  assert.deepEqual(state.build.milestones, [], 'nothing on the roadmap is marked done');
+  assert.deepEqual(state.milestonesDone, ['M1']);
+  const p = B.growthPrompt('demo', { exp: experiment, task: 'the task', briefFile: '/w/brief.md', provision: 'file' });
+  assert.match(p, /Never change a price or hard-code a payment link or key/);
+  assert.match(p, /Honest copy only/);
+  assert.match(p, /Append to GROWTH\.md/);
+  assert.match(p, /write one line to `\.provision` at the repo root: request "<what> for demo: <why>"/);
 });
