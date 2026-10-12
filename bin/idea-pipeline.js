@@ -528,6 +528,9 @@ async function tick({ forceDaily = false } = {}) {
     const doneNow = (Array.isArray(s.build.milestones) ? s.build.milestones : [m]).filter((x) => x !== 'MVP' && x !== 'GOLIVE');
     if (prState === 'MERGED' && m === 'GOLIVE') save(slug, { ...s, build: { ...s.build, status: 'merged' }, golive: { mergedAt: now.toISOString(), prUrl: s.build.prUrl } }, 'go-live merged: launch-ready changes are in; the live audit takes it from here');
     else if (prState === 'MERGED') save(slug, { ...s, build: { ...s.build, status: 'merged' }, milestonesDone: [...new Set([...(s.milestonesDone || []), ...doneNow])] }, `${m === 'MVP' ? `MVP (${doneNow.join(', ')})` : m} merged`);
+    // A merged PR settles its build: a "tests failing" failure logged when it opened would otherwise
+    // stay "failing now" in RepoHQ until some other build of that milestone succeeded (tiebreak, 2026-10-12).
+    if (prState === 'MERGED') emit({ component: 'build', event: m, status: 'ok', subject: { idea: slug }, message: `${slug}: ${m === 'MVP' ? `MVP (${doneNow.join(', ')})` : m === 'GOLIVE' ? 'go-live' : m} PR merged ${s.build.prUrl}` });
     else if (prState === 'CLOSED') save(slug, { ...s, build: { ...s.build, status: 'closed' } }, `${m} PR closed without merging`);
   }
 
