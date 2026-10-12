@@ -17,6 +17,12 @@
 //   6. State → Notion (Status, Verdict, Score, Page, MRR), commit the record.
 //   7. The record → RepoHQ (ideas, idea_pipeline) for the Ideas page.
 // An idea David approves is built on the tick that creates its repo, not at the next daily run.
+//  4a. Milestone PRs merged or closed since the last tick (every tick, so "Build M2 now" appears right away).
+//  5b. The launch checklist for every idea with a repo (lib/revenue.js): RepoHQ's repo row (homepage,
+//      Stripe product, MRR), a live-URL probe, legal pages in the repo, launch posts, signups. And the
+//      road-to-revenue plan (bin/idea-revenue.js) once M1 is merged, at most policy.revenue.maxPerDay.
+//      Build queues are ordered by revenueScore: the idea closest to its first dollar goes first.
+//      policy.build.mode "mvp": approving a build builds the whole roadmap in one run (buildOne({mvp})).
 //  4c. "Start build now" on the Ideas page (idea_build_requests) builds the next milestone on this
 //      tick, outside the weekly slot: oldest request first, policy.build.manualPerDay in 24 hours,
 //      one build per tick. The result goes back to the request row and to Slack.
@@ -33,6 +39,8 @@ const { mdToBlocks } = require('../lib/notion-md');
 const { emit } = require('../lib/events');
 const R = require('../lib/repohq');
 const S = require('../lib/seeds');
+const REV = require('../lib/revenue');
+const LF = require('../lib/launch-facts');
 
 const ROOT = path.resolve(__dirname, '..');
 // The record and the pipeline's own files. IDEA_PIPELINE_DATA points them elsewhere (the tick tests).
@@ -314,9 +322,10 @@ async function tick({ forceDaily = false } = {}) {
   }
 
   // 2–3. Demand signals and validation decisions.
+  let signals = new Map();
   if (sql) {
     try {
-      const signals = await signalsBySlug(sql);
+      signals = await signalsBySlug(sql);
       for (const slug of ideaDirs()) {
         const dir = path.join(IDEAS, slug);
         const state = P.readState(dir);
@@ -351,12 +360,14 @@ async function tick({ forceDaily = false } = {}) {
   } catch (e) { fail('promote', e); }
 
   // 5. Revenue and lifecycle from RepoHQ.
+  const repoRows = new Map();
   if (sql) {
     try {
       const withRepo = ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]).filter(([, s]) => s.repo);
       if (withRepo.length) {
         const names = withRepo.map(([, s]) => s.repo.replace('https://github.com/', ''));
-        const repos = await sql`SELECT full_name, mrr, lifecycle_status FROM repositories WHERE full_name = ANY(${names})`;
+        const repos = await sql`SELECT full_name, mrr, lifecycle_status, homepage, stripe_product_id FROM repositories WHERE full_name = ANY(${names})`;
+        for (const r of repos) repoRows.set(r.full_name.toLowerCase(), r);
         for (const [slug, state] of withRepo) {
           const r = repos.find((x) => x.full_name.toLowerCase() === state.repo.replace('https://github.com/', '').toLowerCase());
           if (!r) continue; // RepoHQ hasn't synced the repo yet
@@ -372,6 +383,38 @@ async function tick({ forceDaily = false } = {}) {
     } catch (e) { fail('revenue', e); }
   }
 
+  // 5b. The launch checklist (lib/revenue.js), for every idea with a repo. Live checks are cached.
+  const { readPlan } = require('./idea-revenue');
+  pstate.live = pstate.live || {};
+  pstate.legal = pstate.legal || {};
+  for (const slug of ideaDirs()) {
+    const dir = path.join(IDEAS, slug);
+    const state = P.readState(dir);
+    if (!state.repo || state.stage === 'pass') continue;
+    try {
+      const full = state.repo.replace('https://github.com/', '');
+      const row = repoRows.get(full.toLowerCase()) || null;
+      const fresh = (c, hours) => c && now.getTime() - new Date(c.at).getTime() < hours * 3_600_000;
+      if (!fresh(pstate.live[slug], 1)) pstate.live[slug] = { at: now.toISOString(), url: await LF.liveUrl(LF.urlCandidates(row?.homepage, full.split('/')[1]), { owned: (u) => LF.ownedByTeam(u, policy.vercelScope) }) };
+      if (!fresh(pstate.legal[slug], 6)) pstate.legal[slug] = { at: now.toISOString(), found: LF.legalPages(full) };
+      const launchLog = (() => { try { return JSON.parse(fs.readFileSync(path.join(dir, 'launch-log.json'), 'utf8')); } catch { return null; } })();
+      const checklist = REV.launchChecklist(state, {
+        plan: readPlan(dir),
+        roadmap: fs.existsSync(path.join(dir, 'ROADMAP.md')) ? fs.readFileSync(path.join(dir, 'ROADMAP.md'), 'utf8') : '',
+        repo: row && { homepage: row.homepage, stripeProductId: row.stripe_product_id, mrr: Number(row.mrr ?? 0) },
+        liveUrl: pstate.live[slug].url, legal: pstate.legal[slug].found,
+        launchPosts: Array.isArray(launchLog?.posts) ? launchLog.posts.length : 0,
+        signups: signals.get(slug)?.signups ?? state.signals?.signups ?? 0,
+      });
+      if (!REV.sameChecklist(state.launch, checklist)) save(slug, { ...P.readState(dir), launch: { ...checklist, updatedAt: now.toISOString() } }, `launch checklist ${checklist.done}/${checklist.total}${checklist.next ? `, next: ${checklist.next.label}` : ''}`);
+    } catch (e) { fail(`launch checklist ${slug}`, e); }
+  }
+  writePstate();
+
+  /** Ideas ordered by how close they are to money (lib/revenue.js revenueScore). */
+  const byRevenue = (entries) => REV.rankByRevenue(entries.map(([slug, s]) => [slug, s, { plan: readPlan(path.join(IDEAS, slug)), signups: signals.get(slug)?.signups ?? 0 }]));
+  const mvpMode = (policy.build.mode || 'milestone') === 'mvp';
+
   // The record → RepoHQ's Ideas page (only ideas whose content changed), and the heartbeat.
   const syncRepoHQ = async () => {
     if (!sql) return;
@@ -382,7 +425,9 @@ async function tick({ forceDaily = false } = {}) {
     await R.heartbeat(sql, { at: new Date().toISOString(), ok: out.errors.length === 0, errors: out.errors, policy }).catch(() => {});
   };
 
+  let builtThisTick = false;
   const startBuild = async (slug, milestone, opts = {}) => {
+    builtThisTick = true;
     const { buildOne } = require('./idea-build');
     // A build holds the tick for up to an hour: sync and beat first, so the Ideas page is current meanwhile.
     await syncRepoHQ();
@@ -407,13 +452,14 @@ async function tick({ forceDaily = false } = {}) {
 
   /** 4c. The oldest "Start build now" request the cap allows. True when a build ran this tick. */
   const runBuildRequest = async () => {
-    const { manualBuildTarget, buildMessage } = require('./idea-build');
+    const { manualBuildTarget, mvpMilestones, buildMessage } = require('./idea-build');
     const cap = policy.build.manualPerDay ?? 2;
     for (const req of await R.pendingBuildRequests(sql)) {
       const dir = path.join(IDEAS, req.slug);
       if (!fs.existsSync(path.join(dir, 'idea.json'))) { await R.finishBuildRequest(sql, req.id, 'failed', { result: 'no such idea in the record' }); continue; }
       const roadmap = fs.existsSync(path.join(dir, 'ROADMAP.md')) ? fs.readFileSync(path.join(dir, 'ROADMAP.md'), 'utf8') : '';
-      const target = manualBuildTarget(P.readState(dir), roadmap);
+      // milestone "MVP" on the request: build every remaining milestone in one run.
+      const target = req.milestone === 'MVP' ? mvpMilestones(P.readState(dir), roadmap, policy.build.mvp?.maxMilestones ?? 6) : manualBuildTarget(P.readState(dir), roadmap);
       if (!target.ok) {
         await R.finishBuildRequest(sql, req.id, 'failed', { result: `can't build: ${target.reason}` });
         note(req.slug, `build request refused: ${target.reason}`);
@@ -425,9 +471,9 @@ async function tick({ forceDaily = false } = {}) {
         return false;
       }
       if (!(await R.claimBuildRequest(sql, req.id, target.milestone))) continue; // withdrawn meanwhile
-      const r = await startBuild(req.slug, target.milestone, { manual: true, note: req.note || '' });
+      const r = await startBuild(req.slug, target.milestone, { manual: true, note: req.note || '', ...(target.milestone === 'MVP' ? { mvp: true } : {}) });
       await R.finishBuildRequest(sql, req.id, r.ok ? 'done' : 'failed', {
-        result: r.ok ? `${target.milestone} PR opened, tests ${r.testsPassing ? 'passing' : 'failing'}` : String(r.reason || 'build failed'),
+        result: r.ok ? `${target.milestone === 'MVP' ? `MVP (${(r.completed || []).join(', ') || 'nothing complete'})` : target.milestone} PR opened, tests ${r.testsPassing ? 'passing' : 'failing'}${r.stopped ? `; stopped: ${r.stopped}` : ''}` : String(r.reason || 'build failed'),
         prUrl: r.prUrl || null, engine: r.ok ? (r.engine === 'free' ? `free pool (${r.model || 'free-agent'})` : `${r.model || policy.build.model}${policy.build.effort ? ` · ${policy.build.effort}` : ''}`) : null,
       }).catch((e) => fail(`build request ${req.id}`, R.explain(e)));
       try { S.notify('slack', buildMessage({ slug: req.slug, milestone: target.milestone, r, effort: policy.build.effort })); } catch (e) { fail(`notify build ${req.slug}`, e); }
@@ -439,6 +485,19 @@ async function tick({ forceDaily = false } = {}) {
   // Daily steps.
   const dailyNow = forceDaily || dailyDue(pstate.lastDaily, now);
 
+  // 4a. Milestone PRs merged or closed (every tick, so the next build is offered right away). A merge
+  // marks the milestones that build completed as done (an MVP run's `milestones`, else its milestone).
+  for (const slug of ideaDirs()) {
+    const s = P.readState(path.join(IDEAS, slug));
+    if (s.stage !== 'building' || s.build?.status !== 'pr-open' || !s.build.prUrl) continue;
+    let prState = null;
+    try { prState = JSON.parse(execFileSync('gh', ['pr', 'view', s.build.prUrl, '--json', 'state'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })).state; } catch { continue; }
+    const m = s.build.milestone || 'M1';
+    const doneNow = (Array.isArray(s.build.milestones) ? s.build.milestones : [m]).filter((x) => x !== 'MVP');
+    if (prState === 'MERGED') save(slug, { ...s, build: { ...s.build, status: 'merged' }, milestonesDone: [...new Set([...(s.milestonesDone || []), ...doneNow])] }, `${m === 'MVP' ? `MVP (${doneNow.join(', ')})` : m} merged`);
+    else if (prState === 'CLOSED') save(slug, { ...s, build: { ...s.build, status: 'closed' } }, `${m} PR closed without merging`);
+  }
+
   // 4c. "Start build now" requests come first; a tick runs at most one build.
   let manualRan = false;
   if (sql) {
@@ -449,8 +508,8 @@ async function tick({ forceDaily = false } = {}) {
   // run: approving is the signal he wants it. Still at most policy.build.maxPerWeek.
   if (!dailyNow && !manualRan) {
     const all = ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]);
-    const approved = all.filter(([, s]) => s.ownerApproved && buildable(s));
-    if (approved.length && P.buildsThisWeek(all.map(([, s]) => s), now) < policy.build.maxPerWeek) await startBuild(approved[0][0], 'M1');
+    const approved = byRevenue(all.filter(([, s]) => s.ownerApproved && buildable(s)));
+    if (approved.length && P.buildsThisWeek(all.map(([, s]) => s), now) < policy.build.maxPerWeek) await startBuild(approved[0][0], mvpMode ? 'MVP' : 'M1', mvpMode ? { mvp: true } : {});
   }
 
   if (dailyNow) {
@@ -468,28 +527,38 @@ async function tick({ forceDaily = false } = {}) {
     const states = ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]);
     // c. Builds: Claude Code on the subscription first, the free pool only as backup (idea-build.js).
     // A merged milestone PR moves the idea on to its next milestone; M1 for new repos. One a week.
+    // (Merged milestone PRs are picked up every tick, in 4a.)
     const { nextMilestone } = require('./idea-build');
-    for (const [slug, s] of states) {
-      if (s.stage !== 'building' || s.build?.status !== 'pr-open' || !s.build.prUrl) continue;
-      let prState = null;
-      try { prState = JSON.parse(execFileSync('gh', ['pr', 'view', s.build.prUrl, '--json', 'state'], { encoding: 'utf8' })).state; } catch { continue; }
-      const m = s.build.milestone || 'M1';
-      if (prState === 'MERGED') save(slug, { ...s, build: { ...s.build, status: 'merged' }, milestonesDone: [...new Set([...(s.milestonesDone || []), m])] }, `${m} merged`);
-      else if (prState === 'CLOSED') save(slug, { ...s, build: { ...s.build, status: 'closed' } }, `${m} PR closed without merging`);
-    }
     const fresh = ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]);
-    const queue = [
-      ...fresh.filter(([, s]) => buildable(s)).map(([slug]) => [slug, 'M1']),
-      ...fresh.filter(([, s]) => s.stage === 'building' && s.build?.status === 'merged').map(([slug, s]) => {
-        const roadmap = fs.existsSync(path.join(IDEAS, slug, 'ROADMAP.md')) ? fs.readFileSync(path.join(IDEAS, slug, 'ROADMAP.md'), 'utf8') : '';
-        return [slug, nextMilestone(roadmap, s.milestonesDone || [])];
-      }).filter(([, m]) => m),
-    ];
+    const nextOf = (slug, s) => nextMilestone(fs.existsSync(path.join(IDEAS, slug, 'ROADMAP.md')) ? fs.readFileSync(path.join(IDEAS, slug, 'ROADMAP.md'), 'utf8') : '', s.milestonesDone || []);
+    // Closest to money first (revenueScore); an MVP run builds everything left, else the next milestone.
+    const queue = byRevenue([...fresh.filter(([, s]) => buildable(s)), ...fresh.filter(([slug, s]) => s.stage === 'building' && s.build?.status === 'merged' && nextOf(slug, s))])
+      .map(([slug, s]) => [slug, mvpMode ? 'MVP' : (buildable(s) ? 'M1' : nextOf(slug, s))]);
     if (!manualRan && queue.length && P.buildsThisWeek(fresh.map(([, s]) => s), now) < policy.build.maxPerWeek) {
       const [slug, milestone] = queue[0];
-      await startBuild(slug, milestone);
+      await startBuild(slug, milestone, milestone === 'MVP' ? { mvp: true } : {});
     }
     fs.writeFileSync(STATE_FILE, JSON.stringify({ ...pstate, lastDaily: now.toLocaleDateString('en-CA') }));
+  }
+
+  // 5c. The road-to-revenue plan for an idea whose M1 is merged and that has none yet: one per tick, only
+  // on a tick that didn't build (a build already held it long), at most policy.revenue.maxPerDay.
+  if (!builtThisTick) {
+    const cap = policy.revenue?.maxPerDay ?? 2;
+    const today = now.toLocaleDateString('en-CA');
+    const runsToday = pstate.revenue?.date === today ? pstate.revenue.runs : 0;
+    const due = ideaDirs().find((slug) => {
+      const s = P.readState(path.join(IDEAS, slug));
+      return ['building', 'live'].includes(s.stage) && (s.milestonesDone || []).includes('M1') && !fs.existsSync(path.join(IDEAS, slug, 'revenue.json'));
+    });
+    if (due && runsToday < cap) {
+      pstate.revenue = { date: today, runs: runsToday + 1 };
+      writePstate();
+      const { revenueOne } = require('./idea-revenue');
+      const r = await revenueOne(due);
+      changed.add(due);
+      if (r.ok) note(due, `revenue plan: ${REV.priceText(r.plan.price)} · ${r.plan.buyer.slice(0, 80)}`); else fail(`revenue plan ${due}`, r.reason);
+    }
   }
 
   // 6. State → Notion for anything changed after the first sync, then commit the record.

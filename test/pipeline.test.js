@@ -155,7 +155,7 @@ test('milestones: read from ROADMAP.md headings, next after the merged ones', ()
   assert.deepEqual(milestones(roadmap), ['M1', 'M2', 'M3']);
   assert.equal(nextMilestone(roadmap, ['M1']), 'M2');
   assert.equal(nextMilestone(roadmap, ['M1', 'M2', 'M3']), null);
-  assert.match(prompt('x', 'M2'), /Build ROADMAP\.md's M2 and nothing beyond it \(earlier milestones are already merged/);
+  assert.match(prompt('x', 'M2'), /Build ROADMAP\.md's M2 and nothing beyond it \(earlier milestones are already built/);
   assert.match(prompt('x'), /Scaffold the smallest stack/);
   assert.doesNotMatch(prompt('x'), /owner approved this build with a note/);
   assert.match(prompt('x', 'M1', 'Target co-hosts, not owners'), /owner approved this build with a note[\s\S]*Target co-hosts, not owners/);

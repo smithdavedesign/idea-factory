@@ -35,7 +35,7 @@ function claude(args, env) {
   log({ op: 'claude', call: claudeCalls, tokenOk: env.CLAUDE_CODE_OAUTH_TOKEN === process.env.FAKE_EXPECT_TOKEN, envKeys: Object.keys(env).sort(),
     model: args[args.indexOf('--model') + 1], effort: args[args.indexOf('--effort') + 1],
     tools: (() => { const i = args.indexOf('--allowedTools') + 1; const j = args.findIndex((a, k) => k >= i && a.startsWith('--')); return args.slice(i, j < 0 ? undefined : j); })(),
-    repair: /secret scan found/.test(prompt), fileMode: /\\.provision/.test(prompt) });
+    repair: /secret scan found/.test(prompt), fileMode: /\\.provision/.test(prompt), mvpNow: (prompt.match(/Now: (M\\d+) \\((\\d+) of (\\d+)\\)/) || [])[0] || null });
   fs.mkdirSync(path.join(ws, 'src'), { recursive: true });
   fs.mkdirSync(path.join(ws, 'test'), { recursive: true });
   fs.writeFileSync(path.join(ws, 'src', 'app.js'), 'module.exports = () => 42;\\n');
@@ -65,7 +65,7 @@ rl.createInterface({ input: process.stdin }).on('line', (line) => {
       log({ op: 'exec', cmd: r.cmd, args: r.args });
       if (r.cmd === 'claude') reply = { ...reply, code: 0, output: claude(r.args, r.env || {}), timedOut: false, durationMs: 1000 };
       else if (r.cmd === 'cat') { const f = path.join(ws, r.args[0]); reply = fs.existsSync(f) ? { ...reply, code: 0, output: fs.readFileSync(f, 'utf8') } : { ...reply, code: 1, output: 'no such file' }; }
-      else reply = { ...reply, code: 0, output: '', timedOut: false, durationMs: 5 };
+      else reply = { ...reply, code: scenario === 'mvp' && r.cmd === 'npm' && claudeCalls >= 3 ? 1 : 0, output: '', timedOut: false, durationMs: 5 };
     } else if (r.op === 'patch') {
       log({ op: 'patch', exclude: r.exclude });
       git(['add', '-A', '--', '.', ':(exclude)node_modules', ...(r.exclude || []).map((e) => ':(exclude)' + e)]);
@@ -103,7 +103,7 @@ process.env.SYSTEM_EVENTS_DIR = path.join(T, 'events');
 process.env.FAKE_EXPECT_TOKEN = TOKEN;
 const B = require('../bin/idea-build');
 
-function setup(scenario) {
+function setup(scenario, roadmap = '## M1 — core\n') {
   fs.rmSync(DATA, { recursive: true, force: true });
   fs.rmSync(REMOTE, { recursive: true, force: true });
   const seed = path.join(T, 'seed');
@@ -118,7 +118,7 @@ function setup(scenario) {
   fs.mkdirSync(idea, { recursive: true });
   fs.writeFileSync(path.join(idea, 'idea.json'), JSON.stringify({ title: 'demo — a test idea' }));
   fs.writeFileSync(path.join(idea, 'state.json'), JSON.stringify({ stage: 'repo', repo: 'https://github.com/o/demo', ownerApproved: true }));
-  fs.writeFileSync(path.join(idea, 'ROADMAP.md'), '## M1 — core\n');
+  fs.writeFileSync(path.join(idea, 'ROADMAP.md'), roadmap);
   fs.writeFileSync(path.join(idea, 'REVIEW.md'), '# review\n');
   process.env.FAKE_SANDBOX_SCENARIO = scenario;
   process.env.FAKE_SANDBOX_LOG = path.join(T, `${scenario}.log`);
@@ -207,4 +207,40 @@ test('the repair prompt lists file:line and kind, never a value', () => {
   const p = B.repairPrompt([{ file: 'test/a.test.js', line: 3, kind: 'GitHub token' }]);
   assert.match(p, /test\/a\.test\.js:3 \(GitHub token\)/);
   assert.match(p, /build it at runtime from a prefix and a repeated filler/);
+});
+
+test('MVP run ("let it rip"): milestones one after another in one session, stopping at the first with failing tests', async () => {
+  setup('mvp', '## M1 — core\n\n## M2 — more\n\n## M3 — checkout\n');
+  process.env.IDEA_BUILD_CLAUDE_TOKEN = TOKEN;
+  const r = await B.buildOne('demo', { mvp: true, manual: true });
+  assert.equal(r.ok, true, r.reason);
+  assert.deepEqual(r.planned, ['M1', 'M2', 'M3']);
+  assert.deepEqual(r.completed, ['M1', 'M2'], 'M3\'s tests failed, so it isn\'t counted');
+  assert.equal(r.stopped, 'M3: tests failing');
+  assert.match(host.prs[0], /Stopped: M3: tests failing\. Merging marks M1, M2 done; the next build starts at the first one that isn't\./);
+  const log = sessionLog();
+  assert.equal(log.filter((e) => e.op === 'open').length, 1, 'one sandbox session for the whole run');
+  const runs = log.filter((e) => e.op === 'claude');
+  assert.deepEqual(runs.map((c) => c.mvpNow), ['Now: M1 (1 of 3)', 'Now: M2 (2 of 3)', 'Now: M3 (3 of 3)']);
+  assert.match(host.prs[0], /The MVP for \*\*demo\*\* \(M1, M2, M3 in one run\)/);
+  assert.match(host.prs[0], /- M1: ✅ built, tests passing/);
+  assert.match(host.prs[0], /- M3: ❌ built, tests failing/);
+  const files = remoteFiles('mvp');
+  assert.ok(files && files.includes('src/app.js'), 'pushed to branch mvp');
+  const subject = realExec('git', ['log', '-1', '--format=%s', 'mvp'], { cwd: REMOTE, encoding: 'utf8' }).trim();
+  assert.equal(subject, 'MVP: demo (M1–M2) (tests failing)');
+  const state = JSON.parse(fs.readFileSync(path.join(DATA, 'ideas', 'demo', 'state.json'), 'utf8'));
+  assert.equal(state.build.milestone, 'MVP');
+  assert.deepEqual(state.build.milestones, ['M1', 'M2'], 'a merge marks only these done');
+  assert.deepEqual(state.build.planned, ['M1', 'M2', 'M3']);
+});
+
+test('mvpMilestones: from where a single build would start, every remaining milestone, capped', () => {
+  const roadmap = '## M1\n## M2\n## M3\n## M4\n';
+  const repo = 'https://github.com/o/x';
+  assert.deepEqual(B.mvpMilestones({ stage: 'repo', repo, ownerApproved: true }, roadmap), { ok: true, milestone: 'MVP', milestones: ['M1', 'M2', 'M3', 'M4'] });
+  assert.deepEqual(B.mvpMilestones({ stage: 'repo', repo, ownerApproved: true }, roadmap, 2).milestones, ['M1', 'M2']);
+  assert.deepEqual(B.mvpMilestones({ stage: 'building', repo, milestonesDone: ['M1', 'M2'], build: { milestone: 'MVP', status: 'merged' } }, roadmap).milestones, ['M3', 'M4']);
+  assert.match(B.mvpMilestones({ stage: 'building', repo, milestonesDone: ['M1', 'M2', 'M3', 'M4'], build: { status: 'merged' } }, roadmap).reason, /every roadmap milestone/);
+  assert.equal(B.rangeText(['M1', 'M2', 'M3']), 'M1–M3');
 });

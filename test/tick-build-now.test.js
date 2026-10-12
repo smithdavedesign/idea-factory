@@ -49,7 +49,19 @@ function fakeSql(strings, ...values) {
   return Promise.resolve([]); // decisions, seeds, signals, ideas sync, heartbeat: nothing to do here
 }
 
+// GitHub answers: PR states by URL, and the files in a repo (for the legal-pages check).
+const gh = { prs: {}, files: '' };
+const revenueRuns = [];
+const realRevenue = require('../bin/idea-revenue');
+
 const stubs = {
+  './idea-revenue': { ...realRevenue, revenueOne: async (slug) => {
+    revenueRuns.push(slug);
+    const plan = { buyer: 'Indie devs who run agents overnight', paymentMethod: 'Stripe payment link', price: { amount: 9, currency: 'USD', interval: 'month', why: 'x' },
+      mvpScope: 'the CLI and a digest page', mustHaveBeforeCharging: ['checkout'], launchChannels: [{ name: 'r/ClaudeAI' }], firstTenUsers: 'GitHub discussions' };
+    fs.writeFileSync(path.join(DATA, 'ideas', slug, 'revenue.json'), JSON.stringify(plan));
+    return { ok: true, slug, plan };
+  } },
   './idea-publish': {
     ensureDatabaseProperties: async () => {}, allIdeas: async () => [], readSeeds: () => [], seed: () => ({ id: 's' }),
     promote: async () => ({ promoted: [], errors: [] }), notionRequest: async () => ({}), appendBlocks: async () => {}, git: () => '',
@@ -62,13 +74,20 @@ const realLoad = Module._load;
 Module._load = function (request, parent, ...rest) {
   if (parent && parent.filename.startsWith(ROOT) && !parent.filename.includes(`${path.sep}test${path.sep}`)) {
     if (stubs[request]) return stubs[request];
-    if (request === 'child_process') return { execFileSync: (cmd, args) => { if (cmd === 'openclaw') sent.push(args); return ''; }, spawnSync: () => ({ status: 0 }), spawn: () => { throw new Error('no spawn in tests'); } };
+    if (request === 'child_process') return { execFileSync: (cmd, args) => {
+      if (cmd === 'openclaw') sent.push(args);
+      if (cmd === 'gh' && args[0] === 'pr' && args[1] === 'view') return JSON.stringify({ state: gh.prs[args[2]] || 'OPEN' });
+      if (cmd === 'gh' && args[0] === 'api') return gh.files;
+      return '';
+    }, spawnSync: () => ({ status: 0 }), spawn: () => { throw new Error('no spawn in tests'); } };
   }
   return realLoad.call(this, request, parent, ...rest);
 };
 process.env.IDEA_PIPELINE_DATA = DATA;
 process.env.IDEA_DATABASE_URL = 'postgres://fake';
 process.env.HOME = HOME;
+// The launch checklist probes live URLs: never reach the network from tests.
+globalThis.fetch = async () => ({ status: 404 });
 const { tick } = require('../bin/idea-pipeline');
 
 function idea(slug, state) {
@@ -83,7 +102,7 @@ test.beforeEach(() => {
   fs.rmSync(path.join(DATA, 'ideas'), { recursive: true, force: true });
   // The daily steps ran today already, so the tick does only the every-tick steps.
   fs.writeFileSync(path.join(DATA, '.pipeline-state.json'), JSON.stringify({ lastDaily: new Date().toLocaleDateString('en-CA') }));
-  builds.length = 0; sent.length = 0;
+  builds.length = 0; sent.length = 0; revenueRuns.length = 0; gh.prs = {}; gh.files = '';
   buildResult = { ok: true, milestone: 'M1', prUrl: 'https://github.com/o/pr-x/pull/1', testsPassing: true, engine: 'claude', model: 'claude-opus-5-5' };
 });
 test.after(() => { Module._load = realLoad; fs.rmSync(DATA, { recursive: true, force: true }); fs.rmSync(HOME, { recursive: true, force: true }); });
@@ -120,9 +139,9 @@ test('a weekly-slot build of the same idea settles a request that was waiting', 
   idea('pr-x', { stage: 'repo', repo: 'https://github.com/o/pr-x', ownerApproved: true });
   db = { requests: [{ id: 12, slug: 'pr-x', status: 'pending' }], startsLast24h: 2, log: [] };
   await tick();
-  assert.deepEqual(builds, [{ slug: 'pr-x', milestone: 'M1' }], 'the weekly slot builds it (not a manual start)');
+  assert.deepEqual(builds, [{ slug: 'pr-x', milestone: 'MVP', mvp: true }], 'the weekly slot builds it, as an MVP run (policy.build.mode), not a manual start');
   assert.equal(db.requests[0].status, 'done');
-  assert.match(db.requests[0].result, /M1 PR opened by the weekly build slot/);
+  assert.match(db.requests[0].result, /MVP PR opened by the weekly build slot/);
   assert.equal(db.requests[0].pr_url, 'https://github.com/o/pr-x/pull/1');
 });
 
@@ -147,4 +166,55 @@ test('a failed build marks the request failed and says so in Slack', async () =>
   assert.equal(db.requests[0].result, 'Claude made no changes');
   assert.match(sent[0][7], /M1 build for \*pr-x\* failed: Claude made no changes/);
   assert.ok(out.errors.some((e) => /build pr-x M1/.test(e)), 'the tick reports it, so the system log alerts');
+});
+
+const readState = (slug) => JSON.parse(fs.readFileSync(path.join(DATA, 'ideas', slug, 'state.json'), 'utf8'));
+
+test('a merged MVP PR is picked up on the next tick and marks only the milestones it completed', async () => {
+  idea('pr-x', { stage: 'building', repo: 'https://github.com/o/pr-x', ownerApproved: true,
+    build: { milestone: 'MVP', milestones: ['M1'], planned: ['M1', 'M2'], status: 'pr-open', prUrl: 'https://github.com/o/pr-x/pull/3', at: new Date().toISOString() } });
+  gh.prs['https://github.com/o/pr-x/pull/3'] = 'MERGED';
+  db = { requests: [], startsLast24h: 0, log: [] };
+  const out = await tick();
+  const s = readState('pr-x');
+  assert.equal(s.build.status, 'merged');
+  assert.deepEqual(s.milestonesDone, ['M1'], 'M2 failed in that run, so it isn\'t done');
+  assert.ok(out.changes.some((c) => c === 'pr-x: MVP (M1) merged'));
+});
+
+test('an MVP request builds every remaining milestone in one run', async () => {
+  idea('pr-x', { stage: 'repo', repo: 'https://github.com/o/pr-x', ownerApproved: true });
+  buildResult = { ...buildResult, milestone: 'MVP', completed: ['M1', 'M2'], stopped: null, prUrl: 'https://github.com/o/pr-x/pull/9' };
+  db = { requests: [{ id: 20, slug: 'pr-x', milestone: 'MVP', note: null, status: 'pending' }], startsLast24h: 0, log: [] };
+  await tick();
+  assert.deepEqual(builds, [{ slug: 'pr-x', milestone: 'MVP', manual: true, note: '', mvp: true }]);
+  assert.equal(db.requests[0].status, 'done');
+  assert.match(db.requests[0].result, /^MVP \(M1, M2\) PR opened, tests passing/);
+  assert.match(sent[0][7], /MVP for \*pr-x\* is ready for review/);
+});
+
+test('the launch checklist is written to the record, and the plan is written once M1 is merged', async () => {
+  idea('pr-x', { stage: 'building', repo: 'https://github.com/o/pr-x', milestonesDone: ['M1'], build: { milestone: 'M1', status: 'merged' } });
+  gh.files = 'src/app.js\npublic/privacy.html\n';
+  db = { requests: [], startsLast24h: 0, log: [] };
+  const out = await tick();
+  assert.deepEqual(revenueRuns, ['pr-x'], 'one plan, on a tick that didn\'t build');
+  assert.ok(out.changes.some((c) => /^pr-x: revenue plan: \$9\/month · Indie devs/.test(c)));
+  const s = readState('pr-x');
+  assert.ok(s.launch, 'checklist saved');
+  assert.equal(s.launch.total, 9);
+  assert.equal(s.launch.steps.find((x) => x.id === 'legal').evidence, 'privacy ✓ · terms ✗');
+  assert.equal(s.launch.steps.find((x) => x.id === 'deployed').done, false, 'nothing answered (fetch is stubbed to 404)');
+  await tick();
+  assert.deepEqual(revenueRuns, ['pr-x'], 'not written twice');
+  assert.equal(readState('pr-x').launch.steps.find((x) => x.id === 'plan').done, true, 'the next tick sees the plan');
+});
+
+test('the weekly slot goes to the approved idea closest to money, not the first approved', async () => {
+  idea('a-first', { stage: 'repo', repo: 'https://github.com/o/a-first', ownerApproved: true, review: { verdict: 'pass', score: 3 } });
+  idea('b-demand', { stage: 'repo', repo: 'https://github.com/o/b-demand', ownerApproved: true, review: { verdict: 'validate', score: 7 }, validation: { decision: 'build' } });
+  db = { requests: [], startsLast24h: 0, log: [] };
+  await tick();
+  assert.deepEqual(builds.map((b) => b.slug), ['b-demand']);
+  assert.equal(builds[0].mvp, true);
 });

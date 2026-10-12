@@ -83,6 +83,7 @@ function extractSection(md, start, stop) {
 }
 
 /** The gstack frameworks for one build, as markdown (pure apart from reading gstack). Null without gstack. */
+/** `milestone` is a label for the header: "M2", or "the MVP (M1–M3)". */
 function buildInput(slug, milestone, gstack = GSTACK) {
   if (!fs.existsSync(gstack)) return null;
   const sections = GSTACK_BUILD_SECTIONS.map(([file, start, stop]) => {
@@ -138,8 +139,12 @@ function provisionCommands(text, slug) {
  * `ownerNote`: what David wrote when he approved the build (RepoHQ Ideas page). It steers the
  * build within the milestone: it can't widen the scope or break the $0 rule.
  */
-function prompt(slug, milestone = 'M1', ownerNote = '', { gstackFile = null, provision = 'direct' } = {}) {
+function prompt(slug, milestone = 'M1', ownerNote = '', { gstackFile = null, provision = 'direct', mvp = null } = {}) {
   const first = milestone === 'M1';
+  // An MVP run builds several milestones one after another in the same session (buildOne({mvp})).
+  const mvpNote = mvp ? `
+This is an MVP run: you're building ${mvp.all.join(', ')} one after another in this session, so the product is usable and can take money at the end. Now: ${milestone} (${mvp.index + 1} of ${mvp.all.length}).${mvp.index > 0 ? ` ${mvp.all.slice(0, mvp.index).join(', ')} ${mvp.index === 1 ? 'is' : 'are'} done in this session: keep their tests passing and build on them.` : ''}
+REVENUE.md, if present, says who pays and what must exist before charging (checkout, legal pages…): build those parts in the milestone they fit.` : '';
   const note = String(ownerNote || '').trim().slice(0, 1000);
   const plan = gstackFile ? `
 0. Plan first with the gstack engineering frameworks in ${gstackFile} (read it): apply "Step 0: Scope Challenge", "1. Architecture review" and "3. Test review" to ${milestone} yourself. Keep the narrowest version that meets the exit criteria. Put the outcome at the top of BUILD.md as "## Plan": scope (and what's deliberately not in it), architecture, test plan.` : '';
@@ -150,7 +155,7 @@ The owner approved this build with a note; follow it where it fits ${milestone}'
 ---
 ${note}
 ---` : ''}
-Build ROADMAP.md's ${milestone} and nothing beyond it${first ? '' : ' (earlier milestones are already merged; keep their tests passing)'}:${plan}
+Build ROADMAP.md's ${milestone} and nothing beyond it${first ? '' : ' (earlier milestones are already built; keep their tests passing)'}:${mvpNote}${plan}
 1. Turn ${milestone}'s exit criteria into automated tests (vitest or node:test) that fail now. Each exit criterion becomes at least one test.
 2. ${first ? 'Scaffold the smallest stack that fits the roadmap\'s suggestion and runs at $0 (static site, Next.js or a small Node service; free tiers only). Add "test" to package.json scripts.' : 'Extend the existing code; keep the stack and the $0 rule.'}
 3. Implement until \`npm test\` passes. Don't weaken or delete a test to make it pass.
@@ -227,6 +232,24 @@ function manualBuildTarget(state, roadmap = '') {
   return { ok: false, reason: `nothing to build at stage "${state.stage}"` };
 }
 
+/**
+ * What an MVP run builds (pure): from the milestone a single build would start at, every remaining
+ * roadmap milestone, at most `max`. {ok, milestone: 'MVP', milestones} or {ok: false, reason}.
+ */
+function mvpMilestones(state, roadmap = '', max = 6) {
+  const t = manualBuildTarget(state, roadmap);
+  if (!t.ok) return t;
+  const all = milestones(roadmap);
+  if (!all.length) return { ok: true, milestone: 'MVP', milestones: [t.milestone] };
+  const done = new Set(state.milestonesDone || []);
+  const from = Math.max(0, all.indexOf(t.milestone));
+  const list = all.slice(from).filter((m) => !done.has(m)).slice(0, max);
+  return list.length ? { ok: true, milestone: 'MVP', milestones: list } : { ok: false, reason: 'every roadmap milestone is merged' };
+}
+
+/** "M1–M3" or "M2" (pure). */
+const rangeText = (ms) => (ms.length > 1 ? `${ms[0]}–${ms[ms.length - 1]}` : ms[0] || '');
+
 /** How the PR and the state name the engine (pure). */
 function engineLabel(run, build = policy.build) {
   if (run.engine === 'free') return `free pool (${run.info.model || 'free-agent'}) — the subscription couldn't take it: ${String(run.primaryReason).slice(0, 120)}`;
@@ -248,11 +271,26 @@ function engineOrder(difficulty, mode) {
 }
 
 /** `manual`: started from the Ideas page; `note`: what the owner wrote with that request (else his approval note). */
-async function buildOne(slug, { push = true, milestone = 'M1', manual = false, note = '' } = {}) {
-  const branch = milestone.toLowerCase();
+/**
+ * `mvp: true` ("let it rip"): every remaining roadmap milestone (mvpMilestones), one after another in
+ * one session, then one PR. Stops at the first milestone whose tests fail, that falls back off the
+ * subscription (policy.build.mvp.stopOnFallback), or past policy.build.mvp.maxMinutes; the PR has
+ * what's done and the next build starts where it stopped.
+ */
+async function buildOne(slug, { push = true, milestone = 'M1', manual = false, note = '', mvp = false } = {}) {
   const ideaDir = path.join(DATA, 'ideas', slug);
   const state = P.readState(ideaDir);
   if (!state.repo) return { ok: false, slug, reason: 'no repo yet (stage must be "repo")' };
+  const mvpPolicy = { maxMilestones: 6, maxMinutes: 240, stopOnFallback: true, ...(policy.build.mvp || {}) };
+  let planned = [milestone];
+  if (mvp) {
+    const roadmap = fs.existsSync(path.join(ideaDir, 'ROADMAP.md')) ? fs.readFileSync(path.join(ideaDir, 'ROADMAP.md'), 'utf8') : '';
+    const t = mvpMilestones(state, roadmap, mvpPolicy.maxMilestones);
+    if (!t.ok) return { ok: false, slug, reason: t.reason };
+    planned = t.milestones;
+    milestone = 'MVP';
+  }
+  const branch = milestone.toLowerCase();
   const full = state.repo.replace('https://github.com/', '');
   const work = path.join(DATA, 'work', slug);
   fs.rmSync(work, { recursive: true, force: true });
@@ -260,25 +298,26 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
   sh('gh', ['repo', 'clone', full, work, '--', '-q'], ROOT);
   sh('git', ['checkout', '-q', '-b', branch], work);
   // The record has the review; the product repo gets a copy for the builder.
-  for (const f of ['REVIEW.md']) if (fs.existsSync(path.join(ideaDir, f)) && !fs.existsSync(path.join(work, f))) fs.copyFileSync(path.join(ideaDir, f), path.join(work, f));
+  for (const f of ['REVIEW.md', 'REVENUE.md']) if (fs.existsSync(path.join(ideaDir, f)) && !fs.existsSync(path.join(work, f))) fs.copyFileSync(path.join(ideaDir, f), path.join(work, f));
 
   const now = new Date();
-  const advice = rateMilestone(ideaDir, slug, milestone);
+  const advice = rateMilestone(ideaDir, slug, planned[0]);
   const engines = engineOrder(advice?.difficulty ?? null, policy.build.advisor || 'report');
-  P.writeState(ideaDir, { ...state, stage: 'building', build: { ...(state.build || {}), milestone, status: 'running', at: now.toISOString(), manual, ...(advice ? { advice } : {}) } }, now);
+  P.writeState(ideaDir, { ...state, stage: 'building', build: { ...(state.build || {}), milestone, ...(mvp ? { planned } : {}), status: 'running', at: now.toISOString(), manual, ...(advice ? { advice } : {}) } }, now);
   // "Running now" on RepoHQ's Agents page comes from this event until the build's own ok/fail lands.
-  emit({ component: 'build', event: milestone, status: 'start', subject: { idea: slug }, message: `${milestone} started${manual ? ' (Start build now)' : ''} on ${policy.build.model || 'claude'}${policy.build.effort ? ` at ${policy.build.effort}` : ''}`,
-    data: { milestone, manual: !!manual, model: policy.build.model || null, effort: policy.build.effort || null, timeoutMinutes: policy.build.timeoutMinutes } });
+  emit({ component: 'build', event: milestone, status: 'start', subject: { idea: slug }, message: `${mvp ? `MVP (${rangeText(planned)})` : milestone} started${manual ? ' (Start build now)' : ''} on ${policy.build.model || 'claude'}${policy.build.effort ? ` at ${policy.build.effort}` : ''}`,
+    data: { milestone, manual: !!manual, model: policy.build.model || null, effort: policy.build.effort || null, timeoutMinutes: mvp ? mvpPolicy.maxMinutes : policy.build.timeoutMinutes, ...(mvp ? { planned } : {}) } });
   const ownerNote = String(note || '').trim() || (state.ownerDecision?.decision === 'build' ? state.ownerDecision.note : '');
   const failBuild = (reason, data = {}) => {
-    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: milestone === 'M1' ? 'repo' : 'building', build: { ...(state.build || {}), milestone, status: 'failed', at: now.toISOString(), manual: !!manual, reason } });
+    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: (state.milestonesDone || []).length ? 'building' : 'repo', build: { ...(state.build || {}), milestone, ...(mvp ? { planned } : {}), status: 'failed', at: now.toISOString(), manual: !!manual, reason } });
     emit({ component: 'build', event: milestone, status: 'fail', subject: { idea: slug }, message: reason, durationMs: Date.now() - now.getTime(), data: { milestone, manual: !!manual, ...data } });
     return { ok: false, slug, milestone, reason, state: s };
   };
 
   let ws;
   try {
-    ws = await openWorkspace({ slug, milestone, work, input: buildInput(slug, milestone) });
+    const minutes = mvp ? mvpPolicy.maxMinutes + policy.build.timeoutMinutes + 20 : policy.build.timeoutMinutes + 30;
+    ws = await openWorkspace({ slug, milestone, work, input: buildInput(slug, mvp ? `the MVP (${rangeText(planned)})` : milestone), lifetimeMs: minutes * 60_000 });
   } catch (e) {
     return failBuild(`couldn't start the build ${(policy.build.sandbox || 'docker') === 'host' ? 'on the host' : 'sandbox'}: ${String(e.message).slice(0, 300)}`);
   }
@@ -286,11 +325,29 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     const runOpts = { timeoutMs: policy.build.timeoutMinutes * 60_000, system: SYSTEM, env: { npm_config_ignore_scripts: 'true', CI: '1' },
       model: policy.build.model, effort: policy.build.effort, fallbackModel: policy.build.claudeFallbackModel,
       fallback: policy.build.fallback !== 'none' }; // subscription first, the free pool only if it can't take the work
-    const run = await ws.claude(prompt(slug, milestone, ownerNote, { gstackFile: ws.gstackFile, provision: ws.kind === 'docker' ? 'file' : 'direct' }), { ...runOpts, engines });
+    const fellBackOf = (r) => r.engine === 'free' || (!!r.info.model && !!policy.build.model && !r.info.model.includes(policy.build.model));
+    const deadline = now.getTime() + mvpPolicy.maxMinutes * 60_000;
+    const steps = []; // one per milestone attempted: {milestone, ok, testsPassing, engine, model, fellBack}
+    let run = null;
+    let testsPassing = false;
+    let stopped = null;
+    for (const [k, m] of planned.entries()) {
+      if (k > 0 && Date.now() > deadline) { stopped = `time budget (${mvpPolicy.maxMinutes} min) used before ${m}`; break; }
+      run = await ws.claude(prompt(slug, m, ownerNote, { gstackFile: ws.gstackFile, provision: ws.kind === 'docker' ? 'file' : 'direct', mvp: mvp ? { all: planned, index: k } : null }), { ...runOpts, engines });
+      testsPassing = await ws.test();
+      steps.push({ milestone: m, ok: run.ok, testsPassing, engine: run.engine, model: run.info.model ?? null, fellBack: fellBackOf(run) });
+      if (!mvp || k === planned.length - 1) break;
+      if (!run.ok) { stopped = `${m}: the builder stopped (${String(run.reason || '').slice(0, 120)})`; break; }
+      if (!testsPassing) { stopped = `${m}: tests failing`; break; }
+      if (mvpPolicy.stopOnFallback && fellBackOf(run)) { stopped = `${m} ran on ${run.engine === 'free' ? 'the free pool' : run.info.model}, not ${policy.build.model}: stopping so the rest gets the strongest model`; break; }
+    }
+    // The last milestone failing says so too, so the PR tells where the next build starts.
+    const last = steps[steps.length - 1];
+    if (mvp && !stopped && last && !(last.ok && last.testsPassing)) stopped = `${last.milestone}: ${last.ok ? 'tests failing' : 'the builder stopped'}`;
+    const completed = steps.filter((x) => x.ok && x.testsPassing).map((x) => x.milestone);
     const engine = engineLabel(run);
     const usage = { milestone, manual: !!manual, model: run.info.model ?? null, engine: run.engine, effort: run.engine === 'free' ? null : policy.build.effort || null, sandbox: ws.kind,
-      fellBack: run.engine === 'free' || (!!run.info.model && !!policy.build.model && !run.info.model.includes(policy.build.model)), ...(run.primaryReason ? { primaryReason: String(run.primaryReason).slice(0, 200) } : {}) };
-    let testsPassing = await ws.test();
+      fellBack: steps.some((x) => x.fellBack), ...(mvp ? { planned, completed, stopped } : {}), ...(run.primaryReason ? { primaryReason: String(run.primaryReason).slice(0, 200) } : {}) };
     let patch = await ws.patch();
     if (!patch.trim()) return failBuild(run.reason || 'no changes made', usage);
 
@@ -323,12 +380,16 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     }
 
     await ws.stage(patch);
-    sh('git', ['-c', 'user.name=idea-factory', '-c', 'user.email=idea-factory@users.noreply.github.com', 'commit', '-q', '-m', `${milestone}: ${slug} (tests ${testsPassing ? 'passing' : 'failing'})`], work);
+    const title = mvp ? `MVP: ${slug} (${rangeText(completed.length ? completed : planned)})` : `${milestone}: ${slug}`;
+    sh('git', ['-c', 'user.name=idea-factory', '-c', 'user.email=idea-factory@users.noreply.github.com', 'commit', '-q', '-m', `${title} (tests ${testsPassing ? 'passing' : 'failing'})`], work);
     let prUrl = null;
     if (push) {
       sh('git', ['push', '-q', '-u', 'origin', branch], work);
       const body = [
-        `${milestone} for **${slug}**, built by the idea pipeline, tests first. Engine: ${engine}. Built in ${ws.kind === 'docker' ? 'the factory\'s Docker sandbox' : 'host mode (on the Mac)'}.`, '',
+        `${mvp ? `The MVP for **${slug}** (${planned.join(', ')} in one run)` : `${milestone} for **${slug}**`}, built by the idea pipeline, tests first. Engine: ${engine}. Built in ${ws.kind === 'docker' ? 'the factory\'s Docker sandbox' : 'host mode (on the Mac)'}.`, '',
+        ...(mvp ? [...steps.map((x) => `- ${x.milestone}: ${x.ok && x.testsPassing ? '✅ built, tests passing' : x.ok ? '❌ built, tests failing' : '❌ the builder stopped'} (${x.engine === 'free' ? 'free pool' : x.model || 'Claude'})`),
+          ...planned.filter((m) => !steps.some((x) => x.milestone === m)).map((m) => `- ${m}: not started`),
+          ...(stopped ? [`Stopped: ${stopped}. Merging marks ${completed.length ? completed.join(', ') : 'nothing'} done; the next build starts at the first one that isn't.`] : []), ''] : []),
         `Tests: ${testsPassing ? '✅ passing' : '❌ failing'} (\`npm test\` run by the pipeline after the build).`,
         `Secret scan: clean${repaired ? ' after one repair round' : ''}.`,
         ...(provisioned.length ? [`Provisioned through the credential broker: ${provisioned.join('; ')}.`] : []),
@@ -336,12 +397,13 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
         fs.existsSync(path.join(work, 'BUILD.md')) ? fs.readFileSync(path.join(work, 'BUILD.md'), 'utf8').slice(0, 6000) : '_No BUILD.md written._', '',
         '_Review it like any factory PR: merge if it does what the milestone says. Nothing here spends money._',
       ].join('\n');
-      prUrl = sh('gh', ['pr', 'create', '--draft', '--base', 'main', '--head', branch, '--title', `${milestone}: ${slug}`, '--body', body], work);
+      prUrl = sh('gh', ['pr', 'create', '--draft', '--base', 'main', '--head', branch, '--title', title, '--body', body], work);
     }
-    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'building', build: { ...(state.build || {}), milestone, status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : policy.build.effort || null, manual: !!manual, sandbox: ws.kind, at: now.toISOString(), ...(advice ? { advice } : {}) } });
+    // On merge, the pipeline marks `milestones` done: the ones that completed, not every one attempted.
+    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'building', build: { ...(state.build || {}), milestone, milestones: mvp ? completed : [milestone], ...(mvp ? { planned, stopped } : {}), status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : policy.build.effort || null, manual: !!manual, sandbox: ws.kind, at: now.toISOString(), ...(advice ? { advice } : {}) } });
     emit({ component: 'build', event: milestone, status: testsPassing ? 'ok' : 'fail', subject: { idea: slug, pr: prUrl || undefined }, durationMs: Date.now() - now.getTime(), data: { ...usage, testsPassing, prUrl, repaired },
-      message: `${milestone} ${prUrl ? `PR ${prUrl}` : 'built locally'}, tests ${testsPassing ? 'passing' : 'failing'}, engine ${run.engine}${advice ? `, advisor ${advice.difficulty}` : ''}` });
-    return { ok: true, slug, milestone, prUrl, testsPassing, engine: run.engine, model: run.info.model, builderReason: run.reason, state: s };
+      message: `${mvp ? `MVP (${completed.join(', ') || 'nothing complete'}${stopped ? `; stopped: ${stopped.slice(0, 120)}` : ''})` : milestone} ${prUrl ? `PR ${prUrl}` : 'built locally'}, tests ${testsPassing ? 'passing' : 'failing'}, engine ${run.engine}${advice ? `, advisor ${advice.difficulty}` : ''}` });
+    return { ok: true, slug, milestone, prUrl, testsPassing, engine: run.engine, model: run.info.model, builderReason: run.reason, state: s, ...(mvp ? { planned, completed, stopped } : {}) };
   } finally {
     await ws.close();
   }
@@ -366,7 +428,7 @@ function sandboxToken(service = policy.build.tokenService || 'idea-build-claude-
  * Where the builder works: { kind, gstackFile, secrets, claude(prompt, opts), test(), patch(), provisionFile(), stage(patch), close() }.
  * docker (default): everything that runs code runs in the factory sandbox; host: the clone on this Mac.
  */
-async function openWorkspace({ slug, milestone, work, input, startSessionFn = startSession, token = sandboxToken }) {
+async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSessionFn = startSession, token = sandboxToken }) {
   if ((policy.build.sandbox || 'docker') === 'host') {
     const inputDir = path.join(DATA, 'work', '.build-input');
     const gstackFile = input ? path.join(inputDir, `${slug}-${milestone}.md`) : null;
@@ -385,7 +447,7 @@ async function openWorkspace({ slug, milestone, work, input, startSessionFn = st
   if (!oauthToken) throw new Error(`no Claude subscription token for the sandbox: run \`claude setup-token\`, then \`security add-generic-password -U -s ${policy.build.tokenService || 'idea-build-claude-token'} -a "$USER" -w <token>\``);
   const sb = startSessionFn({ log: () => {} });
   try {
-    const info = await sb.open(work, { allowHosts: ['api.anthropic.com'], allowModels: policy.build.fallback === 'none' ? [] : [FREE_MODEL] });
+    const info = await sb.open(work, { allowHosts: ['api.anthropic.com'], allowModels: policy.build.fallback === 'none' ? [] : [FREE_MODEL], lifetimeMs });
     const inputDir = '/home/worker/build-input';
     const gstackFile = input ? `${inputDir}/${slug}-${milestone}.md` : null;
     if (input) await sb.put(gstackFile, input);
@@ -414,7 +476,7 @@ async function openWorkspace({ slug, milestone, work, input, startSessionFn = st
   }
 }
 
-module.exports = { buildOne, tools, milestones, nextMilestone, prompt, milestoneText, engineOrder, manualBuildTarget, buildMessage, engineLabel, buildInput, extractSection, GSTACK_BUILD_SECTIONS, repairPrompt, openWorkspace, sandboxToken, provisionCommands };
+module.exports = { buildOne, mvpMilestones, rangeText, tools, milestones, nextMilestone, prompt, milestoneText, engineOrder, manualBuildTarget, buildMessage, engineLabel, buildInput, extractSection, GSTACK_BUILD_SECTIONS, repairPrompt, openWorkspace, sandboxToken, provisionCommands };
 
 if (require.main === module) {
   const slug = process.argv[2];
