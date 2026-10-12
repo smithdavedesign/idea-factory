@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-12T04:33:17.813Z",
+  "updatedAt": "2026-10-12T04:48:24.171Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -33,7 +33,7 @@
         "owner": "agent",
         "label": "MVP built: every roadmap milestone merged",
         "done": false,
-        "evidence": "0/3 milestones merged"
+        "evidence": "2/3 milestones merged"
       },
       {
         "id": "deployed",
@@ -92,7 +92,7 @@
     },
     "done": 0,
     "total": 9,
-    "updatedAt": "2026-10-12T00:58:07.812Z"
+    "updatedAt": "2026-10-12T04:48:24.171Z"
   },
   "build": {
     "milestone": "MVP",
