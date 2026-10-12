@@ -23,6 +23,10 @@
 //      road-to-revenue plan (bin/idea-revenue.js) once M1 is merged, at most policy.revenue.maxPerDay.
 //      Build queues are ordered by revenueScore: the idea closest to its first dollar goes first.
 //      policy.build.mode "mvp": approving a build builds the whole roadmap in one run (buildOne({mvp})).
+//  Go-live (lib/golive.js): once an MVP is complete, a go-live build makes it launch-ready (SEO basics,
+//      privacy and terms, payment link, visit beacon, Vercel project); after it merges, the production
+//      URL becomes the repo's homepage and the live site is audited every 6 hours (checklist step
+//      "launchReady"). Also "Get it launch-ready" on the Ideas page (idea_build_requests "GOLIVE").
 //  4c. "Start build now" on the Ideas page (idea_build_requests) builds the next milestone on this
 //      tick, outside the weekly slot: oldest request first, policy.build.manualPerDay in 24 hours,
 //      one build per tick. The result goes back to the request row and to Slack.
@@ -41,6 +45,7 @@ const R = require('../lib/repohq');
 const S = require('../lib/seeds');
 const REV = require('../lib/revenue');
 const LF = require('../lib/launch-facts');
+const GL = require('../lib/golive');
 
 const ROOT = path.resolve(__dirname, '..');
 // The record and the pipeline's own files. IDEA_PIPELINE_DATA points them elsewhere (the tick tests).
@@ -395,7 +400,28 @@ async function tick({ forceDaily = false } = {}) {
       const full = state.repo.replace('https://github.com/', '');
       const row = repoRows.get(full.toLowerCase()) || null;
       const fresh = (c, hours) => c && now.getTime() - new Date(c.at).getTime() < hours * 3_600_000;
-      if (!fresh(pstate.live[slug], 1)) pstate.live[slug] = { at: now.toISOString(), url: await LF.liveUrl(LF.urlCandidates(row?.homepage, full.split('/')[1]), { owned: (u) => LF.ownedByTeam(u, policy.vercelScope) }) };
+      // The product's own production URL (its Vercel project in the owner's team), once it has deployed.
+      pstate.prod = pstate.prod || {};
+      if (!fresh(pstate.prod[slug], 1)) pstate.prod[slug] = { at: now.toISOString(), url: GL.productionUrl(full.split('/')[1], policy.vercelScope) };
+      const prodUrl = pstate.prod[slug].url;
+      // A repo without a homepage gets its production URL, so RepoHQ (and everyone) knows where it lives.
+      // RepoHQ may not have synced a new repo yet: then ask GitHub, and never overwrite a homepage that's set.
+      const homepageNow = () => { if (row) return row.homepage || ''; try { return JSON.parse(execFileSync('gh', ['repo', 'view', full, '--json', 'homepageUrl'], { encoding: 'utf8', timeout: 30_000, stdio: ['ignore', 'pipe', 'ignore'] })).homepageUrl || ''; } catch { return null; } };
+      if (prodUrl && !pstate.prod[slug].homepageSet && homepageNow() === '') {
+        try { execFileSync('gh', ['repo', 'edit', full, '--homepage', prodUrl], { stdio: 'ignore', timeout: 30_000 }); pstate.prod[slug].homepageSet = true; note(slug, `homepage set to ${prodUrl}`); } catch (e) { fail(`homepage ${slug}`, e); }
+      }
+      if (!fresh(pstate.live[slug], 1)) pstate.live[slug] = { at: now.toISOString(), url: await LF.liveUrl([...new Set([...(prodUrl ? [prodUrl] : []), ...LF.urlCandidates(row?.homepage, full.split('/')[1])])], { owned: (u) => u === prodUrl || LF.ownedByTeam(u, policy.vercelScope) }) };
+      pstate.audit = pstate.audit || {};
+      const liveNow = pstate.live[slug].url;
+      if (liveNow && (!fresh(pstate.audit[slug], 6) || pstate.audit[slug].url !== liveNow)) {
+        const was = pstate.audit[slug]?.result?.ready;
+        const result = await GL.auditLaunch(liveNow);
+        pstate.audit[slug] = { at: now.toISOString(), url: liveNow, result };
+        // Log a change, not every audit: newly launch-ready, or a check that used to pass now failing.
+        if (result.ready && was !== true) note(slug, `launch-ready: ${result.passed}/${result.total} launch checks pass on ${liveNow}`);
+        if (!result.ready && was === true) note(slug, `launch checks regressed on ${liveNow}: missing ${result.missing.join(', ')}`);
+      }
+      if (!liveNow) delete pstate.audit[slug];
       if (!fresh(pstate.legal[slug], 6)) pstate.legal[slug] = { at: now.toISOString(), found: LF.legalPages(full) };
       const launchLog = (() => { try { return JSON.parse(fs.readFileSync(path.join(dir, 'launch-log.json'), 'utf8')); } catch { return null; } })();
       const checklist = REV.launchChecklist(state, {
@@ -405,6 +431,7 @@ async function tick({ forceDaily = false } = {}) {
         liveUrl: pstate.live[slug].url, legal: pstate.legal[slug].found,
         launchPosts: Array.isArray(launchLog?.posts) ? launchLog.posts.length : 0,
         signups: signals.get(slug)?.signups ?? state.signals?.signups ?? 0,
+        audit: pstate.audit[slug]?.result ?? null,
       });
       if (!REV.sameChecklist(state.launch, checklist)) save(slug, { ...P.readState(dir), launch: { ...checklist, updatedAt: now.toISOString() } }, `launch checklist ${checklist.done}/${checklist.total}${checklist.next ? `, next: ${checklist.next.label}` : ''}`);
     } catch (e) { fail(`launch checklist ${slug}`, e); }
@@ -459,7 +486,9 @@ async function tick({ forceDaily = false } = {}) {
       if (!fs.existsSync(path.join(dir, 'idea.json'))) { await R.finishBuildRequest(sql, req.id, 'failed', { result: 'no such idea in the record' }); continue; }
       const roadmap = fs.existsSync(path.join(dir, 'ROADMAP.md')) ? fs.readFileSync(path.join(dir, 'ROADMAP.md'), 'utf8') : '';
       // milestone "MVP" on the request: build every remaining milestone in one run.
-      const target = req.milestone === 'MVP' ? mvpMilestones(P.readState(dir), roadmap, policy.build.mvp?.maxMilestones ?? 6) : manualBuildTarget(P.readState(dir), roadmap);
+      // "GOLIVE": make it launch-ready (lib/golive.js).
+      const target = req.milestone === 'MVP' ? mvpMilestones(P.readState(dir), roadmap, policy.build.mvp?.maxMilestones ?? 6)
+        : req.milestone === 'GOLIVE' ? GL.goLiveTarget(P.readState(dir)) : manualBuildTarget(P.readState(dir), roadmap);
       if (!target.ok) {
         await R.finishBuildRequest(sql, req.id, 'failed', { result: `can't build: ${target.reason}` });
         note(req.slug, `build request refused: ${target.reason}`);
@@ -471,9 +500,9 @@ async function tick({ forceDaily = false } = {}) {
         return false;
       }
       if (!(await R.claimBuildRequest(sql, req.id, target.milestone))) continue; // withdrawn meanwhile
-      const r = await startBuild(req.slug, target.milestone, { manual: true, note: req.note || '', ...(target.milestone === 'MVP' ? { mvp: true } : {}) });
+      const r = await startBuild(req.slug, target.milestone, { manual: true, note: req.note || '', ...(target.milestone === 'MVP' ? { mvp: true } : {}), ...(target.milestone === 'GOLIVE' ? { golive: true } : {}) });
       await R.finishBuildRequest(sql, req.id, r.ok ? 'done' : 'failed', {
-        result: r.ok ? `${target.milestone === 'MVP' ? `MVP (${(r.completed || []).join(', ') || 'nothing complete'})` : target.milestone} PR opened, tests ${r.testsPassing ? 'passing' : 'failing'}${r.stopped ? `; stopped: ${r.stopped}` : ''}` : String(r.reason || 'build failed'),
+        result: r.ok ? `${target.milestone === 'MVP' ? `MVP (${(r.completed || []).join(', ') || 'nothing complete'})` : target.milestone === 'GOLIVE' ? 'Go-live' : target.milestone} PR opened, tests ${r.testsPassing ? 'passing' : 'failing'}${r.stopped ? `; stopped: ${r.stopped}` : ''}` : String(r.reason || 'build failed'),
         prUrl: r.prUrl || null, engine: r.ok ? (r.engine === 'free' ? `free pool (${r.model || 'free-agent'})` : `${r.model || policy.build.model}${policy.build.effort ? ` · ${policy.build.effort}` : ''}`) : null,
       }).catch((e) => fail(`build request ${req.id}`, R.explain(e)));
       try { S.notify('slack', buildMessage({ slug: req.slug, milestone: target.milestone, r, effort: policy.build.effort })); } catch (e) { fail(`notify build ${req.slug}`, e); }
@@ -493,8 +522,9 @@ async function tick({ forceDaily = false } = {}) {
     let prState = null;
     try { prState = JSON.parse(execFileSync('gh', ['pr', 'view', s.build.prUrl, '--json', 'state'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })).state; } catch { continue; }
     const m = s.build.milestone || 'M1';
-    const doneNow = (Array.isArray(s.build.milestones) ? s.build.milestones : [m]).filter((x) => x !== 'MVP');
-    if (prState === 'MERGED') save(slug, { ...s, build: { ...s.build, status: 'merged' }, milestonesDone: [...new Set([...(s.milestonesDone || []), ...doneNow])] }, `${m === 'MVP' ? `MVP (${doneNow.join(', ')})` : m} merged`);
+    const doneNow = (Array.isArray(s.build.milestones) ? s.build.milestones : [m]).filter((x) => x !== 'MVP' && x !== 'GOLIVE');
+    if (prState === 'MERGED' && m === 'GOLIVE') save(slug, { ...s, build: { ...s.build, status: 'merged' }, golive: { mergedAt: now.toISOString(), prUrl: s.build.prUrl } }, 'go-live merged: launch-ready changes are in; the live audit takes it from here');
+    else if (prState === 'MERGED') save(slug, { ...s, build: { ...s.build, status: 'merged' }, milestonesDone: [...new Set([...(s.milestonesDone || []), ...doneNow])] }, `${m === 'MVP' ? `MVP (${doneNow.join(', ')})` : m} merged`);
     else if (prState === 'CLOSED') save(slug, { ...s, build: { ...s.build, status: 'closed' } }, `${m} PR closed without merging`);
   }
 
@@ -510,6 +540,19 @@ async function tick({ forceDaily = false } = {}) {
     const all = ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]);
     const approved = byRevenue(all.filter(([, s]) => s.ownerApproved && buildable(s)));
     if (approved.length && P.buildsThisWeek(all.map(([, s]) => s), now) < policy.build.maxPerWeek) await startBuild(approved[0][0], mvpMode ? 'MVP' : 'M1', mvpMode ? { mvp: true } : {});
+  }
+
+  // Go-live by itself once an MVP is complete (lib/golive.js goLiveDue): closest to money first, at
+  // most policy.golive.maxPerDay, never on a tick that already built.
+  if (!builtThisTick && policy.golive?.auto !== false) {
+    const today = now.toLocaleDateString('en-CA');
+    const runs = pstate.goliveRuns?.date === today ? pstate.goliveRuns.runs : 0;
+    const due = byRevenue(ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]).filter(([, s]) => GL.goLiveDue(s)));
+    if (due.length && runs < (policy.golive?.maxPerDay ?? 1)) {
+      pstate.goliveRuns = { date: today, runs: runs + 1 };
+      writePstate();
+      await startBuild(due[0][0], 'GOLIVE', { golive: true });
+    }
   }
 
   if (dailyNow) {

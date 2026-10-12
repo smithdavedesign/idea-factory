@@ -4,7 +4,7 @@ description: |
   Review a researched product idea with gstack's founder and engineering frameworks (office-hours
   Six Forcing Questions, premise challenge and alternatives; plan-ceo-review scope challenge in
   SCOPE REDUCTION mode; plan-eng-review feasibility), non-interactively, and decide: validate
-  (worth a $0 demand test) or pass. Writes REVIEW.md and review.json into the idea's record.
+  (worth a no-cost demand test) or pass. Writes REVIEW.md and review.json into the idea's record.
   Use for "review this idea", "is <idea> worth building", "/idea-review <slug>", or when the idea
   pipeline reviews new ideas. Works on ideas in /Users/davidsmith/idea-factory/ideas/<slug>/.
 ---
@@ -48,7 +48,7 @@ mechanics, because this review is non-interactive.
 3. `/Users/davidsmith/.claude/skills/gstack/plan-eng-review/SKILL.md` → "Step 0: Scope Challenge" and "1.
    Architecture review", applied to ROADMAP M1:
    - Can one person build it in a weekend?
-   - Can it run at $0 (Vercel Hobby, Neon free, no paid APIs or domains)?
+   - Can it run at zero cost (Vercel Hobby, Neon free, no paid APIs or domains)?
    - Which single test would prove M1 works?
 
 Be direct. Interest is not demand: waitlist signups are only a cheap filter, and the review must say
@@ -56,7 +56,7 @@ what stronger evidence would look like. Score honestly; most ideas should not pa
 
 ## Verdict
 
-- **validate**: worth a two-week, $0 demand test (a landing page with a waitlist). Requires score ≥
+- **validate**: worth a two-week, no-cost demand test (a landing page with a waitlist). Requires score ≥
   `policy.review.minScore`, an M1 buildable in a weekend, and `zeroCost: true`.
 - **pass**: everything else. Say why in one sentence that David would agree with.
 

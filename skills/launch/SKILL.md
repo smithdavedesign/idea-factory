@@ -1,15 +1,16 @@
 ---
 name: launch
 description: |
-  Get a validating idea's landing page in front of the people who have the problem: check each
+  Get a validating idea's landing page, or a built product that's live, in front of the people who have the problem: check each
   channel in LAUNCH.md exists and allows the post, find better ones from the research, write a post
   per channel in that community's own style, and log what David actually posted so visitors can be
   traced to a channel. David posts; this skill never does. Use for "launch <idea>", "/launch <slug>",
   "where should I post permitly", "help me get visitors", "how's the launch going", or when a demand
-  test is short of the visitors it needs. Works on ideas in /Users/davidsmith/idea-factory/ideas/<slug>/.
+  test is short of the visitors it needs, or a built product is live and needs its first users (the
+  road-to-revenue checklist's "Launch posted" step). Works on ideas in /Users/davidsmith/idea-factory/ideas/<slug>/.
 ---
 
-# Launch (distribution for a $0 demand test)
+# Launch (distribution for a demand test or a live product, at no cost)
 
 A demand test needs `policy.validation.minVisitorsToJudge` unique visitors (50) inside the window
 (14 days), or the idea is extended once and then parked untested. Getting those visitors is the
@@ -23,7 +24,7 @@ task: verified channels, posts ready to paste, a log of what went out.
   be a customer, no vote requests, no reposting the same text to many places on one day.
 - **Respect each community's rules.** If a place bans self-promotion, the post asks the question
   and adds no link, or the place is dropped. Never suggest working around a rule.
-- **$0:** no ads, boosts or paid listings.
+- **No spending:** no ads, boosts or paid listings.
 - **The record only grows:** don't edit or shorten `LAUNCH.md`, `REVIEW.md` or anything the pipeline
   wrote. You write `LAUNCH-KIT.md` and `launch-log.json` only.
 
@@ -38,14 +39,19 @@ task: verified channels, posts ready to paste, a log of what went out.
 ## 1. Read the idea
 
 From `/Users/davidsmith/idea-factory/ideas/<slug>/`:
-- `state.json`: the stage must be `validate`. If it isn't, say so and stop. Note `page.url` and `validation.decideAfter`.
+- `state.json`:
+  - **validating** (stage `validate`): launch the demand-test page. Note `page.url` and `validation.decideAfter`.
+  - **built** (stage `building` or `live`): launch the product itself. Its URL is the checklist's live URL (`state.launch` → the `deployed` step's evidence). If it isn't live yet, say so and stop: getting it live comes first ("Get it launch-ready" on the Ideas page, or the go-live build).
+  - Any other stage: say so and stop.
+- `REVENUE.md` / `revenue.json` (a built idea): who pays, the price, `launchChannels` and `firstTenUsers`. Start from those channels instead of `LAUNCH.md`'s.
 - `LAUNCH.md` and `review.json` → `launch` (channels and post) and `landing` (headline, audience).
 - `RESEARCH.md`: the evidence threads, plus who pays and where they talk. **The thread the pain was found in is
   usually the best first channel**, and replying there is better than a new post.
 - `idea.json` and `PRD.md`, for the one-line pitch.
 
 Then get the live picture: the MCP tool `get_idea_pipeline` with the slug (repohq server) gives
-visitors, signups, days left, visitors by source and posts already logged. If the tool isn't
+visitors, signups, days left, visitors by source, posts already logged and, for a built idea, its road
+to revenue (`state.launch`). The go-live build adds a visit beacon, so a live product's visitors count too. If the tool isn't
 available, use `state.json` → `signals` and `launch-log.json`.
 
 ## 2. Check and widen the channels
@@ -69,7 +75,7 @@ Start from the `LAUNCH.md` post, then fit each place:
 - Say plainly that you're building it and testing interest.
 - Use the place's format: a title plus body for Reddit and forums, one or two lines for X, a reply
   that answers the original question first for the source thread.
-- **The link:** `page.url` exactly as written, or no link where the rules forbid one. Don't
+- **The link:** `page.url` (or the product's live URL) exactly as written, or no link where the rules forbid one. Don't
   invent tracking parameters: the page records `document.referrer`, so the source shows up by site
   where the browser sends it. Reddit's app and many mobile clients send none, so their visits count
   as "direct".
@@ -114,7 +120,8 @@ Ask which channel, and for the post's URL if he has it. Then append to
                "note": "optional: removed by mods, reworded, etc." } ] }
 ```
 
-Keep every earlier entry. `get_idea_pipeline` reads this file.
+Keep every earlier entry. `get_idea_pipeline` reads this file, and so does the road-to-revenue
+checklist: its "Launch posted" step turns green with the first logged post.
 Log the post to the system log as well:
 `/Users/davidsmith/ai-stack/bin/emit-event idea-factory launch post info "<slug>: posted to <channel>"`.
 

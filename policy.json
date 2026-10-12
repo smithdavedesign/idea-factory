@@ -61,5 +61,10 @@
   "revenue": {
     "maxPerDay": 2,
     "_why": "Once an idea's M1 is merged, bin/idea-revenue.js writes its road-to-revenue plan (REVENUE.md, revenue.json) on the Claude subscription: who pays, the price, what must exist before charging, where to launch. The pipeline turns it into the launch checklist (state.launch) and ranks build queues by how close each idea is to its first dollar."
+  },
+  "golive": {
+    "auto": true,
+    "maxPerDay": 1,
+    "_why": "Once an MVP is complete (every roadmap milestone merged), a go-live build makes it launch-ready in the sandbox: SEO basics (titles, meta descriptions, share image, sitemap, robots.txt, JSON-LD), privacy and terms pages, a Buy button on STRIPE_PAYMENT_LINK, a visit beacon to RepoHQ, and a Vercel project through the credential broker. After it merges, the production URL becomes the repo homepage and the live site is audited every 6 hours (checklist step launchReady). \"Get it launch-ready\" on the Ideas page starts one any time after M1."
   }
 }
