@@ -324,3 +324,16 @@ test('the first quiet tick after a failed one is logged, so RepoHQ stops showing
   const quiet = await tick();
   if (!quiet.changes.length) assert.equal(emitted.length, 0, 'later quiet ticks stay quiet');
 });
+
+test('a merged build PR is logged ok, so a failure from when it opened stops showing as failing now', async () => {
+  idea('pr-m', { stage: 'building', repo: 'https://github.com/o/pr-m', milestonesDone: [], build: { milestone: 'MVP', milestones: ['M1', 'M2'], planned: ['M1', 'M2', 'M3'], stopped: 'M3: tests failing', status: 'pr-open', prUrl: 'https://github.com/o/pr-m/pull/1', testsPassing: false } });
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-m', 'revenue.json'), '{}');
+  gh.prs['https://github.com/o/pr-m/pull/1'] = 'MERGED';
+  db = { requests: [], startsLast24h: 0, log: [] };
+  emitted.length = 0;
+  await tick();
+  const ok = emitted.find((e) => e.component === 'build' && e.event === 'MVP' && e.status === 'ok');
+  assert.ok(ok, JSON.stringify(emitted.map((e) => [e.component, e.event, e.status])));
+  assert.equal(ok.message, 'pr-m: MVP (M1, M2) PR merged https://github.com/o/pr-m/pull/1');
+  assert.deepEqual(ok.subject, { idea: 'pr-m' });
+});
