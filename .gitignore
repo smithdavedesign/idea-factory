@@ -3,7 +3,9 @@
 .pipeline.lock
 .review-input.md
 drafts/
-node_modules/
+# No trailing slash: a worktree's node_modules can be a symlink, and "node_modules/" matches
+# directories only (one was committed on 2026-10-11 and replaced the runtime's node_modules).
+node_modules
 pipeline.log
 pipeline.out.log
 promote.log
