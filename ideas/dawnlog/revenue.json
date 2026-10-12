@@ -1,0 +1,52 @@
+{
+  "buyer": "Solo developer or freelancer on a Claude Code Max plan ($100-$200/mo) who runs agents overnight across 2-5 repos and pays with a personal card; findable among people who built their own ~/.claude/projects JSONL parsers (issue #49095 commenters) and in r/ClaudeAI and r/ClaudeCode",
+  "paymentMethod": "Stripe Checkout payment link (no backend); success page gives a license string and access to a private dawnlog-pro repo, fulfilled manually for the first 10 sales",
+  "mvpScope": "Free MIT CLI stays free (terminal receipts per branch). Pro adds M2 features: ranked merge/fix/kill triage, Markdown file with transcript line links, --json, and later digest. Must reach >= 90% session-to-branch attribution on 10+ of David's real overnight runs and 0 unredacted secrets on the seeded corpus before anyone is asked to pay.",
+  "firstTenUsers": "Post the 'how do you review overnight agent runs?' question in r/ClaudeAI and r/ClaudeCode; reply with the free npx command to the people who describe a manual workaround. Message the commenters on issue #49095 who wrote their own parsers. Then one Show HN. Pro buyers come only from those who installed the free tool and used it for a week.",
+  "price": {
+    "amount": 12,
+    "currency": "USD",
+    "interval": "once",
+    "why": "No paid comparable found; the nearest tools (ccusage, Entire, Semantica) are free, so this is a low impulse price to test willingness to pay. Buyers already spend $100-$200/mo on Claude Code plans, so $12 is small next to that. Raise only after 10 buyers."
+  },
+  "mustHaveBeforeCharging": [
+    "M2 merged (ranking, source file:line links, --json)",
+    "attribution >= 90% on 10+ real overnight runs",
+    "Stripe payment link live and tested with one real purchase",
+    "privacy policy and terms pages (local-only, read-only, best-effort redaction disclaimer, refund policy)",
+    "landing page or README with the Pro link, deployed on a free tier",
+    "manual fulfilment path: private repo or tarball plus license string on the success page"
+  ],
+  "launchChannels": [
+    {
+      "name": "r/ClaudeAI",
+      "url": "https://www.reddit.com/r/ClaudeAI/",
+      "why": "Claude Code users; ask 'how do you review what your agent did overnight?' and count manual workarounds before pitching"
+    },
+    {
+      "name": "r/ClaudeCode",
+      "url": "https://www.reddit.com/r/ClaudeCode/",
+      "why": "Heavier Claude Code users, more likely to run unattended agents"
+    },
+    {
+      "name": "Claude Code global session history issue #49095",
+      "url": "https://claudeissues.com/issue/49095-global-session-history-view-across-all-projects",
+      "why": "Commenters are already building their own JSONL parsers: the clearest lead list"
+    },
+    {
+      "name": "Show HN",
+      "url": "https://news.ycombinator.com/showhn.html",
+      "why": "PRD demand signal is 25 stars or 5 issues from a Show HN; reaches developers who try CLIs via npx"
+    }
+  ],
+  "risks": [
+    "Demand evidence is blog posts only; no one has paid or asked for it",
+    "Wrong receipt or false PASSED label destroys trust",
+    "Undocumented Claude Code JSONL format can break the parser on any release",
+    "Anthropic, Entire or Semantica may ship an overnight triage view",
+    "MIT-licensed Pro features can be copied; payment is partly goodwill",
+    "Secret redaction is best-effort and transcripts contain secrets",
+    "Niche may be too small: realistic outcome is 0-5 sales"
+  ],
+  "killCriteria": "Stop if attribution is under 90% on David's own runs; or 60 days after launch there are fewer than 25 stars, fewer than 5 external issues and zero Pro purchases; or 150 installs / 30 Pro-link clicks produce no sale; or Anthropic or Entire ships a morning triage view. Keep it as a free open-source repo and spend no more build time."
+}

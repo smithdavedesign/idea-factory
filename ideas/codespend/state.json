@@ -7,7 +7,7 @@
     "at": "2026-10-11T16:41:39.440Z",
     "notionAt": "2026-10-11T16:41:40.221Z"
   },
-  "updatedAt": "2026-10-12T00:58:07.812Z",
+  "updatedAt": "2026-10-12T00:59:34.787Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -40,15 +40,15 @@
         "id": "plan",
         "owner": "agent",
         "label": "Road-to-revenue plan written",
-        "done": false,
-        "evidence": "written after M1 merges"
+        "done": true,
+        "evidence": "The person who owns the AI coding bill at a 3-30 developer team (founder, tech l · $9/month"
       },
       {
         "id": "mvp",
         "owner": "agent",
         "label": "MVP built: every roadmap milestone merged",
         "done": false,
-        "evidence": "0/3 milestones merged"
+        "evidence": "1/3 milestones merged"
       },
       {
         "id": "deployed",
@@ -67,9 +67,9 @@
       {
         "id": "price",
         "owner": "david",
-        "label": "Price decided",
-        "done": false,
-        "evidence": ""
+        "label": "Price: $9/month (from the plan)",
+        "done": true,
+        "evidence": "Only paid anchor found is ~$9 (AI Usage Tracker); free local trackers and vendor consoles cover the rest; evidence of wi"
       },
       {
         "id": "payments",
@@ -101,13 +101,15 @@
       }
     ],
     "next": {
-      "id": "plan",
-      "label": "Road-to-revenue plan written",
+      "id": "mvp",
+      "label": "MVP built: every roadmap milestone merged",
       "owner": "agent"
     },
-    "done": 0,
+    "done": 2,
     "total": 9,
-    "updatedAt": "2026-10-12T00:58:07.812Z"
+    "buyer": "The person who owns the AI coding bill at a 3-30 developer team (founder, tech lead, or agency owner) paying for an Anthropic API/Team org plus Copilot seats; find them among commenters on Claude Code billing issues #81703 and #62338 and on r/ClaudeAI spend threads",
+    "price": "$9/month",
+    "updatedAt": "2026-10-12T00:59:34.787Z"
   },
   "milestonesDone": [
     "M1"
