@@ -7,7 +7,7 @@
     "at": "2026-10-11T16:41:39.440Z",
     "notionAt": "2026-10-11T16:41:40.221Z"
   },
-  "updatedAt": "2026-10-12T22:22:11.991Z",
+  "updatedAt": "2026-10-12T22:56:49.585Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -17,22 +17,19 @@
   "ownerApproved": true,
   "repo": "https://github.com/smithdavedesign/codespend",
   "build": {
-    "milestone": "MVP",
-    "status": "merged",
-    "prUrl": "https://github.com/smithdavedesign/codespend/pull/2",
+    "milestone": "GOLIVE",
+    "status": "pr-open",
+    "prUrl": "https://github.com/smithdavedesign/codespend/pull/3",
     "testsPassing": true,
     "engine": "claude",
-    "at": "2026-10-12T20:50:27.917Z",
+    "at": "2026-10-12T22:37:27.176Z",
     "advice": {
       "difficulty": 3,
       "reason": "Requires integrating multiple APIs, building a unified dashboard, implementing project grouping, and setting up alert systems across different services.",
       "source": "model",
       "model": "local-qwen3"
     },
-    "milestones": [
-      "M2",
-      "M3"
-    ],
+    "milestones": [],
     "planned": [
       "M2",
       "M3"
@@ -40,10 +37,11 @@
     "stopped": null,
     "model": "claude-opus-5-5",
     "effort": "xhigh",
-    "manual": true,
+    "manual": false,
     "sandbox": "docker",
     "mergedBy": "agent",
-    "mergedAt": "2026-10-12T22:22:11.991Z"
+    "mergedAt": "2026-10-12T22:22:11.991Z",
+    "beacon": "funnel"
   },
   "revenue": {
     "mrr": 0,
@@ -62,8 +60,8 @@
         "id": "mvp",
         "owner": "agent",
         "label": "MVP built: every roadmap milestone merged",
-        "done": false,
-        "evidence": "1/3 milestones merged"
+        "done": true,
+        "evidence": "3/3 milestones merged"
       },
       {
         "id": "deployed",
@@ -123,15 +121,15 @@
       }
     ],
     "next": {
-      "id": "mvp",
-      "label": "MVP built: every roadmap milestone merged",
+      "id": "deployed",
+      "label": "Live on a free tier",
       "owner": "agent"
     },
-    "done": 2,
+    "done": 3,
     "total": 10,
     "buyer": "The person who owns the AI coding bill at a 3-30 developer team (founder, tech lead, or agency owner) paying for an Anthropic API/Team org plus Copilot seats; find them among commenters on Claude Code billing issues #81703 and #62338 and on r/ClaudeAI spend threads",
     "price": "$9/month",
-    "updatedAt": "2026-10-12T05:03:28.813Z"
+    "updatedAt": "2026-10-12T22:37:24.066Z"
   },
   "milestonesDone": [
     "M1",
