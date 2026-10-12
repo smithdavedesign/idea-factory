@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-12T00:58:07.812Z",
+  "updatedAt": "2026-10-12T05:03:28.813Z",
   "repo": "https://github.com/smithdavedesign/grantgate",
   "revenue": {
     "mrr": 0,
@@ -41,6 +41,13 @@
         "label": "Privacy policy and terms pages",
         "done": false,
         "evidence": "privacy ✗ · terms ✗"
+      },
+      {
+        "id": "launchReady",
+        "owner": "agent",
+        "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
+        "done": false,
+        "evidence": "checked once it's live (the go-live build adds what's missing)"
       },
       {
         "id": "price",
@@ -84,7 +91,7 @@
       "owner": "agent"
     },
     "done": 0,
-    "total": 9,
-    "updatedAt": "2026-10-12T00:58:07.812Z"
+    "total": 10,
+    "updatedAt": "2026-10-12T05:03:28.813Z"
   }
 }
