@@ -406,7 +406,10 @@ async function tick({ forceDaily = false } = {}) {
       const prodUrl = pstate.prod[slug].url;
       // A repo without a homepage gets its production URL, so RepoHQ (and everyone) knows where it lives.
       // RepoHQ may not have synced a new repo yet: then ask GitHub, and never overwrite a homepage that's set.
-      const homepageNow = () => { if (row) return row.homepage || ''; try { return JSON.parse(execFileSync('gh', ['repo', 'view', full, '--json', 'homepageUrl'], { encoding: 'utf8', timeout: 30_000, stdio: ['ignore', 'pipe', 'ignore'] })).homepageUrl || ''; } catch { return null; } };
+      const homepageNow = () => {
+        // RepoHQ's copy can lag GitHub (a homepage set minutes ago reads as ''), so only a non-empty
+        // homepage there counts; otherwise GitHub decides. (2026-10-12: tiebreak's was overwritten.)
+        if (row?.homepage) return row.homepage; try { return JSON.parse(execFileSync('gh', ['repo', 'view', full, '--json', 'homepageUrl'], { encoding: 'utf8', timeout: 30_000, stdio: ['ignore', 'pipe', 'ignore'] })).homepageUrl || ''; } catch { return null; } };
       if (prodUrl && !pstate.prod[slug].homepageSet && homepageNow() === '') {
         try { execFileSync('gh', ['repo', 'edit', full, '--homepage', prodUrl], { stdio: 'ignore', timeout: 30_000 }); pstate.prod[slug].homepageSet = true; note(slug, `homepage set to ${prodUrl}`); } catch (e) { fail(`homepage ${slug}`, e); }
       }
