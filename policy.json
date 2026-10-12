@@ -71,6 +71,12 @@
     "parkAfterNoLift": 2,
     "_why": "The growth loop (RepoHQ docs/growth-loop-prd.md, idea-pipeline step 5d, lib/growth.js). focus: the live products that get a daily growth step, most important first. Each day, the first matching rule picks one mission per product: a growth build (a draft PR, one change), a launch kit (posts David publishes) or an item in the morning email's Today block. At most maxMissionsPerDay missions a day, one per product, maxBuildsPerWeek growth builds a week, none before notBefore, never on a tick that built; nothing new on a product while something waits for David (an open growth PR, an unposted kit). Growth runs use model at effort on the subscription and never fall back to the free pool. auto false stops new missions. minVisitorsPerWeek is the traction bar, which also lifts build.startNew's hold."
   },
+  "autonomy": {
+    "merge": true,
+    "revert": true,
+    "protectedPaths": [".github/workflows/"],
+    "_why": "David's call on 2026-10-12: agents merge everything and he reviews what was done each morning (RepoHQ docs/growth-loop-prd.md, \"Autonomy\"). merge: the pipeline merges its own PRs (growth, go-live, milestones) once its tests passed and every GitHub check is green (CI, GitGuardian, the Vercel preview), with no conflicts (lib/autonomy.js). A growth PR that fails is closed and its mission tried again the next day; a failed roadmap build waits for David. revert: an agent's merge that breaks the live site's launch checks within a day, or an experiment the judge finds clearly worse, is reverted by a revert PR the pipeline merges, and Slack is told. protectedPaths: PRs touching these (the CI that gates merging) are left for David. Set merge false to go back to David merging everything."
+  },
   "signalUrl": "https://repohq.vercel.app/api/ideas/signal",
   "pagesProject": "idea-pages",
   "pagesBaseUrl": "https://idea-pages-livid.vercel.app",

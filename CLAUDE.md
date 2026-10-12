@@ -8,7 +8,7 @@ The idea half of David's system: research → gstack review → $0 demand test �
 - Rules:
   - **$0** (`policy.json`);
   - Claude only on the **Pro subscription** through `lib/claude.js`, never API credit;
-  - draft PRs that David merges;
+  - the pipeline merges its own PRs once tests and every check are green, and reverts what breaks (`policy.autonomy`, `lib/autonomy.js`; David's call on 2026-10-12). He reviews what was done in the morning email. Interactive sessions still open draft PRs and ask before merging;
   - his Notion Status always wins;
   - no work or financial data (the `bin/context` wrapper enforces public + personal).
 - Tests: `npm test` (lossless Notion conversion, decision rules, landing-page escaping, Claude guards). Run them before committing.

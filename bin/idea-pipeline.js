@@ -31,9 +31,13 @@
 //  4c. "Start build now" on the Ideas page (idea_build_requests) builds the next milestone on this
 //      tick, outside the weekly slot: oldest request first, policy.build.manualPerDay in 24 hours,
 //      one build per tick. The result goes back to the request row and to Slack.
+//  4a0. Autonomy (lib/autonomy.js, policy.autonomy): the pipeline merges its own PRs once tests and checks
+//      are green, closes failed growth PRs (retried the next day), leaves the rest for David; a merge that
+//      breaks the live site's launch checks is reverted (5b).
 //  5d. The growth loop (lib/growth.js, policy.growth): each focus product's growth record every tick; once a
 //      day per product, the funnel's bottleneck starts one mission: a growth build (draft PR) or a launch
 //      kit (bin/idea-growth.js, posts David publishes). A merged growth PR starts its experiment (4a).
+//      When its window ends, the experiment is judged: LEARNINGS.md, a PLAYBOOK.md proposal, or a revert.
 // Daily (Claude Pro subscription, capped by policy):
 //   a. Review new ideas with the gstack frameworks (bin/idea-review.js) → Validate or Pass.
 //   b. Landing page for each new Validate idea (pages/<slug>/), deployed to the free pages project.
@@ -50,6 +54,7 @@ const S = require('../lib/seeds');
 const REV = require('../lib/revenue');
 const LF = require('../lib/launch-facts');
 const GL = require('../lib/golive');
+const A = require('../lib/autonomy');
 const G = require('../lib/growth');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -141,7 +146,8 @@ function deployPages() {
 
 function commitRecord(message) {
   try {
-    pub.git(['add', '--', 'ideas', 'pages']);
+    // PLAYBOOK.md: the growth loop proposes rules there from kept experiments.
+    pub.git(['add', '--', 'ideas', 'pages', ...(fs.existsSync(path.join(DATA, 'PLAYBOOK.md')) ? ['PLAYBOOK.md'] : [])]);
     pub.git(['commit', '-q', '-m', message]);
   } catch { return null; } // nothing to commit
   try { pub.git(['pull', '-q', '--rebase', '--autostash']); } catch {}
@@ -159,6 +165,32 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
   const rows = new Map((await pub.allIdeas()).filter((r) => r.slug).map((r) => [r.slug, r]));
   const changed = new Set();
   const save = (slug, state, what) => { P.writeState(path.join(IDEAS, slug), state, now); changed.add(slug); note(slug, what); };
+  /**
+   * Undo a PR an agent merged (lib/autonomy.js revertSteps, policy.autonomy.revert): a revert commit on a
+   * branch, a PR that says why, merged. {ok, url} or {ok: false}. A revert because the live site broke
+   * (`breakage`) is logged as a failure, so Slack hears of it, and as recovered once the site passes its
+   * launch checks again (5b); one the judge decided on is news for the morning email only.
+   */
+  const revertMerged = (slug, prUrl, reason, { breakage = false } = {}) => {
+    const full = P.readState(path.join(IDEAS, slug)).repo.replace('https://github.com/', '');
+    const work = path.join(DATA, 'work', `revert-${slug}`);
+    const gh = (args) => String(execFileSync('gh', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 120_000 }));
+    try {
+      const pr = JSON.parse(gh(['pr', 'view', prUrl, '--json', 'number,title,mergeCommit']));
+      const sha = pr.mergeCommit?.oid;
+      if (!sha) throw new Error(`${prUrl} has no merge commit`);
+      const parents = Number(gh(['api', `repos/${full}/commits/${sha}`, '--jq', '.parents | length']).trim()) || 1;
+      fs.rmSync(work, { recursive: true, force: true });
+      let url = null;
+      for (const [cmd, args, cwd] of A.revertSteps({ repoFull: full, prUrl, number: pr.number, title: pr.title, sha, parents, reason, work })) {
+        const out = String(execFileSync(cmd, args, { cwd: cwd || DATA, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 180_000 }));
+        if (cmd === 'gh' && args[0] === 'pr' && args[1] === 'create') url = out.trim() || null;
+      }
+      emit({ component: 'autonomy', event: 'revert', status: breakage ? 'fail' : 'info', subject: { idea: slug, pr: prUrl }, message: `${slug}: reverted ${prUrl}: ${reason}${url ? ` (${url})` : ''}` });
+      return { ok: true, url };
+    } catch (e) { fail(`revert ${slug} ${prUrl}`, e); return { ok: false }; }
+    finally { fs.rmSync(work, { recursive: true, force: true }); }
+  };
   let sql = null;
   try { sql = dbSql(); } catch (e) { fail('database', e); }
   const pstate = fs.existsSync(STATE_FILE) ? JSON.parse(fs.readFileSync(STATE_FILE, 'utf8')) : {};
@@ -425,7 +457,28 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
         pstate.audit[slug] = { at: now.toISOString(), url: liveNow, result };
         // Log a change, not every audit: newly launch-ready, or a check that used to pass now failing.
         if (result.ready && was !== true) note(slug, `launch-ready: ${result.passed}/${result.total} launch checks pass on ${liveNow}`);
-        if (!result.ready && was === true) note(slug, `launch checks regressed on ${liveNow}: missing ${result.missing.join(', ')}`);
+        // The site passes again after a breakage revert: the revert's Slack alert is closed ("recovered").
+        if (result.ready && pstate.revertAlerts?.[slug]) {
+          emit({ component: 'autonomy', event: 'revert', status: 'ok', subject: { idea: slug }, message: `${slug}: the live site passes its launch checks again after the revert of ${pstate.revertAlerts[slug].prUrl}` });
+          note(slug, 'the live site passes its launch checks again after the revert');
+          delete pstate.revertAlerts[slug];
+        }
+        if (!result.ready && was === true) {
+          note(slug, `launch checks regressed on ${liveNow}: missing ${result.missing.join(', ')}`);
+          // An agent's merge in the last day broke the live site: undo it (policy.autonomy.revert).
+          const b = state.build || {};
+          if (policy.autonomy?.revert && b.mergedBy === 'agent' && b.prUrl && !b.reverted && now - new Date(b.mergedAt) < 24 * 3_600_000) {
+            const reason = `the live site's launch checks failed after it merged (missing ${result.missing.join(', ')})`;
+            const r = revertMerged(slug, b.prUrl, reason, { breakage: true });
+            if (r.ok) {
+              // Watched until the site passes again (above); audited again on the next tick, after the redeploy.
+              pstate.revertAlerts = { ...(pstate.revertAlerts || {}), [slug]: { at: now.toISOString(), prUrl: b.prUrl } };
+              pstate.audit[slug].at = '1970-01-01T00:00:00.000Z';
+              const cur = P.readState(dir);
+              save(slug, { ...cur, build: { ...cur.build, reverted: { at: now.toISOString(), url: r.url, reason } }, ...(cur.growth ? { growth: G.markReverted(cur.growth, b.prUrl, { url: r.url, reason, now }) } : {}) }, `reverted its own merge ${b.prUrl}: ${reason}`);
+            }
+          }
+        }
       }
       if (!liveNow) delete pstate.audit[slug];
       if (!fresh(pstate.legal[slug], 6)) pstate.legal[slug] = { at: now.toISOString(), found: LF.legalPages(full) };
@@ -521,6 +574,40 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
 
   // Daily steps.
   const dailyNow = forceDaily || dailyDue(pstate.lastDaily, now);
+
+  // 4a0. Autonomy (lib/autonomy.js, policy.autonomy, David's call on 2026-10-12): the pipeline merges its
+  // own PRs once its tests and every check are green. A growth PR that failed is closed, and its mission
+  // is tried again the next day. A failed roadmap build, or a PR touching a protected path, waits for
+  // David's morning review. After a merge the live site is audited again on the next tick (5b reverts a
+  // regression).
+  const auto = policy.autonomy || {};
+  if (auto.merge) {
+    const gh = (args) => String(execFileSync('gh', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 120_000 }));
+    for (const slug of ideaDirs()) {
+      const s = P.readState(path.join(IDEAS, slug));
+      const b = s.build || {};
+      if (b.status !== 'pr-open' || !b.prUrl) continue;
+      let pr;
+      try { pr = JSON.parse(gh(['pr', 'view', b.prUrl, '--json', 'state,mergeable,statusCheckRollup,files,createdAt'])); } catch { continue; }
+      const d = A.mergeDecision({ pr, build: b, protectedPaths: auto.protectedPaths || [], now });
+      if (d.action === 'merge') {
+        try {
+          gh(['pr', 'ready', b.prUrl]);
+          try { gh(['pr', 'merge', b.prUrl, '--squash', '--delete-branch']); } catch { gh(['pr', 'merge', b.prUrl, '--merge', '--delete-branch']); }
+        } catch (e) { fail(`merge ${slug} ${b.prUrl}`, e); continue; }
+        save(slug, { ...s, build: { ...b, mergedBy: 'agent', mergedAt: now.toISOString() } }, `merged its own PR ${b.prUrl} (${d.reason})`);
+        emit({ component: 'autonomy', event: 'merge', status: 'info', subject: { idea: slug, pr: b.prUrl }, message: `${slug}: merged ${b.prUrl} (${d.reason})` });
+        if (pstate.audit?.[slug]) { pstate.audit[slug].at = '1970-01-01T00:00:00.000Z'; writePstate(); }
+      } else if (d.action === 'fail' && b.milestone === 'GROWTH') {
+        try { gh(['pr', 'close', b.prUrl, '--comment', `Closed by the growth loop: ${d.reason}. The mission is tried again tomorrow.`]); } catch (e) { fail(`close ${slug} ${b.prUrl}`, e); continue; }
+        const growth = { ...s.growth, experiments: (s.growth?.experiments || []).map((e) => (e.id === b.experiment ? { ...e, status: 'abandoned', failed: true, reason: d.reason, updatedAt: now.toISOString() } : e)) };
+        save(slug, { ...s, build: { ...b, status: 'closed' }, growth }, `closed its growth PR ${b.prUrl} (${d.reason}); tried again tomorrow`);
+      } else if ((d.action === 'fail' || d.action === 'leave') && b.held !== d.reason) {
+        // Recorded once; the morning email lists it under what needs David.
+        save(slug, { ...s, build: { ...b, held: d.reason } }, `PR left for David: ${d.reason} (${b.prUrl})`);
+      }
+    }
+  }
 
   // 4a. Milestone PRs merged or closed (every tick, so the next build is offered right away). A merge
   // marks the milestones that build completed as done (an MVP run's `milestones`, else its milestone).
@@ -645,12 +732,53 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
   const gp = policy.growth || {};
   const readText = (f) => (fs.existsSync(f) ? fs.readFileSync(f, 'utf8') : '');
   const readLog = (dir) => { try { return JSON.parse(fs.readFileSync(path.join(dir, 'launch-log.json'), 'utf8')); } catch { return null; } };
+  // Phase 3: an experiment whose window has ended is judged against the window before it (lib/growth.js
+  // judge). The lesson goes to the product's LEARNINGS.md; a kept one is proposed for PLAYBOOK.md; one that
+  // made things clearly worse is reverted (policy.autonomy.revert).
+  const judgeDue = async (slug, dir, s, experiments) => {
+    const out = [];
+    for (const e of experiments) {
+      if (!['running', 'measuring'].includes(e.status) || !e.endsAt || new Date(e.endsAt) > now) { out.push(e); continue; }
+      let r;
+      try {
+        const span = e.windowDays * 86_400_000;
+        const before = await R.funnelWindow(sql, slug, new Date(new Date(e.startedAt).getTime() - span).toISOString(), e.startedAt);
+        const after = await R.funnelWindow(sql, slug, e.startedAt, e.endsAt);
+        r = G.judge(e, before, after, gp, { page: !!s.page });
+      } catch (err) { fail(`judge ${e.id}`, err); out.push(e); continue; }
+      if (r.decision === 'extend') {
+        out.push({ ...e, status: 'measuring', endsAt: new Date(new Date(e.endsAt).getTime() + e.windowDays * 86_400_000).toISOString(), extensions: (e.extensions ?? 0) + 1, updatedAt: now.toISOString() });
+        note(slug, `experiment ${e.id} extended: ${r.note}`);
+        continue;
+      }
+      const alongside = G.ranWith(e, experiments);
+      let decided = { ...e, status: 'decided', decision: r.decision, decidedAt: now.toISOString(), updatedAt: now.toISOString(),
+        result: { lift: r.lift, value: r.value, before: r.before, sample: r.sample, ...(r.note ? { note: r.note } : {}), ...(alongside.length ? { ranWith: alongside } : {}) } };
+      if (r.decision === 'revert' && auto.revert && e.prUrl) {
+        const rv = revertMerged(slug, e.prUrl, `the ${G.KINDS[e.kind]?.label || e.kind} experiment made it worse: ${G.valueText(e.metric, r.before)} → ${G.valueText(e.metric, r.value)}`);
+        if (rv.ok) decided = { ...decided, reverted: { at: now.toISOString(), url: rv.url } };
+      }
+      const entry = G.learningEntry(e, r, { now, alongside });
+      const learnings = path.join(dir, 'LEARNINGS.md');
+      fs.writeFileSync(learnings, G.withLearning(readText(learnings), slug, entry));
+      if (r.decision === 'keep') {
+        const playbook = path.join(DATA, 'PLAYBOOK.md');
+        fs.writeFileSync(playbook, G.withProposal(readText(playbook), `- ${e.hypothesis} (kept on ${slug}, ${now.toISOString().slice(0, 10)}: ${G.valueText(e.metric, r.before ?? e.baseline)} → ${G.valueText(e.metric, r.value)})`));
+      }
+      emit({ component: 'growth', event: 'decided', status: 'info', subject: { idea: slug }, message: `${slug}: ${entry.slice(2, 400)}` });
+      note(slug, `experiment decided: ${G.KINDS[e.kind]?.label || e.kind} → ${r.decision}`);
+      changed.add(slug);
+      out.push(decided);
+    }
+    return out;
+  };
   for (const slug of gp.focus || []) {
     const dir = path.join(IDEAS, slug);
     if (!fs.existsSync(path.join(dir, 'idea.json'))) continue;
     const s = P.readState(dir);
     const log = readLog(dir);
-    const experiments = G.advance(s.growth?.experiments || [], { posts: log?.posts || [], now, gp });
+    let experiments = G.advance(s.growth?.experiments || [], { posts: log?.posts || [], now, gp });
+    if (sql) experiments = await judgeDue(slug, dir, s, experiments);
     const b = G.bottleneck({ ...s, growth: { ...s.growth, experiments } }, { kit: G.kitFacts(readText(path.join(dir, 'LAUNCH-KIT.md')), log), gp, now });
     const growth = { ...(s.growth || {}), stage: b.stage, bottleneck: b.bottleneck, next: b.action, experiments };
     if (!G.sameGrowth(s.growth, growth)) save(slug, { ...s, growth: { ...growth, checkedAt: now.toISOString() } }, `growth: ${b.stage}, ${b.bottleneck}${b.action ? `; next: ${b.action.kind} (${b.action.executor})` : ''}`);
