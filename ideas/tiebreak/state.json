@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-12T05:20:57.261Z",
+  "updatedAt": "2026-10-12T07:28:07.673Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -25,8 +25,8 @@
         "id": "plan",
         "owner": "agent",
         "label": "Road-to-revenue plan written",
-        "done": false,
-        "evidence": "written after M1 merges"
+        "done": true,
+        "evidence": "A solo Etsy seller (one-person shop) about to publish or change a main listing p · $5 once"
       },
       {
         "id": "mvp",
@@ -59,9 +59,9 @@
       {
         "id": "price",
         "owner": "david",
-        "label": "Price decided",
-        "done": false,
-        "evidence": ""
+        "label": "Price: $5 once (from the plan)",
+        "done": true,
+        "evidence": "Per-poll, one time. PickFu's official minimum is $15 per poll ($1 per response), so $5 is a third of the only officially"
       },
       {
         "id": "payments",
@@ -93,13 +93,15 @@
       }
     ],
     "next": {
-      "id": "plan",
-      "label": "Road-to-revenue plan written",
-      "owner": "agent"
+      "id": "payments",
+      "label": "Stripe product created and mapped to the repo in RepoHQ",
+      "owner": "david"
     },
-    "done": 4,
+    "done": 6,
     "total": 10,
-    "updatedAt": "2026-10-12T05:20:57.261Z"
+    "buyer": "A solo Etsy seller (one-person shop) about to publish or change a main listing photo and unable to choose between 2-4 candidates; findable as the people posting 'which picture is best?' threads in the Etsy Community Etsy Success forum and r/EtsySellers. Secondary: indie authors choosing a cover and YouTubers choosing a thumbnail.",
+    "price": "$5 once",
+    "updatedAt": "2026-10-12T07:28:07.673Z"
   },
   "build": {
     "milestone": "MVP",
