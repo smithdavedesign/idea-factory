@@ -1,0 +1,25 @@
+{
+  "title": "Aidis — AI compliance tool for Hawaii conversational services",
+  "repoName": "aidis",
+  "oneLiner": "Helps businesses operating chatbots in Hawaii comply with the AI Disclosure and Safety Act by adding disclosures, suicide prevention protocols, content filters, and generating annual reports.",
+  "overlaps": "none",
+  "tags": [
+    "ai",
+    "compliance",
+    "saas"
+  ],
+  "effort": "Medium",
+  "confidence": "Medium",
+  "sources": [
+    "https://regulations.ai/regulations/RAI-US-HI-SB30010-2026",
+    "https://data.capitol.hawaii.gov/sessions/session2026/bills/HB2502_HD1_.PDF",
+    "https://akia.ai/case-studies/expedite-guest-request-response-by-55",
+    "https://www.romaix.ai/blogs/ai-meets-aloha-ai-powered-chat-assistant-for-hawaiian-tour-company",
+    "https://attestly.io/blog/ai-compliance-cost-small-business",
+    "https://disclosed.sh/",
+    "https://normis.app/product/transparency"
+  ],
+  "seedId": "",
+  "slug": "aidis",
+  "recordedAt": "2026-10-12T16:08:13.561Z"
+}
