@@ -395,7 +395,7 @@ async function tick({ forceDaily = false } = {}) {
       const full = state.repo.replace('https://github.com/', '');
       const row = repoRows.get(full.toLowerCase()) || null;
       const fresh = (c, hours) => c && now.getTime() - new Date(c.at).getTime() < hours * 3_600_000;
-      if (!fresh(pstate.live[slug], 1)) pstate.live[slug] = { at: now.toISOString(), url: await LF.liveUrl(LF.urlCandidates(row?.homepage, full.split('/')[1])) };
+      if (!fresh(pstate.live[slug], 1)) pstate.live[slug] = { at: now.toISOString(), url: await LF.liveUrl(LF.urlCandidates(row?.homepage, full.split('/')[1]), { owned: (u) => LF.ownedByTeam(u, policy.vercelScope) }) };
       if (!fresh(pstate.legal[slug], 6)) pstate.legal[slug] = { at: now.toISOString(), found: LF.legalPages(full) };
       const launchLog = (() => { try { return JSON.parse(fs.readFileSync(path.join(dir, 'launch-log.json'), 'utf8')); } catch { return null; } })();
       const checklist = REV.launchChecklist(state, {

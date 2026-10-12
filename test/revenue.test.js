@@ -71,8 +71,18 @@ test('live URL: the homepage, then <repo>.vercel.app; legal pages from the repo 
   assert.deepEqual(LF.urlCandidates('not a url', 'x'), ['https://x.vercel.app']);
   const seen = [];
   const fetchFn = async (url) => { seen.push(url); if (url.includes('dawnlog.dev')) throw new Error('ENOTFOUND'); return { status: 200 }; };
-  assert.equal(await LF.liveUrl(LF.urlCandidates('https://dawnlog.dev', 'dawnlog'), { fetchFn }), 'https://dawnlog.vercel.app');
+  assert.equal(await LF.liveUrl(LF.urlCandidates('https://dawnlog.dev', 'dawnlog'), { fetchFn, owned: () => true }), 'https://dawnlog.vercel.app');
   assert.deepEqual(seen, ['https://dawnlog.dev', 'https://dawnlog.vercel.app']);
+  // A *.vercel.app name that answers but isn't in the owner's team (someone else's project) doesn't count.
+  seen.length = 0;
+  assert.equal(await LF.liveUrl(['https://tiebreak.vercel.app'], { fetchFn }), null);
+  assert.deepEqual(seen, [], 'not even requested');
+  assert.equal(await LF.liveUrl(['https://grantgate.dev'], { fetchFn: async () => ({ status: 200 }) }), 'https://grantgate.dev', 'a homepage needs no team check');
+  const inspects = [];
+  assert.equal(LF.ownedByTeam('https://x.vercel.app', 'team_1', { exec: (cmd, args) => inspects.push([cmd, ...args]) }), true);
+  assert.deepEqual(inspects[0], ['vercel', 'inspect', 'https://x.vercel.app', '--scope', 'team_1']);
+  assert.equal(LF.ownedByTeam('https://x.vercel.app', 'team_1', { exec: () => { throw new Error('not found'); } }), false);
+  assert.equal(LF.ownedByTeam('https://x.vercel.app', '', { exec: () => {} }), false);
   assert.equal(await LF.liveUrl(['https://a'], { fetchFn: async () => ({ status: 404 }) }), null);
   assert.deepEqual(LF.legalFromPaths(['src/app.js', 'app/privacy/page.tsx', 'public/terms.html']), { privacy: true, terms: true });
   assert.deepEqual(LF.legalFromPaths(['README.md']), { privacy: false, terms: false });
