@@ -1,0 +1,26 @@
+{
+  "title": "packpass — EU packaging-EPR plan for small non-EU Etsy and Shopify sellers",
+  "repoName": "packpass",
+  "oneLiner": "For small non-EU Etsy/Shopify sellers who just got asked for EU packaging EPR numbers, it turns a short questionnaire into a country-by-country registration plan with costs, labels and deadlines, plus a ledger of their IDs, for $29 instead of paying a representative 190 EUR per country to find out.",
+  "overlaps": "none (nearest in portfolio: tripsplit/Open-Travel are unrelated; outside the portfolio, Listadum's free guide and EPR Representative's paid service)",
+  "tags": [
+    "compliance",
+    "ecommerce",
+    "eu"
+  ],
+  "effort": "Low",
+  "confidence": "Medium",
+  "sources": [
+    "https://www.valueaddedresource.net/etsy-petition-eu-packaging-rules/",
+    "https://www.packaging-gateway.com/features/eu-packaging-rules-increase-compliance-burden-for-cross-border-sellers/",
+    "https://www.listadum.com/blog/eu-packaging-regulations-for-etsy-sellers",
+    "https://eprrepresentative.com/guides/epr-france-from-united-states",
+    "https://www.ukbusinessforums.co.uk/threads/germany-epr-compliance-packaging.417648/",
+    "https://community.etsy.com/t5/Technical-Issues/Shipping-to-France-for-Tech-team/m-p/145933514/highlight/true",
+    "https://community.shopify.com/t/lucid-registrierung-verpackungsgesetz-zum-01-07-2022/131406",
+    "https://deutsche-recycling.de/blog/fulfilment-dienstleister-verpackungsgesetz/",
+    "https://pickyourapp.com/es/products/euready"
+  ],
+  "slug": "packpass",
+  "recordedAt": "2026-10-12T16:02:35.551Z"
+}
