@@ -45,6 +45,20 @@ test('the production URL is the newest production deployment\'s shortest alias i
   assert.equal(G.productionUrl('x', 'team_1', { exec: () => { throw new Error('auth'); } }), null);
 });
 
+test('with no public alias the production URL is null, never the protected per-deployment URL', () => {
+  const exec = (cmd, args) => (args[0] === 'ls'
+    ? '1h   https://tiebreak-mh5fswqjn-david-smiths-projects-fe129786.vercel.app  ● Ready  Production\n'
+    : 'General\n  url  https://tiebreak-mh5fswqjn-david-smiths-projects-fe129786.vercel.app\nAliases\n');
+  assert.equal(G.productionUrl('tiebreak', 'team_1', { exec }), null);
+});
+
+test('command output includes stderr, where `vercel inspect` prints its aliases', () => {
+  const out = G.commandOutput(process.execPath, ['-e', 'process.stdout.write("out-line"); process.stderr.write("Aliases\\n  https://x-phi.vercel.app")']);
+  assert.match(out, /out-line/);
+  assert.match(out, /https:\/\/x-phi\.vercel\.app/);
+  assert.throws(() => G.commandOutput(process.execPath, ['-e', 'process.exit(3)']), /exited 3/);
+});
+
 test('go-live can run after M1 when nothing is in flight; it starts by itself once the MVP is complete and not launch-ready', () => {
   const repo = 'https://github.com/o/x';
   assert.deepEqual(G.goLiveTarget({ repo, milestonesDone: ['M1'], build: { status: 'merged' } }), { ok: true, milestone: 'GOLIVE' });
