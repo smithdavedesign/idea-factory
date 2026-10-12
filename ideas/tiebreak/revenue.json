@@ -1,0 +1,54 @@
+{
+  "buyer": "A solo Etsy seller (one-person shop) about to publish or change a main listing photo and unable to choose between 2-4 candidates; findable as the people posting 'which picture is best?' threads in the Etsy Community Etsy Success forum and r/EtsySellers. Secondary: indie authors choosing a cover and YouTubers choosing a thumbnail.",
+  "paymentMethod": "Stripe Checkout payment link (no backend needed), $5 one-time product; refunds by hand in the Stripe dashboard. Deliver the first verdicts by concierge.",
+  "mvpScope": "Live site where a poll with 2-4 images, a vote target and a deadline closes server-side and shows a winner, vote split and share link on phone and desktop (already built, M1-M4). The paid offer is: send 2-4 images, get a clear verdict within 48 hours, delivered by hand at first.",
+  "firstTenUsers": "Five free pilots and five $5 asks, all from people who posted a photo-comparison request in the last 30 days: first in Etsy Community's Etsy Success forum threads titled 'which picture is best?', then r/EtsySellers, then r/PartneredYoutube and r/selfpublish. Reply with a genuine vote on their pair, then DM the $5 verdict offer. Free pilots are for learning, not counted as demand.",
+  "price": {
+    "amount": 5,
+    "currency": "USD",
+    "interval": "once",
+    "why": "Per-poll, one time. PickFu's official minimum is $15 per poll ($1 per response), so $5 is a third of the only officially sourced anchor; it also matches the PRD's $5 willingness-to-pay test. Free Etsy forum threads are the real competitor. No subscription until someone buys a second poll."
+  },
+  "mustHaveBeforeCharging": [
+    "Stripe $5 one-time payment link",
+    "privacy policy and terms pages (live)",
+    "refund promise ('verdict within 48 hours or refund') stated on the offer",
+    "a way to receive the images after payment (reply email or form)",
+    "poll creation, voting, close and result page verified on the live URL on phone and desktop",
+    "a plan to deliver the votes (seller's own audience plus the posting communities)",
+    "report/moderation path for uploaded images"
+  ],
+  "launchChannels": [
+    {
+      "name": "Etsy Community: Etsy Success forum",
+      "url": "https://community.etsy.com/t5/Etsy-Success/bd-p/etsy-success",
+      "why": "Where sellers already post 'which picture is best?' threads (two cited in the research). Vote on their pair first, then offer the tally; check forum rules on promotion."
+    },
+    {
+      "name": "r/EtsySellers",
+      "url": "https://www.reddit.com/r/EtsySellers/",
+      "why": "Same photo-feedback requests, searchable and recent. Read the subreddit's self-promotion rules first."
+    },
+    {
+      "name": "r/PartneredYoutube",
+      "url": "https://www.reddit.com/r/PartneredYoutube/",
+      "why": "Creators choosing between thumbnails; secondary segment that pays for thumbnail testing (TubeBuddy)."
+    },
+    {
+      "name": "r/selfpublish",
+      "url": "https://www.reddit.com/r/selfpublish/",
+      "why": "Indie authors choosing between covers, a decision with direct sales impact."
+    }
+  ],
+  "risks": [
+    "Free forum replies and friends are good enough; the pain is small and occasional",
+    "Cold start: a paid poll that never reaches its vote target means a refund",
+    "Stranger votes lack PickFu's vetted demographics and written reasons; buyers may ask for those",
+    "Platform-native testing (YouTube thumbnail tests, Amazon experiments) shrinks the use case",
+    "Community self-promotion rules can get posts removed or accounts banned",
+    "Moderation and legal exposure from stranger-uploaded images",
+    "Competitor pricing sources conflict (PickFu $15 official vs $50-$79 on aggregators), so the anchor is uncertain",
+    "Overlap and maintenance load with David's ThisOrThat repo"
+  ],
+  "killCriteria": "After 14 days of active posting, stop if fewer than 50 relevant sellers/creators saw the offer, zero of the first 10 asked pay $5, most replies ask for demographics or written reasons, or polls rarely reach their vote target within 24 hours. Then do not build the self-serve paid tier; park the repo or fold useful parts into ThisOrThat."
+}
