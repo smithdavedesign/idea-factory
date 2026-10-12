@@ -200,6 +200,11 @@ test('RepoHQ Ideas page: the record mirrored per idea, unchanged ideas skipped, 
   assert.equal(R.ideaRecord(dir, 'permitly', 'https://notion.so/p').hash, rec.hash); // stable
   fs.writeFileSync(path.join(dir, 'state.json'), JSON.stringify({ stage: 'pass' }));
   assert.notEqual(R.ideaRecord(dir, 'permitly', 'https://notion.so/p').hash, rec.hash);
+  // The launch kit (the launch skill's checked channels) goes to RepoHQ too, and its edits resync the row.
+  fs.writeFileSync(path.join(dir, 'LAUNCH-KIT.md'), '# Launch kit\n\n## Order\n1. **r/AirBnBHosts**');
+  const withKit = R.ideaRecord(dir, 'permitly', 'https://notion.so/p');
+  assert.equal(withKit.docs.launchKit, '# Launch kit\n\n## Order\n1. **r/AirBnBHosts**');
+  fs.unlinkSync(path.join(dir, 'LAUNCH-KIT.md'));
   assert.deepEqual(R.DECISION_STATUS, { build: 'Build', validate: 'Validate', pass: 'Pass' });
 
   // A stand-in for the neon tagged template: SELECT returns the stored hashes, writes are recorded.
