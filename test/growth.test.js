@@ -163,3 +163,51 @@ test("a mission whose run failed is tried again the next day; one David turned d
   assert.deepEqual(next({ ...ready, funnel: quiet, growth: { experiments: thrice } }), ['instrument', null], 'three failed runs this week: stop retrying');
   assert.equal(G.advance([exp('seo', 'proposed')], { now: new Date('2026-10-14T13:00:00Z'), gp: GP })[0].failed, true, 'a build that never opened a PR failed');
 });
+
+// ── Phase 3: the judge ───────────────────────────────────────────────────────────────────────────────
+const W = (w) => ({ view: 0, visit: 0, reach: 0, signup: 0, activate: 0, checkout: 0, ...w });
+const ran = (kind, metric, extra = {}) => ({ ...exp(kind, 'running', { metric, windowDays: 14, startedAt: '2026-10-01T00:00:00Z', endsAt: '2026-10-15T00:00:00Z', baseline: 0, target: 50 }), ...extra });
+
+test('the judge: visitors a week against the target, compared with the window before', () => {
+  assert.deepEqual(G.judge(ran('seo', 'visit'), W({ reach: 6 }), W({ reach: 120 }), GP), { decision: 'keep', lift: true, value: 60, before: 3, sample: 120 });
+  assert.deepEqual(G.judge(ran('seo', 'visit'), W({ reach: 6 }), W({ reach: 20 }), GP), { decision: 'iterate', lift: true, value: 10, before: 3, sample: 20 });
+  assert.equal(G.judge(ran('kit', 'visit'), W({ reach: 6 }), W({ reach: 2 }), GP).lift, false, 'fewer than before: no lift');
+  assert.equal(G.judge(ran('seo', 'visit'), W({ reach: 6, visit: 1 }), W({ reach: 30, visit: 4 }), GP, { page: true }).value, 2, 'with a landing page, only beacon visits count');
+});
+
+test("the judge: a share needs enough visitors, keeps a win, reverts a clear loss on a first screen or paid offer", () => {
+  const landing = ran('landing', 'activate', { target: 0.15 });
+  assert.equal(G.judge(landing, W({ reach: 40, activate: 4 }), W({ reach: 10, activate: 3 }), GP).decision, 'extend', 'under 30 visitors');
+  assert.deepEqual(G.judge({ ...landing, extensions: 1 }, W({}), W({ reach: 10 }), GP), { decision: 'iterate', lift: null, value: null, before: null, sample: 10, note: 'only 10 visitors in its window: not enough to judge' });
+  assert.equal(G.judge(landing, W({ reach: 40, activate: 4 }), W({ reach: 40, activate: 8 }), GP).decision, 'keep');
+  assert.deepEqual(G.judge(landing, W({ reach: 40, activate: 8 }), W({ reach: 40, activate: 4 }), GP), { decision: 'revert', lift: false, value: 0.1, before: 0.2, sample: 40, note: 'at least 30% worse than before' });
+  assert.equal(G.judge({ ...landing, kind: 'seo' }, W({ reach: 40, activate: 8 }), W({ reach: 40, activate: 4 }), GP).decision, 'iterate', 'only a first screen or paid offer is reverted');
+});
+
+test('the judge: the beacon is kept once a visit arrives; no traffic is inconclusive, not a failure', () => {
+  const beacon = ran('instrumentation', 'beacon', { windowDays: 7, target: 1 });
+  assert.equal(G.judge(beacon, W({}), W({ visit: 2 }), GP).decision, 'keep');
+  assert.equal(G.judge(beacon, W({}), W({}), GP).decision, 'extend');
+  assert.deepEqual(G.judge({ ...beacon, extensions: 1 }, W({}), W({}), GP), { decision: 'iterate', lift: null, value: 0, before: 0, sample: 0, note: 'no visit in its window, so the beacon is unconfirmed' });
+});
+
+test('lessons and proposals: one line per result, the playbook proposal under Proposed, written once', () => {
+  const e = ran('seo', 'visit', { id: 'tiebreak-20261001-seo', baseline: 3, hypothesis: 'Pages that answer what the buyer searches bring visitors from search.' });
+  const r = G.judge(e, W({ reach: 6 }), W({ reach: 120 }), GP);
+  const line = G.learningEntry(e, r, { now: new Date('2026-10-15T00:00:00Z'), alongside: ['launch kit'] });
+  assert.equal(line, '- 2026-10-15 · search pages (tiebreak-20261001-seo) · keep: 3 visitors a week → 60 visitors a week (target 50 visitors a week). Pages that answer what the buyer searches bring visitors from search. Ran alongside: launch kit.');
+  const md = G.withLearning('', 'tiebreak', line);
+  assert.match(md, /^# Learnings: tiebreak\n\nWhat each growth experiment showed/);
+  assert.match(G.withLearning(md, 'tiebreak', '- second'), /launch kit\.\n- second\n$/);
+  const playbook = '# Playbook\n\nintro\n\n## Rules\n\n- A rule.\n\n## Proposed\n\nNone yet.\n';
+  const proposal = '- Pages bring visitors. (kept on tiebreak, 2026-10-15: 3 visitors a week → 60 visitors a week)';
+  const once = G.withProposal(playbook, proposal);
+  assert.match(once, /## Proposed\n\n- Pages bring visitors\. \(kept on tiebreak/);
+  assert.doesNotMatch(once, /None yet/);
+  assert.match(once, /## Rules\n\n- A rule\./, 'Rules untouched');
+  assert.equal(G.withProposal(once, proposal), once, 'the same proposal once');
+  assert.match(G.withProposal('# Playbook\n', proposal), /## Proposed\n\n- Pages bring visitors/);
+  assert.deepEqual(G.ranWith(e, [e, { ...exp('kit', 'running'), startedAt: '2026-10-05T00:00:00Z', endsAt: '2026-10-19T00:00:00Z' }, { ...exp('landing', 'running'), startedAt: '2026-11-01T00:00:00Z' }]), ['launch kit']);
+  const reverted = G.markReverted({ experiments: [{ ...e, prUrl: 'https://x/pull/9' }] }, 'https://x/pull/9', { url: 'https://x/pull/10', reason: 'launch checks failed', now: NOW }).experiments[0];
+  assert.deepEqual([reverted.status, reverted.decision, reverted.reverted.url, reverted.result.note], ['decided', 'revert', 'https://x/pull/10', 'launch checks failed']);
+});

@@ -49,13 +49,14 @@ function fakeSql(strings, ...values) {
     return Promise.resolve([]);
   }
   if (/FROM repositories WHERE full_name = ANY/.test(q)) return Promise.resolve(db.repos || []);
+  if (/created_at >= \? AND created_at < \? GROUP BY kind/.test(q)) return Promise.resolve(db.window ? db.window(values[1], values[2]) : []);
   if (/FROM idea_signals GROUP BY slug, kind/.test(q)) return Promise.resolve(db.funnelRows || []);
   if (/AS host/.test(q)) return Promise.resolve(db.referrerRows || []);
   return Promise.resolve([]); // decisions, seeds, signals, ideas sync, heartbeat: nothing to do here
 }
 
 // GitHub answers: PR states by URL, and the files in a repo (for the legal-pages check).
-const gh = { prs: {}, files: '', edits: [], homepage: '' };
+const gh = { prs: {}, files: '', edits: [], homepage: '', info: {}, calls: [] };
 const vercelOut = { ls: '', inspect: '' };
 const revenueRuns = [];
 const kitRuns = [];
@@ -91,7 +92,19 @@ Module._load = function (request, parent, ...rest) {
     if (stubs[request]) return stubs[request];
     if (request === 'child_process') return { execFileSync: (cmd, args) => {
       if (cmd === 'openclaw') sent.push(args);
-      if (cmd === 'gh' && args[0] === 'pr' && args[1] === 'view') return JSON.stringify({ state: gh.prs[args[2]] || 'OPEN' });
+      if (cmd === 'gh' && args[0] === 'pr' && args[1] === 'view') {
+        const fields = args[args.indexOf('--json') + 1] || '';
+        if (fields.includes('mergeCommit')) return JSON.stringify({ number: 9, title: 'Growth: test', mergeCommit: { oid: 'abc1234def5678' } });
+        if (fields.includes('statusCheckRollup')) return JSON.stringify({ state: gh.prs[args[2]] || 'OPEN', mergeable: 'MERGEABLE', createdAt: '2026-10-01T00:00:00Z', files: [{ path: 'app/page.tsx' }], statusCheckRollup: [], ...(gh.info[args[2]] || {}) });
+        return JSON.stringify({ state: gh.prs[args[2]] || 'OPEN' });
+      }
+      if (cmd === 'gh' && args[0] === 'pr' && ['ready', 'merge', 'close', 'create'].includes(args[1])) {
+        gh.calls.push(args.slice(0, 3).join(' '));
+        if (args[1] === 'merge' && /^https:/.test(args[2])) gh.prs[args[2]] = 'MERGED';
+        if (args[1] === 'close') gh.prs[args[2]] = 'CLOSED';
+        return args[1] === 'create' ? 'https://github.com/o/revert/pull/99' : '';
+      }
+      if (cmd === 'git' && args.includes('revert')) { gh.calls.push('git revert'); return ''; }
       if (cmd === 'gh' && args[0] === 'api') return gh.files;
       if (cmd === 'gh' && args[0] === 'repo' && args[1] === 'edit') { gh.edits.push(args); return ''; }
       if (cmd === 'gh' && args[0] === 'repo' && args[1] === 'view') return JSON.stringify({ homepageUrl: gh.homepage || '' });
@@ -133,7 +146,12 @@ test.beforeEach(() => {
   policy.build.startNew = true;
   // No focus products unless a growth test names one (policy.growth.focus is tiebreak in the real policy).
   policy.growth.focus = [];
+  policy.growth.auto = true;
   kitRuns.length = 0;
+  // Autonomy has its own tests: the others run with David merging, as before.
+  policy.autonomy.merge = false;
+  policy.autonomy.revert = false;
+  gh.info = {}; gh.calls = [];
 });
 test.after(() => { Module._load = realLoad; fs.rmSync(DATA, { recursive: true, force: true }); fs.rmSync(HOME, { recursive: true, force: true }); });
 
@@ -500,4 +518,84 @@ test('short of visitors with no kit: a launch kit for David, whose experiment ru
   assert.equal(g.experiments[0].status, 'running', "the kit's experiment runs from the first post");
   assert.equal(g.next.kind, 'seo', 'with a kit out, search pages are next (tomorrow: one mission a day)');
   assert.deepEqual([kitRuns, builds], [['pr-k'], []]);
+});
+
+// ── Autonomy (4a0) and Phase 3 (the judge in 5d) ───────────────────────────────────────────────────────
+const growthPr = (slug, n, extra = {}) => ({ stage: 'live', repo: `https://github.com/o/${slug}`, milestonesDone: ['M1'],
+  build: { milestone: 'GROWTH', kind: 'seo', experiment: `${slug}-x-seo`, status: 'pr-open', prUrl: `https://github.com/o/${slug}/pull/${n}`, testsPassing: true, ...extra },
+  growth: { experiments: [{ id: `${slug}-x-seo`, kind: 'seo', executor: 'build', metric: 'visit', status: 'proposed', windowDays: 28, createdAt: '2026-10-13T10:00:00Z', prUrl: `https://github.com/o/${slug}/pull/${n}` }] } });
+const green = [{ __typename: 'CheckRun', name: 'web', status: 'COMPLETED', conclusion: 'SUCCESS' }];
+
+test('the pipeline merges its own green PR, and its experiment starts in the same tick', async () => {
+  policy.autonomy.merge = true;
+  idea('pr-a', growthPr('pr-a', 5));
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-a', 'revenue.json'), '{}');
+  gh.info['https://github.com/o/pr-a/pull/5'] = { statusCheckRollup: green };
+  db = { requests: [], startsLast24h: 0, log: [] };
+  emitted.length = 0;
+  const out = await tick();
+  assert.deepEqual(gh.calls, ['pr ready https://github.com/o/pr-a/pull/5', 'pr merge https://github.com/o/pr-a/pull/5']);
+  const s = readState('pr-a');
+  assert.deepEqual([s.build.status, s.build.mergedBy, s.growth.experiments[0].status], ['merged', 'agent', 'running']);
+  assert.ok(out.changes.some((c) => c.startsWith('pr-a: merged its own PR https://github.com/o/pr-a/pull/5 (1 check green, tests passing)')), out.changes.join('\n'));
+  assert.ok(emitted.some((e) => e.component === 'autonomy' && e.event === 'merge'));
+});
+
+test("a growth PR whose checks fail is closed by the loop, and its mission comes back the next day", async () => {
+  policy.autonomy.merge = true;
+  idea('pr-r', growthPr('pr-r', 6));
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-r', 'revenue.json'), '{}');
+  gh.info['https://github.com/o/pr-r/pull/6'] = { statusCheckRollup: [{ __typename: 'CheckRun', name: 'web', status: 'COMPLETED', conclusion: 'FAILURE' }] };
+  db = { requests: [], startsLast24h: 0, log: [] };
+  await tick();
+  assert.deepEqual(gh.calls, ['pr close https://github.com/o/pr-r/pull/6']);
+  const e = readState('pr-r').growth.experiments[0];
+  assert.deepEqual([readState('pr-r').build.status, e.status, e.failed, e.reason], ['closed', 'abandoned', true, 'web failed']);
+});
+
+test('a PR that touches CI, or a roadmap build with failing tests, waits for David', async () => {
+  policy.autonomy.merge = true;
+  idea('pr-h', { stage: 'building', repo: 'https://github.com/o/pr-h', milestonesDone: [], build: { milestone: 'M1', status: 'pr-open', prUrl: 'https://github.com/o/pr-h/pull/1', testsPassing: true } });
+  idea('pr-f', { stage: 'building', repo: 'https://github.com/o/pr-f', milestonesDone: [], build: { milestone: 'MVP', status: 'pr-open', prUrl: 'https://github.com/o/pr-f/pull/2', testsPassing: false } });
+  gh.info['https://github.com/o/pr-h/pull/1'] = { statusCheckRollup: green, files: [{ path: 'src/a.js' }, { path: '.github/workflows/ci.yml' }] };
+  db = { requests: [], startsLast24h: 0, log: [] };
+  await tick();
+  assert.deepEqual(gh.calls, [], 'nothing merged or closed');
+  assert.equal(readState('pr-h').build.held, 'it changes .github/workflows/ci.yml, which only David merges');
+  assert.equal(readState('pr-f').build.held, "its tests failed in the pipeline's run");
+  assert.equal(readState('pr-f').build.status, 'pr-open', 'a roadmap PR stays open for David');
+});
+
+test("an agent's merge that breaks the live site's launch checks is reverted, and Slack is told", async () => {
+  policy.autonomy.revert = true;
+  const url = 'https://github.com/o/pr-v/pull/7';
+  liveProduct('pr-v', { stage: 'live', build: { milestone: 'GROWTH', experiment: 'pr-v-x-seo', status: 'merged', prUrl: url, mergedBy: 'agent', mergedAt: new Date(Date.now() - 3_600_000).toISOString() },
+    growth: { experiments: [{ id: 'pr-v-x-seo', kind: 'seo', executor: 'build', metric: 'visit', status: 'running', windowDays: 28, createdAt: '2026-10-13T10:00:00Z', startedAt: new Date().toISOString(), endsAt: '2099-01-01T00:00:00Z', prUrl: url }] } });
+  const ps = JSON.parse(fs.readFileSync(path.join(DATA, '.pipeline-state.json'), 'utf8'));
+  ps.audit['pr-v'].at = '2000-01-01T00:00:00Z'; // re-audited this tick, as after a merge
+  fs.writeFileSync(path.join(DATA, '.pipeline-state.json'), JSON.stringify(ps));
+  db = { requests: [], startsLast24h: 0, log: [] };
+  emitted.length = 0;
+  const out = await tick(); // fetch answers 404: the home page is down
+  assert.deepEqual(gh.calls, ['git revert', 'pr create --base', 'pr merge revert-9']);
+  const s = readState('pr-v');
+  assert.equal(s.build.reverted.url, 'https://github.com/o/revert/pull/99');
+  assert.deepEqual([s.growth.experiments[0].status, s.growth.experiments[0].decision], ['decided', 'revert']);
+  assert.ok(emitted.some((e) => e.component === 'autonomy' && e.event === 'revert' && e.status === 'fail'), 'a revert alerts Slack');
+  assert.ok(out.changes.some((c) => c.startsWith(`pr-v: reverted its own merge ${url}`)), out.changes.join('\n'));
+});
+
+test('an experiment past its window is judged: a line in LEARNINGS.md, and a kept one proposed for the playbook', async () => {
+  policy.growth.focus = ['pr-j'];
+  policy.growth.auto = false; // the judge runs every tick; no new mission in this test
+  const e = { id: 'pr-j-20260901-seo', kind: 'seo', executor: 'build', metric: 'visit', hypothesis: 'Search pages bring visitors.', baseline: 3, target: 50, windowDays: 14,
+    status: 'running', createdAt: '2026-09-01T00:00:00Z', startedAt: '2026-09-01T00:00:00Z', endsAt: '2026-09-15T00:00:00Z', prUrl: 'https://github.com/o/pr-j/pull/3' };
+  liveProduct('pr-j', { growth: { experiments: [e] } });
+  db = { requests: [], startsLast24h: 0, log: [], window: (from, to) => (to === '2026-09-01T00:00:00Z' ? [{ kind: 'reach', n: 6 }] : [{ kind: 'reach', n: 120 }]) };
+  await tick();
+  const decided = readState('pr-j').growth.experiments[0];
+  assert.deepEqual([decided.status, decided.decision, decided.result.value, decided.result.before], ['decided', 'keep', 60, 3]);
+  assert.match(fs.readFileSync(path.join(DATA, 'ideas', 'pr-j', 'LEARNINGS.md'), 'utf8'), /· search pages \(pr-j-20260901-seo\) · keep: 3 visitors a week → 60 visitors a week \(target 50 visitors a week\)\. Search pages bring visitors\./);
+  assert.match(fs.readFileSync(path.join(DATA, 'PLAYBOOK.md'), 'utf8'), /## Proposed\n\n- Search pages bring visitors\. \(kept on pr-j, \d{4}-\d{2}-\d{2}: 3 visitors a week → 60 visitors a week\)/);
+  fs.rmSync(path.join(DATA, 'PLAYBOOK.md'), { force: true });
 });
