@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-12T19:37:46.732Z",
+  "updatedAt": "2026-10-12T20:34:40.626Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -104,22 +104,22 @@
     "updatedAt": "2026-10-12T07:28:07.673Z"
   },
   "build": {
-    "milestone": "MVP",
+    "milestone": "GROWTH",
     "planned": [
       "M1",
       "M2",
       "M3"
     ],
-    "status": "merged",
-    "at": "2026-10-12T03:04:47.740Z",
-    "manual": true,
+    "status": "failed",
+    "at": "2026-10-12T20:35:00.134Z",
+    "manual": false,
     "advice": {
       "difficulty": 2,
       "reason": "involves multiple endpoints, state management, and validation logic across several files.",
       "source": "model",
       "model": "local-qwen3"
     },
-    "reason": "sandbox patch: git add failed: The following paths are ignored by one of your .gitignore files:\nnode_modules\nhint: Use -f if you really want to add them.\nhint: Turn this message off by running\nhint: \"git config advice.addIgnoredFile false\"",
+    "reason": "couldn't start the build sandbox: sandbox open: sandbox egress did not become ready",
     "milestones": [
       "M1",
       "M2"
@@ -174,5 +174,31 @@
         "visitors": 1
       }
     ]
+  },
+  "growth": {
+    "stage": "instrument",
+    "bottleneck": "its beacon only counts home-page views, so activations and Buy clicks aren't measured",
+    "next": {
+      "kind": "instrumentation",
+      "executor": "build",
+      "metric": "beacon"
+    },
+    "experiments": [
+      {
+        "id": "tiebreak-20261012-instrumentation",
+        "kind": "instrumentation",
+        "executor": "build",
+        "hypothesis": "Counting visits on every page, first uses and Buy clicks shows where visitors drop off.",
+        "metric": "beacon",
+        "baseline": 0,
+        "target": 1,
+        "windowDays": 7,
+        "status": "abandoned",
+        "createdAt": "2026-10-12T20:34:40.626Z",
+        "updatedAt": "2026-10-12T20:35:18.669Z",
+        "reason": "couldn't start the build sandbox: sandbox open: sandbox egress did not become ready"
+      }
+    ],
+    "checkedAt": "2026-10-12T20:34:40.626Z"
   }
 }
