@@ -7,7 +7,7 @@
     "at": "2026-10-11T16:41:39.440Z",
     "notionAt": "2026-10-11T16:41:40.221Z"
   },
-  "updatedAt": "2026-10-12T22:56:49.585Z",
+  "updatedAt": "2026-10-12T23:11:53.586Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -41,7 +41,8 @@
     "sandbox": "docker",
     "mergedBy": "agent",
     "mergedAt": "2026-10-12T22:22:11.991Z",
-    "beacon": "funnel"
+    "beacon": "funnel",
+    "held": "Vercel failed"
   },
   "revenue": {
     "mrr": 0,
