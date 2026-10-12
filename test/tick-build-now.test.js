@@ -271,4 +271,16 @@ test('once the MVP is complete the pipeline starts the go-live itself; then the 
   assert.equal(ready.done, false);
   assert.match(ready.evidence, /^5\/9 launch checks · missing: robots\.txt, sitemap\.xml, Privacy page, Terms page$/);
   assert.equal(builds.length, 0, 'no second go-live: after one, the audit says what\'s left');
+
+  // The missing pages ship; the next audit (6 hours on) says so once, and then a regression is logged too.
+  const age = () => { const f = path.join(DATA, '.pipeline-state.json'); const ps = JSON.parse(fs.readFileSync(f, 'utf8')); ps.audit['pr-x'].at = '2000-01-01T00:00:00Z'; fs.writeFileSync(f, JSON.stringify(ps)); };
+  globalThis.fetch = async (u) => (u.startsWith('https://pr-x-seven.vercel.app') ? { status: 200, text: async () => page } : { status: 404, text: async () => '' });
+  age();
+  const fixed = await tick();
+  assert.ok(fixed.changes.includes('pr-x: launch-ready: 9/9 launch checks pass on https://pr-x-seven.vercel.app'), fixed.changes.join('\n'));
+  assert.equal(readState('pr-x').launch.steps.find((x) => x.id === 'launchReady').done, true);
+  assert.ok(!(await tick()).changes.some((c) => /launch/.test(c)), 'a fresh audit is not rerun or relogged');
+  globalThis.fetch = async (u) => (/\/terms$/.test(u) ? { status: 404, text: async () => '' } : u.startsWith('https://pr-x-seven.vercel.app') ? { status: 200, text: async () => page } : { status: 404, text: async () => '' });
+  age();
+  assert.ok((await tick()).changes.includes('pr-x: launch checks regressed on https://pr-x-seven.vercel.app: missing Terms page'));
 });

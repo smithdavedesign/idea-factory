@@ -413,7 +413,14 @@ async function tick({ forceDaily = false } = {}) {
       if (!fresh(pstate.live[slug], 1)) pstate.live[slug] = { at: now.toISOString(), url: await LF.liveUrl([...new Set([...(prodUrl ? [prodUrl] : []), ...LF.urlCandidates(row?.homepage, full.split('/')[1])])], { owned: (u) => u === prodUrl || LF.ownedByTeam(u, policy.vercelScope) }) };
       pstate.audit = pstate.audit || {};
       const liveNow = pstate.live[slug].url;
-      if (liveNow && (!fresh(pstate.audit[slug], 6) || pstate.audit[slug].url !== liveNow)) pstate.audit[slug] = { at: now.toISOString(), url: liveNow, result: await GL.auditLaunch(liveNow) };
+      if (liveNow && (!fresh(pstate.audit[slug], 6) || pstate.audit[slug].url !== liveNow)) {
+        const was = pstate.audit[slug]?.result?.ready;
+        const result = await GL.auditLaunch(liveNow);
+        pstate.audit[slug] = { at: now.toISOString(), url: liveNow, result };
+        // Log a change, not every audit: newly launch-ready, or a check that used to pass now failing.
+        if (result.ready && was !== true) note(slug, `launch-ready: ${result.passed}/${result.total} launch checks pass on ${liveNow}`);
+        if (!result.ready && was === true) note(slug, `launch checks regressed on ${liveNow}: missing ${result.missing.join(', ')}`);
+      }
       if (!liveNow) delete pstate.audit[slug];
       if (!fresh(pstate.legal[slug], 6)) pstate.legal[slug] = { at: now.toISOString(), found: LF.legalPages(full) };
       const launchLog = (() => { try { return JSON.parse(fs.readFileSync(path.join(dir, 'launch-log.json'), 'utf8')); } catch { return null; } })();
