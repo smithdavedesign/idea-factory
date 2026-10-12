@@ -1,0 +1,55 @@
+{
+  "buyer": "The person who owns the AI coding bill at a 3-30 developer team (founder, tech lead, or agency owner) paying for an Anthropic API/Team org plus Copilot seats; find them among commenters on Claude Code billing issues #81703 and #62338 and on r/ClaudeAI spend threads",
+  "paymentMethod": "Stripe Checkout payment link (subscription) with the Stripe customer portal for cancellation; no backend needed, access granted by email match or by hand for the first ten",
+  "mvpScope": "Hosted, always-on alerts at 50/80/100% of a monthly budget across an Anthropic org and GitHub Copilot, via email and Slack, using read-only keys encrypted at rest; verified with real usage. Branch/task attribution, Cursor, OpenAI, M365, CSV and admin views are out until someone asks.",
+  "firstTenUsers": "Week 1: message commenters on Claude Code issues #81703 and #62338 and on the BurnRate and RepoSpend threads who describe a surprise bill, and ask for a 15-minute call to watch them connect a key. Then post one demo in r/ClaudeAI asking who would connect a key. Charge the first five $9 by hand through the Stripe link; a refusal at $9 is the answer.",
+  "price": {
+    "amount": 9,
+    "currency": "USD",
+    "interval": "month",
+    "why": "Only paid anchor found is ~$9 (AI Usage Tracker); free local trackers and vendor consoles cover the rest; evidence of willingness to pay is thin, so priced low and far under the $99 SpendGuard tier"
+  },
+  "mustHaveBeforeCharging": [
+    "Live URL on a free tier working end to end with a real Anthropic org key and a real Copilot org",
+    "Alerts verified with real usage, not only a seeded key",
+    "Stripe Checkout payment link and customer portal",
+    "Privacy policy and terms pages, including key handling and deletion on request",
+    "Visible key-revoke instructions and read-only key guidance"
+  ],
+  "launchChannels": [
+    {
+      "name": "r/ClaudeAI",
+      "url": "https://www.reddit.com/r/ClaudeAI/",
+      "why": "Claude Code spend complaints and ccusage-style tools are discussed here; a live alert demo gets direct feedback"
+    },
+    {
+      "name": "Hacker News Show HN",
+      "url": "https://news.ycombinator.com/showhn.html",
+      "why": "Competitor BurnRate launched here; gives a read on developer appetite"
+    },
+    {
+      "name": "Claude Code GitHub issue #81703",
+      "url": "https://github.com/anthropics/claude-code/issues/81703",
+      "why": "People who reported surprise bills; message those who describe a real overage, no spam"
+    },
+    {
+      "name": "Claude Code GitHub issue #62338",
+      "url": "https://github.com/anthropics/claude-code/issues/62338",
+      "why": "Same: named people with a billing pain"
+    },
+    {
+      "name": "Product Hunt",
+      "url": "https://www.producthunt.com/",
+      "why": "RepoSpend and AI Usage Tracker launched here, so competitor reception is visible"
+    }
+  ],
+  "risks": [
+    "Evidence is weak: review scored 3/10, no named buyer, no one has offered money",
+    "Vendors already ship per-workspace limits and may add native cross-tool alerts",
+    "Free local trackers (ccusage, CodeBurn, RepoSpend, BurnRate) cover individuals, who have no budget",
+    "Holding customers' admin keys is a trust and security liability for a solo vendor",
+    "Most teams use only one or two agents, so cross-tool value is small",
+    "Overlaps David's pr-receipt idea, which is the sharper wedge with no key custody"
+  ],
+  "killCriteria": "Stop if after 3 weeks of outreach fewer than 5 named leads confirm a surprise bill last quarter and would connect a read-only key, or if nobody pays $9 within 5 conversations, or immediately if a vendor ships native cross-tool budget alerts. Then move effort to pr-receipt."
+}

@@ -7,7 +7,7 @@
     "at": "2026-10-10T19:04:13.883Z",
     "notionAt": "2026-10-10T19:06:17.271Z"
   },
-  "updatedAt": "2026-10-11T20:19:11.963Z",
+  "updatedAt": "2026-10-12T00:58:07.812Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -18,5 +18,80 @@
   "revenue": {
     "mrr": 0,
     "updatedAt": "2026-10-11T20:19:11.963Z"
+  },
+  "launch": {
+    "steps": [
+      {
+        "id": "plan",
+        "owner": "agent",
+        "label": "Road-to-revenue plan written",
+        "done": false,
+        "evidence": "written after M1 merges"
+      },
+      {
+        "id": "mvp",
+        "owner": "agent",
+        "label": "MVP built: every roadmap milestone merged",
+        "done": false,
+        "evidence": "0/4 milestones merged"
+      },
+      {
+        "id": "deployed",
+        "owner": "agent",
+        "label": "Live on a free tier",
+        "done": false,
+        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
+      },
+      {
+        "id": "legal",
+        "owner": "agent",
+        "label": "Privacy policy and terms pages",
+        "done": false,
+        "evidence": "privacy ✗ · terms ✗"
+      },
+      {
+        "id": "price",
+        "owner": "david",
+        "label": "Price decided",
+        "done": false,
+        "evidence": ""
+      },
+      {
+        "id": "payments",
+        "owner": "david",
+        "label": "Stripe product created and mapped to the repo in RepoHQ",
+        "done": false,
+        "evidence": "RepoHQ → repo → Stripe product"
+      },
+      {
+        "id": "launched",
+        "owner": "david",
+        "label": "Launch posted",
+        "done": false,
+        "evidence": "the launch skill drafts them (/launch)"
+      },
+      {
+        "id": "firstUser",
+        "owner": "david",
+        "label": "First user or signup",
+        "done": false,
+        "evidence": ""
+      },
+      {
+        "id": "firstDollar",
+        "owner": "david",
+        "label": "First payment",
+        "done": false,
+        "evidence": ""
+      }
+    ],
+    "next": {
+      "id": "plan",
+      "label": "Road-to-revenue plan written",
+      "owner": "agent"
+    },
+    "done": 0,
+    "total": 9,
+    "updatedAt": "2026-10-12T00:58:07.812Z"
   }
 }
