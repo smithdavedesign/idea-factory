@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-12T20:34:40.626Z",
+  "updatedAt": "2026-10-12T20:50:22.731Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -178,11 +178,7 @@
   "growth": {
     "stage": "instrument",
     "bottleneck": "its beacon only counts home-page views, so activations and Buy clicks aren't measured",
-    "next": {
-      "kind": "instrumentation",
-      "executor": "build",
-      "metric": "beacon"
-    },
+    "next": null,
     "experiments": [
       {
         "id": "tiebreak-20261012-instrumentation",
@@ -199,6 +195,6 @@
         "reason": "couldn't start the build sandbox: sandbox open: sandbox egress did not become ready"
       }
     ],
-    "checkedAt": "2026-10-12T20:34:40.626Z"
+    "checkedAt": "2026-10-12T20:50:22.731Z"
   }
 }
