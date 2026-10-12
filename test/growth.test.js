@@ -82,7 +82,7 @@ test('the rules, first match wins: launch, instrument, acquire, activate, moneti
 test("an abandoned mission can come back after a week, and a failed kit doesn't block the next day's", () => {
   const old = exp('instrumentation', 'abandoned', { updatedAt: '2026-10-01T00:00:00Z' });
   assert.deepEqual(next({ ...ready, funnel: funnelWith({ visit: 3 }, false), growth: { experiments: [old] } }), ['instrument', 'instrumentation:build']);
-  const fresh = exp('instrumentation', 'abandoned', { updatedAt: '2026-10-12T00:00:00Z' });
+  const fresh = exp('instrumentation', 'abandoned', { updatedAt: '2026-10-12T00:00:00Z', prUrl: 'https://x/pull/1', reason: 'the PR was closed without merging' });
   assert.deepEqual(next({ ...ready, funnel: funnelWith({ visit: 3 }, false), growth: { experiments: [fresh] } }), ['instrument', null]);
   assert.deepEqual(next({ ...ready, funnel: funnelWith({ visit: 3 }), growth: { experiments: [exp('kit', 'abandoned')] } }), ['acquire', 'kit:claude']);
 });
@@ -151,4 +151,15 @@ test("a fresh funnel beacon that hasn't seen a visit yet doesn't hold the produc
   assert.deepEqual(next({ ...ready, funnel: quiet, growth: { experiments: [exp('instrumentation', 'running')] } }), ['acquire', 'kit:claude'], 'its beacon build merged');
   assert.deepEqual(next({ ...ready, funnel: quiet, growth: { experiments: [exp('instrumentation', 'proposed')] } }), ['instrument', null], 'still waiting for the merge');
   assert.equal(G.beaconLive({ golive: { mergedAt: 'x' } }), false, 'a go-live from before the funnel beacon');
+});
+
+test("a mission whose run failed is tried again the next day; one David turned down waits a week", () => {
+  const quiet = funnelWith({ visit: 3 }, false);
+  const sandbox = exp('instrumentation', 'abandoned', { updatedAt: '2026-10-13T11:00:00Z', reason: "couldn't start the build sandbox" });
+  assert.deepEqual(next({ ...ready, funnel: quiet, growth: { experiments: [sandbox] } }), ['instrument', 'instrumentation:build'], 'no PR was ever opened: the run failed, try again');
+  const closed = exp('instrumentation', 'abandoned', { updatedAt: '2026-10-13T11:00:00Z', prUrl: 'https://x/pull/1', reason: 'the PR was closed without merging' });
+  assert.deepEqual(next({ ...ready, funnel: quiet, growth: { experiments: [closed] } }), ['instrument', null], 'David closed its PR: wait a week');
+  const thrice = [1, 2, 3].map((n) => exp('instrumentation', 'abandoned', { id: `f${n}`, failed: true, updatedAt: `2026-10-1${n}T11:00:00Z` }));
+  assert.deepEqual(next({ ...ready, funnel: quiet, growth: { experiments: thrice } }), ['instrument', null], 'three failed runs this week: stop retrying');
+  assert.equal(G.advance([exp('seo', 'proposed')], { now: new Date('2026-10-14T13:00:00Z'), gp: GP })[0].failed, true, 'a build that never opened a PR failed');
 });
