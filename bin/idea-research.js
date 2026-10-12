@@ -50,7 +50,7 @@ async function check() {
   const bad = guard(info);
   const ok = !bad && r.code === 0 && !info.isError && /\bok\b/i.test(info.result);
   return { ok, engine: 'claude-pro', apiKeySource: info.apiKeySource, model: info.model, mcp: info.mcpServers,
-    ...(ok ? {} : { reason: bad || info.result.slice(0, 300) || r.err.slice(0, 300) || `exit ${r.code}` }) };
+    ...(ok ? {} : { reason: bad || info.result.slice(0, 300) || r.err.slice(0, 300) || base.exitReason(r.code) }) };
 }
 
 /** One research run at a time: the 09:00 run and a seeded run from the pipeline must not overlap. */
@@ -84,7 +84,7 @@ async function researchLocked(trigger) {
   };
   if (bad) out.reason = bad;
   else if (r.signal) out.reason = `timed out after ${Math.round(TIMEOUT_MS / 60000)} min`;
-  else if (r.code !== 0 || info.isError) out.reason = (info.result || r.err || `exit ${r.code}`).slice(0, 400); // e.g. usage limit reached
+  else if (r.code !== 0 || info.isError) out.reason = (info.result || r.err || base.exitReason(r.code)).slice(0, 400); // e.g. usage limit reached
   else if (!added.length) out.reason = `no new idea recorded: ${info.result.slice(0, 300)}`;
   out.ok = !out.reason;
   if (out.ok) out.report = info.result.trim();
