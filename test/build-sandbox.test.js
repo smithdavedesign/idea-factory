@@ -35,7 +35,8 @@ function claude(args, env) {
   log({ op: 'claude', call: claudeCalls, tokenOk: env.CLAUDE_CODE_OAUTH_TOKEN === process.env.FAKE_EXPECT_TOKEN, envKeys: Object.keys(env).sort(),
     model: args[args.indexOf('--model') + 1], effort: args[args.indexOf('--effort') + 1],
     tools: (() => { const i = args.indexOf('--allowedTools') + 1; const j = args.findIndex((a, k) => k >= i && a.startsWith('--')); return args.slice(i, j < 0 ? undefined : j); })(),
-    repair: /secret scan found/.test(prompt), fileMode: /\\.provision/.test(prompt), golive: /ready for a public launch/.test(prompt), mvpNow: (prompt.match(/Now: (M\\d+) \\((\\d+) of (\\d+)\\)/) || [])[0] || null });
+    repair: /secret scan found/.test(prompt), fileMode: /\\.provision/.test(prompt), golive: /ready for a public launch/.test(prompt), mvpNow: (prompt.match(/Now: (M\\d+) \\((\\d+) of (\\d+)\\)/) || [])[0] || null,
+    shots: /Screenshot proof/.test(prompt), shotsRound: /checked README\\.md for screenshot proof/.test(prompt) });
   fs.mkdirSync(path.join(ws, 'src'), { recursive: true });
   fs.mkdirSync(path.join(ws, 'test'), { recursive: true });
   fs.writeFileSync(path.join(ws, 'src', 'app.js'), 'module.exports = () => 42;\\n');
@@ -47,6 +48,12 @@ function claude(args, env) {
     ? "const KEY = '" + literalKey() + "';\\n" + (scenario === 'stays-dirty' ? "const T = '" + process.env.FAKE_EXPECT_TOKEN + "';\\n" : '')
     : "const KEY = ['sk', 'ant', 'api03', 'A1b2'.repeat(12)].join('-');\\n";
   fs.writeFileSync(path.join(ws, 'test', 'app.test.js'), fixture);
+  // Screenshot proof: written every time, except 'no-shots' (never) and 'shots-late' (only when reminded).
+  if (scenario === 'shots-late' ? /checked README\\.md for screenshot proof/.test(prompt) : scenario !== 'no-shots') {
+    fs.mkdirSync(path.join(ws, 'docs', 'screenshots'), { recursive: true });
+    for (const f of ['home-desktop.png', 'home-mobile.png']) fs.writeFileSync(path.join(ws, 'docs', 'screenshots', f), Buffer.from('89504e470d0a1a0a0000000d49484452' + f.length.toString(16).padStart(2, '0').repeat(56), 'hex'));
+    fs.writeFileSync(path.join(ws, 'README.md'), '# demo\\n\\n## Screenshots\\n\\n![Home on a desktop](docs/screenshots/home-desktop.png)\\n![Home on a phone](./docs/screenshots/home-mobile.png)\\n\\n## Run it\\n\\n![not proof](docs/later.png)\\n');
+  }
   if (scenario === 'golive') { fs.writeFileSync(path.join(ws, 'LAUNCH-READY.md'), '# Launch-ready\\nLeft for David: STRIPE_PAYMENT_LINK.\\n'); fs.writeFileSync(path.join(ws, '.provision'), 'vercel project demo\\n'); }
   else if (claudeCalls === 1) fs.writeFileSync(path.join(ws, '.provision'), 'neon db demo\\nneon db someone-else\\nrequest "Stripe test keys for demo: checkout"\\n');
   const out = [{ type: 'system', subtype: 'init', apiKeySource: 'none', model: 'claude-opus-5-5', mcp_servers: [], tools: ['Read'] },
@@ -66,6 +73,10 @@ rl.createInterface({ input: process.stdin }).on('line', (line) => {
       log({ op: 'exec', cmd: r.cmd, args: r.args });
       if (r.cmd === 'claude') reply = { ...reply, code: 0, output: claude(r.args, r.env || {}), timedOut: false, durationMs: 1000 };
       else if (r.cmd === 'cat') { const f = path.join(ws, r.args[0]); reply = fs.existsSync(f) ? { ...reply, code: 0, output: fs.readFileSync(f, 'utf8') } : { ...reply, code: 1, output: 'no such file' }; }
+      else if (r.cmd === 'stat') {
+        const files = r.args.slice(r.args.indexOf('--') + 1), there = files.filter((f) => fs.existsSync(path.join(ws, f)));
+        reply = { ...reply, code: there.length === files.length ? 0 : 1, output: files.map((f) => there.includes(f) ? fs.statSync(path.join(ws, f)).size + ' ' + f : "stat: cannot statx '" + f + "': No such file or directory").join('\\n') };
+      }
       else reply = { ...reply, code: scenario === 'mvp' && r.cmd === 'npm' && claudeCalls >= 3 ? 1 : 0, output: '', timedOut: false, durationMs: 5 };
     } else if (r.op === 'patch') {
       log({ op: 'patch', exclude: r.exclude });
@@ -167,6 +178,9 @@ test('a dirty first pass is repaired in the sandbox; the clean result is committ
   assert.match(host.prs[0], /Built in the factory's Docker sandbox/);
   assert.match(host.prs[0], /Secret scan: clean after one repair round/);
   assert.match(host.prs[0], /neon db someone-else: refused/);
+  assert.equal(runs[0].shots, true, 'the builder is told to prove it works with screenshots');
+  assert.match(host.prs[0], /Screenshot proof: ✅ 2 screenshots at the top of README\.md\./);
+  assert.ok(files.includes('docs/screenshots/home-desktop.png') && files.includes('docs/screenshots/home-mobile.png'), 'the screenshots are committed');
   const state = JSON.parse(fs.readFileSync(path.join(DATA, 'ideas', 'demo', 'state.json'), 'utf8'));
   assert.equal(state.build.sandbox, 'docker');
   assert.equal(state.build.status, 'pr-open');
@@ -223,6 +237,7 @@ test('MVP run ("let it rip"): milestones one after another in one session, stopp
   assert.equal(log.filter((e) => e.op === 'open').length, 1, 'one sandbox session for the whole run');
   const runs = log.filter((e) => e.op === 'claude');
   assert.deepEqual(runs.map((c) => c.mvpNow), ['Now: M1 (1 of 3)', 'Now: M2 (2 of 3)', 'Now: M3 (3 of 3)']);
+  assert.deepEqual(runs.map((c) => c.shots), [false, false, true], 'screenshots once, at the end of the run');
   assert.match(host.prs[0], /The MVP for \*\*demo\*\* \(M1, M2, M3 in one run\)/);
   assert.match(host.prs[0], /- M1: ✅ built, tests passing/);
   assert.match(host.prs[0], /- M3: ❌ built, tests failing/);
@@ -258,6 +273,8 @@ test('go-live: one launch-readiness run in the sandbox, the broker gets the Verc
   const runs = sessionLog().filter((e) => e.op === 'claude');
   assert.equal(runs.length, 1);
   assert.equal(runs[0].golive, true, 'the go-live prompt, not a milestone prompt');
+  assert.equal(runs[0].shots, true, 'go-live refreshes the screenshots');
+  assert.match(host.prs[0], /Screenshot proof: ✅ 2 screenshots/);
   assert.deepEqual(host.provision, [['vercel', 'project', 'demo']], 'the Vercel project comes from the broker, on the host');
   assert.match(host.prs[0], /\*\*demo\*\*, made launch-ready \(SEO basics, privacy and terms, payment link, visit beacon, Vercel project\)/);
   assert.match(host.prs[0], /Left for David: STRIPE_PAYMENT_LINK/, 'LAUNCH-READY.md is in the PR');
@@ -273,4 +290,50 @@ test('go-live: one launch-readiness run in the sandbox, the broker gets the Verc
   assert.match(p, /STRIPE_PAYMENT_LINK env var .* hidden when the variable is unset/);
   assert.match(p, /request "Stripe payment link for demo: \$9\/month, per REVENUE\.md"/);
   assert.match(B.goLivePrompt('demo', {}), /no plan with a price yet: skip payments/);
+});
+
+test('screenshot proof missing after the build: one reminder round, then the PR shows the screenshots, pinned to the commit', async () => {
+  setup('shots-late');
+  process.env.IDEA_BUILD_CLAUDE_TOKEN = TOKEN;
+  const r = await B.buildOne('demo', { milestone: 'M1' });
+  assert.equal(r.ok, true, r.reason);
+  const runs = sessionLog().filter((e) => e.op === 'claude');
+  assert.deepEqual(runs.map((c) => c.shotsRound), [false, true], 'the build, then one reminder');
+  assert.ok(sessionLog().some((e) => e.op === 'exec' && e.cmd === 'stat'), 'the files are checked in the sandbox');
+  assert.match(host.prs[0], /Screenshot proof: ✅ 2 screenshots at the top of README\.md \(after one reminder\)\./);
+  const sha = realExec('git', ['rev-parse', 'm1'], { cwd: REMOTE, encoding: 'utf8' }).trim();
+  assert.ok(host.prs[0].includes(`<img src="https://github.com/o/demo/blob/${sha}/docs/screenshots/home-desktop.png?raw=true"`));
+  assert.ok(host.prs[0].includes(`/blob/${sha}/docs/screenshots/home-mobile.png?raw=true"`));
+  const png = realExec('git', ['show', 'm1:docs/screenshots/home-mobile.png'], { cwd: REMOTE });
+  assert.equal(png.subarray(0, 8).toString('hex'), '89504e470d0a1a0a', 'the PNG survives the patch intact');
+  assert.equal(png.length, 72);
+});
+
+test('no screenshot proof even after the reminder: the PR still opens and says so', async () => {
+  setup('no-shots');
+  process.env.IDEA_BUILD_CLAUDE_TOKEN = TOKEN;
+  const r = await B.buildOne('demo', { milestone: 'M1' });
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(sessionLog().filter((e) => e.op === 'claude').length, 2);
+  assert.match(host.prs[0], /Screenshot proof: ❌ no screenshots at the top of README\.md, even after one reminder\./);
+  assert.doesNotMatch(host.prs[0], /<img /);
+});
+
+test('screenshotRefs / screenshotProof: local images at the top of the README, present in the repo', () => {
+  const readme = '# x\n\n![a](docs/screenshots/a.png) <img src="./docs/b.jpg" width="300">\n![remote](https://example.com/c.png)\n![up](../d.png) ![abs](/e.png)\n## Screenshots\n![f](<docs/f.webp> "title")\n## Install\n![later](docs/g.png)\n';
+  assert.deepEqual(B.screenshotRefs(readme), ['docs/screenshots/a.png', 'docs/b.jpg', 'docs/f.webp']);
+  assert.deepEqual(B.screenshotRefs('# x\n## Install\n![a](a.png)\n'), [], 'below the first other section is not the top');
+  assert.deepEqual(B.screenshotRefs(''), []);
+  assert.deepEqual(B.screenshotProof([], {}), { ok: false, files: [], problem: 'no screenshots at the top of README.md' });
+  assert.match(B.screenshotProof(['a.png', 'b.png'], { 'a.png': 10 }).problem, /aren't in the repo \(b\.png\)/);
+  assert.match(B.screenshotProof(['a.png', 'b.png'], { 'a.png': 10, 'b.png': 0 }).problem, /aren't in the repo \(b\.png\)/, 'an empty file is no proof');
+  assert.match(B.screenshotProof(['a.png'], { 'a.png': 10 }).problem, /only one screenshot/);
+  assert.deepEqual(B.screenshotProof(['a.png', 'b.png'], { 'a.png': 10, 'b.png': 9 }), { ok: true, files: ['a.png', 'b.png'], problem: null });
+  const p = B.screenshotPrompt('no screenshots at the top of README.md');
+  assert.match(p, /found no screenshots at the top of README\.md/);
+  assert.match(p, /executablePath: process\.env\.CHROMIUM_PATH/);
+  assert.match(p, /devices\['iPhone 13'\]/);
+  assert.doesNotMatch(B.prompt('x', 'M1', '', { mvp: { all: ['M1', 'M2'], index: 0 } }), /Screenshot proof/, 'not mid-run');
+  assert.match(B.prompt('x', 'M2', '', { mvp: { all: ['M1', 'M2'], index: 1 } }), /5\. Screenshot proof that it works/);
+  assert.match(B.goLivePrompt('demo', {}), /7\. Screenshot proof of the launch-ready site[\s\S]*8\. Write LAUNCH-READY\.md/);
 });

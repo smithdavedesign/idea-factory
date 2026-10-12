@@ -36,6 +36,9 @@
 // Before any commit, the patch is scanned for credentials (lib/secret-scan.js): credential-shaped
 // strings (a fake key written as a literal still turns a PR's secret checks red) and the Mac's real
 // secrets by value. One repair round, then the build fails rather than open a PR with them.
+// Screenshot proof (David's rule, 2026-10-11): every build captures the product working in a real
+// browser (Playwright, desktop and phone) and puts the screenshots at the top of README.md. One
+// reminder round if they're missing; the PR shows them, or says they're missing.
 const fs = require('fs');
 const path = require('path');
 const { execFileSync, spawnSync } = require('child_process');
@@ -53,6 +56,7 @@ const GH_OWNER = process.env.IDEA_GH_OWNER || 'smithdavedesign';
 
 /** The credential broker (ai-stack bin/provision): fixed verbs, values never printed. */
 const PROVISION = path.join(process.env.HOME, 'ai-stack', 'bin', 'provision');
+const MAC_CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 
 const SYSTEM = 'You are building one milestone of a small product, tests first. Work only inside the current directory. ' +
   'Nobody will answer questions: decide from the PRD, roadmap and review, and write down what you decided. ' +
@@ -72,6 +76,20 @@ const GSTACK_BUILD_SECTIONS = [
   ['review/checklist.md', /^## Review Categories/, /^## Severity Classification/],
   ['review/checklist.md', /^## Fix-First Heuristic/, /^## Suppressions/],
 ];
+
+/**
+ * How the builder proves the product works (David's rule, 2026-10-11): screenshots from a real browser
+ * at the top of README.md. The sandbox image has Chromium at $CHROMIUM_PATH (RepoHQ
+ * factory/docker/worker.Dockerfile); its egress has no route to a browser CDN.
+ */
+const SCREENSHOT_STEPS = `- Add \`npm run screenshots\` (scripts/screenshots.mjs, with playwright-core as a devDependency) if it isn't there. It starts the app itself (the production build if that's quick, else the dev server), waits until it answers on localhost, drives it with Playwright, saves the PNGs and stops the app. Launch Chromium with \`executablePath: process.env.CHROMIUM_PATH\`; never download a browser.
+- Capture the product doing its main job with realistic sample data, not just the landing page: the start page, the core action and its result. Each at desktop size (1280×800) and on a phone (Playwright's devices['iPhone 13']), viewport only. At most 6 PNGs in docs/screenshots/, named for what they show (home-desktop.png, result-mobile.png).
+- Not a web app (a CLI, an API, a library)? Run it for real and screenshot that: the actual command and its output, or a real request and its response, on a plain HTML page.
+- Run it, then open every PNG with Read and look at it: a blank page, an error overlay or a spinner isn't proof. Fix the app or the script and run it again.
+- At the very top of README.md, right under the title: a "## Screenshots" section with each one as ![what it shows](docs/screenshots/<file>.png) and a one-line caption saying what it proves. Replace older screenshots there; don't pile them up.
+- Sample data only: no secret, token or real person's data in a screenshot. Keep the screenshot run out of \`npm test\`.`;
+/** The reminder round when they're missing: an install, a production build and a browser run. */
+const SCREENSHOT_ROUND_MINUTES = 30;
 
 /** The text from a heading matching `start` up to the next heading matching `stop` (or the end). */
 function extractSection(md, start, stop) {
@@ -148,8 +166,12 @@ REVENUE.md, if present, says who pays and what must exist before charging (check
   const note = String(ownerNote || '').trim().slice(0, 1000);
   const plan = gstackFile ? `
 0. Plan first with the gstack engineering frameworks in ${gstackFile} (read it): apply "Step 0: Scope Challenge", "1. Architecture review" and "3. Test review" to ${milestone} yourself. Keep the narrowest version that meets the exit criteria. Put the outcome at the top of BUILD.md as "## Plan": scope (and what's deliberately not in it), architecture, test plan.` : '';
+  // The last milestone of the run shows the product working (an MVP that stops early gets a reminder round).
+  const proof = !mvp || mvp.index === mvp.all.length - 1 ? `
+5. Screenshot proof that it works, with the tests passing:
+${SCREENSHOT_STEPS}` : '';
   const selfReview = gstackFile ? `
-5. Self-review your diff (\`git status\`, \`git diff\`) against gstack's pre-landing checklist in the same file ("Review Categories", "Fix-First Heuristic"). Fix every CRITICAL finding and rerun the tests, then list what's left in BUILD.md as "## Review".` : '';
+${proof ? 6 : 5}. Self-review your diff (\`git status\`, \`git diff\`) against gstack's pre-landing checklist in the same file ("Review Categories", "Fix-First Heuristic"). Fix every CRITICAL finding and rerun the tests, then list what's left in BUILD.md as "## Review".` : '';
   return `You are in the repo for the idea "${slug}". Read PRD.md, ROADMAP.md, REVIEW.md and BUILD.md (if present) first.${note ? `
 The owner approved this build with a note; follow it where it fits ${milestone}'s scope and the $0 rule:
 ---
@@ -159,7 +181,7 @@ Build ROADMAP.md's ${milestone} and nothing beyond it${first ? '' : ' (earlier m
 1. Turn ${milestone}'s exit criteria into automated tests (vitest or node:test) that fail now. Each exit criterion becomes at least one test.
 2. ${first ? 'Scaffold the smallest stack that fits the roadmap\'s suggestion and runs at $0 (static site, Next.js or a small Node service; free tiers only). Add "test" to package.json scripts.' : 'Extend the existing code; keep the stack and the $0 rule.'}
 3. Implement until \`npm test\` passes. Don't weaken or delete a test to make it pass.
-4. ${first ? 'Write' : 'Update'} BUILD.md: what the product does now, how to run it locally, how to deploy it on a free tier, which exit criteria pass, and what's left.${selfReview}
+4. ${first ? 'Write' : 'Update'} BUILD.md: what the product does now, how to run it locally, how to deploy it on a free tier, which exit criteria pass, and what's left.${proof}${selfReview}
 Install scripts are disabled (npm_config_ignore_scripts); choose packages that work without them.
 ${provision === 'file' ? `If ${milestone} needs a database or a Google API key, you can't provision it from here (you're in a sandbox). Write what you need into \`.provision\` at the repo root, one per line; the pipeline runs it through the credential broker after the build:
   neon db ${slug}            → DATABASE_URL (Postgres, free tier)
@@ -194,8 +216,10 @@ ${note}
 5. Deployment: ${provision === 'file' ? `you can't provision from here; write \`.provision\` at the repo root with these lines, and the pipeline runs them through the credential broker after the build:
 ${provisionLines.map((l) => `  ${l}`).join('\n')}` : `run ${provisionLines.map((l) => `\`${PROVISION} ${l}\``).join(' and ')}.`}
 6. Keep \`npm test\` passing, and add tests for what you can: the pages render, robots.txt and the sitemap exist, and the Buy button is hidden without the env var.
-7. Write LAUNCH-READY.md: what you did, how to check it, and what's left for David (the Stripe payment link to paste into the Vercel env as STRIPE_PAYMENT_LINK; a custom domain if he wants one).${gstackFile ? `
-8. Self-review your diff (\`git status\`, \`git diff\`) against gstack's pre-landing checklist in ${gstackFile} ("Review Categories", "Fix-First Heuristic"), and fix every CRITICAL finding.` : ''}
+7. Screenshot proof of the launch-ready site (footer links and the Buy button included; give the screenshot run a placeholder STRIPE_PAYMENT_LINK such as https://example.com/pay):
+${SCREENSHOT_STEPS}
+8. Write LAUNCH-READY.md: what you did, how to check it, and what's left for David (the Stripe payment link to paste into the Vercel env as STRIPE_PAYMENT_LINK; a custom domain if he wants one).${gstackFile ? `
+9. Self-review your diff (\`git status\`, \`git diff\`) against gstack's pre-landing checklist in ${gstackFile} ("Review Categories", "Fix-First Heuristic"), and fix every CRITICAL finding.` : ''}
 Install scripts are disabled (npm_config_ignore_scripts); choose packages that work without them, and prefer none.
 Your final message: one line — tests passing or not, and what's left for David.`;
 }
@@ -348,7 +372,7 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
 
   let ws;
   try {
-    const minutes = mvp ? mvpPolicy.maxMinutes + policy.build.timeoutMinutes + 20 : policy.build.timeoutMinutes + 30;
+    const minutes = (mvp ? mvpPolicy.maxMinutes + policy.build.timeoutMinutes + 20 : policy.build.timeoutMinutes + 30) + SCREENSHOT_ROUND_MINUTES;
     ws = await openWorkspace({ slug, milestone, work, input: buildInput(slug, mvp ? `the MVP (${rangeText(planned)})` : milestone), lifetimeMs: minutes * 60_000 });
   } catch (e) {
     return failBuild(`couldn't start the build ${(policy.build.sandbox || 'docker') === 'host' ? 'on the host' : 'sandbox'}: ${String(e.message).slice(0, 300)}`);
@@ -386,6 +410,20 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     let patch = await ws.patch();
     if (!patch.trim()) return failBuild(run.reason || 'no changes made', usage);
 
+    // Screenshot proof: one reminder round, then the PR says what's missing rather than losing the build.
+    const checkShots = async () => { const refs = screenshotRefs(await ws.readFile('README.md')); return screenshotProof(refs, await ws.fileSizes(refs)); };
+    let shots = await checkShots();
+    let shotsReminded = false;
+    if (!shots.ok) {
+      emit({ component: 'build', event: milestone, status: 'info', subject: { idea: slug }, message: `screenshot proof: ${shots.problem}, asking the builder for it` });
+      await ws.claude(screenshotPrompt(shots.problem), { ...runOpts, timeoutMs: SCREENSHOT_ROUND_MINUTES * 60_000, engines: run.engine === 'free' ? ['free'] : ['claude', 'free'] });
+      testsPassing = await ws.test();
+      patch = await ws.patch();
+      shots = await checkShots();
+      shotsReminded = true;
+    }
+    usage.screenshots = shots.ok ? shots.files.length : 0;
+
     // Credentials: one repair round, then no PR.
     const known = knownSecrets(ws.secrets);
     let findings = scanPatch(patch, { known });
@@ -420,6 +458,9 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     let prUrl = null;
     if (push) {
       sh('git', ['push', '-q', '-u', 'origin', branch], work);
+      // Pinned to the commit, so the PR's images outlive the branch.
+      const sha = sh('git', ['rev-parse', 'HEAD'], work);
+      const gallery = shots.ok ? [shots.files.slice(0, 6).map((f) => `<img src="https://github.com/${full}/blob/${sha}/${f}?raw=true" alt="${f}" height="320">`).join(' '), ''] : [];
       const body = [
         `${golive ? `**${slug}**, made launch-ready (SEO basics, privacy and terms, payment link, visit beacon, Vercel project)` : mvp ? `The MVP for **${slug}** (${planned.join(', ')} in one run)` : `${milestone} for **${slug}**`}, built by the idea pipeline${golive ? '' : ', tests first'}. Engine: ${engine}. Built in ${ws.kind === 'docker' ? 'the factory\'s Docker sandbox' : 'host mode (on the Mac)'}.`, '',
         ...(mvp ? [...steps.map((x) => `- ${x.milestone}: ${x.ok && x.testsPassing ? '✅ built, tests passing' : x.ok ? '❌ built, tests failing' : '❌ the builder stopped'} (${x.engine === 'free' ? 'free pool' : x.model || 'Claude'})`),
@@ -427,6 +468,8 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
           ...(stopped ? [`Stopped: ${stopped}. Merging marks ${completed.length ? completed.join(', ') : 'nothing'} done; the next build starts at the first one that isn't.`] : []), ''] : []),
         `Tests: ${testsPassing ? '✅ passing' : '❌ failing'} (\`npm test\` run by the pipeline after the build).`,
         `Secret scan: clean${repaired ? ' after one repair round' : ''}.`,
+        `Screenshot proof: ${shots.ok ? `✅ ${shots.files.length} screenshots at the top of README.md${shotsReminded ? ' (after one reminder)' : ''}` : `❌ ${shots.problem}${shotsReminded ? ', even after one reminder' : ''}`}.`,
+        ...gallery,
         ...(provisioned.length ? [`Provisioned through the credential broker: ${provisioned.join('; ')}.`] : []),
         run.reason ? `Builder note: ${run.reason}` : `Builder: ${run.info.result.slice(0, 300)}`, '',
         golive ? (fs.existsSync(path.join(work, 'LAUNCH-READY.md')) ? fs.readFileSync(path.join(work, 'LAUNCH-READY.md'), 'utf8').slice(0, 6000) : '_No LAUNCH-READY.md written._')
@@ -437,7 +480,7 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     }
     // On merge, the pipeline marks `milestones` done: the ones that completed, not every one attempted.
     const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: 'building', build: { ...(state.build || {}), milestone, milestones: golive ? [] : mvp ? completed : [milestone], ...(mvp ? { planned, stopped } : {}), status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : policy.build.effort || null, manual: !!manual, sandbox: ws.kind, at: now.toISOString(), ...(advice ? { advice } : {}) } });
-    emit({ component: 'build', event: milestone, status: testsPassing ? 'ok' : 'fail', subject: { idea: slug, pr: prUrl || undefined }, durationMs: Date.now() - now.getTime(), data: { ...usage, testsPassing, prUrl, repaired },
+    emit({ component: 'build', event: milestone, status: testsPassing ? 'ok' : 'fail', subject: { idea: slug, pr: prUrl || undefined }, durationMs: Date.now() - now.getTime(), data: { ...usage, testsPassing, prUrl, repaired, shotsReminded },
       message: `${mvp ? `MVP (${completed.join(', ') || 'nothing complete'}${stopped ? `; stopped: ${stopped.slice(0, 120)}` : ''})` : milestone} ${prUrl ? `PR ${prUrl}` : 'built locally'}, tests ${testsPassing ? 'passing' : 'failing'}, engine ${run.engine}${advice ? `, advisor ${advice.difficulty}` : ''}` });
     return { ok: true, slug, milestone, prUrl, testsPassing, engine: run.engine, model: run.info.model, builderReason: run.reason, state: s, ...(mvp ? { planned, completed, stopped } : {}) };
   } finally {
@@ -454,6 +497,39 @@ Then run \`npm test\` again and keep it passing. Findings (file:line, kind):
 ${formatFindings(findings, 40)}`;
 }
 
+/**
+ * The local images at the top of a README (pure): those before its first "## " section that isn't the
+ * screenshots one. Remote images and paths that leave the repo don't count as proof.
+ */
+function screenshotRefs(readme) {
+  const refs = [];
+  for (const line of String(readme || '').split('\n')) {
+    const h = line.match(/^##\s+(.*)/);
+    if (h && !/screenshot|demo|proof/i.test(h[1])) break;
+    for (const m of line.matchAll(/!\[[^\]]*\]\(\s*<?([^)\s>]+)>?[^)]*\)|<img\b[^>]*\bsrc=["']([^"']+)["']/gi)) {
+      const p = (m[1] || m[2]).replace(/^\.\//, '').split(/[?#]/)[0];
+      if (/^[\w.-][\w./-]*\.(?:png|jpe?g|webp|gif)$/i.test(p) && !p.split('/').includes('..') && !refs.includes(p)) refs.push(p);
+    }
+  }
+  return refs;
+}
+
+/** Whether README's screenshots prove anything (pure): `sizes` maps each ref to its size in the repo. */
+function screenshotProof(refs, sizes = {}) {
+  const missing = refs.filter((p) => !(sizes[p] > 0));
+  if (!refs.length) return { ok: false, files: [], problem: 'no screenshots at the top of README.md' };
+  if (missing.length) return { ok: false, files: refs, problem: `README.md shows screenshots that aren't in the repo (${missing.slice(0, 4).join(', ')})` };
+  if (refs.length < 2) return { ok: false, files: refs, problem: 'only one screenshot at the top of README.md (desktop and phone are both needed)' };
+  return { ok: true, files: refs, problem: null };
+}
+
+/** What the builder gets when the screenshot proof is missing (pure). */
+function screenshotPrompt(problem) {
+  return `The pipeline checked README.md for screenshot proof that the product works and found ${problem}. Add the proof now, and change the product only where a screenshot shows it broken:
+${SCREENSHOT_STEPS}
+Then run \`npm test\` again and keep it passing. Your final message: one line — how many screenshots and what they show.`;
+}
+
 /** The Claude subscription token for the sandbox (`claude setup-token`), from the keychain. Null if unset. */
 function sandboxToken(service = policy.build.tokenService || 'idea-build-claude-token') {
   if (process.env.IDEA_BUILD_CLAUDE_TOKEN) return process.env.IDEA_BUILD_CLAUDE_TOKEN;
@@ -461,7 +537,7 @@ function sandboxToken(service = policy.build.tokenService || 'idea-build-claude-
 }
 
 /**
- * Where the builder works: { kind, gstackFile, secrets, claude(prompt, opts), test(), patch(), provisionFile(), stage(patch), close() }.
+ * Where the builder works: { kind, gstackFile, secrets, claude(prompt, opts), test(), patch(), readFile(rel), fileSizes(rels), provisionFile(), stage(patch), close() }.
  * docker (default): everything that runs code runs in the factory sandbox; host: the clone on this Mac.
  */
 async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSessionFn = startSession, token = sandboxToken }) {
@@ -471,10 +547,13 @@ async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSe
     if (input) { fs.mkdirSync(inputDir, { recursive: true }); fs.writeFileSync(gstackFile, input); }
     return {
       kind: 'host', gstackFile, secrets: [],
-      claude: (text, opts) => claudeTask(text, { ...opts, cwd: work, tools: tools(work, gstackFile ? [gstackFile] : []), addDirs: gstackFile ? [inputDir] : [] }),
+      // The screenshot run uses the Mac's Chrome here (the sandbox has its own Chromium).
+      claude: (text, opts) => claudeTask(text, { ...opts, env: { ...opts.env, ...(fs.existsSync(MAC_CHROME) ? { CHROMIUM_PATH: MAC_CHROME } : {}) }, cwd: work, tools: tools(work, gstackFile ? [gstackFile] : []), addDirs: gstackFile ? [inputDir] : [] }),
       test: async () => spawnSync('npm', ['test', '--silent'], { cwd: work, encoding: 'utf8', timeout: 10 * 60_000, env: { ...process.env, CI: '1', npm_config_ignore_scripts: 'true' } }).status === 0,
       // Stage all, then reset node_modules: an :(exclude) pathspec on an ignored path makes git 2.5x exit 1.
       patch: async () => { sh('git', ['add', '-A', '--', '.'], work); sh('git', ['reset', '-q', '--', 'node_modules'], work); return execFileSync('git', ['diff', '--cached', '--binary'], { cwd: work, encoding: 'utf8', maxBuffer: 200 * 1024 * 1024 }); },
+      readFile: async (rel) => { try { return fs.readFileSync(path.join(work, rel), 'utf8'); } catch { return ''; } },
+      fileSizes: async (rels) => Object.fromEntries(rels.flatMap((p) => { try { return [[p, fs.lstatSync(path.join(work, p)).size]]; } catch { return []; } })),
       provisionFile: async () => null, // on the host the builder runs the broker itself
       stage: async () => {},
       close: async () => { if (gstackFile) fs.rmSync(gstackFile, { force: true }); },
@@ -495,6 +574,13 @@ async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSe
       test: async () => (await sb.exec('npm', ['test', '--silent'], { env: { CI: '1', npm_config_ignore_scripts: 'true' }, timeoutMs: 10 * 60_000 })).code === 0,
       // .provision is a request to the host, never part of the product repo.
       patch: async () => fs.readFileSync(await sb.patch(['.provision']), 'utf8'),
+      readFile: async (rel) => { const r = await sb.exec('cat', [rel], { timeoutMs: 30_000 }); return r.code === 0 ? r.output : ''; },
+      // "<size> <path>" per file that exists; a missing one only writes to stderr.
+      fileSizes: async (rels) => {
+        if (!rels.length) return {};
+        const r = await sb.exec('stat', ['-c', '%s %n', '--', ...rels], { timeoutMs: 30_000 });
+        return Object.fromEntries(String(r.output).split('\n').map((l) => l.match(/^(\d+) (.+)$/)).filter(Boolean).map((m) => [m[2], Number(m[1])]));
+      },
       provisionFile: async () => { const r = await sb.exec('cat', ['.provision'], { timeoutMs: 30_000 }); return r.code === 0 ? r.output : null; },
       // The clone on the host is still at the base commit: apply the sandbox's diff and stage it.
       stage: async (patch) => {
@@ -513,7 +599,7 @@ async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSe
   }
 }
 
-module.exports = { buildOne, goLivePrompt, mvpMilestones, rangeText, tools, milestones, nextMilestone, prompt, milestoneText, engineOrder, manualBuildTarget, buildMessage, engineLabel, buildInput, extractSection, GSTACK_BUILD_SECTIONS, repairPrompt, openWorkspace, sandboxToken, provisionCommands };
+module.exports = { buildOne, goLivePrompt, mvpMilestones, rangeText, tools, milestones, nextMilestone, prompt, milestoneText, engineOrder, manualBuildTarget, buildMessage, engineLabel, buildInput, extractSection, GSTACK_BUILD_SECTIONS, repairPrompt, openWorkspace, sandboxToken, provisionCommands, screenshotRefs, screenshotProof, screenshotPrompt };
 
 if (require.main === module) {
   const slug = process.argv[2];

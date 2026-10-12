@@ -62,7 +62,7 @@ test('the builder plans and self-reviews with gstack sections read from the inst
   const withG = B.prompt('x', 'M1', '', { gstackFile: '/w/in.md' });
   assert.match(withG, /0\. Plan first with the gstack engineering frameworks in \/w\/in\.md/);
   assert.match(withG, /"## Plan": scope/);
-  assert.match(withG, /5\. Self-review your diff[\s\S]*Fix every CRITICAL finding[\s\S]*"## Review"/);
+  assert.match(withG, /5\. Screenshot proof[\s\S]*6\. Self-review your diff[\s\S]*Fix every CRITICAL finding[\s\S]*"## Review"/, 'the self-review covers the screenshot script too');
   assert.doesNotMatch(B.prompt('x', 'M1'), /gstack/);
   assert.ok(B.tools('/w/clone', ['/w/in.md']).includes('Read(//w/in.md)'));
 });
