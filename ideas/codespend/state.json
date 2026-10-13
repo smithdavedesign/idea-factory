@@ -7,7 +7,7 @@
     "at": "2026-10-11T16:41:39.440Z",
     "notionAt": "2026-10-11T16:41:40.221Z"
   },
-  "updatedAt": "2026-10-13T03:36:36.881Z",
+  "updatedAt": "2026-10-13T14:43:50.456Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -143,9 +143,9 @@
     "beacon": "funnel"
   },
   "funnel": {
-    "at": "2026-10-13T03:36:36.881Z",
+    "at": "2026-10-13T14:43:50.456Z",
     "d7": {
-      "visit": 0,
+      "visit": 1,
       "signup": 0,
       "activate": 0,
       "checkout": 0
@@ -157,16 +157,21 @@
       "checkout": 0
     },
     "all": {
-      "visit": 0,
+      "visit": 1,
       "signup": 0,
       "activate": 0,
       "checkout": 0
     },
     "seen": {
-      "visit": false,
+      "visit": true,
       "activate": false,
       "checkout": false
     },
-    "referrers7d": []
+    "referrers7d": [
+      {
+        "host": "direct",
+        "visitors": 1
+      }
+    ]
   }
 }
