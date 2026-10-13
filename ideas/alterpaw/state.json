@@ -6,7 +6,7 @@
     "summary": "Etsy shows people pay $9–$45 for pet wanted posters and cards, but review counts are not sales and ChatGPT does the pet-persona trick free. There is no channel, no named buyer, and the Oct–Dec window would be mostly gone after a test plus a build.",
     "at": "2026-10-13T08:37:03.455Z"
   },
-  "updatedAt": "2026-10-13T22:19:45.909Z",
+  "updatedAt": "2026-10-13T22:49:39.041Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -28,7 +28,7 @@
         "owner": "agent",
         "label": "MVP built: every roadmap milestone merged",
         "done": false,
-        "evidence": "0/4 milestones merged"
+        "evidence": "1/4 milestones merged"
       },
       {
         "id": "deployed",
@@ -94,7 +94,7 @@
     },
     "done": 0,
     "total": 10,
-    "updatedAt": "2026-10-13T14:43:50.456Z"
+    "updatedAt": "2026-10-13T22:49:39.041Z"
   },
   "revenue": {
     "mrr": 0,
@@ -111,7 +111,7 @@
       "M4"
     ],
     "stopped": "M2: the builder stopped (timed out after 45 min)",
-    "status": "running",
+    "status": "failed",
     "prUrl": "https://github.com/smithdavedesign/alterpaw/pull/1",
     "testsPassing": true,
     "engine": "claude",
@@ -127,11 +127,12 @@
       "model": "local-qwen3"
     },
     "progress": {
-      "step": 1,
+      "step": 4,
       "steps": 4,
-      "label": "M2 (1 of 3)",
-      "at": "2026-10-13T22:19:45.703Z"
-    }
+      "label": "checking the work: secret scan, screenshots, the PR",
+      "at": "2026-10-13T22:38:33.681Z"
+    },
+    "reason": "sandbox patch: git add failed: Error response from daemon: container d16d4415c2362fc29cffda562cca173a199fd640d33425268ddb3b0143432d71 is not running"
   },
   "milestonesDone": [
     "M1"
