@@ -77,6 +77,9 @@ async function notionRequest(endpoint, method = 'GET', body = null) {
 const text = (s) => String(s ?? '').slice(0, 2000); // properties only; the page body is never cut
 const plain = (prop) => (prop?.title || prop?.rich_text || []).map((t) => t.plain_text).join('');
 const tagName = (s) => String(s).replace(/,/g, ' ').trim().slice(0, 100);
+/** idea.json tags: lowercase, no duplicates, at most 8 (one per filter group, `ai`, topics: SKILL.md "tags"). */
+const normalizeTags = (tags) => [...new Set((Array.isArray(tags) ? tags : []).filter((t) => typeof t === 'string')
+  .map((t) => tagName(t).toLowerCase()).filter(Boolean))].slice(0, 8);
 const docsUrl = (slug) => `https://github.com/${GH_OWNER}/${IDEAS_REPO}/tree/main/ideas/${slug}`;
 
 async function ensureDatabaseProperties() {
@@ -193,7 +196,7 @@ function validateDraft(dir) {
   if (banned) fail(`idea.json.repoName must not contain "${banned}" — name the product, not the process`);
   idea.repoName = repo;
   idea.slug = repo;
-  idea.tags = (Array.isArray(idea.tags) ? idea.tags : []).map(tagName).filter(Boolean).slice(0, 6);
+  idea.tags = normalizeTags(idea.tags);
   // Portfolio check (Step 1): the agent names the closest existing repo, or "none".
   if (typeof idea.overlaps !== 'string' || !idea.overlaps.trim()) {
     fail('idea.json.overlaps is required: the closest existing repo from `list` (portfolio) and how this differs, or "none"');
@@ -449,4 +452,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { seed, readSeeds, validateDraft, pageBody, expectedPageText, docsUrl, Fail, appendBlocks, readPageBlocks, notionRequest, DATABASE_ID, STATUS, allIdeas, rowFor, ensureDatabaseProperties, promote, storeIdea, IDEAS_DIR, git };
+module.exports = { seed, readSeeds, validateDraft, normalizeTags, pageBody, expectedPageText, docsUrl, Fail, appendBlocks, readPageBlocks, notionRequest, DATABASE_ID, STATUS, allIdeas, rowFor, ensureDatabaseProperties, promote, storeIdea, IDEAS_DIR, git };

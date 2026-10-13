@@ -9,7 +9,7 @@ The idea pipeline's home and **record**. Every researched idea lives here in ful
 | `RESEARCH.md` | Summary, evidence of the problem, competitors (name, price, gap), technical notes, risks, sources |
 | `PRD.md` | Problem, target user, competitors & gap, MVP scope, non-goals, success metrics, open questions |
 | `ROADMAP.md` | Milestones; M1 buildable in a weekend, exit criteria written as testable checks |
-| `idea.json` | Title, repo name, one-liner, closest existing repo (`overlaps`), tags, effort, confidence, sources |
+| `idea.json` | Title, repo name, one-liner, closest existing repo (`overlaps`), tags (one each for vibe, audience, money and where the first users come from, `ai`, topics: SKILL.md; RepoHQ's Ideas page filters on them), effort, confidence, sources |
 
 Git is the record because it never truncates, keeps history, and agents read it natively. David
 decides on RepoHQ's **Ideas page** (https://repohq.vercel.app/ideas): Approve build, Demand test first

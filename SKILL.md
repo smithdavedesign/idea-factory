@@ -86,9 +86,18 @@ stack with one-line reasons.
 {"title": "Tripsplit — offline group expense splitter", "repoName": "tripsplit",
  "oneLiner": "Who it's for and the pain it removes, one sentence.",
  "overlaps": "Open-Travel (trip planner with a budget page) — this is offline-first and app-less; or \"none\"",
- "tags": ["dev-tools", "ai"], "effort": "Low|Medium|High", "confidence": "Low|Medium|High",
+ "tags": ["serious", "consumer", "one-time", "reach:community", "travel"], "effort": "Low|Medium|High", "confidence": "Low|Medium|High",
  "sources": ["https://…"], "seedId": "seed-… (seeded mode only)"}
 ```
+**`tags`** (lowercase, at most 8): RepoHQ's Ideas page filters on them, so pick honestly. Exactly one from each of the
+first four groups, then `ai` if AI is core to the product, then one to three topic tags (`compliance`, `pets`, `ecommerce` …):
+- vibe: `fun` | `wacky` | `serious`
+- for: `consumer` | `business` | `developers`
+- money: `saas` (a subscription) | `one-time` | `service` (David's time is part of what's sold)
+- first users from, i.e. how the first buyers would find it, from your research: `reach:viral` (using it pulls in other
+  people: invites, shares) | `reach:search` (people already search for it) | `reach:marketplace` (an app, extension or
+  marketplace store brings them) | `reach:community` (posts where the buyers already talk) | `reach:outbound` (cold
+  outreach or sales calls). Anything that needs sales calls is `reach:outbound`, however good the product.
 `effort`/`confidence` are your honest judgment from the research — never invent revenue numbers.
 
 ## Step 5 — Record
