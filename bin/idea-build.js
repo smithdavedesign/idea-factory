@@ -510,7 +510,7 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
       // A growth build may only file requests for David; it never creates a service or a key.
       const allowed = growth ? ok.filter((args) => args[0] === 'request') : ok;
       for (const args of allowed) {
-        try { execFileSync(PROVISION, args, { stdio: 'pipe', timeout: 5 * 60_000 }); provisioned.push(`${args.join(' ')}: done`); } catch (e) { provisioned.push(`${args.join(' ')}: failed (${String(e.stderr || e.message).trim().split('\n').pop().slice(0, 160)})`); }
+        try { execFileSync(PROVISION, args, { stdio: 'pipe', timeout: 5 * 60_000 }); provisioned.push(`${args.join(' ')}: done`); } catch (e) { provisioned.push(`${args.join(' ')}: ${e.status === 3 ? 'waiting on David' : 'failed'} (${String(e.stderr || e.message).trim().split('\n').pop().replace(/^provision: (waiting on David: )?/, '').slice(0, 160)})`); }
       }
       for (const args of ok.filter((a) => !allowed.includes(a))) provisioned.push(`${args.join(' ')}: refused (a growth build may only file requests)`);
       for (const line of rejected) provisioned.push(`${line}: refused (not a broker verb for ${slug})`);
