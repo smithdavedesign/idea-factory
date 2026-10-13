@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-13T21:01:43.988Z",
+  "updatedAt": "2026-10-13T21:17:55.977Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -20,15 +20,15 @@
         "id": "plan",
         "owner": "agent",
         "label": "Road-to-revenue plan written",
-        "done": false,
-        "evidence": "written after M1 merges"
+        "done": true,
+        "evidence": "An adult (18+) who has written an original character and already roleplays it wi · $4 once"
       },
       {
         "id": "mvp",
         "owner": "agent",
         "label": "MVP built: every roadmap milestone merged",
         "done": false,
-        "evidence": "0/4 milestones merged"
+        "evidence": "3/4 milestones merged"
       },
       {
         "id": "deployed",
@@ -54,9 +54,9 @@
       {
         "id": "price",
         "owner": "david",
-        "label": "Price decided",
-        "done": false,
-        "evidence": ""
+        "label": "Price: $4 once (from the plan)",
+        "done": true,
+        "evidence": "Anchored below the $9.99/mo c.ai+ (annual about $80-95) and Chai (about $14/mo) chat subscriptions, which are the only t"
       },
       {
         "id": "payments",
@@ -88,13 +88,15 @@
       }
     ],
     "next": {
-      "id": "plan",
-      "label": "Road-to-revenue plan written",
+      "id": "mvp",
+      "label": "MVP built: every roadmap milestone merged",
       "owner": "agent"
     },
-    "done": 1,
+    "done": 3,
     "total": 10,
-    "updatedAt": "2026-10-13T21:01:43.988Z"
+    "buyer": "An adult (18+) who has written an original character and already roleplays it with AI, e.g. a regular in the r/CharacterAI or r/SillyTavernAI subreddits or an AI-roleplay Discord such as the Shapes Inc server; not art-first OC communities, which reject AI. No named individual or community size is verified.",
+    "price": "$4 once",
+    "updatedAt": "2026-10-13T21:17:55.977Z"
   },
   "revenue": {
     "mrr": 0,
@@ -136,5 +138,32 @@
     "M1",
     "M2",
     "M3"
-  ]
+  ],
+  "funnel": {
+    "at": "2026-10-13T21:17:55.977Z",
+    "d7": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "prev7": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "all": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "seen": {
+      "visit": false,
+      "activate": false,
+      "checkout": false
+    },
+    "referrers7d": []
+  }
 }
