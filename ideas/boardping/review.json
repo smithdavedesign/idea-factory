@@ -1,0 +1,54 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "Category spend on bid alerts is real, but there is no first-hand evidence that small K-12 MSPs want agenda-stage alerts, Civic IQ already covers this broadly and free, and David has no route to these buyers. Pass unless a hand-built digest first draws interest from real MSP owners.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "Only vendor marketing and a 2015 article; RESEARCH.md found no MSP complaints. The Apify E-rate alert actor has 2 users at $5/mo. BidNet spend proves the category, not this wedge."
+    },
+    "statusQuo": {
+      "score": 5,
+      "evidence": "Real workarounds exist (BidNet, Visualping, manual agenda reading, relationships), but they are already paid or cheap and nobody quantifies the hours or deals lost."
+    },
+    "specificity": {
+      "score": 4,
+      "evidence": "Owner or sales lead at a 5–50 person K-12 MSP in one state is a filter, not a person; no state chosen and the reach channel is unconfirmed."
+    },
+    "wedge": {
+      "score": 5,
+      "evidence": "One state, one trade, a quote-verified weekly email is a good wedge, and a concierge version needs no code. Messy PDFs and BoardDocs make automation noisy."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "Cheaper LLM document reading helps incumbents like Civic IQ and BidNet add agenda parsing as easily as it helps a one-person niche product."
+    }
+  },
+  "premises": [
+    "Small MSPs miss deals because they learn of purchases at the RFP stage (unsupported)",
+    "Agenda-stage signals are early and specific enough to act on (plausible, 6–18 months is a vendor claim)",
+    "MSPs will pay $79–$149/mo when BidNet is about $50/mo and Civic IQ is free to start (unsupported)",
+    "A free model can classify messy agendas with few false positives (untested)",
+    "David can reach these buyers (no evidence)"
+  ],
+  "alternatives": [
+    "Concierge: hand-build one state's digest for a month and send it to 10 MSPs; no code",
+    "Full multi-source engine (Legistar, BoardDocs, Form 470, grants); large effort against funded platforms",
+    "Reuse the watch-and-alert pattern from permitly and lienclock for a buyer David can reach",
+    "Sell the same signals to school-safety installers or other trades"
+  ],
+  "wedge": "One state, 20–50 districts, one weekly email of IT/security signals with a verbatim source quote and link.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "TypeScript CLI with Vitest on fixtures, free model via LiteLLM. Proving test: a fixture agenda yields exactly one alert whose quote is a substring of the source, stable on re-run. M1 proves extraction only, not demand."
+  },
+  "risks": [
+    "Civic IQ is free to start and BidNet, RFPSchoolWatch and BidPrime are established",
+    "No first-hand MSP demand or reach channel",
+    "False positives from messy PDFs destroy trust",
+    "BoardDocs unsupported by civic-scraper; terms and robots unchecked",
+    "Price near or above BidNet in a small niche"
+  ],
+  "killCriteria": "Drop if fewer than 3 of 10 contacted MSP owners would pay $79 after a hand-built sample digest, if Civic IQ's free tier already surfaces the same items, if fewer than 8 of 10 sampled alerts check out against the source, or if David cannot name a community to reach MSPs in one state."
+}
