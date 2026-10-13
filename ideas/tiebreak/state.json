@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-13T17:53:21.415Z",
+  "updatedAt": "2026-10-13T18:28:45.669Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -110,7 +110,7 @@
       "M2",
       "M3"
     ],
-    "status": "pr-open",
+    "status": "merged",
     "at": "2026-10-13T17:53:36.389Z",
     "manual": true,
     "advice": {
@@ -131,7 +131,9 @@
     "note": "M3 shipped in #1 (its exit-criteria tests pass on main); M4, the native app (David asked for iPhone + Android), merged as #2 on 2026-10-12; go-live as #3.",
     "experiment": "tiebreak-20261013-instrumentation",
     "kind": "instrumentation",
-    "beacon": "funnel"
+    "beacon": "funnel",
+    "mergedBy": "agent",
+    "mergedAt": "2026-10-13T18:28:45.669Z"
   },
   "milestonesDone": [
     "M1",
@@ -216,5 +218,10 @@
       }
     ],
     "checkedAt": "2026-10-13T17:53:21.415Z"
+  },
+  "golive": {
+    "mergedAt": "2026-10-13T18:28:45.669Z",
+    "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/8",
+    "beacon": "funnel"
   }
 }

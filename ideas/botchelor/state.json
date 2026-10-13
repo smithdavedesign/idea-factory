@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-13T14:43:50.456Z",
+  "updatedAt": "2026-10-13T18:28:45.669Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -95,5 +95,9 @@
     "done": 0,
     "total": 10,
     "updatedAt": "2026-10-13T14:43:50.456Z"
+  },
+  "revenue": {
+    "mrr": 0,
+    "updatedAt": "2026-10-13T18:28:45.669Z"
   }
 }
