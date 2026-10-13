@@ -1,7 +1,11 @@
 {
-  "_doc": "Guardrails for the idea pipeline: make things people use and pay for with near-zero owner overhead and no financial risk. Read by bin/idea-pipeline.js. See README.",
+  "_doc": "Guardrails for the idea pipeline: make things people use and pay for with near-zero owner overhead and little financial risk (ownerBudget). Read by bin/idea-pipeline.js. See README.",
   "maxMonthlySpendUsd": 0,
-  "hosting": "free tiers only (Vercel Hobby, Neon free); no paid domains, ads or services before an idea earns more than it costs",
+  "ownerBudget": {
+    "perProductUsd": 300,
+    "_why": "David, 2026-10-12: \"I am ok moving a product forward for a few hundred.\" Agents still never spend or hold a card (maxMonthlySpendUsd stays 0): they propose a spend with what it should buy (ads to fill a demand test, a domain, a paid tier for a product that takes payments) and David approves and pays."
+  },
+  "hosting": "free tiers by default (Vercel Hobby, Neon free). A product that takes payments needs a host that allows commercial use, which Vercel Hobby doesn't: a paid tier within ownerBudget, or a free host that allows it.",
   "research": {
     "seeded": {
       "maxPerDay": 10,
@@ -9,6 +13,10 @@
       "quietStart": "08:30",
       "quietEnd": "09:45",
       "_why": "Ideas David sends are researched and reviewed on the next pipeline tick, not at 09:00, and the verdict goes back where he sent them (lib/seeds.js). Claude Pro only, shared with his own sessions and M1 builds, so at most maxPerDay runs a day; a failed run (e.g. usage limit) waits retryMinutes; nothing starts in the quiet window around the 09:00 research run. Over the cap, seeds wait for the next day. maxPerDay was 3 until 2026-10-12, when David asked for a batch of ten to be pushed through the same night; research hadn't hit the usage limit in the week before. Runs go one per tick, so ten take about 2.5 hours."
+    },
+    "discovery": {
+      "pauseWhileBuildsHeld": true,
+      "_why": "David, 2026-10-12: two dozen researched ideas and nobody had seen the products yet. While new builds wait for a focus product's traction (build.startNew), the 09:00 run records no new idea (bin/idea-research.js discoveryPaused); ideas he sends are still researched. Lifts by itself with the build hold."
     }
   },
   "review": {

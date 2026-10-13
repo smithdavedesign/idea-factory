@@ -7,6 +7,8 @@
 // It uses the subscription, never API credit: the Anthropic API env vars are removed, and the run is
 // refused if Claude Code reports any API-key auth source. Prints {ok:true, engine, report} when a new
 // idea was recorded, else {ok:false, reason} so the caller (the OpenClaw scout) falls back to free models.
+// The 09:00 run skips discovery while policy.research.discovery says so (discoveryPaused) and prints
+// {ok:true, skipped, report}, so the scout doesn't research on free models instead.
 //
 // Isolation: Claude Code runs with no user settings, plugins, hooks, MCP servers or claude.ai
 // connectors, no skills, no session saved. It may search and fetch the web, read idea-factory, write
@@ -16,6 +18,8 @@ const path = require('path');
 const base = require('../lib/claude');
 const { inspect, guard, cleanEnv } = base;
 const { emit } = require('../lib/events');
+const P = require('../lib/pipeline');
+const pub = require('./idea-publish');
 
 const ROOT = path.resolve(__dirname, '..');
 const DRAFTS = path.join(ROOT, 'drafts');
@@ -63,8 +67,35 @@ function takeLock() {
   return true;
 }
 
+/**
+ * Whether the 09:00 run skips discovery (pure): policy.research.discovery.pauseWhileBuildsHeld, while new
+ * builds wait for a focus product's traction (lib/pipeline.js newBuildsHeld) and no idea David sent is
+ * queued. New ideas would only wait behind the hold; the ones he sends are still researched.
+ */
+function discoveryPaused(policy, entries, queued) {
+  return queued === 0 && !!policy.research?.discovery?.pauseWhileBuildsHeld && P.newBuildsHeld(policy, entries);
+}
+
+/** The 09:00 run's answer on a paused day, or null. */
+function pausedToday() {
+  const policy = JSON.parse(fs.readFileSync(path.join(ROOT, 'policy.json'), 'utf8'));
+  const entries = listIdeas().map((s) => [s, P.readState(path.join(IDEAS, s))]);
+  const queued = pub.readSeeds().filter((s) => s.status === 'queued').length;
+  if (!discoveryPaused(policy, entries, queued)) return null;
+  const focus = (policy.growth?.focus || []).join(', ') || 'a focus product';
+  const out = { ok: true, skipped: 'discovery paused', engine: 'claude-pro', model: 'not run', trigger: 'daily',
+    report: `No new idea today: daily discovery is paused until ${focus} reaches ${policy.growth?.minVisitorsPerWeek ?? 50} visitors a week (policy.research.discovery). Ideas you send are still researched.` };
+  log(out);
+  emit({ component: 'research', event: 'run', status: 'info', message: out.report });
+  return out;
+}
+
 /** `trigger`: 'daily' (the 09:00 run, which falls back to free models) or 'seed' (the pipeline, which keeps the seed queued). */
 async function research({ trigger = 'daily' } = {}) {
+  if (trigger === 'daily') {
+    const paused = pausedToday();
+    if (paused) return paused;
+  }
   if (!fs.existsSync(base.CLAUDE)) return { ok: false, engine: 'claude-pro', reason: `Claude Code not found at ${base.CLAUDE}` };
   if (!takeLock()) return { ok: false, busy: true, engine: 'claude-pro', reason: 'another research run is in progress' };
   try { return await researchLocked(trigger); } finally { fs.rmSync(LOCK, { force: true }); }
@@ -105,4 +136,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { research, inspect, guard, cleanEnv, ALLOWED_TOOLS };
+module.exports = { research, discoveryPaused, inspect, guard, cleanEnv, ALLOWED_TOOLS };
