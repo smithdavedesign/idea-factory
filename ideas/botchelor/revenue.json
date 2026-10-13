@@ -1,0 +1,55 @@
+{
+  "buyer": "An adult (18+) who has written an original character and already roleplays it with AI, e.g. a regular in the r/CharacterAI or r/SillyTavernAI subreddits or an AI-roleplay Discord such as the Shapes Inc server; not art-first OC communities, which reject AI. No named individual or community size is verified.",
+  "paymentMethod": "Stripe Checkout payment link (no backend needed). Fulfil by hand at first: the buyer enters their email, David adds 5 episode credits to that account. Wire the webhook only after 5 or more sales.",
+  "mvpScope": "A creator builds an 18+ OC, it goes on a date with a house character, and they watch a schema-valid episode that they can't steer. A spectator predicts the outcome before the reveal and gets free points, and the episode has a share link. The live site at https://botchelor.vercel.app must complete this flow end to end for a stranger without David's help. Mutual-consent reveal and leaderboards are nice to have. Payment grants episodes only and never changes points or rank.",
+  "firstTenUsers": "Do not wait for the app to find people. Post a hand-run mini-season in r/CharacterAI and r/SillyTavernAI and the Shapes Inc Discord: 'Send me your 18+ OC (name, bio, three traits, want, dealbreaker) and I'll put it on a blind date; episode posted in 3 days, guess the ending first.' Take the first 10 to 20 OC submissions by DM or reply. Paste each episode in the thread with the prediction poll, then send each creator their own episode link on the live site and offer the $4 pack for more dates. David also asks every submitter to forward the episode to one friend, which tests the spectator loop.",
+  "price": {
+    "amount": 4,
+    "currency": "USD",
+    "interval": "once",
+    "why": "Anchored below the $9.99/mo c.ai+ (annual about $80-95) and Chai (about $14/mo) chat subscriptions, which are the only things this audience is shown to pay for. No evidence anyone pays for a watched episode, so the first price is a one-off $4 for a 5-episode pack, small enough to be an impulse buy and a real test of willingness to pay."
+  },
+  "mustHaveBeforeCharging": [
+    "checkout (Stripe payment link for the 5-episode pack, created and mapped by David)",
+    "privacy policy and terms pages live (both missing today)",
+    "18+ self-attestation, AI disclosure on every episode, crisis-resources link, report button (these are in M2)",
+    "a counsel answer or a written decision on California SB 243 scope for a watch-only show; if counsel is not paid for, ship the disclosure and crisis link and keep it US 18+ only",
+    "episode credits cannot buy points, odds or rank (route-listing test passes)",
+    "a refund path: the terms state a plain refund by email within 14 days",
+    "sitemap, robots.txt and og:image so shared links preview properly",
+    "the M3 Stripe webhook must run on a host that allows commercial use (not Vercel Hobby); until then fulfil by hand"
+  ],
+  "launchChannels": [
+    {
+      "name": "r/CharacterAI",
+      "url": "https://www.reddit.com/r/CharacterAI/",
+      "why": "Largest pool of people who already pay for character chat. Read the self-promotion rules first; post a finished episode and ask people to predict the ending, not a link drop."
+    },
+    {
+      "name": "r/SillyTavernAI",
+      "url": "https://www.reddit.com/r/SillyTavernAI/",
+      "why": "Adults who run AI roleplay themselves and are AI-positive. Likely to try a tool and give blunt feedback."
+    },
+    {
+      "name": "Shapes Inc Discord (AI-character community)",
+      "url": "https://discordhunt.com/en/servers/shapesinc-781212328749301790",
+      "why": "Listed as a place for deep-lore AI characters; it fits the OC-owning, AI-positive buyer. Ask the mods before posting."
+    },
+    {
+      "name": "Love Island fan communities (spectator side)",
+      "url": "https://www.reddit.com/r/LoveIslandUSA/",
+      "why": "Spectators who already like predicting dating drama. They won't pay but they bring the audience that makes episodes worth making. Check the subreddit rules first; it may ban promotion."
+    }
+  ],
+  "risks": [
+    "No evidence anyone pays for a watched episode; every price anchor is a chat subscription. The review scored demand 2/10 and the research confidence is Low.",
+    "Audience size is unknown and David has no existing community in it; the pro-AI OC crowd is narrow and may skew young or NSFW.",
+    "Moderation (minors, NSFW, real people) against a goal of under an hour a week of owner time; a self-attested 18+ gate is weak.",
+    "California SB 243 ($1,000 per violation private right of action) may or may not cover a watch-only show; unsettled and needs counsel.",
+    "Free points plus paid items touch contest/gambling rules if payment ever affects rank or odds; keep paid items to episode credits and cosmetics.",
+    "Cold start: predictions feel empty without spectators, so house characters and a fixed weekly drop must carry the first weeks.",
+    "Free-model episodes may turn repetitive within a few weeks.",
+    "M4 (episode packs, seasons) did not finish building, and the built M3 SKUs are $3-8; the $4 pack may need to be a manual credit until M4 lands."
+  ],
+  "killCriteria": "Run the hand-run mini-season for 3 weeks. Stop if fewer than 20 OCs are submitted, or fewer than 25% of spectators predict a second episode, or nobody asks for the next episode unprompted, or no one buys the $4 pack after at least 20 creators have been offered it (below 1 in 20 is not a business at this price), or counsel says SB 243 applies with costly obligations, or moderation takes over an hour a week."
+}

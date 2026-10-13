@@ -7,7 +7,7 @@
     "at": "2026-10-13T06:29:40.990Z",
     "notionAt": "2026-10-13T06:29:42.454Z"
   },
-  "updatedAt": "2026-10-13T20:45:19.290Z",
+  "updatedAt": "2026-10-13T21:02:06.973Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -21,15 +21,15 @@
         "id": "plan",
         "owner": "agent",
         "label": "Road-to-revenue plan written",
-        "done": false,
-        "evidence": "written after M1 merges"
+        "done": true,
+        "evidence": "The person who runs a 4–12 person friend/roommate/club group chat (ages ~20–35)  · $6 once"
       },
       {
         "id": "mvp",
         "owner": "agent",
         "label": "MVP built: every roadmap milestone merged",
-        "done": false,
-        "evidence": "0/4 milestones merged"
+        "done": true,
+        "evidence": "4/4 milestones merged"
       },
       {
         "id": "deployed",
@@ -55,9 +55,9 @@
       {
         "id": "price",
         "owner": "david",
-        "label": "Price decided",
-        "done": false,
-        "evidence": ""
+        "label": "Price: $6 once (from the plan)",
+        "done": true,
+        "evidence": "One payment per group unlocks clean exports for everyone. Anchored on chat-wrap apps at about €6 per person (WA Wrapped)"
       },
       {
         "id": "payments",
@@ -89,20 +89,22 @@
       }
     ],
     "next": {
-      "id": "plan",
-      "label": "Road-to-revenue plan written",
+      "id": "launchReady",
+      "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
       "owner": "agent"
     },
-    "done": 2,
+    "done": 5,
     "total": 10,
-    "updatedAt": "2026-10-13T20:45:19.290Z"
+    "buyer": "The person who runs a 4–12 person friend/roommate/club group chat (ages ~20–35) and posts year-in-review content in December; first reached through David's own group chats and r/roommates-style communities",
+    "price": "$6 once",
+    "updatedAt": "2026-10-13T21:01:43.988Z"
   },
   "revenue": {
     "mrr": 0,
     "updatedAt": "2026-10-13T12:42:50.438Z"
   },
   "build": {
-    "milestone": "MVP",
+    "milestone": "GOLIVE",
     "milestones": [
       "M1",
       "M2",
@@ -116,28 +118,59 @@
       "M4"
     ],
     "stopped": null,
-    "status": "merged",
+    "status": "running",
     "prUrl": "https://github.com/smithdavedesign/squadwrap/pull/1",
     "testsPassing": true,
     "engine": "claude",
     "model": "claude-opus-5-5",
     "effort": "xhigh",
-    "manual": true,
+    "manual": false,
     "sandbox": "docker",
-    "at": "2026-10-13T18:29:02.102Z",
+    "at": "2026-10-13T21:02:05.940Z",
     "advice": {
       "difficulty": 2,
       "reason": "Involves multiple endpoints, validation logic, and integration with a model stub.",
       "source": "model",
       "model": "local-qwen3"
     },
-    "mergedBy": "agent",
-    "mergedAt": "2026-10-13T20:45:19.290Z"
+    "progress": {
+      "step": 1,
+      "steps": 2,
+      "label": "GOLIVE",
+      "at": "2026-10-13T21:02:06.973Z"
+    }
   },
   "milestonesDone": [
     "M1",
     "M2",
     "M3",
     "M4"
-  ]
+  ],
+  "funnel": {
+    "at": "2026-10-13T21:01:43.988Z",
+    "d7": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "prev7": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "all": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "seen": {
+      "visit": false,
+      "activate": false,
+      "checkout": false
+    },
+    "referrers7d": []
+  }
 }

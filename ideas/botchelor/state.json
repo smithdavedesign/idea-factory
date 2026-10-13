@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-13T18:29:02.089Z",
+  "updatedAt": "2026-10-13T21:01:43.988Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -34,8 +34,8 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": false,
-        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
+        "done": true,
+        "evidence": "https://botchelor.vercel.app"
       },
       {
         "id": "legal",
@@ -49,7 +49,7 @@
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
         "done": false,
-        "evidence": "checked once it's live (the go-live build adds what's missing)"
+        "evidence": "4/9 launch checks · missing: Social share image (og:image), robots.txt, sitemap.xml, Privacy page, Terms page"
       },
       {
         "id": "price",
@@ -92,9 +92,9 @@
       "label": "Road-to-revenue plan written",
       "owner": "agent"
     },
-    "done": 0,
+    "done": 1,
     "total": 10,
-    "updatedAt": "2026-10-13T14:43:50.456Z"
+    "updatedAt": "2026-10-13T21:01:43.988Z"
   },
   "revenue": {
     "mrr": 0,
@@ -102,20 +102,39 @@
   },
   "build": {
     "milestone": "MVP",
+    "milestones": [
+      "M1",
+      "M2",
+      "M3"
+    ],
     "planned": [
       "M1",
       "M2",
       "M3",
       "M4"
     ],
-    "status": "running",
-    "at": "2026-10-13T18:29:02.089Z",
+    "stopped": "M4: the builder stopped",
+    "status": "merged",
+    "prUrl": "https://github.com/smithdavedesign/botchelor/pull/1",
+    "testsPassing": true,
+    "engine": "claude",
+    "model": "claude-opus-5-5",
+    "effort": "xhigh",
     "manual": true,
+    "sandbox": "docker",
+    "at": "2026-10-13T18:29:02.089Z",
     "advice": {
       "difficulty": 2,
       "reason": "Involves multiple endpoints, validation logic, and integration between features requiring careful design and testing.",
       "source": "model",
       "model": "local-qwen3"
-    }
-  }
+    },
+    "mergedBy": "agent",
+    "mergedAt": "2026-10-13T21:01:43.988Z"
+  },
+  "milestonesDone": [
+    "M1",
+    "M2",
+    "M3"
+  ]
 }
