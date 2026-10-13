@@ -253,6 +253,10 @@ test('MVP run ("let it rip"): milestones one after another in one session, stopp
   const runs = log.filter((e) => e.op === 'claude');
   assert.deepEqual(runs.map((c) => c.mvpNow), ['Now: M1 (1 of 3)', 'Now: M2 (2 of 3)', 'Now: M3 (3 of 3)']);
   assert.deepEqual(runs.map((c) => c.shots), [false, false, true], 'screenshots once, at the end of the run');
+  // Progress for RepoHQ's Building now panel: a step per milestone, then the checks and the PR.
+  const steps = fs.readFileSync(path.join(process.env.SYSTEM_EVENTS_DIR, 'events.jsonl'), 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l))
+    .filter((e) => e.subject?.idea === 'demo' && e.data?.progress).slice(-4).map((e) => `${e.data.progress.step}/${e.data.progress.steps} ${e.data.progress.label}`);
+  assert.deepEqual(steps, ['1/4 M1 (1 of 3)', '2/4 M2 (2 of 3)', '3/4 M3 (3 of 3)', '4/4 checking the work: secret scan, screenshots, the PR']);
   assert.match(host.prs[0], /The MVP for \*\*demo\*\* \(M1, M2, M3 in one run\)/);
   assert.match(host.prs[0], /- M1: ✅ built, tests passing/);
   assert.match(host.prs[0], /- M3: ❌ built, tests failing/);
