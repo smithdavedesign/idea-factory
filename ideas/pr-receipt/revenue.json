@@ -1,0 +1,52 @@
+{
+  "buyer": "Engineering lead or founder of a 2-10 person team on metered Claude API or Teams premium seats (roughly $1k/month agent spend) who has to explain a $400+ monthly agent bill; found via ccusage/claude-burn-rate issue threads and r/ClaudeAI cost posts. Not solo flat-subscription users.",
+  "paymentMethod": "Stripe Checkout payment link in subscription mode (no backend); deliver access manually by inviting the buyer to a private GitHub repo holding the team Action",
+  "mvpScope": "Free CLI (scan, show, comment) accurate on real logs: gitBranch attribution at least 80-90%, totals within 5% of ccusage, no prompt text ever written. Paid Team Pack = report --since 30d across teammates plus the GitHub Action rendering receipts from exported .prreceipt.json.",
+  "firstTenUsers": "Free users first: repliers to the r/ClaudeAI 'what did this PR cost' thread, people filing branch or PR cost requests on ccusage and claude-burn-rate issues, and Show HN commenters. DM each with one question: would your team pay $9/month for a shared cost-per-PR report? Send the Stripe link only to those who say yes. Target 10 free users and 3 conversations with team leads in 30 days.",
+  "price": {
+    "amount": 9,
+    "currency": "USD",
+    "interval": "month",
+    "why": "Flat per team (up to 10 devs). Under 1% of ~$150-250/dev/month Claude Code spend per Anthropic's cost docs, below a single $15-25 AI code review, and kept low because free tools (ccusage, claude-burn-rate) exist and willingness to pay is unproven."
+  },
+  "mustHaveBeforeCharging": [
+    "real-log accuracy check passed (attribution and ccusage parity)",
+    "CLI published to npm and used by 3+ outside users",
+    "Stripe Checkout payment link",
+    "privacy policy and terms pages",
+    "one-page site stating the API-equivalent estimate label and no-prompts-leave-machine guarantee",
+    "manual delivery process for the Team Pack within one day of payment",
+    "README with desktop and phone screenshots of the main flow"
+  ],
+  "launchChannels": [
+    {
+      "name": "r/ClaudeAI",
+      "url": "https://www.reddit.com/r/ClaudeAI/",
+      "why": "Review's assignment: ask how people track PR cost and count unprompted replies; Claude Code users with cost complaints."
+    },
+    {
+      "name": "ccusage GitHub issues",
+      "url": "https://github.com/ryoppippi/ccusage/issues",
+      "why": "Users already asking for grouping or cost features; the most qualified audience for a PR receipt."
+    },
+    {
+      "name": "Show HN",
+      "url": "https://news.ycombinator.com/showhn.html",
+      "why": "Free open-source CLI with a clear one-line value; reaches team leads and engineers."
+    },
+    {
+      "name": "r/ChatGPTCoding",
+      "url": "https://www.reddit.com/r/ChatGPTCoding/",
+      "why": "Multi-agent coding users worried about token bills."
+    }
+  ],
+  "risks": [
+    "LangWatch already documents a per-pull-request agent cost endpoint, and ccusage, claude-burn-rate or Anthropic could add it free",
+    "No evidence anyone will pay; demand is inferred from adjacent complaints (review score 4/10)",
+    "Most solo users are on flat subscriptions, so cost is only an API-equivalent estimate",
+    "Branch metadata gaps (worktrees, renames) could make numbers wrong and destroy trust",
+    "Teams may not want spend published on PRs",
+    "The team Action needs exported JSON from every dev, adding friction"
+  ],
+  "killCriteria": "Stop if 30 days after launch there are fewer than 3 outside users, no team lead says they would pay, zero paying customers after 5 direct asks, branch attribution is under 80% on real logs, or a competitor ships free per-PR cost comments. Leave the open-source CLI up."
+}
