@@ -418,6 +418,15 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     return { ok: false, slug, milestone, reason, state: s };
   };
 
+  // Progress for RepoHQ's Building now panel: one step per planned milestone, then checking the work and
+  // opening the PR. The system log carries it (status info) and so does the record (build.progress).
+  const progress = (k, what) => {
+    const steps = planned.length + 1;
+    const label = what === 'checks' ? 'checking the work: secret scan, screenshots, the PR' : planned.length > 1 ? `${what} (${k + 1} of ${planned.length})` : `${what}`;
+    const p = { step: k + 1, steps, label, at: new Date().toISOString() };
+    try { const cur = P.readState(ideaDir); if (cur.build?.status === 'running') P.writeState(ideaDir, { ...cur, build: { ...cur.build, progress: p } }); } catch { /* the record is a nicety here */ }
+    emit({ component: 'build', event: milestone, status: 'info', subject: { idea: slug }, message: `${slug}: step ${p.step} of ${steps}, ${label}`, data: { progress: p } });
+  };
   let ws;
   try {
     const minutes = (mvp ? mvpPolicy.maxMinutes + policy.build.timeoutMinutes + 20 : eng.timeoutMinutes + 30) + SCREENSHOT_ROUND_MINUTES;
@@ -438,6 +447,7 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     let stopped = null;
     for (const [k, m] of planned.entries()) {
       if (k > 0 && Date.now() > deadline) { stopped = `time budget (${mvpPolicy.maxMinutes} min) used before ${m}`; break; }
+      progress(k, m);
       const text = growth
         ? growthPrompt(slug, { exp: growth.experiment, task: growth.task, briefFile: ws.gstackFile, signalUrl: policy.signalUrl, provision: ws.kind === 'docker' ? 'file' : 'direct', ui: growth.experiment.kind !== 'instrumentation' })
         : golive
@@ -458,6 +468,7 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     const engine = engineLabel(run, growth ? { model: eng.model, effort: eng.effort } : policy.build);
     const usage = { milestone, manual: !!manual, model: run.info.model ?? null, engine: run.engine, effort: run.engine === 'free' ? null : eng.effort || null, sandbox: ws.kind,
       fellBack: steps.some((x) => x.fellBack), ...(mvp ? { planned, completed, stopped } : {}), ...(run.primaryReason ? { primaryReason: String(run.primaryReason).slice(0, 200) } : {}) };
+    progress(planned.length, 'checks');
     let patch = await ws.patch();
     if (!patch.trim()) return failBuild(run.reason || 'no changes made', usage);
 
