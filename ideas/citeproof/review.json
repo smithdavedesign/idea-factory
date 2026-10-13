@@ -1,0 +1,56 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "AI-visibility tracking for local agencies is a proven, crowded category (8+ vendors, several local-specific), and 'confidence ranges' is a rigor claim with no evidence anyone buys it. BYO-API-key friction and the API-vs-consumer-app mismatch undercut the product's own credibility, and David has no agency audience to reach.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "Category demand is real (AgencyAnalytics AI tracker, Insites advice, vendor pricing $29-$499), but RESEARCH.md found no first-hand agency complaints about variance and no one asking for ranges. SparkToro's study proves the variance, not that agencies will pay to fix it. Interest in the category is not demand for this wedge."
+    },
+    "statusQuo": {
+      "score": 5,
+      "evidence": "Agencies today either use a paid tracker (ThriveStack citedby, Rankability, LocalSeen $49-$149, Otterly $29) or check ChatGPT by hand. The paid options are cheap and already white-label, so the status quo is good enough and the manual check is cheap enough that the pain looks mild."
+    },
+    "specificity": {
+      "score": 3,
+      "evidence": "Target is 'owner or head of search at a 5-30 client local agency': a category, not a person. No named agency, no quote, no consequence (client churn? lost renewal?) beyond a client asking a question. David has no personal contact in this niche; his bookmarks and repos show no agency link."
+    },
+    "wedge": {
+      "score": 4,
+      "evidence": "The wedge is statistical rigor plus retained raw answers. It is narrow and cheap to build, but unverified as a reason to switch, and competitors can add a run count and interval in a sprint. Pricing at $49 sits in the same band as LocalSeen and Otterly, so there is no price edge. Requires the agency to create and paste API keys and pay roughly $12 per client per month in API costs on top, so it is more expensive and harder than the incumbents."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "AI search will grow, but engines and AgencyAnalytics-style platforms will absorb measurement natively, and providers may add reproducibility or official data. A thin client-side tool without its own data has no moat. Google AI Overviews, the biggest local surface, has no API and is excluded."
+    }
+  },
+  "premises": [
+    "Agencies need a defensible number for 'does ChatGPT recommend us?': partly supported (variance is documented), but not shown to block a sale or renewal.",
+    "Confidence ranges and raw-answer evidence are a reason to choose citeproof over incumbents: unsupported; the research itself calls this unverified.",
+    "Agencies will bring their own API keys and pay the run costs: unsupported, and it is a friction the incumbents don't have.",
+    "API answers are a fair proxy for what customers see in consumer apps: weak; the research names this the biggest credibility risk.",
+    "A solo developer can reach 5 agency conversations from 100 posts: unsupported, no existing audience."
+  ],
+  "alternatives": [
+    "Minimal: a free open-source or single-page Wilson-interval 'AI mention rate' calculator for SEO bloggers, as a lead magnet. Cheap, but no revenue path.",
+    "Ideal: a hosted product with scheduled runs, saved history and client portals. Needs server-side keys and cost, so it breaks the $0 rule.",
+    "Lateral: sell a one-off $99-$199 'AI visibility audit report' done with the tool for 5 local businesses or agencies. Tests willingness to pay with no product, and uses the same engine.",
+    "Extend an existing repo: no overlap in David's portfolio (listvault is the nearest agency-facing GBP idea). A GBP-evidence tool for the same agency buyer would reuse any outreach, but both depend on reaching that buyer, which David has not shown."
+  ],
+  "wedge": "One page: enter a business, city, service and an OpenAI key; run 10 prompts x 20 repeats; show per-prompt mention rate with a Wilson interval and download raw answers as CSV. No PDF, no Gemini, no accounts.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "TypeScript + Vite static app, Vitest on pure functions (Wilson, parser, mention rate), $0 on Vercel Hobby. The one test that proves M1: wilson(7,20) is about 0.18-0.57 and a stubbed 7-of-20 run reports 0.35. Buildable, but building is not the risk; demand is. The user's API spend (about $3 per 10x20 run) is theirs, not David's."
+  },
+  "risks": [
+    "Crowded: 8+ funded or established competitors, several aimed at local agencies with white-label already.",
+    "Rigor is not a proven buying reason; agencies may only want a pretty chart.",
+    "API answers differ from consumer apps, so the headline number may be disputed.",
+    "BYO keys add setup friction and cost the agency about $12+ per client per month.",
+    "No distribution: David has no agency network, and the demand test needs 5 conversations from cold outreach.",
+    "Incumbents or AgencyAnalytics can add intervals natively."
+  ],
+  "killCriteria": "Drop it if fewer than 2 agencies run a real client report, or if no agency says the confidence range or raw-answer evidence is why they would pay, or if 5 cold conversations show they prefer a hosted tracker with no API key.",
+  "mWatch": "Watch an agency owner set up a client and read the report cold: do they get past creating an API key, do they read the interval or only the percentage, and do they paste the number into a client report?"
+}

@@ -1,0 +1,11 @@
+{
+  "stage": "pass",
+  "review": {
+    "verdict": "pass",
+    "score": 4,
+    "summary": "AI-visibility tracking for local agencies is a proven, crowded category (8+ vendors, several local-specific), and 'confidence ranges' is a rigor claim with no evidence anyone buys it. BYO-API-key friction and the API-vs-consumer-app mismatch undercut the product's own credibility, and David has no agency audience to reach.",
+    "at": "2026-10-13T05:35:17.957Z",
+    "notionAt": "2026-10-13T05:35:18.870Z"
+  },
+  "updatedAt": "2026-10-13T05:35:18.870Z"
+}
