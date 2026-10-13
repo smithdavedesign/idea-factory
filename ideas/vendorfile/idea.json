@@ -4,9 +4,12 @@
   "oneLiner": "For principals of 1–10 person SEC-registered advisers, it sends and chases the Reg S-P vendor requests (72-hour breach notice, security attestation) and produces the dated exam-ready binder, at a flat price instead of consultant hours.",
   "overlaps": "none in the portfolio; nearest market tool is COMPLY's vendor due diligence (free up to 5 vendors, part of a $6k+/yr platform)",
   "tags": [
+    "serious",
+    "business",
+    "saas",
+    "reach:search",
     "compliance",
-    "fintech",
-    "saas"
+    "fintech"
   ],
   "effort": "Low",
   "confidence": "Low",

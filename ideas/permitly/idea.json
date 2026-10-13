@@ -4,9 +4,12 @@
   "oneLiner": "For co-hosts and small managers running 3–15 rentals across several cities, it tracks permit and lodging-tax deadlines and emails a diff when a city ordinance page changes, at a flat price instead of per-property or $199+/month.",
   "overlaps": "none (closest in David's portfolio is Open-Travel, a travel planner, which does not cover host compliance)",
   "tags": [
+    "serious",
+    "business",
+    "saas",
+    "reach:community",
     "proptech",
-    "compliance",
-    "saas"
+    "compliance"
   ],
   "effort": "Low",
   "confidence": "Medium",

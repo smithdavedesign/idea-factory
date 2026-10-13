@@ -4,10 +4,13 @@
   "oneLiner": "For small web agencies with 10–40 Next.js/React client sites and no maintenance engineer, it finds exposed sites from their lockfiles, opens CI-gated patch PRs and sends a white-label weekly report, for a per-site monthly fee.",
   "overlaps": "Github-HQ (RepoHQ) — the factory already runs this kind of fix-and-verify loop on David's own repos; this packages it for outside agency sites. Also loosely pr-receipt/dawnlog (agent receipts), not the same user.",
   "tags": [
-    "dev-tools",
+    "serious",
+    "business",
+    "service",
+    "reach:outbound",
     "ai",
-    "agencies",
-    "service"
+    "dev-tools",
+    "agencies"
   ],
   "effort": "Medium",
   "confidence": "Low",

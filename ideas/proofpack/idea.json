@@ -4,7 +4,10 @@
   "oneLiner": "For founders of Stripe-billed SaaS, it turns their own login, usage and ToS logs into a dispute evidence packet Stripe's automation can't build, at a flat monthly price instead of 25–30% of wins.",
   "overlaps": "none",
   "tags": [
+    "serious",
+    "business",
     "saas",
+    "reach:community",
     "payments"
   ],
   "effort": "Low",

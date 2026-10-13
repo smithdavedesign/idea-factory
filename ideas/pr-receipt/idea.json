@@ -4,8 +4,12 @@
   "oneLiner": "For developers and leads running Claude Code/Codex on metered billing, it attributes local agent token spend to each git branch and posts a cost receipt on the pull request.",
   "overlaps": "pr-split (idea-board PR tooling) and Github-HQ (portfolio health dashboard) — neither does AI cost attribution; externally closest are ccusage and claude-burn-rate",
   "tags": [
-    "dev-tools",
-    "ai"
+    "serious",
+    "developers",
+    "saas",
+    "reach:community",
+    "ai",
+    "dev-tools"
   ],
   "effort": "Low",
   "confidence": "Medium",

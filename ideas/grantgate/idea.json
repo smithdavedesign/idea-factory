@@ -4,6 +4,10 @@
   "oneLiner": "For owners of 5–50 person Google Workspace businesses with no IT staff, it intercepts \"Sign in with Google\" consent prompts, blocks risky scope grants and keeps a local encrypted ledger, for a flat few dollars a month instead of enterprise tools that start at $750/month.",
   "overlaps": "none (closest in the portfolio is google-travel-journal-api, an archived Google OAuth demo, not a security product)",
   "tags": [
+    "serious",
+    "business",
+    "saas",
+    "reach:marketplace",
     "security",
     "browser-extension"
   ],

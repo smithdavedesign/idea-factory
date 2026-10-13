@@ -4,6 +4,10 @@
   "oneLiner": "For small digital agencies, it checks the parts of each client's site that make money (forms, booking, checkout, GA4/GTM tags) and sends an evidence-backed report with screenshots and suggested fixes, starting with a $500 audit.",
   "overlaps": "none (closest: feedwarden and listvault, both passed as prevention-only; no portfolio repo covers site/tag monitoring)",
   "tags": [
+    "serious",
+    "business",
+    "service",
+    "reach:outbound",
     "agencies",
     "monitoring",
     "analytics"

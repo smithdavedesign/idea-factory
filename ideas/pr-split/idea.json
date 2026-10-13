@@ -4,8 +4,12 @@
   "oneLiner": "For developers overwhelmed by large PRs, AI analyzes changes and creates stacked, reviewable pull requests with dependency-aware splits.",
   "overlaps": "none",
   "tags": [
-    "dev-tools",
-    "ai"
+    "serious",
+    "developers",
+    "saas",
+    "reach:community",
+    "ai",
+    "dev-tools"
   ],
   "effort": "Medium",
   "confidence": "Medium",
