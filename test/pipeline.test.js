@@ -18,7 +18,8 @@ const goodReview = (over = {}) => ({
 
 test('policy keeps the owner at $0 and decisions small', () => {
   assert.equal(policy.maxMonthlySpendUsd, 0);
-  assert.ok(policy.build.maxPerWeek <= 1 && policy.validation.maxValidating <= 5);
+  // Builds are capped by how many run at once (David, 2026-10-13), not per week.
+  assert.ok(policy.build.concurrency.max <= 3 && policy.validation.maxValidating <= 5);
 });
 
 test('review: a complete validate review passes through', () => {

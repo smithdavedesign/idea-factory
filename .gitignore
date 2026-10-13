@@ -12,3 +12,6 @@ promote.log
 research.log
 seeds.jsonl
 work/
+# Running builds' slots, job files, logs and results (lib/build-slots.js), and atomic-write temp files.
+.builds/
+*.tmp

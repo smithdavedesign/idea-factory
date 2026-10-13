@@ -46,7 +46,7 @@ Everything runs from `bin/idea-pipeline.js tick` (launchd `com.user.idea-pipelin
 - review score ≥ 6;
 - a 14-day validation window, at least 50 visitors to judge;
 - build at ≥ 5 signups and ≥ 5% conversion;
-- at most one build a week from the weekly slot, plus up to 2 a day you start yourself (Start build now);
+- builds run side by side in their own processes (`bin/idea-build-job.js`, `lib/build-slots.js`): up to 3 at once, each only while Docker has 2 GB to spare and the Mac 10% of its memory free (`build.concurrency`), with no daily or weekly cap (David, 2026-10-13). Start build now takes a free slot on the next tick; builds the pipeline starts itself (go-lives, first builds, the rest of a started MVP, growth builds) keep one slot free for those, and wait a day after a failure. Each build's output is in `.builds/<slug>.log` while it runs;
 - while `build.startNew` is false (since 2026-10-12), an idea that has never been built waits for its first build until a focus product (`growth.focus`) has 50 visitors a week. Ideas already being built carry on, and Start build now still works ([growth loop](https://github.com/smithdavedesign/Github-HQ/blob/main/docs/growth-loop-prd.md)).
 
 David's decision on the Ideas page always wins over a verdict: Build, Demand test or Pass.

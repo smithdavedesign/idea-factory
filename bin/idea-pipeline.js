@@ -29,9 +29,14 @@
 //      privacy and terms, payment link, visit beacon, Vercel project); after it merges, the production
 //      URL becomes the repo's homepage and the live site is audited every 6 hours (checklist step
 //      "launchReady"). Also "Get it launch-ready" on the Ideas page (idea_build_requests "GOLIVE").
-//  4c. "Start build now" on the Ideas page (idea_build_requests) builds the next milestone on this
-//      tick, outside the weekly slot: oldest request first, policy.build.manualPerDay in 24 hours,
-//      one build per tick. The result goes back to the request row and to Slack.
+//  4c. "Start build now" on the Ideas page (idea_build_requests) builds the next milestone, oldest
+//      request first, each as soon as a build slot is free. The result goes back to the request row and
+//      to Slack.
+//  Builds run in their own processes (bin/idea-build-job.js, lib/build-slots.js): up to
+//      policy.build.concurrency.max at once, each only while Docker and the Mac have the memory for it,
+//      with no daily or weekly cap (David's call on 2026-10-13). Builds the pipeline starts by itself
+//      (go-lives, first builds, the rest of a started MVP) leave a slot for requests and aren't retried
+//      within retryAfterHours of a failure. The tick never writes the record of an idea that's building.
 //  4a0. Autonomy (lib/autonomy.js, policy.autonomy): the pipeline merges its own PRs once tests and checks
 //      are green, closes failed growth PRs (retried the next day), leaves the rest for David; a merge that
 //      breaks the live site's launch checks is reverted (5b).
@@ -42,10 +47,10 @@
 // Daily (Claude Pro subscription, capped by policy):
 //   a. Review new ideas with the gstack frameworks (bin/idea-review.js) → Validate or Pass.
 //   b. Landing page for each new Validate idea (pages/<slug>/), deployed to the free pages project.
-//   c. Build M1 for a new repo, tests first (bin/idea-build.js), at most policy.build.maxPerWeek.
+// (Builds aren't daily steps any more: they start on any tick with a free slot.)
 const fs = require('fs');
 const path = require('path');
-const { execFileSync } = require('child_process');
+const { execFileSync, spawn } = require('child_process');
 const P = require('../lib/pipeline');
 const pub = require('./idea-publish');
 const { emit } = require('../lib/events');
@@ -57,6 +62,7 @@ const GL = require('../lib/golive');
 const A = require('../lib/autonomy');
 const { commitAuthor } = require('../lib/author');
 const G = require('../lib/growth');
+const BS = require('../lib/build-slots');
 
 const ROOT = path.resolve(__dirname, '..');
 // The record and the pipeline's own files. IDEA_PIPELINE_DATA points them elsewhere (the tick tests).
@@ -66,6 +72,8 @@ const PAGES = path.join(DATA, 'pages');
 const LOCK = path.join(DATA, '.pipeline.lock');
 const STATE_FILE = path.join(DATA, '.pipeline-state.json');
 const LOG = path.join(DATA, 'pipeline.log');
+// Running builds' slots, their job files and logs, and finished builds' results (lib/build-slots.js).
+const SLOTS = path.join(DATA, '.builds');
 const policy = JSON.parse(fs.readFileSync(path.join(ROOT, 'policy.json'), 'utf8'));
 const OWNER = process.env.IDEA_GH_OWNER || 'smithdavedesign';
 
@@ -125,7 +133,8 @@ function dailyDue(lastDaily, now) {
 }
 
 const log = (entry) => fs.appendFileSync(LOG, JSON.stringify({ at: new Date().toISOString(), ...entry }) + '\n');
-const ideaDirs = () => (fs.existsSync(IDEAS) ? fs.readdirSync(IDEAS).filter((s) => fs.existsSync(path.join(IDEAS, s, 'idea.json'))) : []);
+// Every idea in the record. Inside a tick, ideaDirs() leaves out the ideas that are building.
+const allIdeaDirs = () => (fs.existsSync(IDEAS) ? fs.readdirSync(IDEAS).filter((s) => fs.existsSync(path.join(IDEAS, s, 'idea.json'))) : []);
 
 function lock() {
   if (fs.existsSync(LOCK)) {
@@ -134,12 +143,6 @@ function lock() {
   }
   fs.writeFileSync(LOCK, String(process.pid));
   return true;
-}
-
-function dbSql() {
-  const { neon } = require('@neondatabase/serverless');
-  const url = process.env.IDEA_DATABASE_URL || execFileSync('security', ['find-generic-password', '-s', 'repohq-factory-database-url', '-w'], { encoding: 'utf8' }).trim();
-  return neon(url);
 }
 
 function deployPages() {
@@ -165,7 +168,12 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
   const note = (slug, what) => out.changes.push(`${slug}: ${what}`);
   const fail = (step, e) => out.errors.push(`${step}: ${String(e && (e.stderr || e.message) || e).slice(0, 300)}`);
   const changed = new Set();
-  const save = (slug, state, what) => { P.writeState(path.join(IDEAS, slug), state, now); changed.add(slug); note(slug, what); };
+  // An idea that's building belongs to its build job until the job finishes: the tick never writes its
+  // record meanwhile, or the build's own result could be overwritten with what the tick read before it.
+  const save = (slug, state, what) => {
+    if (busy.has(slug)) { note(slug, `left alone while it builds: ${what}`); return; }
+    P.writeState(path.join(IDEAS, slug), state, now); changed.add(slug); note(slug, what);
+  };
   /**
    * Undo a PR an agent merged (lib/autonomy.js revertSteps, policy.autonomy.revert): a revert commit on a
    * branch, a PR that says why, merged. {ok, url} or {ok: false}. A revert because the live site broke
@@ -193,9 +201,51 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
     finally { fs.rmSync(work, { recursive: true, force: true }); }
   };
   let sql = null;
-  try { sql = dbSql(); } catch (e) { fail('database', e); }
+  try { sql = R.connect(); } catch (e) { fail('database', e); }
   const pstate = fs.existsSync(STATE_FILE) ? JSON.parse(fs.readFileSync(STATE_FILE, 'utf8')) : {};
   const writePstate = () => fs.writeFileSync(STATE_FILE, JSON.stringify(pstate));
+
+  // Builds (lib/build-slots.js). The tick tests run jobs in-process (IDEA_BUILD_INLINE), where a slot
+  // counts as running while its pid is alive; here it must be an idea-build-job.js process.
+  const inline = process.env.IDEA_BUILD_INLINE === '1';
+  const cc = BS.settings(policy);
+  const slots = BS.readSlots(SLOTS, { running: inline ? BS.isAlive : BS.isJob });
+  const busy = new Set(slots.live.map((s) => s.slug));
+  const ideaDirs = () => allIdeaDirs().filter((slug) => !busy.has(slug));
+  /** Finished builds since the last look: logged, and their records committed by this tick. */
+  const takeResults = () => {
+    const done = BS.takeResults(SLOTS);
+    for (const x of done) {
+      changed.add(x.slug);
+      if (x.ok) note(x.slug, `${x.milestone} PR ${x.prUrl} (tests ${x.testsPassing ? 'passing' : 'failing'}, ${x.engine === 'free' ? 'free-pool backup' : `Claude subscription${x.model ? ` ${x.model}` : ''}`}${x.kind === 'request' ? ', started from the Ideas page' : ''})`);
+      else fail(`build ${x.slug} ${x.milestone}`, x.reason);
+      for (const e of x.errors || []) fail(`build ${x.slug}`, e);
+    }
+    return done;
+  };
+  const finished = takeResults();
+  // A slot whose process is gone without a result is a build that died (the Mac restarted, the process
+  // was killed): recorded as failed, its request answered, so nothing shows "running" forever.
+  for (const s of slots.stale) {
+    BS.removeSlot(SLOTS, s.slug);
+    if (finished.some((x) => x.slug === s.slug)) continue;
+    const dir = path.join(IDEAS, s.slug);
+    if (!fs.existsSync(path.join(dir, 'state.json'))) continue;
+    const st = P.readState(dir);
+    if (st.build?.status !== 'running') continue;
+    const reason = 'the build process stopped before it finished (the Mac restarted, or it was killed)';
+    save(s.slug, { ...st, stage: st.stage === 'live' ? 'live' : (st.milestonesDone || []).length ? 'building' : 'repo', build: { ...st.build, status: 'failed', reason } }, `${s.milestone} build failed: ${reason}`);
+    emit({ component: 'build', event: s.milestone, status: 'fail', subject: { idea: s.slug }, message: `${s.slug}: ${reason}` });
+    if (sql && s.requestId) await R.finishBuildRequest(sql, s.requestId, 'failed', { result: reason }).catch((e) => fail(`build request ${s.requestId}`, R.explain(e)));
+    fail(`build ${s.slug} ${s.milestone}`, reason);
+  }
+  // A build still running long after any build's time limit is stuck: stopped, and recorded as failed on
+  // the next tick, when its slot is stale.
+  for (const s of slots.live) {
+    if (now - new Date(s.startedAt) < cc.hungAfterHours * 3_600_000) continue;
+    try { process.kill(-s.pid, 'SIGTERM'); } catch { try { process.kill(s.pid, 'SIGTERM'); } catch { /* gone */ } }
+    fail(`build ${s.slug} ${s.milestone}`, `still running after ${cc.hungAfterHours} hours: stopped`);
+  }
 
   /** Landing pages for Validate ideas without one, within policy.validation.maxValidating. Returns [{slug, url}]. */
   const landingPages = () => {
@@ -226,6 +276,7 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
   if (sql) {
     try {
       for (const d of await R.pendingDecisions(sql)) {
+        if (busy.has(d.slug)) continue; // applied once its build finishes
         const dir = path.join(IDEAS, d.slug);
         if (!fs.existsSync(path.join(dir, 'idea.json'))) { await R.finishDecision(sql, d.id, 'failed', 'no such idea in the record'); continue; }
         const r = applyDecision(P.readState(dir), d, { reviewed: fs.existsSync(path.join(dir, 'review.json')), now });
@@ -239,7 +290,7 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
   // 0b. New ideas from the Ideas page → the research queue; researched ones marked with their slug.
   if (sql) {
     try {
-      const slugForSeed = (id) => ideaDirs().find((slug) => {
+      const slugForSeed = (id) => allIdeaDirs().find((slug) => {
         try { return JSON.parse(fs.readFileSync(path.join(IDEAS, slug, 'idea.json'), 'utf8')).seedId === id; } catch { return false; }
       }) || null;
       for (const n of await R.syncSeeds(sql, { seed: (text) => pub.seed(text, { source: 'page' }), seeds: pub.readSeeds(), slugForSeed })) note('seeds', n);
@@ -444,45 +495,63 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
   const syncRepoHQ = async () => {
     if (!sql) return;
     try {
-      const synced = await R.syncIdeas(sql, ideaDirs().map((slug) => R.ideaRecord(path.join(IDEAS, slug), slug)));
+      // Every idea, the building ones too (reading a record is safe; writes are atomic, lib/pipeline.js).
+      const synced = await R.syncIdeas(sql, allIdeaDirs().map((slug) => R.ideaRecord(path.join(IDEAS, slug), slug)));
       if (synced.length) out.synced = [...new Set([...(out.synced || []), ...synced])];
     } catch (e) { fail('repohq sync', R.explain(e)); }
     await R.heartbeat(sql, { at: new Date().toISOString(), ok: out.errors.length === 0, errors: out.errors, policy }).catch(() => {});
   };
 
-  let builtThisTick = false;
-  const startBuild = async (slug, milestone, opts = {}) => {
-    builtThisTick = true;
-    const { buildOne } = require('./idea-build');
-    // A build holds the tick for up to an hour: sync and beat first, so the Ideas page is current meanwhile.
-    await syncRepoHQ();
-    let r;
-    try { r = await buildOne(slug, { milestone, ...opts }); } catch (e) {
-      // A crash (clone, push, gh) mustn't leave the idea "running" forever: record it as failed.
-      const dir = path.join(IDEAS, slug);
-      const s = P.readState(dir);
-      const reason = String(e && (e.stderr || e.message) || e).slice(0, 300);
-      if (s.build?.status === 'running') P.writeState(dir, { ...s, stage: s.stage === 'live' ? 'live' : milestone === 'M1' ? 'repo' : 'building', build: { ...s.build, status: 'failed', reason } });
-      r = { ok: false, slug, milestone, reason };
+  // How many builds may start: measured once per tick (lib/build-slots.js capacity); each one started
+  // this tick counts against it. IDEA_BUILD_PROBE (JSON) stands in for the measurement in the tick tests.
+  let probed = null;
+  let launched = 0;
+  const capacityNow = () => BS.capacity({ running: busy.size, pending: launched, cfg: cc,
+    probe: probed || (probed = process.env.IDEA_BUILD_PROBE ? JSON.parse(process.env.IDEA_BUILD_PROBE) : BS.probe()) });
+
+  /** Starts a build job detached (bin/idea-build-job.js) and records its slot; in the tick tests, runs it here. */
+  const startJob = async (job) => {
+    if (inline) {
+      await require('./idea-build-job').runJob(job, { sql });
+      return;
     }
-    changed.add(slug);
-    if (r.ok) note(slug, `${milestone} PR ${r.prUrl} (tests ${r.testsPassing ? 'passing' : 'failing'}, ${r.engine === 'free' ? 'free-pool backup' : `Claude subscription${r.model ? ` ${r.model}` : ''}`}${opts.manual ? ', started from the Ideas page' : ''})`); else fail(`build ${slug} ${milestone}`, r.reason);
-    // A weekly-slot build answers any "Start build now" still waiting for this idea. A growth build doesn't:
-    // nobody asks for one on the Ideas page.
-    if (!opts.manual && !opts.growth && sql) {
-      await R.settleBuildRequests(sql, slug, { ok: r.ok, result: r.ok ? `${milestone} PR opened by the weekly build slot` : `the weekly build slot tried ${milestone}: ${String(r.reason).slice(0, 200)}`, prUrl: r.prUrl || null })
-        .catch((e) => { if (!R.isMissingTable(e)) fail(`settle build requests ${slug}`, e); });
-    }
-    return r;
+    fs.mkdirSync(SLOTS, { recursive: true });
+    const jobFile = path.join(SLOTS, `job-${job.slug}.json`);
+    fs.writeFileSync(jobFile, JSON.stringify(job));
+    // Its own process group (detached), so it outlives this tick and launchd doesn't stop it with the tick.
+    const logFd = fs.openSync(path.join(SLOTS, `${job.slug}.log`), 'a');
+    const child = spawn(process.execPath, [path.join(__dirname, 'idea-build-job.js'), jobFile], { cwd: ROOT, detached: true, stdio: ['ignore', logFd, logFd], env: process.env });
+    child.unref();
+    fs.closeSync(logFd);
+    BS.writeSlot(SLOTS, { slug: job.slug, milestone: job.milestone, kind: job.kind, requestId: job.requestId, pid: child.pid, startedAt: job.startedAt });
   };
 
-  /** 4c. The oldest "Start build now" request the cap allows. True when a build ran this tick. */
-  const runBuildRequest = async () => {
-    const { manualBuildTarget, mvpMilestones, buildMessage } = require('./idea-build');
-    const cap = policy.build.manualPerDay ?? 2;
+  /**
+   * Starts a build of `slug` if a slot is free: kind "request" ("Start build now"), "growth", or "auto"
+   * (go-lives and roadmap builds the pipeline starts itself). → {started, reason}.
+   */
+  const launchBuild = async (slug, milestone, opts = {}, { kind = 'auto', requestId = null } = {}) => {
+    if (busy.has(slug)) return { started: false, reason: `${slug} is building now` };
+    const c = capacityNow();
+    if ((kind === 'request' ? c.requests : c.automatic) < 1) return { started: false, reason: kind === 'request' ? c.reason : c.autoReason };
+    busy.add(slug);
+    launched++;
+    await startJob({ slug, milestone, opts, kind, requestId, startedAt: new Date().toISOString() });
+    if (!inline) note(slug, `${milestone} build started (${busy.size} running, the limit is ${cc.max})`);
+    return { started: true };
+  };
+
+  /** 4c. "Start build now" requests, oldest first: each starts as soon as a slot is free; the rest wait, with why on their row. */
+  const runBuildRequests = async () => {
+    const { manualBuildTarget, mvpMilestones } = require('./idea-build');
     for (const req of await R.pendingBuildRequests(sql)) {
       const dir = path.join(IDEAS, req.slug);
       if (!fs.existsSync(path.join(dir, 'idea.json'))) { await R.finishBuildRequest(sql, req.id, 'failed', { result: 'no such idea in the record' }); continue; }
+      if (busy.has(req.slug)) { await R.noteBuildRequest(sql, req.id, `waiting: ${req.slug} is building now; this starts once that build is done`); continue; }
+      // Its last PR is still open: it merges itself once its checks pass (policy.autonomy), so the request
+      // waits for it instead of being refused (tiebreak's go-live behind its growth PR, 2026-10-13).
+      const last = P.readState(dir).build || {};
+      if (last.status === 'pr-open') { await R.noteBuildRequest(sql, req.id, `waiting: ${req.slug}'s ${last.milestone || 'last'} PR is open; this starts once it's merged or closed`); continue; }
       const roadmap = fs.existsSync(path.join(dir, 'ROADMAP.md')) ? fs.readFileSync(path.join(dir, 'ROADMAP.md'), 'utf8') : '';
       // milestone "MVP" on the request: build every remaining milestone in one run.
       // "GOLIVE": make it launch-ready (lib/golive.js).
@@ -493,21 +562,11 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
         note(req.slug, `build request refused: ${target.reason}`);
         continue;
       }
-      const used = await R.manualStartsSince(sql, 24);
-      if (used >= cap) {
-        await R.noteBuildRequest(sql, req.id, `waiting: ${used} manual builds started in the last 24 h (the cap is ${cap})`);
-        return false;
-      }
+      const c = capacityNow();
+      if (c.requests < 1) { await R.noteBuildRequest(sql, req.id, `waiting: ${c.reason}`); continue; }
       if (!(await R.claimBuildRequest(sql, req.id, target.milestone))) continue; // withdrawn meanwhile
-      const r = await startBuild(req.slug, target.milestone, { manual: true, note: req.note || '', ...(target.milestone === 'MVP' ? { mvp: true } : {}), ...(target.milestone === 'GOLIVE' ? { golive: true } : {}) });
-      await R.finishBuildRequest(sql, req.id, r.ok ? 'done' : 'failed', {
-        result: r.ok ? `${target.milestone === 'MVP' ? `MVP (${(r.completed || []).join(', ') || 'nothing complete'})` : target.milestone === 'GOLIVE' ? 'Go-live' : target.milestone} PR opened, tests ${r.testsPassing ? 'passing' : 'failing'}${r.stopped ? `; stopped: ${r.stopped}` : ''}` : String(r.reason || 'build failed'),
-        prUrl: r.prUrl || null, engine: r.ok ? (r.engine === 'free' ? `free pool (${r.model || 'free-agent'})` : `${r.model || policy.build.model}${policy.build.effort ? ` · ${policy.build.effort}` : ''}`) : null,
-      }).catch((e) => fail(`build request ${req.id}`, R.explain(e)));
-      try { S.notify('slack', buildMessage({ slug: req.slug, milestone: target.milestone, r, effort: policy.build.effort })); } catch (e) { fail(`notify build ${req.slug}`, e); }
-      return true;
+      await launchBuild(req.slug, target.milestone, { manual: true, note: req.note || '', ...(target.milestone === 'MVP' ? { mvp: true } : {}), ...(target.milestone === 'GOLIVE' ? { golive: true } : {}) }, { kind: 'request', requestId: req.id });
     }
-    return false;
   };
 
   // Daily steps.
@@ -577,31 +636,35 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
     else if (prState === 'CLOSED') save(slug, { ...s, build: { ...s.build, status: 'closed' } }, `${m} PR closed without merging`);
   }
 
-  // 4c. "Start build now" requests come first; a tick runs at most one build.
-  let manualRan = false;
+  // 4c. "Start build now" requests take free slots first.
   if (sql) {
-    try { manualRan = await runBuildRequest(); } catch (e) { fail('build requests', R.explain(e)); }
+    try { await runBuildRequests(); } catch (e) { fail('build requests', R.explain(e)); }
   }
 
-  // 4b. An idea David approved (Build on the Ideas page) is built now, not at the next daily
-  // run: approving is the signal he wants it. Still at most policy.build.maxPerWeek, and not while new
-  // builds are held (policy.build.startNew, P.newBuildsHeld).
-  if (!dailyNow && !manualRan) {
-    const all = ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]);
-    const approved = P.newBuildsHeld(policy, all) ? [] : byRevenue(all.filter(([, s]) => s.ownerApproved && buildable(s)));
-    if (approved.length && P.buildsThisWeek(all.map(([, s]) => s), now) < policy.build.maxPerWeek) await startBuild(approved[0][0], mvpMode ? 'MVP' : 'M1', mvpMode ? { mvp: true } : {});
+  // Builds the pipeline starts by itself, in the slots requests leave (policy.build.concurrency): go-lives
+  // first (a complete MVP is the closest to money), then first builds and the rest of started MVPs, closest
+  // to money first. An idea David approved (Build on the Ideas page) starts on the tick that makes its
+  // repo; while new builds are held (policy.build.startNew, P.newBuildsHeld), only ideas already being
+  // built carry on. One whose last build failed, or whose PR was closed, waits retryAfterHours.
+  const idleStates = () => ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]);
+  if (policy.golive?.auto !== false) {
+    for (const [slug] of byRevenue(idleStates().filter(([, s]) => GL.goLiveDue(s) && BS.retryDue(s, cc, now)))) {
+      if (capacityNow().automatic < 1) break;
+      await launchBuild(slug, 'GOLIVE', { golive: true });
+    }
   }
-
-  // Go-live by itself once an MVP is complete (lib/golive.js goLiveDue): closest to money first, at
-  // most policy.golive.maxPerDay, never on a tick that already built.
-  if (!builtThisTick && policy.golive?.auto !== false) {
-    const today = now.toLocaleDateString('en-CA');
-    const runs = pstate.goliveRuns?.date === today ? pstate.goliveRuns.runs : 0;
-    const due = byRevenue(ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]).filter(([, s]) => GL.goLiveDue(s)));
-    if (due.length && runs < (policy.golive?.maxPerDay ?? 1)) {
-      pstate.goliveRuns = { date: today, runs: runs + 1 };
-      writePstate();
-      await startBuild(due[0][0], 'GOLIVE', { golive: true });
+  {
+    const { nextMilestone } = require('./idea-build');
+    const fresh = idleStates();
+    const nextOf = (slug, s) => nextMilestone(fs.existsSync(path.join(IDEAS, slug, 'ROADMAP.md')) ? fs.readFileSync(path.join(IDEAS, slug, 'ROADMAP.md'), 'utf8') : '', s.milestonesDone || []);
+    const firstBuilds = P.newBuildsHeld(policy, fresh) ? [] : fresh.filter(([, s]) => buildable(s));
+    const queue = byRevenue([...firstBuilds, ...fresh.filter(([slug, s]) => s.stage === 'building' && s.build?.status === 'merged' && nextOf(slug, s))])
+      .filter(([, s]) => BS.retryDue(s, cc, now));
+    for (const [slug, s] of queue) {
+      if (capacityNow().automatic < 1) break;
+      // An MVP run builds everything left, else the next milestone (M1 for a new repo).
+      const milestone = mvpMode ? 'MVP' : (buildable(s) ? 'M1' : nextOf(slug, s));
+      await launchBuild(slug, milestone, milestone === 'MVP' ? { mvp: true } : {});
     }
   }
 
@@ -614,34 +677,18 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
       if (!r.ok) { fail(`review ${slug}`, r.reason); continue; }
       changed.add(slug); note(slug, `reviewed: ${r.review.verdict} ${r.review.score}/10`);
     }
-    // b. Landing pages for new Validate ideas, within the cap.
+    // b. Landing pages for new Validate ideas, within the cap. (Builds start on any tick with a free slot, above.)
     landingPages();
-    const states = ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]);
-    // c. Builds: Claude Code on the subscription first, the free pool only as backup (idea-build.js).
-    // A merged milestone PR moves the idea on to its next milestone; M1 for new repos. One a week.
-    // (Merged milestone PRs are picked up every tick, in 4a.)
-    const { nextMilestone } = require('./idea-build');
-    const fresh = ideaDirs().map((slug) => [slug, P.readState(path.join(IDEAS, slug))]);
-    const nextOf = (slug, s) => nextMilestone(fs.existsSync(path.join(IDEAS, slug, 'ROADMAP.md')) ? fs.readFileSync(path.join(IDEAS, slug, 'ROADMAP.md'), 'utf8') : '', s.milestonesDone || []);
-    // Closest to money first (revenueScore); an MVP run builds everything left, else the next milestone.
-    // While new builds are held (P.newBuildsHeld), only ideas already being built are continued.
-    const firstBuilds = P.newBuildsHeld(policy, fresh) ? [] : fresh.filter(([, s]) => buildable(s));
-    const queue = byRevenue([...firstBuilds, ...fresh.filter(([slug, s]) => s.stage === 'building' && s.build?.status === 'merged' && nextOf(slug, s))])
-      .map(([slug, s]) => [slug, mvpMode ? 'MVP' : (buildable(s) ? 'M1' : nextOf(slug, s))]);
-    if (!manualRan && queue.length && P.buildsThisWeek(fresh.map(([, s]) => s), now) < policy.build.maxPerWeek) {
-      const [slug, milestone] = queue[0];
-      await startBuild(slug, milestone, milestone === 'MVP' ? { mvp: true } : {});
-    }
     // In memory too: a later writePstate() (the revenue cap, the tick's failure flag) would otherwise write
     // the old date back, and the daily steps would run again on the next tick.
     pstate.lastDaily = now.toLocaleDateString('en-CA');
     writePstate();
   }
 
-  // 5c. The road-to-revenue plan for an idea whose M1 is merged and that has none yet: one per tick, only
-  // on a tick that didn't build (a build already held it long), at most policy.revenue.maxPerDay.
+  // 5c. The road-to-revenue plan for an idea whose M1 is merged and that has none yet: one per tick (a
+  // Claude run in this process), at most policy.revenue.maxPerDay. Builds run elsewhere, so they don't stop it.
   let planRan = false;
-  if (!builtThisTick) {
+  {
     const cap = policy.revenue?.maxPerDay ?? 2;
     const today = now.toLocaleDateString('en-CA');
     const runsToday = pstate.revenue?.date === today ? pstate.revenue.runs : 0;
@@ -711,7 +758,7 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
   };
   for (const slug of gp.focus || []) {
     const dir = path.join(IDEAS, slug);
-    if (!fs.existsSync(path.join(dir, 'idea.json'))) continue;
+    if (busy.has(slug) || !fs.existsSync(path.join(dir, 'idea.json'))) continue;
     const s = P.readState(dir);
     const log = readLog(dir);
     let experiments = G.advance(s.growth?.experiments || [], { posts: log?.posts || [], now, gp });
@@ -720,17 +767,21 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
     const growth = { ...(s.growth || {}), stage: b.stage, bottleneck: b.bottleneck, next: b.action, experiments };
     if (!G.sameGrowth(s.growth, growth)) save(slug, { ...s, growth: { ...growth, checkedAt: now.toISOString() } }, `growth: ${b.stage}, ${b.bottleneck}${b.action ? `; next: ${b.action.kind} (${b.action.executor})` : ''}`);
   }
-  if (!builtThisTick && !planRan && sql && G.growthDue(pstate.growth, now, gp, { force: forceGrowth })) {
+  // A growth build takes a slot like any build the pipeline starts itself; a kit runs in this process, so
+  // not on a tick that already wrote a revenue plan.
+  if (!planRan && sql && G.growthDue(pstate.growth, now, gp, { force: forceGrowth })) {
     const today = now.toLocaleDateString('en-CA');
     const pg = pstate.growth?.date === today ? pstate.growth : { date: today, runs: 0, slugs: [] };
     const weekBuilds = G.growthBuildsThisWeek(ideaDirs().map((slug) => P.readState(path.join(IDEAS, slug))), now);
     for (const slug of gp.focus || []) {
       const dir = path.join(IDEAS, slug);
-      if (pg.slugs.includes(slug) || !fs.existsSync(path.join(dir, 'idea.json'))) continue;
+      if (busy.has(slug) || pg.slugs.includes(slug) || !fs.existsSync(path.join(dir, 'idea.json'))) continue;
       const s = P.readState(dir);
       const next = s.growth?.next;
       if (!next || next.executor === 'owner' || !G.KINDS[next.kind] || !G.canStart(s)) continue;
       if (next.executor === 'build' && weekBuilds >= (gp.maxBuildsPerWeek ?? 2)) continue;
+      // No free slot: the mission waits for a tick that has one (nothing is recorded yet).
+      if (next.executor === 'build' && capacityNow().automatic < 1) continue;
       const exp = G.newExperiment(slug, next, s, gp, now);
       // Recorded before it starts, so a crash mid-run can't start it twice: the day's counter, then the proposed experiment.
       pstate.growth = { date: today, runs: pg.runs + 1, slugs: [...pg.slugs, slug] };
@@ -747,9 +798,10 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
         const others = ideaDirs().filter((x) => x !== slug).flatMap((x) => (P.readState(path.join(IDEAS, x)).growth?.experiments || [])
           .filter((e) => e.kind === exp.kind && e.status !== 'proposed').map((e) => ({ slug: x, hypothesis: e.hypothesis, decision: e.decision, status: e.status, reason: e.reason })));
         const brief = G.brief({ slug, exp, state: s, task, learnings: readText(path.join(dir, 'LEARNINGS.md')), playbook: readText(path.join(DATA, 'PLAYBOOK.md')), others });
-        const r = await startBuild(slug, 'GROWTH', { growth: { experiment: exp, task, brief } });
-        // A run that failed is tried again the next day (lib/growth.js failedRun); a PR David closes isn't.
-        record(r.ok && r.prUrl ? { prUrl: r.prUrl } : { status: 'abandoned', failed: true, reason: String(r.reason || 'no PR was opened').slice(0, 300) });
+        // The build job records the PR on the experiment, or abandons it if the run failed (tried again the
+        // next day, lib/growth.js failedRun; a PR David closes isn't).
+        const r = await launchBuild(slug, 'GROWTH', { growth: { experiment: exp, task, brief } }, { kind: 'growth' });
+        if (!r.started) record({ status: 'abandoned', failed: true, reason: `no build slot: ${r.reason}` });
       } else {
         const { distributionKitOne } = require('./idea-growth');
         let r;
@@ -759,6 +811,14 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
       }
       break; // one mission per tick
     }
+  }
+
+  // Builds that finished while this tick ran (in the tick tests, the ones it ran in-process).
+  takeResults();
+  // What ran and how much memory there was, in pipeline.log: what the concurrency settings are tuned from.
+  if (busy.size || launched) {
+    out.builds = { running: [...busy], limit: cc.max, started: launched,
+      ...(probed ? { mem: { macFreePct: probed.hostFreePct, dockerTotalMb: probed.dockerTotalMb, dockerUsedMb: (probed.containers || []).reduce((sum, c) => sum + c.mb, 0) } } : {}) };
   }
 
   // 6. Commit the record.
