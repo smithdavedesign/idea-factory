@@ -1,0 +1,26 @@
+{
+  "title": "ownerbrief — plain-English monthly owner letters for small property managers",
+  "repoName": "ownerbrief",
+  "oneLiner": "For self-run property managers with 50–300 doors, it turns the owner-statement export into a per-owner plain-English letter with flagged oddities, ready to approve and send.",
+  "overlaps": "none (closest in the portfolio: permitly, a rule tracker for short-term-rental operators — different job and user)",
+  "tags": [
+    "real-estate",
+    "ai",
+    "reporting"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://www.rentvine.com/blog/how-to-improve-owner-retention-with-better-workflows-communication-reporting",
+    "https://enterprisedna.co/resources/blog/real-estate-track-property-owner-communication",
+    "https://ustechautomations.com/resources/blog/property-management-reporting-automation-comparison-2026",
+    "https://www.buildium.com/blog/how-to-generate-financial-statements-in-property-management/",
+    "https://www.costbench.com/compare/buildium-vs-appfolio/",
+    "https://ustechautomations.com/resources/blog/how-to-client-reporting-for-property-managers-2026",
+    "https://prohost.ai/learn/financial/guide/owner-statements",
+    "https://hunted.space/product/docchase"
+  ],
+  "seedId": "seed-e0cb07",
+  "slug": "ownerbrief",
+  "recordedAt": "2026-10-13T05:17:05.079Z"
+}
