@@ -1,0 +1,54 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "Real but unproven problem with no demand evidence, and the buyer (agency owners) needs outbound sales David has no network for and doesn't want. It repeats the cure-vs-prevention weakness that sank feedwarden and listvault and competes with Little Warden's low price.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 2,
+      "evidence": "Only vendor or secondhand numbers (Leadferno 4.8% broken forms, original not located; PageCrawl anecdote; unnamed 48% Consent Mode claim). No one has asked for or paid for this."
+    },
+    "statusQuo": {
+      "score": 5,
+      "evidence": "Agencies already pay for audits and monitoring (Inflow $1,999, freelancer EUR 150-250/mo, Little Warden GBP 59.99/mo, Trackingplan $249/mo), but Little Warden undercuts the planned $149/mo."
+    },
+    "specificity": {
+      "score": 3,
+      "evidence": "Target is 'agency owner or account lead', a category. No named person; David has no agency network and wants no sales calls."
+    },
+    "wedge": {
+      "score": 5,
+      "evidence": "$500 one-time audit is the right wedge, but passive checks only show 'suspect' not 'broken'; the convincing test submission is deferred to M5."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "Consent Mode and server-side tagging add complexity, but Google diagnostics, Little Warden and AI QA tools absorb the checks; no moat."
+    }
+  },
+  "premises": [
+    "Agencies lose leads and ad spend to silent form and tag breakage: plausible, frequency unmeasured",
+    "A 'happening now' audit overcomes cure-vs-prevention: unsupported",
+    "Passive checks are convincing enough to sell: contradicted by the research's own risks",
+    "Agencies pay above Little Warden's price for evidence reports: unsupported",
+    "David can reach agency buyers without sales calls: contradicted by the research"
+  ],
+  "alternatives": [
+    "Minimal: free public 'check your site' tool, one URL in and a report out, to test whether anyone cares",
+    "Ideal: full monitoring SaaS with scheduled diffs, agency index and opt-in test submissions (large, runs into Little Warden pricing)",
+    "Lateral: fold tag and form checks into an existing repo of David's (RepoHQ site health or the AEM Page Tracker) instead of a new product"
+  ],
+  "wedge": "One URL in, one shareable HTML evidence report out, no signup, with a human-checked $500 audit offered in the footer.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Node + Playwright, GitHub Actions, Vercel Hobby, Resend free. Proving test: fixture with GA4 snippet but blocked collect request is flagged, and a form fixture asserts zero POSTs. This proves the tool works, not that anyone wants it."
+  },
+  "risks": [
+    "No demand evidence; all numbers are vendor or secondhand",
+    "Buyer needs outbound sales; David has no network and avoids calls",
+    "Little Warden price pressure",
+    "Passive checks give false positives and cannot prove a broken form",
+    "Unsolicited audits read as cold outreach",
+    "Same cure-vs-prevention failure as feedwarden and listvault"
+  ],
+  "killCriteria": "Drop if under 10% of 100 audited agency-client sites show an actionable finding; false positives exceed 20% on 50 checked findings; fewer than 3 of 30 agencies reply to a sample report; no one pays the $500 audit within 30 days; or buyers only accept Little Warden pricing."
+}
