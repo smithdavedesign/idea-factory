@@ -40,8 +40,9 @@ idea ──gstack review──▶ validate ──14-day $0 demand test──▶ 
 | Revenue | MRR and lifecycle from RepoHQ → `state.json`, Notion, the morning email | every tick |
 
 Everything runs from `bin/idea-pipeline.js tick` (launchd `com.user.idea-pipeline`, every 15 min). The rules are in **`policy.json`**:
-- $0 spend;
+- agents never spend (`maxMonthlySpendUsd` 0). David may put up to `ownerBudget.perProductUsd` ($300) into moving a product forward: agents propose the spend and what it should buy, and he approves and pays;
 - ideas you send researched right away, at most 10 a day (one per tick, so a batch clears the same night);
+- no new ideas from the daily 09:00 discovery run while new builds are held (`research.discovery`). Ideas you send are still researched;
 - review score ≥ 6;
 - a 14-day validation window, at least 50 visitors to judge;
 - build at ≥ 5 signups and ≥ 5% conversion;

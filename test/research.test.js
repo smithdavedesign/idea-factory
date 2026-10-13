@@ -1,7 +1,7 @@
 // The research runner must use the Claude Pro subscription and nothing personal. Run: npm test
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { inspect, guard, cleanEnv, ALLOWED_TOOLS } = require('../bin/idea-research');
+const { inspect, guard, cleanEnv, discoveryPaused, ALLOWED_TOOLS } = require('../bin/idea-research');
 
 const init = (over = {}) => ({ type: 'system', subtype: 'init', apiKeySource: 'none', mcp_servers: [], tools: ['WebSearch', 'Write'], model: 'm', ...over });
 
@@ -42,4 +42,14 @@ test('the context wrapper never lets a cloud model see work or financial data', 
   const src = require('fs').readFileSync(require('path').join(__dirname, '..', 'bin', 'context'), 'utf8');
   assert.match(src, /--classes" \]; then skip=1/);
   assert.match(src, /search\) args\+=\("--classes" "public,personal"\)/);
+});
+
+test('the 09:00 run skips discovery while new builds wait for traction, unless David sent an idea', () => {
+  const policy = { build: { startNew: false }, growth: { focus: ['tiebreak'], minVisitorsPerWeek: 50 }, research: { discovery: { pauseWhileBuildsHeld: true } } };
+  const quiet = [['tiebreak', { funnel: { d7: { visit: 6 } } }]];
+  assert.equal(discoveryPaused(policy, quiet, 0), true);
+  assert.equal(discoveryPaused(policy, quiet, 1), false); // an idea he sent is researched
+  assert.equal(discoveryPaused(policy, [['tiebreak', { funnel: { d7: { visit: 50 } } }]], 0), false); // traction lifts it with the build hold
+  assert.equal(discoveryPaused({ ...policy, build: { startNew: true } }, quiet, 0), false);
+  assert.equal(discoveryPaused({ ...policy, research: {} }, quiet, 0), false);
 });
