@@ -1,0 +1,59 @@
+{
+  "buyer": "The person who runs a 4–12 person friend/roommate/club group chat (ages ~20–35) and posts year-in-review content in December; first reached through David's own group chats and r/roommates-style communities",
+  "paymentMethod": "Stripe Checkout payment link per group (webhook unlocks the group); no backend beyond the existing webhook",
+  "mvpScope": "Organizer creates a group and invite link, friends answer prompts with no account, AI writes one award per person, 1080x1920 PNG slides (watermarked and low-res when locked, clean when paid), private yearbook page, Stripe unlock, adults-only checkbox, report link, 30-day deletion",
+  "firstTenUsers": "Ask the organizers of David's own groups first (target 3–4 groups), then DM 5–6 organizers in his wider circle with the concierge offer (send 4 funny answers, get awards), then post in r/SideProject and r/roommates around Nov 15–Dec 1. Each completed wrap is shared inside a group chat, so ask every organizer to forward the link to one other group they run.",
+  "price": {
+    "amount": 6,
+    "currency": "USD",
+    "interval": "once",
+    "why": "One payment per group unlocks clean exports for everyone. Anchored on chat-wrap apps at about €6 per person (WA Wrapped) and below $12+ keepsakes (Chatbooks from $17, Zapptales PDF £14.9). Nothing supports the PRD's $12–$25; test $9 only after the first buyers pay without pushback."
+  },
+  "mustHaveBeforeCharging": [
+    "Stripe checkout and webhook unlock tested live end to end",
+    "privacy policy and terms pages (live) with a refund-on-request line",
+    "adults-only checkbox and report/takedown link on every page",
+    "30-day deletion job running",
+    "hosting that permits commercial use (Vercel Hobby does not)",
+    "og:image, robots.txt and sitemap.xml so shared links look right",
+    "one real dogfood wrap watched without helping"
+  ],
+  "launchChannels": [
+    {
+      "name": "David's own friend and flat group chats",
+      "url": "https://squadwrap.vercel.app",
+      "why": "Fastest real test: direct asks to named organizers, concierge offer, no cold audience needed"
+    },
+    {
+      "name": "r/SideProject",
+      "url": "https://www.reddit.com/r/SideProject/",
+      "why": "Builders try and share small products; useful for feedback and a few early groups"
+    },
+    {
+      "name": "r/roommates",
+      "url": "https://www.reddit.com/r/roommates/",
+      "why": "Roommate groups match the buyer; post as a value-first question, check rules, no spam"
+    },
+    {
+      "name": "Product Hunt",
+      "url": "https://www.producthunt.com/",
+      "why": "Seasonal consumer launches get a day of attention; Yapd launched there"
+    },
+    {
+      "name": "Indie Hackers",
+      "url": "https://www.indiehackers.com/",
+      "why": "Honest build-in-public post about the $6 test draws early supporters and feedback"
+    }
+  ],
+  "risks": [
+    "No evidence yet that anyone pays; every comparable is free or about €6 per person",
+    "Free preview may be enough to post, so nobody unlocks",
+    "Fill-in rate unknown; under 3 submissions there is no wrap",
+    "Demand exists only in a roughly 3–4 week December window",
+    "Trivially cloneable; ChatGPT and Spotify normalize the format for free",
+    "Roasts and friends' photos create moderation, takedown and privacy burden for a solo operator",
+    "Free models may write repetitive awards",
+    "Commercial-use hosting is an open question for David"
+  ],
+  "killCriteria": "Stop if by Dec 15 fewer than 5 groups reach 3 submissions, or zero groups pay after 20 organizers were directly asked. Also stop if launch slips past Dec 1; then fold the award-per-person idea into tiebreak and do not carry squadwrap into 2027 without paid proof."
+}

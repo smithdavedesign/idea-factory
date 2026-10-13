@@ -1,12 +1,12 @@
 {
-  "stage": "repo",
+  "stage": "building",
   "review": {
     "verdict": "pass",
     "score": 4,
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-13T18:28:45.669Z",
+  "updatedAt": "2026-10-13T18:29:02.089Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -99,5 +99,23 @@
   "revenue": {
     "mrr": 0,
     "updatedAt": "2026-10-13T18:28:45.669Z"
+  },
+  "build": {
+    "milestone": "MVP",
+    "planned": [
+      "M1",
+      "M2",
+      "M3",
+      "M4"
+    ],
+    "status": "running",
+    "at": "2026-10-13T18:29:02.089Z",
+    "manual": true,
+    "advice": {
+      "difficulty": 2,
+      "reason": "Involves multiple endpoints, validation logic, and integration between features requiring careful design and testing.",
+      "source": "model",
+      "model": "local-qwen3"
+    }
   }
 }
