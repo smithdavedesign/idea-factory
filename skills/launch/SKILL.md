@@ -24,7 +24,10 @@ task: verified channels, posts ready to paste, a log of what went out.
   be a customer, no vote requests, no reposting the same text to many places on one day.
 - **Respect each community's rules.** If a place bans self-promotion, the post asks the question
   and adds no link, or the place is dropped. Never suggest working around a rule.
-- **No spending:** no ads, boosts or paid listings.
+- **You never spend:** never buy ads, boosts or listings, or sign up for anything paid. David may put up to 300 dollars per
+  product into getting it seen (policy.json `ownerBudget`, his call 2026-10-12). When a paid channel would clearly beat
+  posting (a small ad test to fill a demand test, a paid directory the buyers use), propose it in the kit's
+  `## Paid option`: what, how much, the targeting, and what it should prove. He decides and pays.
 - **The record only grows:** don't edit or shorten `LAUNCH.md`, `REVIEW.md` or anything the pipeline
   wrote. You write `LAUNCH-KIT.md` and `launch-log.json` only.
 
@@ -105,6 +108,9 @@ Rules: <the rule that matters, quoted> · Fits because: <one line>
 
 ## Dropped
 - <channel>: <why: doesn't exist, bans promotion, wrong audience>
+
+## Paid option (only if one clearly beats posting)
+<channel>: <budget in dollars, within ownerBudget> · targeting: <who> · proves: <the number it should move, e.g. 50 visitors in 7 days>
 ```
 
 Then show David the order and the first post in the chat, and tell him to run
