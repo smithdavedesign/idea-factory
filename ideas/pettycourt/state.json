@@ -6,7 +6,7 @@
     "summary": "A fun summons-and-jury twist on AI-judge apps, but there is zero evidence anyone pays for a joke verdict and the flow is copyable in a weekend. If it's worth anything, it's a Court mode inside tiebreak, not its own product.",
     "at": "2026-10-13T08:00:55.104Z"
   },
-  "updatedAt": "2026-10-13T08:16:46.084Z",
+  "updatedAt": "2026-10-13T12:42:50.438Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -95,5 +95,9 @@
     "done": 0,
     "total": 10,
     "updatedAt": "2026-10-13T08:16:46.084Z"
+  },
+  "revenue": {
+    "mrr": 0,
+    "updatedAt": "2026-10-13T12:42:50.438Z"
   }
 }
