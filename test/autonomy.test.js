@@ -38,7 +38,9 @@ test('leaves a PR that touches a protected path for David, and ignores one that 
 
 test('a revert: branch, git revert (with -m 1 for a merge commit), push, a PR that says why, merged', () => {
   const steps = A.revertSteps({ repoFull: 'o/tiebreak', prUrl: 'https://github.com/o/tiebreak/pull/9', number: 9, title: 'Growth: tiebreak (search pages)', sha: 'abcdef1234567890', reason: 'launch checks failed', work: '/w/revert' });
-  assert.deepEqual(steps.map(([cmd, args]) => `${cmd} ${args.slice(0, 2).join(' ')}`), ['gh repo clone', 'git checkout -q', 'git -c user.name=idea-factory', 'git push -q', 'gh pr create', 'gh pr merge']);
+  assert.deepEqual(steps.map(([cmd, args]) => `${cmd} ${args.slice(0, 2).join(' ')}`), ['gh repo clone', 'git checkout -q', 'git revert --no-edit', 'git push -q', 'gh pr create', 'gh pr merge']);
+  const owner = A.revertSteps({ repoFull: 'o/x', prUrl: 'u', number: 1, title: 't', sha: 'abcdef1', reason: 'r', work: '/w', author: { name: 'idea-factory', email: '7+o@users.noreply.github.com' } })[2][1];
+  assert.deepEqual(owner.slice(0, 5), ['-c', 'user.name=idea-factory', '-c', 'user.email=7+o@users.noreply.github.com', 'revert'], "by the owner's GitHub account");
   assert.ok(steps[2][1].includes('revert') && !steps[2][1].includes('-m'), 'a squash merge is a plain commit');
   assert.ok(A.revertSteps({ repoFull: 'o/x', prUrl: 'u', number: 1, title: 't', sha: 'abcdef1', parents: 2, reason: 'r', work: '/w' })[2][1].includes('-m'));
   const create = steps[4][1];

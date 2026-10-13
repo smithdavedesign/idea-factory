@@ -99,6 +99,7 @@ const fakeCp = {
   execFileSync: (cmd, args = [], opts = {}) => {
     if (cmd === 'gh' && args[0] === 'repo' && args[1] === 'clone') return realExec('git', ['clone', '-q', REMOTE, args[3]], opts);
     if (cmd === 'gh' && args[0] === 'pr' && args[1] === 'create') { host.prs.push(args[args.indexOf('--body') + 1]); return 'https://github.com/o/demo/pull/1'; }
+    if (cmd === 'gh' && args[0] === 'api' && args[1] === 'user') return '12345\towner\n';
     if (cmd === PROVISION) { host.provision.push(args); return ''; }
     if (String(cmd).endsWith(path.join('bin', 'rate')) || cmd === 'security') throw new Error('not in tests');
     return realExec(cmd, args, opts);
@@ -142,6 +143,20 @@ const remoteFiles = (ref) => { try { return realExec('git', ['ls-tree', '-r', '-
 const remoteFile = (ref, f) => realExec('git', ['show', `${ref}:${f}`], { cwd: REMOTE, encoding: 'utf8' });
 
 test.after(() => { Module._load = realLoad; fs.rmSync(T, { recursive: true, force: true }); });
+
+test("a build commits as the owner's GitHub account (Vercel builds its preview) and starts without the last PR's fate", async () => {
+  setup('owner');
+  process.env.IDEA_BUILD_CLAUDE_TOKEN = TOKEN;
+  const stateFile = path.join(DATA, 'ideas', 'demo', 'state.json');
+  const before = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
+  fs.writeFileSync(stateFile, JSON.stringify({ ...before, build: { milestone: 'M0', status: 'merged', prUrl: 'https://github.com/o/demo/pull/0', mergedBy: 'agent', mergedAt: '2026-10-12T22:22:18Z', held: 'Vercel failed', reverted: { at: 'x', url: 'u' } } }));
+  const r = await B.buildOne('demo', { milestone: 'M1', manual: true });
+  assert.equal(r.ok, true, r.reason);
+  const by = realExec('git', ['log', '-1', '--format=%an <%ae>', 'm1'], { cwd: REMOTE, encoding: 'utf8' }).trim();
+  assert.equal(by, 'idea-factory <12345+owner@users.noreply.github.com>');
+  const build = JSON.parse(fs.readFileSync(stateFile, 'utf8')).build;
+  assert.deepEqual([build.milestone, build.status, build.mergedBy, build.mergedAt, build.held, build.reverted], ['M1', 'pr-open', undefined, undefined, undefined, undefined]);
+});
 
 test('a dirty first pass is repaired in the sandbox; the clean result is committed from the host with no .provision or node_modules', async () => {
   setup('repairs');

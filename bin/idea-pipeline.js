@@ -55,6 +55,7 @@ const REV = require('../lib/revenue');
 const LF = require('../lib/launch-facts');
 const GL = require('../lib/golive');
 const A = require('../lib/autonomy');
+const { commitAuthor } = require('../lib/author');
 const G = require('../lib/growth');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -182,7 +183,7 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
       const parents = Number(gh(['api', `repos/${full}/commits/${sha}`, '--jq', '.parents | length']).trim()) || 1;
       fs.rmSync(work, { recursive: true, force: true });
       let url = null;
-      for (const [cmd, args, cwd] of A.revertSteps({ repoFull: full, prUrl, number: pr.number, title: pr.title, sha, parents, reason, work })) {
+      for (const [cmd, args, cwd] of A.revertSteps({ repoFull: full, prUrl, number: pr.number, title: pr.title, sha, parents, reason, work, author: commitAuthor({ exec: execFileSync }) })) {
         const out = String(execFileSync(cmd, args, { cwd: cwd || DATA, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 180_000 }));
         if (cmd === 'gh' && args[0] === 'pr' && args[1] === 'create') url = out.trim() || null;
       }
@@ -440,13 +441,24 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
       if (!fresh(pstate.prod[slug], 1)) pstate.prod[slug] = { at: now.toISOString(), url: GL.productionUrl(full.split('/')[1], policy.vercelScope) };
       const prodUrl = pstate.prod[slug].url;
       // A repo without a homepage gets its production URL, so RepoHQ (and everyone) knows where it lives.
-      // RepoHQ may not have synced a new repo yet: then ask GitHub, and never overwrite a homepage that's set.
-      const homepageNow = () => {
-        // RepoHQ's copy can lag GitHub (a homepage set minutes ago reads as ''), so only a non-empty
-        // homepage there counts; otherwise GitHub decides. (2026-10-12: tiebreak's was overwritten.)
-        if (row?.homepage) return row.homepage; try { return JSON.parse(execFileSync('gh', ['repo', 'view', full, '--json', 'homepageUrl'], { encoding: 'utf8', timeout: 30_000, stdio: ['ignore', 'pipe', 'ignore'] })).homepageUrl || ''; } catch { return null; } };
-      if (prodUrl && !pstate.prod[slug].homepageSet && homepageNow() === '') {
-        try { execFileSync('gh', ['repo', 'edit', full, '--homepage', prodUrl], { stdio: 'ignore', timeout: 30_000 }); pstate.prod[slug].homepageSet = true; note(slug, `homepage set to ${prodUrl}`); } catch (e) { fail(`homepage ${slug}`, e); }
+      // RepoHQ may not have synced a new repo yet: then ask GitHub. A homepage that's set is never
+      // overwritten, except one of the project's own Vercel addresses that isn't its production URL: a
+      // team or deployment address behind Vercel's login (codespend's, 2026-10-12).
+      const ghHomepage = () => { try { return JSON.parse(execFileSync('gh', ['repo', 'view', full, '--json', 'homepageUrl'], { encoding: 'utf8', timeout: 30_000, stdio: ['ignore', 'pipe', 'ignore'] })).homepageUrl || ''; } catch { return null; } };
+      // RepoHQ's copy can lag GitHub (a homepage set minutes ago reads as ''), so only a non-empty
+      // homepage there counts; otherwise GitHub decides. (2026-10-12: tiebreak's was overwritten.)
+      const homepageNow = () => (row?.homepage ? row.homepage : ghHomepage());
+      const project = full.split('/')[1];
+      const misplaced = (h) => !!h && h !== prodUrl && GL.ownVercelAddress(h, project);
+      let homepage = prodUrl ? homepageNow() : null;
+      // RepoHQ's copy of a homepage the pipeline just moved stays old for hours: GitHub has the last word.
+      if (misplaced(homepage) && row?.homepage) homepage = ghHomepage();
+      if (prodUrl && ((!pstate.prod[slug].homepageSet && homepage === '') || misplaced(homepage))) {
+        try {
+          execFileSync('gh', ['repo', 'edit', full, '--homepage', prodUrl], { stdio: 'ignore', timeout: 30_000 });
+          pstate.prod[slug].homepageSet = true;
+          note(slug, misplaced(homepage) ? `homepage moved to ${prodUrl} (${homepage} is behind Vercel's login)` : `homepage set to ${prodUrl}`);
+        } catch (e) { fail(`homepage ${slug}`, e); }
       }
       if (!fresh(pstate.live[slug], 1)) pstate.live[slug] = { at: now.toISOString(), url: await LF.liveUrl([...new Set([...(prodUrl ? [prodUrl] : []), ...LF.urlCandidates(row?.homepage, full.split('/')[1])])], { owned: (u) => u === prodUrl || LF.ownedByTeam(u, policy.vercelScope) }) };
       pstate.audit = pstate.audit || {};
