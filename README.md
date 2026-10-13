@@ -41,7 +41,7 @@ idea ──gstack review──▶ validate ──14-day $0 demand test──▶ 
 
 Everything runs from `bin/idea-pipeline.js tick` (launchd `com.user.idea-pipeline`, every 15 min). The rules are in **`policy.json`**:
 - $0 spend;
-- ideas you send researched right away, at most 3 a day;
+- ideas you send researched right away, at most 10 a day (one per tick, so a batch clears the same night);
 - review score ≥ 6;
 - a 14-day validation window, at least 50 visitors to judge;
 - build at ≥ 5 signups and ≥ 5% conversion;

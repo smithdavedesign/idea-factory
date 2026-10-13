@@ -4,11 +4,11 @@
   "hosting": "free tiers only (Vercel Hobby, Neon free); no paid domains, ads or services before an idea earns more than it costs",
   "research": {
     "seeded": {
-      "maxPerDay": 3,
+      "maxPerDay": 10,
       "retryMinutes": 60,
       "quietStart": "08:30",
       "quietEnd": "09:45",
-      "_why": "Ideas David sends are researched and reviewed on the next pipeline tick, not at 09:00, and the verdict goes back where he sent them (lib/seeds.js). Claude Pro only, shared with his own sessions and M1 builds, so at most maxPerDay runs a day; a failed run (e.g. usage limit) waits retryMinutes; nothing starts in the quiet window around the 09:00 research run. Over the cap, seeds wait for the next day."
+      "_why": "Ideas David sends are researched and reviewed on the next pipeline tick, not at 09:00, and the verdict goes back where he sent them (lib/seeds.js). Claude Pro only, shared with his own sessions and M1 builds, so at most maxPerDay runs a day; a failed run (e.g. usage limit) waits retryMinutes; nothing starts in the quiet window around the 09:00 research run. Over the cap, seeds wait for the next day. maxPerDay was 3 until 2026-10-12, when David asked for a batch of ten to be pushed through the same night; research hadn't hit the usage limit in the week before. Runs go one per tick, so ten take about 2.5 hours."
     }
   },
   "review": {
