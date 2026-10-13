@@ -1,0 +1,33 @@
+{
+  "title": "patchwell — white-label patch PRs and weekly reports for agency-built Next.js sites",
+  "repoName": "patchwell",
+  "oneLiner": "For small web agencies with 10–40 Next.js/React client sites and no maintenance engineer, it finds exposed sites from their lockfiles, opens CI-gated patch PRs and sends a white-label weekly report, for a per-site monthly fee.",
+  "overlaps": "Github-HQ (RepoHQ) — the factory already runs this kind of fix-and-verify loop on David's own repos; this packages it for outside agency sites. Also loosely pr-receipt/dawnlog (agent receipts), not the same user.",
+  "tags": [
+    "dev-tools",
+    "ai",
+    "agencies",
+    "service"
+  ],
+  "effort": "Medium",
+  "confidence": "Low",
+  "sources": [
+    "https://www.coalitioninc.com/blog/security-labs/security-alert-critical-react2shell-vulnerability",
+    "https://invicti.com/blog/web-security/react2shell-critical-rce-in-react-rsc-next-js-cve-2025-55182-cve-2025-66478",
+    "https://www.perfectiongeeks.com/technologies/next-js/maintenance-cost",
+    "https://thewhitelabelagency.com/wordpress-monthly-maintenance-plan",
+    "https://wpbuffs.com/plans/",
+    "https://contra.com/s/q76RW7sr-ongoing-app-support-monthly-retainer",
+    "https://google.github.io/osv.dev/api/",
+    "https://reintech.io/blog/dependabot-vs-renovate-vs-snyk-dependency-management-tools-compared",
+    "https://tessl.io/registry/testland/renovate-config",
+    "https://kolonell.com/en/blog/annual-maintenance-cost-custom-saas-2026",
+    "https://makerstack.co/reviews/renovate-review/",
+    "https://github.com/renovatebot/renovate/discussions/29598",
+    "https://dailyaifixs.com/blog/github-copilot-pricing-2026-the-ai-credits-shift",
+    "https://astrix.security/?p=1216"
+  ],
+  "seedId": "seed-59e7f5",
+  "slug": "patchwell",
+  "recordedAt": "2026-10-13T04:58:23.951Z"
+}
