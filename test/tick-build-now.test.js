@@ -104,7 +104,8 @@ Module._load = function (request, parent, ...rest) {
         if (args[1] === 'close') gh.prs[args[2]] = 'CLOSED';
         return args[1] === 'create' ? 'https://github.com/o/revert/pull/99' : '';
       }
-      if (cmd === 'git' && args.includes('revert')) { gh.calls.push('git revert'); return ''; }
+      if (cmd === 'git' && args.includes('revert')) { gh.calls.push('git revert'); gh.revertArgs = args; return ''; }
+      if (cmd === 'gh' && args[0] === 'api' && args[1] === 'user') return '7\towner\n';
       if (cmd === 'gh' && args[0] === 'api') return gh.files;
       if (cmd === 'gh' && args[0] === 'repo' && args[1] === 'edit') { gh.edits.push(args); return ''; }
       if (cmd === 'gh' && args[0] === 'repo' && args[1] === 'view') return JSON.stringify({ homepageUrl: gh.homepage || '' });
@@ -604,6 +605,7 @@ test("an agent's merge that breaks the live site's launch checks is reverted, an
   assert.deepEqual(gh.calls, ['git revert', 'pr create --base', 'pr merge revert-9']);
   const s = readState('pr-v');
   assert.equal(s.build.reverted.url, 'https://github.com/o/revert/pull/99');
+  assert.deepEqual(gh.revertArgs.slice(0, 4), ['-c', 'user.name=idea-factory', '-c', 'user.email=7+owner@users.noreply.github.com'], "the revert is by the owner's GitHub account, so Vercel builds it");
   assert.deepEqual([s.growth.experiments[0].status, s.growth.experiments[0].decision], ['decided', 'revert']);
   assert.ok(emitted.some((e) => e.component === 'autonomy' && e.event === 'revert' && e.status === 'fail'), 'a revert alerts Slack');
   assert.ok(out.changes.some((c) => c.startsWith(`pr-v: reverted its own merge ${url}`)), out.changes.join('\n'));
