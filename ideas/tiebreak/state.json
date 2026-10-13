@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-13T00:11:45.648Z",
+  "updatedAt": "2026-10-13T00:20:12.907Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -67,8 +67,8 @@
         "id": "payments",
         "owner": "david",
         "label": "Stripe product created and mapped to the repo in RepoHQ",
-        "done": false,
-        "evidence": "RepoHQ → repo → Stripe product"
+        "done": true,
+        "evidence": "mapped"
       },
       {
         "id": "launched",
@@ -93,15 +93,15 @@
       }
     ],
     "next": {
-      "id": "payments",
-      "label": "Stripe product created and mapped to the repo in RepoHQ",
+      "id": "launched",
+      "label": "Launch posted",
       "owner": "david"
     },
-    "done": 6,
+    "done": 7,
     "total": 10,
     "buyer": "A solo Etsy seller (one-person shop) about to publish or change a main listing photo and unable to choose between 2-4 candidates; findable as the people posting 'which picture is best?' threads in the Etsy Community Etsy Success forum and r/EtsySellers. Secondary: indie authors choosing a cover and YouTubers choosing a thumbnail.",
     "price": "$5 once",
-    "updatedAt": "2026-10-12T07:28:07.673Z"
+    "updatedAt": "2026-10-13T00:20:12.907Z"
   },
   "build": {
     "milestone": "GROWTH",
