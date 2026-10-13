@@ -1,0 +1,66 @@
+{
+  "verdict": "pass",
+  "score": 5,
+  "summary": "Weekend-buildable at zero cost, but demand evidence is all vendor blogs with no first-person manager complaint, and PMS vendors can add AI statement explanations natively. Talk to a few managers first; the idea isn't strong enough to spend a demand-test slot.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "Only vendor/consultancy blogs (Rentvine, Enterprise DNA); unsourced churn and time claims; RESEARCH.md found no manager complaint and no payment signal."
+    },
+    "statusQuo": {
+      "score": 5,
+      "evidence": "Hand-written owner emails or ChatGPT pasting; but unproven that small managers write explanatory letters at all."
+    },
+    "specificity": {
+      "score": 4,
+      "evidence": "Clear role and moment (ops manager, 50-300 doors, monthly close) but no named person or first-hand consequence."
+    },
+    "wedge": {
+      "score": 7,
+      "evidence": "CSV in, computed facts, model only phrases, human approves; shippable in days. Free first batch risks one-time use."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "PMS vendors can ship native AI statement summaries; verified-numbers approach differentiates only against chatbots."
+    }
+  },
+  "premises": [
+    "Small managers write or want per-owner explanatory letters (unsupported)",
+    "Owner confusion drives churn enough to pay $39-49/mo (vendor claim only)",
+    "The PMS portal is not enough (plausible, untested)",
+    "Managers will upload owner financials to a third-party tool (open trust question)",
+    "Reachable without sales calls via NARPM/Facebook groups/SEO (unproven)"
+  ],
+  "alternatives": [
+    "Minimal: free paste-a-statement letter tool with email capture, no accounts or storage",
+    "Ideal: multi-PMS presets, saved history, PDF/email send, Stripe",
+    "Lateral: template/prompt pack, or share covercheck's small-property-manager audience with a second offer",
+    "Recommended: talk to 3-5 managers first, then the minimal tool"
+  ],
+  "wedge": "One generic CSV upload, one plain-English letter per owner from code-computed facts, copy button; no history, accounts or payments.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js on Vercel Hobby, Papa Parse, TS fact functions, free-tier LLM. Proof test: 3-owner CSV where owner A (2,000.00 income, 450.00 expenses, 160.00 fee) yields a letter with exactly 1,390.00, and no letter contains a figure absent from computed facts. PDF parsing and per-PMS mapping are the hidden cost."
+  },
+  "risks": [
+    "Demand evidence is vendor-sourced; the portal may be enough",
+    "PMS vendors add native AI summaries",
+    "Owner financial data trust and privacy; a wrong figure harms trust",
+    "Statement formats vary and PDFs are brittle",
+    "Distribution without sales calls unproven",
+    "Free first batch invites one-time use"
+  ],
+  "killCriteria": "Drop if 3 conversations with 50-300-door managers show none writes explanatory letters, if a 14-day page gets fewer than 50 relevant visitors or 5 signups, if no manager will run a redacted real export, or if a major PMS ships AI statement explanations.",
+  "landing": {
+    "headline": "",
+    "subhead": "",
+    "bullets": [],
+    "cta": "",
+    "audience": ""
+  },
+  "launch": {
+    "channels": [],
+    "post": ""
+  }
+}
