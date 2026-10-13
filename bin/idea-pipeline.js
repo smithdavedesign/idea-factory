@@ -5,18 +5,19 @@
 //   node bin/idea-pipeline.js tick --daily    # force the daily steps now
 //
 // Every tick (no model calls):
-//   0. Decisions from RepoHQ's Ideas page → the Notion Status David would have set; new ideas typed
-//      there → the research queue (seeds.jsonl, like "idea: …" on Slack/WhatsApp) (lib/repohq.js).
+//   0. Decisions from RepoHQ's Ideas page (Build, Demand test, Pass) → state: David's call wins over any
+//      verdict (applyDecision). New ideas typed there → the research queue (seeds.jsonl, like "idea: …"
+//      on Slack/WhatsApp) (lib/repohq.js).
 //  0c. Ideas David sent are researched and reviewed now (Claude Pro, policy.research.seeded), and the
 //      verdict goes back where he sent it (lib/seeds.js). The one model call outside the daily steps.
-//   1. Notion → state: David's own Status changes win (Pass, Build, Validate, Live).
-//   2. Demand signals from RepoHQ (idea_signals) → state + Notion (Visitors, Signups); each built
-//      product's funnel (visits, activations, Buy clicks, sources) → state.funnel (lib/growth.js).
-//   3. Validation decisions (policy.json): build / pass / extend. Build → Notion "Build".
-//   4. Promote: "Build" rows get their private repo (stage repo).
+//   2. Demand signals from RepoHQ (idea_signals) → state; each built product's funnel (visits,
+//      activations, Buy clicks, sources) → state.funnel (lib/growth.js).
+//   3. Validation decisions (policy.json): build / pass / extend.
+//   4. Promote: ideas at stage "build" get their private repo (stage repo).
 //   5. Revenue: MRR and lifecycle of idea repos from RepoHQ; RepoHQ marks new idea repos "building".
-//   6. State → Notion (Status, Verdict, Score, Page, MRR), commit the record.
-//   7. The record → RepoHQ (ideas, idea_pipeline) for the Ideas page.
+//   6. Commit the record.
+//   7. The record → RepoHQ (ideas, idea_pipeline) for the Ideas page, which is the board (no Notion
+//      since 2026-10-12).
 // An idea David approves is built on the tick that creates its repo, not at the next daily run.
 //  4a. Milestone PRs merged or closed since the last tick (every tick, so "Build M2 now" appears right away).
 //  5b. The launch checklist for every idea with a repo (lib/revenue.js): RepoHQ's repo row (homepage,
@@ -47,7 +48,6 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const P = require('../lib/pipeline');
 const pub = require('./idea-publish');
-const { mdToBlocks } = require('../lib/notion-md');
 const { emit } = require('../lib/events');
 const R = require('../lib/repohq');
 const S = require('../lib/seeds');
@@ -69,26 +69,47 @@ const LOG = path.join(DATA, 'pipeline.log');
 const policy = JSON.parse(fs.readFileSync(path.join(ROOT, 'policy.json'), 'utf8'));
 const OWNER = process.env.IDEA_GH_OWNER || 'smithdavedesign';
 
-const STAGE_TO_STATUS = { idea: 'Idea', validate: 'Validate', build: 'Build', repo: 'Repo Created', building: 'Repo Created', live: 'Live', pass: 'Pass' };
-
 /**
- * David's Status changes in Notion (or on RepoHQ's Ideas page, which sets them) that the pipeline
- * must follow (pure). Validate sends a reviewed idea to a demand test: the landing page needs the
- * review's copy, so an unreviewed idea waits for its review.
+ * What a decision from RepoHQ's Ideas page does to an idea (pure): {state, what}, or {error} when the
+ * idea moved on since RepoHQ checked it (RepoHQ's checkDecision is the same rules).
+ *   build: an idea, demand test or passed idea goes to "build" (its repo is created on this tick); an
+ *     approved idea whose repo exists has its M1 build approved.
+ *   validate: a reviewed idea or passed idea goes to a demand test. Its landing page needs the review's
+ *     copy, so an unreviewed idea can't; one that ran a test before gets a fresh window.
+ *   pass: anything not passed yet is passed.
+ * A decision matching where the idea already is (agreeing with the review's pass) is recorded, so the
+ * Ideas page and the morning report stop asking.
  */
-function ownerOverride(stage, notionStatus, { reviewed = true } = {}) {
-  if (!notionStatus || STAGE_TO_STATUS[stage] === notionStatus) return null;
-  if (notionStatus === 'Pass' && stage !== 'pass') return 'pass';
-  if (notionStatus === 'Build' && ['idea', 'validate', 'pass'].includes(stage)) return 'build';
-  if (notionStatus === 'Validate' && reviewed && ['idea', 'pass'].includes(stage)) return 'validate';
-  if (notionStatus === 'Live' && stage !== 'live') return 'live';
-  return null;
+function applyDecision(state, d, { reviewed = true, now = new Date() } = {}) {
+  const ownerDecision = { decision: d.decision, at: now.toISOString(), source: 'repohq', ...(d.note ? { note: d.note } : {}) };
+  const stage = state.stage || 'idea';
+  if (d.decision === 'pass') {
+    return stage === 'pass'
+      ? { state: { ...state, ownerDecision }, what: 'owner confirmed Pass (RepoHQ Ideas page)' }
+      : { state: { ...state, stage: 'pass', passReason: 'owner', ownerDecision }, what: 'owner set Pass (RepoHQ Ideas page)' };
+  }
+  if (d.decision === 'build') {
+    if (['idea', 'validate', 'pass'].includes(stage)) return { state: { ...state, stage: 'build', ownerApproved: true, ownerDecision }, what: 'owner set Build (RepoHQ Ideas page)' };
+    if (stage === 'build') return { state: { ...state, ownerApproved: true, ownerDecision }, what: 'owner confirmed Build (RepoHQ Ideas page)' };
+    if (stage === 'repo' && !state.ownerApproved) return { state: { ...state, ownerApproved: true, ownerDecision }, what: 'owner approved the M1 build (RepoHQ Ideas page)' };
+    return { error: stage === 'live' ? 'already live' : 'already approved and past the build decision' };
+  }
+  if (d.decision === 'validate') {
+    if (stage === 'validate') return { state: { ...state, ownerDecision }, what: 'owner confirmed the demand test (RepoHQ Ideas page)' };
+    if (!['idea', 'pass'].includes(stage)) return { error: 'only an idea that is not yet being built can go to a demand test' };
+    if (!reviewed) return { error: "a demand test needs the review's landing-page copy; the review runs daily at 09:30" };
+    return {
+      state: { ...state, stage: 'validate', ownerDecision, ...(state.page ? { validation: P.startValidation(now, policy) } : {}) },
+      what: 'owner set Validate (RepoHQ Ideas page)',
+    };
+  }
+  return { error: `unknown decision "${d.decision}"` };
 }
 
 /**
  * An idea gets an M1 build when its repo exists, it hasn't been built, and either the review didn't
- * say pass or David approved it himself (Notion "Build"). Ideas made repos by the old pipeline,
- * before reviews existed, wait for one of those.
+ * say pass or David approved it himself (Build on the Ideas page). Ideas made repos by the old
+ * pipeline, before reviews existed, wait for one of those.
  */
 function buildable(s) {
   if (s.stage !== 'repo' || (s.build && s.build.status !== 'failed')) return false;
@@ -121,25 +142,6 @@ function dbSql() {
   return neon(url);
 }
 
-async function notionProps(row, state) {
-  const props = {
-    Status: { select: { name: STAGE_TO_STATUS[state.stage] } },
-    ...(state.review ? { Verdict: { select: { name: state.review.verdict } }, Score: { number: state.review.score } } : {}),
-    ...(state.page ? { Page: { url: state.page.url } } : {}),
-    ...(state.signals ? { Visitors: { number: state.signals.uniqueVisitors }, Signups: { number: state.signals.signups } } : {}),
-    ...(state.revenue ? { MRR: { number: state.revenue.mrr } } : {}),
-    ...(state.repo ? { GitHub_URL: { url: state.repo } } : {}),
-  };
-  await pub.notionRequest(`pages/${row.id}`, 'PATCH', { properties: props });
-}
-
-/** Append the review to the idea's Notion page once (it carries research/PRD/roadmap already). */
-async function notionReview(row, dir) {
-  const md = fs.readFileSync(path.join(dir, 'REVIEW.md'), 'utf8');
-  const h1 = { object: 'block', type: 'heading_1', heading_1: { rich_text: [{ type: 'text', text: { content: 'Review (gstack)' } }] } };
-  await pub.appendBlocks(row.id, [h1, ...mdToBlocks(md, { headingOffset: 1 })]);
-}
-
 function deployPages() {
   const out = execFileSync('vercel', ['deploy', '--prod', '--yes', '--scope', policy.vercelScope], { cwd: PAGES, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 300_000 });
   return /Aliased|ready/.test(out);
@@ -162,8 +164,6 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
   const out = { at: now.toISOString(), changes: [], errors: [] };
   const note = (slug, what) => out.changes.push(`${slug}: ${what}`);
   const fail = (step, e) => out.errors.push(`${step}: ${String(e && (e.stderr || e.message) || e).slice(0, 300)}`);
-  await pub.ensureDatabaseProperties();
-  const rows = new Map((await pub.allIdeas()).filter((r) => r.slug).map((r) => [r.slug, r]));
   const changed = new Set();
   const save = (slug, state, what) => { P.writeState(path.join(IDEAS, slug), state, now); changed.add(slug); note(slug, what); };
   /**
@@ -222,82 +222,18 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
     } catch (e) { fail('deploy pages', e); return []; }
   };
 
-  /** Post an idea's review to its Notion page once, and record that it's there. */
-  const postReview = async (slug) => {
-    const row = rows.get(slug);
-    if (!row) return;
-    const dir = path.join(IDEAS, slug);
-    await notionReview(row, dir)
-      .then(() => P.writeState(dir, { ...P.readState(dir), review: { ...P.readState(dir).review, notionAt: new Date().toISOString() } }))
-      .catch((e) => fail(`notion review ${slug}`, e));
-  };
-
-  // 0. Decisions from RepoHQ's Ideas page: set the Notion Status exactly as David would, so step 1
-  // applies them like any other owner decision and Notion stays the board the pipeline follows.
-  const fromPage = new Map();
+  // 0. Decisions from RepoHQ's Ideas page apply on this tick: David's call wins over any verdict.
   if (sql) {
     try {
       for (const d of await R.pendingDecisions(sql)) {
-        const row = rows.get(d.slug);
-        const status = R.DECISION_STATUS[d.decision];
-        if (!row || !status) { await R.finishDecision(sql, d.id, 'failed', row ? `unknown decision "${d.decision}"` : 'no Notion row for this idea'); continue; }
-        if (!(await R.claimDecision(sql, d.id, `Notion set to ${status}`))) continue; // withdrawn meanwhile
-        try {
-          await pub.notionRequest(`pages/${row.id}`, 'PATCH', { properties: { Status: { select: { name: status } } } });
-          row.status = status;
-          fromPage.set(d.slug, d);
-        } catch (e) {
-          await R.finishDecision(sql, d.id, 'failed', `Notion: ${e.message}`).catch(() => {});
-          fail(`decision ${d.slug}`, e);
-        }
+        const dir = path.join(IDEAS, d.slug);
+        if (!fs.existsSync(path.join(dir, 'idea.json'))) { await R.finishDecision(sql, d.id, 'failed', 'no such idea in the record'); continue; }
+        const r = applyDecision(P.readState(dir), d, { reviewed: fs.existsSync(path.join(dir, 'review.json')), now });
+        if (r.error) { await R.finishDecision(sql, d.id, 'failed', r.error); continue; }
+        if (!(await R.claimDecision(sql, d.id, r.what))) continue; // withdrawn meanwhile
+        save(d.slug, r.state, r.what);
       }
     } catch (e) { fail('decisions', R.explain(e)); }
-  }
-
-  // 1. David's Status changes in Notion win.
-  for (const slug of ideaDirs()) {
-    const dir = path.join(IDEAS, slug);
-    const state = P.readState(dir);
-    const next = ownerOverride(state.stage, rows.get(slug)?.status, { reviewed: fs.existsSync(path.join(dir, 'review.json')) });
-    const d = fromPage.get(slug);
-    if (!next) {
-      // A decision that matches where the idea already is (agreeing with the review's pass): record it,
-      // so the Ideas page and the morning report stop asking.
-      if (d && STAGE_TO_STATUS[state.stage] === rows.get(slug)?.status) {
-        save(slug, { ...state, ownerDecision: { decision: d.decision, at: now.toISOString(), source: 'repohq', ...(d.note ? { note: d.note } : {}) } }, `owner confirmed ${rows.get(slug).status} (RepoHQ Ideas page)`);
-      }
-      continue;
-    }
-    const ownerDecision = next === 'live' ? state.ownerDecision : { decision: next, at: now.toISOString(), source: d ? 'repohq' : 'notion', ...(d?.note ? { note: d.note } : {}) };
-    save(slug, {
-      ...state, stage: next, ownerDecision,
-      ...(next === 'pass' ? { passReason: 'owner' } : {}),
-      ...(next === 'build' ? { ownerApproved: true } : {}),
-      // Back to a demand test after one already ran: a fresh window (the page and its signals stay).
-      ...(next === 'validate' && state.page ? { validation: P.startValidation(now, policy) } : {}),
-    }, `owner set ${rows.get(slug).status}${d ? ' (RepoHQ Ideas page)' : ''}`);
-  }
-
-  // Notion "Build" on an idea that already has its repo approves the M1 build (e.g. overriding a review's pass).
-  for (const slug of ideaDirs()) {
-    const dir = path.join(IDEAS, slug);
-    const state = P.readState(dir);
-    if (rows.get(slug)?.status === 'Build' && state.stage === 'repo' && !state.ownerApproved) {
-      const d = fromPage.get(slug);
-      save(slug, { ...state, ownerApproved: true, ownerDecision: { decision: 'build', at: now.toISOString(), source: d ? 'repohq' : 'notion', ...(d?.note ? { note: d.note } : {}) } }, 'owner approved the M1 build');
-    }
-  }
-
-  // Reviews not yet on their Notion page (run by hand, or a failed earlier sync): post them once.
-  for (const slug of ideaDirs()) {
-    const dir = path.join(IDEAS, slug);
-    const state = P.readState(dir);
-    const row = rows.get(slug);
-    if (!row || !state.review || state.review.notionAt || !fs.existsSync(path.join(dir, 'REVIEW.md'))) continue;
-    try {
-      await notionReview(row, dir);
-      save(slug, { ...state, review: { ...state.review, notionAt: now.toISOString() } }, 'review posted to Notion');
-    } catch (e) { fail(`notion review ${slug}`, e); }
   }
 
   // 0b. New ideas from the Ideas page → the research queue; researched ones marked with their slug.
@@ -331,24 +267,21 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
         const idea = JSON.parse(fs.readFileSync(path.join(dir, 'idea.json'), 'utf8'));
         const source = (pub.readSeeds().find((s) => s.id === idea.seedId) || seedNow).source;
         changed.add(slug); note(slug, `researched now (seed ${idea.seedId || oldest.id})`);
-        const row = (await pub.allIdeas().catch(() => [])).find((x) => x.slug === slug);
-        if (row) rows.set(slug, row);
         const { reviewOne } = require('./idea-review');
         const rv = await reviewOne(slug);
         let pageUrl = null;
         if (rv.ok) {
           note(slug, `reviewed now: ${rv.review.verdict} ${rv.review.score}/10`);
-          await postReview(slug);
           if (P.readState(dir).stage === 'validate') pageUrl = landingPages().find((p) => p.slug === slug)?.url ?? null;
         } else fail(`review ${slug}`, rv.reason);
         try {
           const to = S.notify(source, S.seedMessage({ idea, slug, review: rv.ok ? rv.review : null, reviewError: rv.reason, pageUrl }));
           note(slug, `verdict sent to ${to.channel}`);
         } catch (e) { fail(`notify ${slug}`, e); }
-      } else if (seedNow.status === 'done' && seedNow.notionUrl) {
-        // Research found it's already on the Idea Board.
-        try { S.notify(seedNow.source, `💡 That idea is already on the Idea Board: ${seedNow.notionUrl}\nDecide: ${S.IDEAS_PAGE}`); } catch (e) { fail('notify seed', e); }
-        note('seeds', `${oldest.id} already on the board`);
+      } else if (seedNow.status === 'done' && seedNow.slug) {
+        // Research found it's already recorded (idea-publish marks the seed with that idea's slug).
+        try { S.notify(seedNow.source, `💡 That idea is already recorded: ${S.IDEAS_PAGE}/${seedNow.slug}`); } catch (e) { fail('notify seed', e); }
+        note('seeds', `${oldest.id} already recorded as ${seedNow.slug}`);
       } else {
         // research.js logged and alerted the failure; the seed waits policy.research.seeded.retryMinutes.
         note('seeds', `${oldest.id} not researched yet: ${String(r.reason).slice(0, 160)}`);
@@ -383,21 +316,14 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
     } catch (e) { fail('signals', e); }
   }
 
-  // State → Notion before promote, so "build" decisions become Notion "Build" and get their repo now.
-  for (const slug of changed) {
-    const row = rows.get(slug);
-    if (row) await notionProps(row, P.readState(path.join(IDEAS, slug))).catch((e) => fail(`notion ${slug}`, e));
-  }
-
-  // 4. Promote: "Build" rows → private repo.
+  // 4. Promote: ideas at stage "build" (approved this tick or by a demand test) → private repo.
   try {
     const res = await pub.promote();
     for (const p of res.promoted) {
-      const slug = p.repoUrl.split('/').pop();
-      const dir = path.join(IDEAS, slug);
-      if (fs.existsSync(dir)) save(slug, { ...P.readState(dir), stage: 'repo', repo: p.repoUrl }, `repo created ${p.repoUrl}`);
+      const dir = path.join(IDEAS, p.slug);
+      if (fs.existsSync(dir)) save(p.slug, { ...P.readState(dir), stage: 'repo', repo: p.repoUrl }, `repo created ${p.repoUrl}`);
     }
-    for (const e of res.errors) fail(`promote ${e.title}`, e.error);
+    for (const e of res.errors) fail(`promote ${e.slug}`, e.error);
   } catch (e) { fail('promote', e); }
 
   // 5. Revenue and lifecycle from RepoHQ.
@@ -518,7 +444,7 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
   const syncRepoHQ = async () => {
     if (!sql) return;
     try {
-      const synced = await R.syncIdeas(sql, ideaDirs().map((slug) => R.ideaRecord(path.join(IDEAS, slug), slug, rows.get(slug)?.url)));
+      const synced = await R.syncIdeas(sql, ideaDirs().map((slug) => R.ideaRecord(path.join(IDEAS, slug), slug)));
       if (synced.length) out.synced = [...new Set([...(out.synced || []), ...synced])];
     } catch (e) { fail('repohq sync', R.explain(e)); }
     await R.heartbeat(sql, { at: new Date().toISOString(), ok: out.errors.length === 0, errors: out.errors, policy }).catch(() => {});
@@ -657,7 +583,7 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
     try { manualRan = await runBuildRequest(); } catch (e) { fail('build requests', R.explain(e)); }
   }
 
-  // 4b. An idea David approved (Notion Build, or the Ideas page) is built now, not at the next daily
+  // 4b. An idea David approved (Build on the Ideas page) is built now, not at the next daily
   // run: approving is the signal he wants it. Still at most policy.build.maxPerWeek, and not while new
   // builds are held (policy.build.startNew, P.newBuildsHeld).
   if (!dailyNow && !manualRan) {
@@ -687,7 +613,6 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
       const r = await reviewOne(slug);
       if (!r.ok) { fail(`review ${slug}`, r.reason); continue; }
       changed.add(slug); note(slug, `reviewed: ${r.review.verdict} ${r.review.score}/10`);
-      await postReview(slug);
     }
     // b. Landing pages for new Validate ideas, within the cap.
     landingPages();
@@ -836,11 +761,7 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
     }
   }
 
-  // 6. State → Notion for anything changed after the first sync, then commit the record.
-  for (const slug of changed) {
-    const row = rows.get(slug);
-    if (row) await notionProps(row, P.readState(path.join(IDEAS, slug))).catch((e) => fail(`notion ${slug}`, e));
-  }
+  // 6. Commit the record.
   if (changed.size) out.commit = commitRecord(`pipeline: ${[...changed].join(', ')}`);
 
   // 7. The record → RepoHQ's Ideas page, and the heartbeat.
@@ -859,7 +780,7 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
 }
 
 // `policy` is exported so the tick tests can change a setting (policy.build.startNew) for one test.
-module.exports = { ownerOverride, dailyDue, buildable, STAGE_TO_STATUS, tick, policy };
+module.exports = { applyDecision, dailyDue, buildable, tick, policy };
 
 if (require.main === module) {
   const [cmd, ...rest] = process.argv.slice(2);

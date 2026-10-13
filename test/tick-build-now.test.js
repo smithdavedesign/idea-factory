@@ -1,6 +1,5 @@
 // System test of one pipeline tick for "Start build now" (RepoHQ idea_build_requests): a temporary
-// record (IDEA_PIPELINE_DATA), RepoHQ's database faked in memory, Notion, the builder and OpenClaw
-// stubbed. Checks the request is claimed, the build runs with the owner's note, the row and Slack get
+// record (IDEA_PIPELINE_DATA), RepoHQ's database faked in memory, the builder and OpenClaw stubbed. Checks the request is claimed, the build runs with the owner's note, the row and Slack get
 // the result, the 24-hour cap holds, and an idea that can't be built is refused. Run: npm test
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -21,7 +20,9 @@ const builds = [];
 let buildResult = null;
 const sent = [];
 const emitted = [];
-let db = null; // per test: { requests, startsLast24h, log }
+let db = null; // per test: { requests, startsLast24h, log, decisions }
+// What idea-publish's promote reports: the repos it created for ideas at stage "build".
+let promoteResult = { promoted: [], errors: [] };
 
 function fakeSql(strings, ...values) {
   const q = strings.join('?').replace(/\s+/g, ' ');
@@ -48,6 +49,17 @@ function fakeSql(strings, ...values) {
     if (r) Object.assign(r, { status: values[0], result: values[1], pr_url: values[2], engine: values[3] });
     return Promise.resolve([]);
   }
+  if (/FROM idea_decisions WHERE status = 'pending'/.test(q)) return Promise.resolve((db.decisions || []).filter((d) => d.status === 'pending'));
+  if (/UPDATE idea_decisions SET status = 'applied'/.test(q)) {
+    const d = (db.decisions || []).find((x) => x.id === values[1] && x.status === 'pending');
+    if (d) Object.assign(d, { status: 'applied', result: values[0] });
+    return Promise.resolve(d ? [{ id: d.id }] : []);
+  }
+  if (/UPDATE idea_decisions SET status = \?/.test(q)) {
+    const d = (db.decisions || []).find((x) => x.id === values[2]);
+    if (d) Object.assign(d, { status: values[0], result: values[1] });
+    return Promise.resolve([]);
+  }
   if (/FROM repositories WHERE full_name = ANY/.test(q)) return Promise.resolve(db.repos || []);
   if (/created_at >= \? AND created_at < \? GROUP BY kind/.test(q)) return Promise.resolve(db.window ? db.window(values[1], values[2]) : []);
   if (/FROM idea_signals GROUP BY slug, kind/.test(q)) return Promise.resolve(db.funnelRows || []);
@@ -71,8 +83,7 @@ const stubs = {
     return { ok: true, slug, plan };
   } },
   './idea-publish': {
-    ensureDatabaseProperties: async () => {}, allIdeas: async () => [], readSeeds: () => [], seed: () => ({ id: 's' }),
-    promote: async () => ({ promoted: [], errors: [] }), notionRequest: async () => ({}), appendBlocks: async () => {}, git: () => '',
+    readSeeds: () => [], seed: () => ({ id: 's' }), promote: async () => promoteResult, git: () => '',
   },
   '../lib/events': { emit: (e) => emitted.push(e) },
   '@neondatabase/serverless': { neon: () => fakeSql },
@@ -153,6 +164,7 @@ test.beforeEach(() => {
   policy.autonomy.merge = false;
   policy.autonomy.revert = false;
   gh.info = {}; gh.calls = [];
+  promoteResult = { promoted: [], errors: [] };
 });
 test.after(() => { Module._load = realLoad; fs.rmSync(DATA, { recursive: true, force: true }); fs.rmSync(HOME, { recursive: true, force: true }); });
 
@@ -656,4 +668,27 @@ test('an experiment past its window is judged: a line in LEARNINGS.md, and a kep
   assert.match(fs.readFileSync(path.join(DATA, 'ideas', 'pr-j', 'LEARNINGS.md'), 'utf8'), /· search pages \(pr-j-20260901-seo\) · keep: 3 visitors a week → 60 visitors a week \(target 50 visitors a week\)\. Search pages bring visitors\./);
   assert.match(fs.readFileSync(path.join(DATA, 'PLAYBOOK.md'), 'utf8'), /## Proposed\n\n- Search pages bring visitors\. \(kept on pr-j, \d{4}-\d{2}-\d{2}: 3 visitors a week → 60 visitors a week\)/);
   fs.rmSync(path.join(DATA, 'PLAYBOOK.md'), { force: true });
+});
+
+test('decisions from the Ideas page apply on this tick: Build gets its repo now, and a refused one says why', async () => {
+  idea('d-build', { stage: 'pass', review: { verdict: 'pass', score: 4 } });
+  idea('d-pass', { stage: 'idea' });
+  idea('d-late', { stage: 'building', repo: 'https://github.com/o/d-late' });
+  db = { requests: [], startsLast24h: 0, log: [], decisions: [
+    { id: 1, slug: 'd-build', decision: 'build', note: 'ship the CLI first', status: 'pending' },
+    { id: 2, slug: 'd-pass', decision: 'pass', note: null, status: 'pending' },
+    { id: 3, slug: 'd-late', decision: 'validate', note: null, status: 'pending' },
+    { id: 4, slug: 'd-gone', decision: 'pass', note: null, status: 'pending' },
+  ] };
+  promoteResult = { promoted: [{ slug: 'd-build', title: 'd-build', repoUrl: 'https://github.com/o/d-build' }], errors: [] };
+  const out = await tick();
+  const st = (slug) => JSON.parse(fs.readFileSync(path.join(DATA, 'ideas', slug, 'state.json'), 'utf8'));
+  assert.deepEqual([st('d-build').repo, st('d-build').ownerApproved, st('d-build').ownerDecision.note], ['https://github.com/o/d-build', true, 'ship the CLI first']);
+  assert.deepEqual([st('d-pass').stage, st('d-pass').passReason, st('d-pass').ownerDecision.source], ['pass', 'owner', 'repohq']);
+  assert.equal(st('d-late').stage, 'building');
+  assert.deepEqual(db.decisions.map((d) => d.status), ['applied', 'applied', 'failed', 'failed']);
+  assert.equal(db.decisions[0].result, 'owner set Build (RepoHQ Ideas page)');
+  assert.match(db.decisions[2].result, /not yet being built/);
+  assert.match(db.decisions[3].result, /no such idea/);
+  assert.ok(out.changes.some((c) => c === 'd-build: repo created https://github.com/o/d-build'));
 });
