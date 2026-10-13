@@ -7,7 +7,7 @@
     "at": "2026-10-11T16:41:39.440Z",
     "notionAt": "2026-10-11T16:41:40.221Z"
   },
-  "updatedAt": "2026-10-12T23:11:53.586Z",
+  "updatedAt": "2026-10-13T00:42:42.328Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -18,7 +18,7 @@
   "repo": "https://github.com/smithdavedesign/codespend",
   "build": {
     "milestone": "GOLIVE",
-    "status": "pr-open",
+    "status": "merged",
     "prUrl": "https://github.com/smithdavedesign/codespend/pull/3",
     "testsPassing": true,
     "engine": "claude",
@@ -40,7 +40,7 @@
     "manual": false,
     "sandbox": "docker",
     "mergedBy": "agent",
-    "mergedAt": "2026-10-12T22:22:11.991Z",
+    "mergedAt": "2026-10-13T00:42:42.328Z",
     "beacon": "funnel",
     "held": "Vercel failed"
   },
@@ -136,5 +136,10 @@
     "M1",
     "M2",
     "M3"
-  ]
+  ],
+  "golive": {
+    "mergedAt": "2026-10-13T00:42:42.328Z",
+    "prUrl": "https://github.com/smithdavedesign/codespend/pull/3",
+    "beacon": "funnel"
+  }
 }
