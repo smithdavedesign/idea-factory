@@ -6,7 +6,7 @@
     "summary": "Etsy shows people pay $9–$45 for pet wanted posters and cards, but review counts are not sales and ChatGPT does the pet-persona trick free. There is no channel, no named buyer, and the Oct–Dec window would be mostly gone after a test plus a build.",
     "at": "2026-10-13T08:37:03.455Z"
   },
-  "updatedAt": "2026-10-13T22:19:09.472Z",
+  "updatedAt": "2026-10-13T22:19:45.909Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -106,29 +106,32 @@
       "M1"
     ],
     "planned": [
-      "M1",
       "M2",
       "M3",
       "M4"
     ],
     "stopped": "M2: the builder stopped (timed out after 45 min)",
-    "status": "merged",
+    "status": "running",
     "prUrl": "https://github.com/smithdavedesign/alterpaw/pull/1",
     "testsPassing": true,
     "engine": "claude",
     "model": "claude-opus-5-5",
     "effort": "xhigh",
-    "manual": true,
+    "manual": false,
     "sandbox": "docker",
-    "at": "2026-10-13T20:45:53.584Z",
+    "at": "2026-10-13T22:19:27.425Z",
     "advice": {
       "difficulty": 2,
-      "reason": "Involves multiple components, API endpoints, validation, and rendering logic across several files.",
+      "reason": "involves multiple endpoints, state management, and integration of features across several files.",
       "source": "model",
       "model": "local-qwen3"
     },
-    "mergedBy": "agent",
-    "mergedAt": "2026-10-13T22:19:09.472Z"
+    "progress": {
+      "step": 1,
+      "steps": 4,
+      "label": "M2 (1 of 3)",
+      "at": "2026-10-13T22:19:45.703Z"
+    }
   },
   "milestonesDone": [
     "M1"

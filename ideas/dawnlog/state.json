@@ -7,7 +7,7 @@
     "at": "2026-10-10T19:18:24.107Z",
     "notionAt": "2026-10-10T19:18:24.977Z"
   },
-  "updatedAt": "2026-10-13T22:04:09.937Z",
+  "updatedAt": "2026-10-13T22:34:33.315Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -21,8 +21,8 @@
   },
   "build": {
     "milestone": "GOLIVE",
-    "status": "running",
-    "prUrl": "https://github.com/smithdavedesign/overnight-receipts/pull/6",
+    "status": "merged",
+    "prUrl": "https://github.com/smithdavedesign/overnight-receipts/pull/7",
     "testsPassing": true,
     "engine": "claude",
     "model": "claude-opus-5-5",
@@ -35,22 +35,14 @@
       "source": "model",
       "model": "local-qwen3"
     },
-    "milestones": [
-      "M2",
-      "M3"
-    ],
+    "milestones": [],
     "planned": [
       "M2",
       "M3"
     ],
     "stopped": null,
     "sandbox": "docker",
-    "progress": {
-      "step": 1,
-      "steps": 2,
-      "label": "GOLIVE",
-      "at": "2026-10-13T22:04:09.937Z"
-    }
+    "beacon": "funnel"
   },
   "launch": {
     "steps": [
@@ -140,5 +132,10 @@
     "M1",
     "M2",
     "M3"
-  ]
+  ],
+  "golive": {
+    "mergedAt": "2026-10-13T22:34:33.315Z",
+    "prUrl": "https://github.com/smithdavedesign/overnight-receipts/pull/7",
+    "beacon": "funnel"
+  }
 }
