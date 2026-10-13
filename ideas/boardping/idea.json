@@ -1,0 +1,33 @@
+{
+  "title": "boardping — school-board agenda alerts for K-12 IT and security vendors",
+  "repoName": "boardping",
+  "oneLiner": "For small MSPs and cybersecurity firms selling to K-12 districts in one state, it reads school-board agendas and bid pages and emails a weekly digest of IT buying signals, each with a quoted source, weeks before the RFP is posted.",
+  "overlaps": "permitly (watches city ordinance pages for rental operators) and lienclock (deadline alerts for subcontractors) — same watch-and-alert pattern, different buyer and data; no existing repo covers government-sales leads",
+  "tags": [
+    "serious",
+    "business",
+    "saas",
+    "reach:community",
+    "education"
+  ],
+  "effort": "Medium",
+  "confidence": "Low",
+  "sources": [
+    "https://www.nationgraph.com/post/where-to-find-k-12-rfps-how-to-build-a-school-bids-rfps-database-in-2025",
+    "https://civiciq.com/blog/best-tools-to-find-school-safety-rfps-in-2026",
+    "https://www.austinisd.org/cp/doing-business/process",
+    "https://apify.com/yungstentech/erate-470-bid-radar",
+    "https://civic-scraper.readthedocs.io/en/latest/usage.html",
+    "https://www.g2.com/products/bidprime/pricing",
+    "https://marketbrief.edweek.org/blog/2015/12/the_procurement_puzzle_startups_district_rfps",
+    "https://civiciq.com/public-project/the-handbook-said-staff-may-not-use-an-ai-tool-with-76d54c55-889e-4ca5-8c07-0795cd8b7a51",
+    "https://civiciq.com/blog/civic-iq-bidnet-direct-pricing",
+    "https://www.g2.com/sellers/rfpschoolwatch",
+    "https://www.extruct.ai/hub/rfpschoolwatch-com/",
+    "https://apify.com/barking_wisdom/us-k12-cyber-it-rfp-monitor.md",
+    "https://council.nyc.gov/legislation/api"
+  ],
+  "seedId": "seed-51086c",
+  "slug": "boardping",
+  "recordedAt": "2026-10-13T05:52:03.205Z"
+}
