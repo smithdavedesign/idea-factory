@@ -52,8 +52,8 @@
     "_why": "Coding a product from its PRD wants the strongest model: Claude Code on the subscription first; the free pool (LiteLLM free-agent) only when the subscription is out of capacity.",
     "advisor": "report",
     "_advisor": "RepoHQ tier advisor rates each milestone 1-3 (local model). \"report\": recorded only, Claude first. \"act\": a milestone rated 1 starts on the free pool and moves up to Claude on failure. Switch when its score on the factory ladder earns it.",
-    "manualPerDay": 2,
-    "_manual": "\"Start build now\" on RepoHQ's Ideas page (idea_build_requests) skips maxPerWeek: clicking is the owner's go-ahead. Still one build at a time, oldest request first, and at most manualPerDay manual starts in any 24 hours, because an Opus build at xhigh can use most of a usage window the owner's own sessions share. Over the cap a request waits; it isn't refused.",
+    "manualPerDay": 99,
+    "_manual": "\"Start build now\" on RepoHQ's Ideas page (idea_build_requests) skips maxPerWeek: clicking is the owner's go-ahead. Still one build at a time, oldest request first. manualPerDay was 2 (an Opus build at xhigh can use most of a usage window the owner's own sessions share) until David's call on 2026-10-13: \"push the system to almost its limits\", no daily limit, only how many builds run at once. 99 is no cap in practice until builds run in parallel under a concurrency limit.",
     "mode": "mvp",
     "mvp": {
       "maxMilestones": 6,
@@ -95,7 +95,8 @@
   },
   "golive": {
     "auto": true,
-    "maxPerDay": 1,
+    "maxPerDay": 99,
+    "_maxPerDay": "Was 1; no daily limit since David's call on 2026-10-13 (only how many builds run at once).",
     "_why": "Once an MVP is complete (every roadmap milestone merged), a go-live build makes it launch-ready in the sandbox: SEO basics (titles, meta descriptions, share image, sitemap, robots.txt, JSON-LD), privacy and terms pages, a Buy button on STRIPE_PAYMENT_LINK, a visit beacon to RepoHQ, and a Vercel project through the credential broker. After it merges, the production URL becomes the repo homepage and the live site is audited every 6 hours (checklist step launchReady). \"Get it launch-ready\" on the Ideas page starts one any time after M1."
   }
 }
