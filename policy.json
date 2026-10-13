@@ -5,7 +5,7 @@
     "perProductUsd": 300,
     "_why": "David, 2026-10-12: \"I am ok moving a product forward for a few hundred.\" Agents still never spend or hold a card (maxMonthlySpendUsd stays 0): they propose a spend with what it should buy (ads to fill a demand test, a domain, a paid tier for a product that takes payments) and David approves and pays."
   },
-  "hosting": "free tiers by default (Vercel Hobby, Neon free). A product that takes payments needs a host that allows commercial use, which Vercel Hobby doesn't: a paid tier within ownerBudget, or a free host that allows it.",
+  "hosting": "Vercel Pro (David upgraded the team on 2026-10-13, which allows commercial use: a product may take payments where it is; don't ask for another host), Neon free. Pro includes $20 of usage a month for every product together: keep products light and ask before anything metered beyond that.",
   "research": {
     "seeded": {
       "maxPerDay": 10,

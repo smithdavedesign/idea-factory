@@ -48,7 +48,7 @@ mechanics, because this review is non-interactive.
 3. `/Users/davidsmith/.claude/skills/gstack/plan-eng-review/SKILL.md` → "Step 0: Scope Challenge" and "1.
    Architecture review", applied to ROADMAP M1:
    - Can one person build it in a weekend?
-   - Can it run at zero cost (Vercel Hobby, Neon free, no paid APIs or domains)?
+   - Can it run at near-zero cost (Vercel Pro's included usage, Neon free, no paid APIs or domains)?
    - Which single test would prove M1 works?
 
 Be direct. Interest is not demand: waitlist signups are only a cheap filter, and the review must say
