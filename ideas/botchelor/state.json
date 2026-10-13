@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-13T21:17:55.977Z",
+  "updatedAt": "2026-10-13T21:33:27.794Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -110,13 +110,10 @@
       "M3"
     ],
     "planned": [
-      "M1",
-      "M2",
-      "M3",
       "M4"
     ],
     "stopped": "M4: the builder stopped",
-    "status": "merged",
+    "status": "running",
     "prUrl": "https://github.com/smithdavedesign/botchelor/pull/1",
     "testsPassing": true,
     "engine": "claude",
@@ -124,15 +121,19 @@
     "effort": "xhigh",
     "manual": true,
     "sandbox": "docker",
-    "at": "2026-10-13T18:29:02.089Z",
+    "at": "2026-10-13T21:33:18.086Z",
     "advice": {
       "difficulty": 2,
-      "reason": "Involves multiple endpoints, validation logic, and integration between features requiring careful design and testing.",
+      "reason": "Implementing a feature with multiple components across files and handling game logic with specific rules.",
       "source": "model",
       "model": "local-qwen3"
     },
-    "mergedBy": "agent",
-    "mergedAt": "2026-10-13T21:01:43.988Z"
+    "progress": {
+      "step": 1,
+      "steps": 2,
+      "label": "M4",
+      "at": "2026-10-13T21:33:27.793Z"
+    }
   },
   "milestonesDone": [
     "M1",

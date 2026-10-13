@@ -7,7 +7,7 @@
     "at": "2026-10-13T06:29:40.990Z",
     "notionAt": "2026-10-13T06:29:42.454Z"
   },
-  "updatedAt": "2026-10-13T21:33:03.596Z",
+  "updatedAt": "2026-10-13T21:48:19.057Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -49,8 +49,8 @@
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-        "done": false,
-        "evidence": "6/9 launch checks · missing: Social share image (og:image), robots.txt, sitemap.xml"
+        "done": true,
+        "evidence": "9/9 launch checks"
       },
       {
         "id": "price",
@@ -89,15 +89,15 @@
       }
     ],
     "next": {
-      "id": "launchReady",
-      "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-      "owner": "agent"
+      "id": "payments",
+      "label": "Stripe product created and mapped to the repo in RepoHQ",
+      "owner": "david"
     },
-    "done": 5,
+    "done": 6,
     "total": 10,
     "buyer": "The person who runs a 4–12 person friend/roommate/club group chat (ages ~20–35) and posts year-in-review content in December; first reached through David's own group chats and r/roommates-style communities",
     "price": "$6 once",
-    "updatedAt": "2026-10-13T21:01:43.988Z"
+    "updatedAt": "2026-10-13T21:48:19.057Z"
   },
   "revenue": {
     "mrr": 0,
