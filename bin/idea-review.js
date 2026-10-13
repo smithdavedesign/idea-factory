@@ -6,7 +6,7 @@
 //   node bin/idea-review.js --pending     # review ideas at stage "idea" (policy.review.maxPerDay)
 //
 // Writes ideas/<slug>/REVIEW.md + review.json, updates state.json (stage validate or pass), commits the
-// record, and returns the review for the caller to put on the Notion page.
+// record, and returns the review for the caller (the pipeline mirrors it to RepoHQ's Ideas page).
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');

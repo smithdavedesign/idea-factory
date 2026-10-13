@@ -134,17 +134,24 @@ test('review input: gstack sections are extracted by heading, and all exist in t
   }
 });
 
-test('orchestrator: David\'s Notion status wins; daily steps once a day after 09:30; who gets built', () => {
-  const { ownerOverride, dailyDue, buildable } = require('../bin/idea-pipeline');
-  assert.equal(ownerOverride('validate', 'Pass'), 'pass');
-  assert.equal(ownerOverride('pass', 'Build'), 'build');      // David overrides a pass
-  assert.equal(ownerOverride('idea', 'Live'), 'live');
-  assert.equal(ownerOverride('validate', 'Validate'), null);  // in sync
-  assert.equal(ownerOverride('repo', 'Repo Created'), null);
-  assert.equal(ownerOverride('building', 'Build'), null);     // already past build
-  assert.equal(ownerOverride('pass', 'Validate'), 'validate'); // David sends a passed idea to a demand test
-  assert.equal(ownerOverride('idea', 'Validate', { reviewed: false }), null); // the landing page needs the review's copy
-  assert.equal(ownerOverride('building', 'Validate'), null);
+test('orchestrator: David\'s decision on the Ideas page wins; daily steps once a day after 09:30; who gets built', () => {
+  const { applyDecision, dailyDue, buildable } = require('../bin/idea-pipeline');
+  const now = new Date('2026-10-13T07:00:00Z');
+  const decide = (state, decision, opts = {}) => applyDecision(state, { decision, note: opts.note }, { now, reviewed: opts.reviewed ?? true });
+  assert.deepEqual(decide({ stage: 'validate' }, 'pass').state, { stage: 'pass', passReason: 'owner', ownerDecision: { decision: 'pass', at: now.toISOString(), source: 'repohq' } });
+  const build = decide({ stage: 'pass' }, 'build', { note: 'focus on the CLI' }); // David overrides a pass
+  assert.deepEqual([build.state.stage, build.state.ownerApproved, build.state.ownerDecision.note, build.what], ['build', true, 'focus on the CLI', 'owner set Build (RepoHQ Ideas page)']);
+  assert.deepEqual(decide({ stage: 'repo' }, 'build').state.ownerApproved, true);   // approves M1 of a repo the review passed
+  assert.match(decide({ stage: 'repo', ownerApproved: true }, 'build').error, /past the build decision/);
+  assert.match(decide({ stage: 'building' }, 'build').error, /past the build decision/);
+  assert.match(decide({ stage: 'live' }, 'build').error, /already live/);
+  assert.equal(decide({ stage: 'pass' }, 'validate').state.stage, 'validate');      // a passed idea to a demand test
+  assert.match(decide({ stage: 'idea' }, 'validate', { reviewed: false }).error, /landing-page copy/);
+  assert.match(decide({ stage: 'building' }, 'validate').error, /not yet being built/);
+  assert.equal(decide({ stage: 'pass', page: { url: 'https://p' } }, 'validate').state.validation.startedAt, now.toISOString()); // a fresh window
+  // Agreeing with where the idea already is: recorded, so nobody asks again.
+  assert.deepEqual([decide({ stage: 'pass' }, 'pass').state.stage, decide({ stage: 'pass' }, 'pass').what], ['pass', 'owner confirmed Pass (RepoHQ Ideas page)']);
+  assert.match(decide({ stage: 'idea' }, 'ship').error, /unknown decision/);
   const at = (h, m, d = 10) => new Date(2026, 9, d, h, m);
   assert.equal(dailyDue(undefined, at(9, 29)), false);
   assert.equal(dailyDue(undefined, at(9, 30)), true);
@@ -206,7 +213,7 @@ test('system log: events are one JSON line in the shared file, best-effort', () 
   delete process.env.SYSTEM_EVENTS_DIR;
 });
 
-test('RepoHQ Ideas page: the record mirrored per idea, unchanged ideas skipped, decisions map to Notion', async () => {
+test('RepoHQ Ideas page: the record mirrored per idea, unchanged ideas skipped, nothing written to Notion', async () => {
   const R = require('../lib/repohq');
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'repohq-'));
   const dir = path.join(home, 'permitly');
@@ -214,17 +221,17 @@ test('RepoHQ Ideas page: the record mirrored per idea, unchanged ideas skipped, 
   fs.writeFileSync(path.join(dir, 'idea.json'), JSON.stringify({ title: 'permitly — permit tracker', oneLiner: 'x' }));
   fs.writeFileSync(path.join(dir, 'state.json'), JSON.stringify({ stage: 'validate', updatedAt: '2026-10-11T00:00:00Z' }));
   fs.writeFileSync(path.join(dir, 'PRD.md'), '# PRD');
-  const rec = R.ideaRecord(dir, 'permitly', 'https://notion.so/p');
-  assert.deepEqual([rec.title, rec.stage, rec.review, rec.docs, rec.notionUrl, rec.updatedAt], ['permitly — permit tracker', 'validate', null, { prd: '# PRD' }, 'https://notion.so/p', '2026-10-11T00:00:00Z']);
-  assert.equal(R.ideaRecord(dir, 'permitly', 'https://notion.so/p').hash, rec.hash); // stable
+  const rec = R.ideaRecord(dir, 'permitly');
+  assert.deepEqual([rec.title, rec.stage, rec.review, rec.docs, rec.updatedAt], ['permitly — permit tracker', 'validate', null, { prd: '# PRD' }, '2026-10-11T00:00:00Z']);
+  assert.equal('notionUrl' in rec, false);
+  assert.equal(R.ideaRecord(dir, 'permitly').hash, rec.hash); // stable
   fs.writeFileSync(path.join(dir, 'state.json'), JSON.stringify({ stage: 'pass' }));
-  assert.notEqual(R.ideaRecord(dir, 'permitly', 'https://notion.so/p').hash, rec.hash);
+  assert.notEqual(R.ideaRecord(dir, 'permitly').hash, rec.hash);
   // The launch kit (the launch skill's checked channels) goes to RepoHQ too, and its edits resync the row.
   fs.writeFileSync(path.join(dir, 'LAUNCH-KIT.md'), '# Launch kit\n\n## Order\n1. **r/AirBnBHosts**');
-  const withKit = R.ideaRecord(dir, 'permitly', 'https://notion.so/p');
+  const withKit = R.ideaRecord(dir, 'permitly');
   assert.equal(withKit.docs.launchKit, '# Launch kit\n\n## Order\n1. **r/AirBnBHosts**');
   fs.unlinkSync(path.join(dir, 'LAUNCH-KIT.md'));
-  assert.deepEqual(R.DECISION_STATUS, { build: 'Build', validate: 'Validate', pass: 'Pass' });
 
   // A stand-in for the neon tagged template: SELECT returns the stored hashes, writes are recorded.
   const calls = [];
@@ -236,6 +243,7 @@ test('RepoHQ Ideas page: the record mirrored per idea, unchanged ideas skipped, 
   const written = await R.syncIdeas(sql, [{ ...rec, slug: 'same', hash: 'h1' }, { ...rec, slug: 'new' }]);
   assert.deepEqual(written, ['new']);
   assert.equal(calls.filter((c) => c.text.startsWith('INSERT INTO ideas')).length, 1);
+  assert.doesNotMatch(calls.find((c) => c.text.startsWith('INSERT INTO ideas')).text, /notion_url/);
   assert.deepEqual(calls.find((c) => c.text.startsWith('DELETE FROM ideas')).values, [['gone']]);
   assert.match(R.explain({ code: '42P01', message: 'relation "ideas" does not exist' }).message, /db:push/);
 });

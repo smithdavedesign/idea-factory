@@ -13,9 +13,9 @@ The idea pipeline's home and **record**. Every researched idea lives here in ful
 
 Git is the record because it never truncates, keeps history, and agents read it natively. David
 decides on RepoHQ's **Ideas page** (https://repohq.vercel.app/ideas): Approve build, Demand test first
-or Pass. The pipeline applies each decision on its next tick by setting the Notion **Idea Board**
-Status, the board it follows (David can still set it there too). `Build` creates a private product
-repo, a copy of the idea's folder, and starts M1 on the same tick.
+or Pass. The pipeline applies each decision on its next tick (`applyDecision` in `bin/idea-pipeline.js`).
+`Build` creates a private product repo, a copy of the idea's folder, and starts M1 on the same tick.
+There is no Notion board since 2026-10-12: the Ideas page is the board.
 
 ## Flow
 
@@ -27,7 +27,7 @@ idea ──gstack review──▶ validate ──14-day $0 demand test──▶ 
 | Step | Code | Runs |
 |---|---|---|
 | Research | `bin/idea-research.js` (Claude Pro) → `bin/idea-publish.js publish`; scout (free models) as fallback | OpenClaw cron 09:00 |
-| Your ideas | `idea: …` on Slack or WhatsApp, or the Ideas page's New idea box → `seeds.jsonl` (with its `source`). The next tick researches and reviews it on Claude Pro and sends the verdict back there (`lib/seeds.js`, `policy.research.seeded`: ≤ 3 a day, none 08:30–09:45, no free-model fallback) | every tick |
+| Your ideas | `idea: …` on Slack or WhatsApp, or the Ideas page's New idea box → `seeds.jsonl` (with its `source`). The next tick researches and reviews it on Claude Pro and sends the verdict back there (`lib/seeds.js`, `policy.research.seeded`: ≤ 10 a day, none 08:30–09:45, no free-model fallback) | every tick |
 | Review | `bin/idea-review.js` + `skills/idea-review/SKILL.md`: the gstack frameworks, non-interactive | daily, after 09:30 |
 | Demand test | `lib/pipeline.js` `renderLanding` → `pages/<slug>/` (Vercel `idea-pages`); signals in RepoHQ `idea_signals`; `decideValidation` | landing page daily; decisions every tick |
 | Launch | `skills/launch/SKILL.md`: David runs `/launch <slug>` for verified channels and posts (`LAUNCH-KIT.md`), then `/launch <slug> posted` to log each post (`launch-log.json`) | by hand, while validating |
@@ -37,7 +37,7 @@ idea ──gstack review──▶ validate ──14-day $0 demand test──▶ 
 | Judge | When an experiment's window ends, `lib/growth.js` `judge` compares it with the window before (`lib/repohq.js` `funnelWindow`): visitors a week against the target, or a share of visitors (with at least 30 in the window; extended once, then inconclusive). Keep, iterate, or revert (30% or more worse on a first screen or paid offer). The result is a line in the product's `LEARNINGS.md`; a kept experiment is proposed under `PLAYBOOK.md` "## Proposed" for David to promote | every tick, for focus products |
 | Autonomy | `lib/autonomy.js`, `policy.autonomy` (David's call on 2026-10-12: agents merge everything, he reviews each morning). The pipeline merges its own PRs (growth, go-live, milestones) once its tests passed and every check is green (CI, GitGuardian, the Vercel preview), with no conflicts. A failed growth PR is closed and its mission tried again the next day; a failed roadmap build, or a PR touching a protected path (`.github/workflows/`), waits for David. A merge that breaks the live site's launch checks within a day, or an experiment the judge finds clearly worse, is reverted by a revert PR the pipeline merges, and Slack is told | every tick |
 | Road to revenue | Once M1 is merged, `bin/idea-revenue.js` writes `REVENUE.md` + `revenue.json` on Claude Pro with gstack's startup frameworks: who pays, the price, what must exist before charging, where to launch, the first ten users. Every tick turns it into the launch checklist (`state.launch`, `lib/revenue.js`): plan → MVP → live → legal pages → price → Stripe → launch posts → first user → first dollar, each step owned by an agent or David and checked automatically where it can be (RepoHQ's repo row, a live-URL probe, the repo tree, `launch-log.json`, signups, MRR). Build queues go to the idea closest to its first dollar | every tick; plans ≤ 2 a day |
-| Revenue | MRR and lifecycle from RepoHQ → `state.json`, Notion, the morning email | every tick |
+| Revenue | MRR and lifecycle from RepoHQ → `state.json`, the Ideas page, the morning email | every tick |
 
 Everything runs from `bin/idea-pipeline.js tick` (launchd `com.user.idea-pipeline`, every 15 min). The rules are in **`policy.json`**:
 - agents never spend (`maxMonthlySpendUsd` 0). David may put up to `ownerBudget.perProductUsd` ($300) into moving a product forward: agents propose the spend and what it should buy, and he approves and pays;
@@ -49,7 +49,7 @@ Everything runs from `bin/idea-pipeline.js tick` (launchd `com.user.idea-pipelin
 - at most one build a week from the weekly slot, plus up to 2 a day you start yourself (Start build now);
 - while `build.startNew` is false (since 2026-10-12), an idea that has never been built waits for its first build until a focus product (`growth.focus`) has 50 visitors a week. Ideas already being built carry on, and Start build now still works ([growth loop](https://github.com/smithdavedesign/Github-HQ/blob/main/docs/growth-loop-prd.md)).
 
-David's Status always wins, whether set on the Ideas page or in Notion: Pass, Build, Validate or Live.
+David's decision on the Ideas page always wins over a verdict: Build, Demand test or Pass.
 
 **RepoHQ sync** (`lib/repohq.js`): every tick mirrors each changed idea (idea.json, state.json, review.json, the markdown) to RepoHQ's `ideas` table and writes a heartbeat to `idea_pipeline`. It also applies the pending `idea_decisions` rows, and moves ideas typed in the page's New idea box (`idea_seeds`) into `seeds.jsonl`, the same research queue as `idea: …` on Slack/WhatsApp. The tables are defined in RepoHQ (`src/lib/db/schema.ts`, `npm run db:push`).
 
@@ -64,17 +64,14 @@ The pipeline, research, review and build write to the shared system log (`lib/ev
 ```bash
 node bin/idea-publish.js list                  # ideas + portfolio (for dedupe)
 node bin/idea-publish.js seed "<text>"         # queue an idea for the next research run
-node bin/idea-publish.js publish drafts/<slug> # store + record
-node bin/idea-publish.js promote [--dry-run]   # repos for "Build" rows
-node bin/idea-publish.js sync-page <slug>      # rebuild the Notion page from ideas/<slug>/ (after editing docs)
-node bin/idea-publish.js verify-page <slug>    # read the page back; fails if any text is missing
+node bin/idea-publish.js publish drafts/<slug> # validate + commit ideas/<slug>/ (the record)
+node bin/idea-publish.js promote [--dry-run]   # repos for ideas at stage "build"
 node bin/idea-research.js [--check]            # one research run on Claude Pro (--check: login only)
 node bin/idea-review.js <slug> | --pending     # gstack review → REVIEW.md, review.json, stage
 node bin/idea-build.js <slug> [--no-push]      # M1, tests first, draft PR
 node bin/idea-pipeline.js tick [--daily]       # the whole lifecycle (what launchd runs)
 bin/context search "<q>" | interests | overview  # the owner's context (public + personal only)
-npm test                                       # Markdown → Notion limits (lossless conversion)
-npm run test:live                              # stress page through the real Notion API, then trashed
+npm test                                       # decision rules, landing-page escaping, Claude guards, the tick
 ```
 
 Big picture: RepoHQ `docs/system-overview.md`. Design and policy: RepoHQ `docs/idea-factory.md` and `docs/personal-context.md`.

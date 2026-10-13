@@ -2,17 +2,14 @@
 // idea-publish.js — every side effect of the idea pipeline. Agents do the research and write the
 // docs; this script validates them, stores them, and creates product repos only when David asks.
 //
-//   node bin/idea-publish.js list                  # {ideas, portfolio}: Idea Board rows + David's GitHub repos (dedupe)
+//   node bin/idea-publish.js list                  # {ideas, portfolio}: every recorded idea + David's GitHub repos (dedupe)
 //   node bin/idea-publish.js seed "<text>" [--source slack|whatsapp|page]   # queue an idea David sent ("idea: …"); the pipeline researches it on its next tick and replies there
 //   node bin/idea-publish.js seeds                 # queued seeds, oldest first
 //   node bin/idea-publish.js publish <draft-dir>   # validate → ideas/<slug>/ committed to the idea-factory repo
-//                                                  #   → Notion row (Status "Idea", full research/PRD/roadmap in the page)
-//   node bin/idea-publish.js promote [--dry-run]   # product repos for rows David set to "Build" (private, topic "idea")
-//   node bin/idea-publish.js sync-page <slug>      # rebuild a row's Notion page from the git copy
-//   node bin/idea-publish.js verify-page <slug>    # read the Notion page back and check no text was lost
+//   node bin/idea-publish.js promote [--dry-run]   # product repos for ideas at stage "build" (private, topic "idea")
 //
 // The git copy (ideas/<slug>/ in this repo) is the record: complete, versioned, readable by agents.
-// Notion is where David decides; its page carries the same text, and links to the git copy.
+// RepoHQ's Ideas page shows it (the pipeline mirrors it every tick) and is where David decides.
 //
 // Never builds shell strings: every external command goes through execFileSync(arg array),
 // because titles and text come from the web.
@@ -21,21 +18,14 @@ const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
 const { execFileSync } = require('child_process');
-const { mdToBlocks, batches, blocksText, markdownText } = require('../lib/notion-md');
-const { parseSeedArgs } = require('../lib/seeds');
+const { parseSeedArgs, IDEAS_PAGE } = require('../lib/seeds');
 
-const HOME = process.env.HOME;
-const DATABASE_ID = process.env.IDEA_BOARD_ID || '3f5bf9bf-93e4-81b7-8036-fc1cd59fd48f';
-const NOTION_VERSION = '2022-06-28';
 const GH_OWNER = process.env.IDEA_GH_OWNER || 'smithdavedesign';
 const IDEA_HOME = process.env.IDEA_HOME || path.resolve(__dirname, '..');
 const IDEAS_REPO = process.env.IDEA_REPO || 'idea-factory';
 const IDEAS_DIR = path.join(IDEA_HOME, 'ideas');
 const SEEDS_FILE = path.join(IDEA_HOME, 'seeds.jsonl');
-const STATUS = { idea: 'Idea', validate: 'Validate', build: 'Build', created: 'Repo Created', live: 'Live', pass: 'Pass' };
-const STATUS_COLORS = { Idea: 'blue', Validate: 'yellow', Build: 'green', 'Repo Created': 'purple', Live: 'pink', Pass: 'gray' };
 const DOCS = ['RESEARCH.md', 'PRD.md', 'ROADMAP.md'];
-const DOC_TITLES = { 'RESEARCH.md': 'Research', 'PRD.md': 'PRD', 'ROADMAP.md': 'Roadmap' };
 const REQUIRED_FILES = ['idea.json', ...DOCS];
 const PRD_HEADINGS = [/problem/i, /user/i, /competit|alternative/i, /mvp|scope/i, /metric|success/i];
 const LEVELS = ['Low', 'Medium', 'High'];
@@ -45,95 +35,23 @@ const BANNED_NAME_WORDS = new Set(['idea', 'ideas', 'test', 'tmp', 'demo', 'draf
 class Fail extends Error {}
 const fail = (msg) => { throw new Fail(msg); };
 
-function notionKey() {
-  if (process.env.NOTION_API_KEY) return process.env.NOTION_API_KEY;
-  // Fallback for runs outside an OpenClaw agent turn (launchd, Claude Code).
-  try {
-    const cfg = JSON.parse(fs.readFileSync(path.join(HOME, '.openclaw', 'openclaw.json'), 'utf8'));
-    const key = cfg.skills?.entries?.notion?.apiKey;
-    if (key) return key;
-  } catch {}
-  throw new Error('NOTION_API_KEY not set and not found in ~/.openclaw/openclaw.json');
-}
-
-async function notionRequest(endpoint, method = 'GET', body = null) {
-  const opts = {
-    method,
-    headers: {
-      'Authorization': `Bearer ${notionKey()}`,
-      'Notion-Version': NOTION_VERSION,
-      'Content-Type': 'application/json',
-    },
-  };
-  if (body) opts.body = JSON.stringify(body);
-  for (let attempt = 0; ; attempt++) {
-    const resp = await fetch(`https://api.notion.com/v1/${endpoint}`, opts);
-    if (resp.status === 429 && attempt < 4) { await new Promise((r) => setTimeout(r, 1000 * (attempt + 1))); continue; }
-    if (!resp.ok) throw new Error(`Notion API error ${resp.status}: ${await resp.text()}`);
-    return resp.json();
-  }
-}
-
-const text = (s) => String(s ?? '').slice(0, 2000); // properties only; the page body is never cut
-const plain = (prop) => (prop?.title || prop?.rich_text || []).map((t) => t.plain_text).join('');
 const tagName = (s) => String(s).replace(/,/g, ' ').trim().slice(0, 100);
 /** idea.json tags: lowercase, no duplicates, at most 8 (one per filter group, `ai`, topics: SKILL.md "tags"). */
 const normalizeTags = (tags) => [...new Set((Array.isArray(tags) ? tags : []).filter((t) => typeof t === 'string')
   .map((t) => tagName(t).toLowerCase()).filter(Boolean))].slice(0, 8);
 const docsUrl = (slug) => `https://github.com/${GH_OWNER}/${IDEAS_REPO}/tree/main/ideas/${slug}`;
+/** The idea on RepoHQ's Ideas page, where David reads it in full and decides. */
+const ideaPageUrl = (slug) => `${IDEAS_PAGE}/${encodeURIComponent(slug)}`;
+const readJson = (p) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; } };
 
-async function ensureDatabaseProperties() {
-  const db = await notionRequest(`databases/${DATABASE_ID}`);
-  const props = db.properties || {};
-  const updates = {};
-  if (!props.Slug) updates.Slug = { rich_text: {} };
-  if (!props.Confidence) updates.Confidence = { select: { options: LEVELS.map((name) => ({ name })) } };
-  if (!props.Sources) updates.Sources = { rich_text: {} };
-  if (!props.GitHub_URL) updates.GitHub_URL = { url: {} };
-  if (!props.Docs) updates.Docs = { url: {} };
-  if (!props.Description) updates.Description = { rich_text: {} };
-  if (!props.Keywords) updates.Keywords = { multi_select: {} };
-  if (!props.EffortEstimate) updates.EffortEstimate = { select: { options: LEVELS.map((name) => ({ name })) } };
-  if (!props.AddedAt) updates.AddedAt = { date: {} };
-  // Pipeline fields (gstack review, demand test, revenue).
-  if (!props.Verdict) updates.Verdict = { select: { options: [{ name: 'validate', color: 'yellow' }, { name: 'pass', color: 'gray' }] } };
-  if (!props.Score) updates.Score = { number: {} };
-  if (!props.Page) updates.Page = { url: {} };
-  if (!props.Visitors) updates.Visitors = { number: {} };
-  if (!props.Signups) updates.Signups = { number: {} };
-  if (!props.MRR) updates.MRR = { number: { format: 'dollar' } };
-  const statusOpts = props.Status?.select?.options || [];
-  const missing = Object.values(STATUS).filter((name) => !statusOpts.some((o) => o.name === name));
-  if (!props.Status || missing.length) {
-    // Resend existing options so none are dropped.
-    updates.Status = { select: { options: [...statusOpts.map(({ name, color }) => ({ name, color })),
-      ...missing.map((name) => ({ name, color: STATUS_COLORS[name] }))] } };
-  }
-  if (Object.keys(updates).length) {
-    await notionRequest(`databases/${DATABASE_ID}`, 'PATCH', { properties: updates });
-  }
-}
-
-async function allIdeas(filter) {
-  const rows = [];
-  let cursor;
-  do {
-    const res = await notionRequest(`databases/${DATABASE_ID}/query`, 'POST',
-      { page_size: 100, ...(filter ? { filter } : {}), ...(cursor ? { start_cursor: cursor } : {}) });
-    rows.push(...res.results);
-    cursor = res.has_more ? res.next_cursor : null;
-  } while (cursor);
-  return rows.map((p) => ({
-    id: p.id,
-    url: p.url,
-    title: plain(p.properties.Name),
-    slug: plain(p.properties.Slug),
-    status: p.properties.Status?.select?.name || '',
-    oneLiner: plain(p.properties.Description).slice(0, 200),
-    repo: p.properties.GitHub_URL?.url || '',
-    docs: p.properties.Docs?.url || '',
-    page: p.properties.Page?.url || '',
-  }));
+/** Every recorded idea (ideas/<slug>/), for research to dedupe against and promote to act on. */
+function localIdeas() {
+  if (!fs.existsSync(IDEAS_DIR)) return [];
+  return fs.readdirSync(IDEAS_DIR).filter((slug) => fs.existsSync(path.join(IDEAS_DIR, slug, 'idea.json'))).map((slug) => {
+    const idea = readJson(path.join(IDEAS_DIR, slug, 'idea.json')) || {};
+    const state = readJson(path.join(IDEAS_DIR, slug, 'state.json')) || {};
+    return { slug, title: idea.title || slug, stage: state.stage || 'idea', oneLiner: String(idea.oneLiner || '').slice(0, 200), repo: state.repo || '', url: ideaPageUrl(slug) };
+  });
 }
 
 /** David's own repos, so research extends an existing project instead of duplicating it. */
@@ -224,88 +142,13 @@ function repoInfo(full) {
 const repoDescription = (idea) => idea.oneLiner.replace(/[\r\n]+/g, ' ').slice(0, 300);
 const git = (args, cwd = IDEA_HOME) => execFileSync('git', args, { cwd, stdio: 'pipe' }).toString().trim();
 
-/** Commit ideas/<slug>/ to the idea-factory repo and push. The record must exist before Notion does. */
+/** Commit ideas/<slug>/ to the idea-factory repo and push. The pipeline mirrors it to RepoHQ on its next tick. */
 function storeIdea(slug, message) {
   git(['add', '--', path.join('ideas', slug)]);
   try { git(['commit', '-q', '-m', message.slice(0, 200), '--', path.join('ideas', slug)]); } catch {} // unchanged on retry
   try { git(['pull', '-q', '--rebase', '--autostash']); } catch {}
   git(['push', '-q']);
   return git(['rev-parse', '--short', 'HEAD']);
-}
-
-// ─── Notion page body: the full research, PRD and roadmap, so David can decide without opening anything else.
-
-function pageBody(dir, idea) {
-  const read = (f) => fs.readFileSync(path.join(dir, f), 'utf8');
-  const h1 = (t) => ({ object: 'block', type: 'heading_1', heading_1: { rich_text: [{ type: 'text', text: { content: t } }] } });
-  return [
-    { object: 'block', type: 'callout', callout: { icon: { emoji: '🗳️' }, rich_text: [
-      { type: 'text', text: { content: 'Decide here: set Status to "Build" and a private repo is created within 15 minutes; "Pass" drops it. ' } },
-      { type: 'text', text: { content: `Closest existing project: ${String(idea.overlaps || 'not checked').slice(0, 1500)}. ` } },
-      { type: 'text', text: { content: 'Full docs in git', link: { url: docsUrl(idea.slug) } } },
-    ] } },
-    ...DOCS.flatMap((f) => [h1(DOC_TITLES[f]), ...mdToBlocks(read(f), { headingOffset: 1 })]),
-    h1('Sources'),
-    ...mdToBlocks(idea.sources.map((u) => `- [${u}](${u})`).join('\n')),
-  ];
-}
-
-/** The plain text a page must contain: every doc in full, plus every source. */
-function expectedPageText(dir, idea) {
-  return blocksText(pageBody(dir, idea));
-}
-
-async function appendBlocks(parentId, blocks) {
-  for (const batch of batches(blocks)) {
-    const clean = batch.map(({ _moreRows, ...b }) => b);
-    const res = await notionRequest(`blocks/${parentId}/children`, 'PATCH', { children: clean });
-    for (let i = 0; i < batch.length; i++) {
-      const more = batch[i]._moreRows;
-      if (more && more.length) {
-        const tableId = res.results[i].id;
-        for (const rows of batches(more)) await notionRequest(`blocks/${tableId}/children`, 'PATCH', { children: rows });
-      }
-    }
-  }
-}
-
-async function children(id) {
-  const out = [];
-  let cursor;
-  do {
-    const res = await notionRequest(`blocks/${id}/children?page_size=100${cursor ? `&start_cursor=${cursor}` : ''}`);
-    out.push(...res.results);
-    cursor = res.has_more ? res.next_cursor : null;
-  } while (cursor);
-  return out;
-}
-
-async function readPageBlocks(pageId) {
-  const blocks = await children(pageId);
-  for (const b of blocks) if (b.type === 'table') b.children = await children(b.id);
-  return blocks;
-}
-
-async function createRow(idea, dir) {
-  const now = new Date().toISOString();
-  const page = await notionRequest('pages', 'POST', {
-    parent: { database_id: DATABASE_ID },
-    properties: {
-      Name: { title: [{ text: { content: text(idea.title) } }] },
-      Slug: { rich_text: [{ text: { content: idea.slug } }] },
-      Status: { select: { name: STATUS.idea } },
-      Description: { rich_text: [{ text: { content: text(idea.oneLiner) } }] },
-      Keywords: { multi_select: idea.tags.map((name) => ({ name })) },
-      EffortEstimate: { select: { name: idea.effort } },
-      Confidence: { select: { name: idea.confidence } },
-      Sources: { rich_text: [{ text: { content: text(idea.sources.join('\n')) } }] },
-      Docs: { url: docsUrl(idea.slug) },
-      AddedAt: { date: { start: now } },
-      SpecCreatedAt: { date: { start: now } },
-    },
-  });
-  await appendBlocks(page.id, pageBody(dir, idea));
-  return page;
 }
 
 async function publish(dirArg) {
@@ -315,12 +158,11 @@ async function publish(dirArg) {
   const idea = validateDraft(dir);
   const full = `${GH_OWNER}/${idea.repoName}`;
 
-  await ensureDatabaseProperties();
-  const existing = (await allIdeas()).find((r) => r.slug === idea.slug ||
+  const existing = localIdeas().find((r) => r.slug === idea.slug ||
     r.title.trim().toLowerCase() === idea.title.trim().toLowerCase());
   if (existing) {
-    markSeed(idea.seedId, 'done', { notionUrl: existing.url });
-    return { ok: true, skipped: 'already on the Idea Board', status: existing.status, notionUrl: existing.url };
+    markSeed(idea.seedId, 'done', { slug: existing.slug });
+    return { ok: true, skipped: 'already recorded', slug: existing.slug, stage: existing.stage, url: existing.url };
   }
   // The repo name is reserved now, so "Build" can't fail later on a name clash with David's repos.
   if (repoInfo(full)) fail(`repo name "${idea.repoName}" is already taken on GitHub; choose a different repoName`);
@@ -332,9 +174,8 @@ async function publish(dirArg) {
   fs.writeFileSync(path.join(dir, 'idea.json'), JSON.stringify(idea, null, 2) + '\n');
   fs.renameSync(dir, dest);
   const commit = storeIdea(idea.slug, `Idea: ${idea.title}`);
-  const page = await createRow(idea, dest);
-  markSeed(idea.seedId, 'done', { notionUrl: page.url });
-  return { ok: true, title: idea.title, oneLiner: idea.oneLiner, status: STATUS.idea, notionUrl: page.url, docs: docsUrl(idea.slug), commit };
+  markSeed(idea.seedId, 'done', { slug: idea.slug });
+  return { ok: true, title: idea.title, oneLiner: idea.oneLiner, stage: 'idea', url: ideaPageUrl(idea.slug), docs: docsUrl(idea.slug), commit };
 }
 
 function loadIdea(slug) {
@@ -346,37 +187,6 @@ function loadIdea(slug) {
   idea.repoName = idea.repoName || slug;
   idea.sources = Array.isArray(idea.sources) ? idea.sources : [];
   return { dir, idea };
-}
-
-async function rowFor(slug) {
-  const row = (await allIdeas({ property: 'Slug', rich_text: { equals: slug } }))[0];
-  if (!row) fail(`no Idea Board row with Slug "${slug}"`);
-  return row;
-}
-
-/** Rebuild the Notion page from the git copy (after editing the docs, or to repair a page). */
-async function syncPage(slug) {
-  const { dir, idea } = loadIdea(slug);
-  await ensureDatabaseProperties();
-  const row = await rowFor(slug);
-  for (const b of await children(row.id)) await notionRequest(`blocks/${b.id}`, 'DELETE');
-  await appendBlocks(row.id, pageBody(dir, idea));
-  await notionRequest(`pages/${row.id}`, 'PATCH', { properties: { Docs: { url: docsUrl(slug) } } });
-  return { ok: true, slug, notionUrl: row.url };
-}
-
-/** Read the page back and compare its text with the git copy: proves nothing was cut. */
-async function verifyPage(slug) {
-  const { dir, idea } = loadIdea(slug);
-  const row = await rowFor(slug);
-  const got = blocksText(await readPageBlocks(row.id));
-  const want = expectedPageText(dir, idea);
-  const docsChars = DOCS.reduce((n, f) => n + fs.readFileSync(path.join(dir, f), 'utf8').length, 0);
-  if (got === want) return { ok: true, slug, docsChars, pageChars: got.length };
-  let at = 0;
-  while (at < Math.min(got.length, want.length) && got[at] === want[at]) at++;
-  return { ok: false, slug, docsChars, pageChars: got.length, expectedChars: want.length, firstDifferenceAt: at,
-    expected: want.slice(at, at + 120), got: got.slice(at, at + 120) };
 }
 
 function writeReadme(dir, idea) {
@@ -406,24 +216,25 @@ function createRepo(srcDir, idea, full) {
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
+/**
+ * A private product repo for each idea at stage "build" without one: David approved it on the Ideas page
+ * (or a demand test passed its bar). The caller records stage "repo" and the URL in the idea's state.
+ */
 async function promote(dryRun = false) {
-  const rows = await allIdeas({ property: 'Status', select: { equals: STATUS.build } });
   const promoted = [];
   const errors = [];
-  for (const row of rows.filter((r) => !r.repo)) {
+  for (const row of localIdeas().filter((r) => r.stage === 'build' && !r.repo)) {
     try {
       const { dir, idea } = loadIdea(row.slug);
       const full = `${GH_OWNER}/${idea.repoName}`;
       const remote = repoInfo(full);
       if (remote && remote.description !== repoDescription(idea)) throw new Error(`"${full}" exists and isn't this idea's repo`);
       const repoUrl = `https://github.com/${full}`;
-      if (dryRun) { promoted.push({ title: row.title, repoUrl, dryRun: true }); continue; }
+      if (dryRun) { promoted.push({ slug: row.slug, title: row.title, repoUrl, dryRun: true }); continue; }
       if (!remote) createRepo(dir, idea, full);
-      await notionRequest(`pages/${row.id}`, 'PATCH', { properties: {
-        Status: { select: { name: STATUS.created } }, GitHub_URL: { url: repoUrl } } });
-      promoted.push({ title: row.title, repoUrl, notionUrl: row.url });
+      promoted.push({ slug: row.slug, title: row.title, repoUrl });
     } catch (e) {
-      errors.push({ title: row.title, error: String(e.stderr || e.message).slice(0, 300) });
+      errors.push({ slug: row.slug, title: row.title, error: String(e.stderr || e.message).slice(0, 300) });
     }
   }
   return { ok: errors.length === 0, at: new Date().toISOString(), promoted, errors };
@@ -431,14 +242,12 @@ async function promote(dryRun = false) {
 
 async function main(argv) {
   const [cmd, ...rest] = argv;
-  if (cmd === 'list') return { ideas: await allIdeas(), portfolio: portfolio() };
+  if (cmd === 'list') return { ideas: localIdeas(), portfolio: portfolio() };
   if (cmd === 'seed') { const a = parseSeedArgs(rest); return seed(a.text, { source: a.source }); }
   if (cmd === 'seeds') return readSeeds().filter((s) => s.status === 'queued');
   if (cmd === 'publish') return publish(rest[0]);
   if (cmd === 'promote') return promote(rest.includes('--dry-run'));
-  if (cmd === 'sync-page') return syncPage(rest[0]);
-  if (cmd === 'verify-page') return verifyPage(rest[0]);
-  fail('usage: idea-publish.js list | seed "<text>" [--source slack|whatsapp|page] | seeds | publish <draft-dir> | promote [--dry-run] | sync-page <slug> | verify-page <slug>');
+  fail('usage: idea-publish.js list | seed "<text>" [--source slack|whatsapp|page] | seeds | publish <draft-dir> | promote [--dry-run]');
 }
 
 if (require.main === module) {
@@ -452,4 +261,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { seed, readSeeds, validateDraft, normalizeTags, pageBody, expectedPageText, docsUrl, Fail, appendBlocks, readPageBlocks, notionRequest, DATABASE_ID, STATUS, allIdeas, rowFor, ensureDatabaseProperties, promote, storeIdea, IDEAS_DIR, git };
+module.exports = { seed, readSeeds, validateDraft, normalizeTags, docsUrl, ideaPageUrl, localIdeas, Fail, promote, storeIdea, IDEAS_DIR, git };
