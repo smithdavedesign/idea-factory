@@ -47,6 +47,7 @@ const { scanPatch, formatFindings, knownSecrets } = require('../lib/secret-scan'
 const { startSession } = require('../lib/sandbox');
 const P = require('../lib/pipeline');
 const { emit } = require('../lib/events');
+const { authorArgs, commitAuthor } = require('../lib/author');
 
 const ROOT = path.resolve(__dirname, '..');
 // The record and the build's scratch space; IDEA_PIPELINE_DATA points them elsewhere (tests), like the pipeline.
@@ -402,13 +403,17 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
   const engines = engineOrder(advice?.difficulty ?? null, policy.build.advisor || 'report');
   // A live product stays live while it's being improved (step 4a still follows its PR).
   const stageNow = state.stage === 'live' ? 'live' : 'building';
-  P.writeState(ideaDir, { ...state, stage: stageNow, build: { ...(state.build || {}), milestone, ...(mvp ? { planned } : {}), status: 'running', at: now.toISOString(), manual, ...(advice ? { advice } : {}) } }, now);
+  // The last PR's fate (merged by the pipeline, left for David, reverted) belongs to that PR, not this
+  // build: carried over, it read as "merged by the pipeline" on codespend's open go-live PR (2026-10-12).
+  const prev = { ...(state.build || {}) };
+  for (const k of ['mergedBy', 'mergedAt', 'held', 'reverted']) delete prev[k];
+  P.writeState(ideaDir, { ...state, stage: stageNow, build: { ...prev, milestone, ...(mvp ? { planned } : {}), status: 'running', at: now.toISOString(), manual, ...(advice ? { advice } : {}) } }, now);
   // "Running now" on RepoHQ's Agents page comes from this event until the build's own ok/fail lands.
   emit({ component: 'build', event: milestone, status: 'start', subject: { idea: slug }, message: `${mvp ? `MVP (${rangeText(planned)})` : growth ? `Growth build (${growthLabel})` : milestone} started${manual ? ' (Start build now)' : ''} on ${eng.model || 'claude'}${eng.effort ? ` at ${eng.effort}` : ''}`,
     data: { milestone, manual: !!manual, model: eng.model || null, effort: eng.effort || null, timeoutMinutes: mvp ? mvpPolicy.maxMinutes : eng.timeoutMinutes, ...(mvp ? { planned } : {}), ...(growth ? { experiment: growth.experiment.id } : {}) } });
   const ownerNote = String(note || '').trim() || (state.ownerDecision?.decision === 'build' ? state.ownerDecision.note : '');
   const failBuild = (reason, data = {}) => {
-    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: state.stage === 'live' ? 'live' : (state.milestonesDone || []).length ? 'building' : 'repo', build: { ...(state.build || {}), milestone, ...(mvp ? { planned } : {}), status: 'failed', at: now.toISOString(), manual: !!manual, reason } });
+    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: state.stage === 'live' ? 'live' : (state.milestonesDone || []).length ? 'building' : 'repo', build: { ...prev, milestone, ...(mvp ? { planned } : {}), status: 'failed', at: now.toISOString(), manual: !!manual, reason } });
     emit({ component: 'build', event: milestone, status: 'fail', subject: { idea: slug }, message: reason, durationMs: Date.now() - now.getTime(), data: { milestone, manual: !!manual, ...data } });
     return { ok: false, slug, milestone, reason, state: s };
   };
@@ -503,7 +508,8 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
 
     await ws.stage(patch);
     const title = golive ? `Go live: ${slug} (launch-ready)` : growth ? `Growth: ${slug} (${growthLabel})` : mvp ? `MVP: ${slug} (${rangeText(completed.length ? completed : planned)})` : `${milestone}: ${slug}`;
-    sh('git', ['-c', 'user.name=idea-factory', '-c', 'user.email=idea-factory@users.noreply.github.com', 'commit', '-q', '-m', `${title} (tests ${testsPassing ? 'passing' : 'failing'})`], work);
+    // As the owner's GitHub account (lib/author.js): Vercel only builds previews of a private repo's owner's commits.
+    sh('git', [...authorArgs(commitAuthor({ exec: execFileSync })), 'commit', '-q', '-m', `${title} (tests ${testsPassing ? 'passing' : 'failing'})`], work);
     let prUrl = null;
     if (push) {
       sh('git', ['push', '-q', '-u', 'origin', branch], work);
@@ -534,7 +540,7 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
       prUrl = sh('gh', ['pr', 'create', '--draft', '--base', 'main', '--head', branch, '--title', title, '--body', body], work);
     }
     // On merge, the pipeline marks `milestones` done: the ones that completed, not every one attempted.
-    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: stageNow, build: { ...(state.build || {}), milestone, milestones: golive || growth ? [] : mvp ? completed : [milestone], ...(mvp ? { planned, stopped } : {}), ...(growth ? { experiment: growth.experiment.id, kind: growth.experiment.kind } : {}), ...(golive ? { beacon: 'funnel' } : {}), status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : eng.effort || null, manual: !!manual, sandbox: ws.kind, at: now.toISOString(), ...(advice ? { advice } : {}) } });
+    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: stageNow, build: { ...prev, milestone, milestones: golive || growth ? [] : mvp ? completed : [milestone], ...(mvp ? { planned, stopped } : {}), ...(growth ? { experiment: growth.experiment.id, kind: growth.experiment.kind } : {}), ...(golive ? { beacon: 'funnel' } : {}), status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : eng.effort || null, manual: !!manual, sandbox: ws.kind, at: now.toISOString(), ...(advice ? { advice } : {}) } });
     emit({ component: 'build', event: milestone, status: testsPassing ? 'ok' : 'fail', subject: { idea: slug, pr: prUrl || undefined }, durationMs: Date.now() - now.getTime(), data: { ...usage, testsPassing, prUrl, repaired, shotsReminded },
       message: `${mvp ? `MVP (${completed.join(', ') || 'nothing complete'}${stopped ? `; stopped: ${stopped.slice(0, 120)}` : ''})` : milestone} ${prUrl ? `PR ${prUrl}` : 'built locally'}, tests ${testsPassing ? 'passing' : 'failing'}, engine ${run.engine}${advice ? `, advisor ${advice.difficulty}` : ''}` });
     return { ok: true, slug, milestone, prUrl, testsPassing, engine: run.engine, model: run.info.model, builderReason: run.reason, state: s, ...(mvp ? { planned, completed, stopped } : {}) };

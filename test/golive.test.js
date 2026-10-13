@@ -50,6 +50,18 @@ test('the production URL is the newest production deployment\'s shortest alias i
     ? { status: 0, stdout: 'https://tiebreak-mh5fswqjn-team.vercel.app ● Ready Production', stderr: '' }
     : { status: 0, stdout: '', stderr: 'url  https://tiebreak-mh5fswqjn-team.vercel.app\nAliases\n  ╶ https://tiebreak-git-main-team.vercel.app\n' });
   assert.equal(G.productionUrl('tiebreak', 'team_1', { spawn: noAlias }), null);
+  // codespend, 2026-10-12: the only production deployment was blocked, and its one alias was the team's
+  // own address (behind Vercel's login). No production URL until a Ready deployment has a public one.
+  const team = 'https://codespend-david-smiths-projects-fe129786.vercel.app';
+  const codespend = (status, aliases) => (cmd, args) => (args[0] === 'ls'
+    ? { status: 0, stdout: `1h  https://codespend-n8ugdx7y1-david-smiths-projects-fe129786.vercel.app  ● ${status}  Production\n`, stderr: '' }
+    : { status: 0, stdout: '', stderr: `Aliases\n${aliases.map((a) => `  ╶ ${a}`).join('\n')}\n` });
+  assert.equal(G.productionUrl('codespend', 'team_1', { spawn: codespend('Blocked', [team]) }), null, 'a blocked deployment');
+  assert.equal(G.productionUrl('codespend', 'team_1', { spawn: codespend('Ready', [team]) }), null, 'only the team address');
+  assert.equal(G.productionUrl('codespend', 'team_1', { spawn: codespend('Ready', ['https://codespend-phi.vercel.app', team]) }), 'https://codespend-phi.vercel.app');
+  assert.equal(G.ownVercelAddress(team, 'codespend'), true);
+  assert.equal(G.ownVercelAddress('https://codespend.example.com', 'codespend'), false);
+  assert.equal(G.ownVercelAddress('https://other-app.vercel.app', 'codespend'), false);
 });
 
 test('go-live can run after M1 when nothing is in flight; it starts by itself once the MVP is complete and not launch-ready', () => {

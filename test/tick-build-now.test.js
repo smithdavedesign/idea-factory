@@ -302,6 +302,30 @@ test("a homepage already set on GitHub is never replaced, even when RepoHQ's cop
   assert.deepEqual(gh.edits[0], ['repo', 'edit', 'o/pr-x', '--homepage', 'https://pr-x-seven.vercel.app'], 'empty on GitHub too: set it');
 });
 
+test("a homepage on one of the project's login-protected Vercel addresses moves to its public URL, once", async () => {
+  idea('pr-x', { stage: 'building', repo: 'https://github.com/o/pr-x', milestonesDone: ['M1', 'M2'], golive: { mergedAt: 'x' }, build: { milestone: 'GOLIVE', status: 'merged' } });
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-x', 'revenue.json'), '{}');
+  const teamAddress = 'https://pr-x-david-smiths-projects.vercel.app';
+  // RepoHQ still has the old homepage after the move; GitHub has the last word.
+  db = { requests: [], startsLast24h: 0, log: [], repos: [{ full_name: 'o/pr-x', mrr: 0, lifecycle_status: null, homepage: teamAddress, stripe_product_id: null }] };
+  gh.homepage = teamAddress;
+  vercelOut.ls = 'https://pr-x-abc123def-david-smiths-projects.vercel.app ● Ready Production';
+  vercelOut.inspect = `Aliases\n  https://pr-x-seven.vercel.app\n  ${teamAddress}\n`;
+  const out = await tick();
+  assert.deepEqual(gh.edits, [['repo', 'edit', 'o/pr-x', '--homepage', 'https://pr-x-seven.vercel.app']]);
+  assert.ok(out.changes.includes(`pr-x: homepage moved to https://pr-x-seven.vercel.app (${teamAddress} is behind Vercel's login)`), out.changes.join('\n'));
+  gh.homepage = 'https://pr-x-seven.vercel.app';
+  gh.edits = [];
+  await tick();
+  assert.deepEqual(gh.edits, [], 'moved once: RepoHQ lagging behind GitHub moves nothing');
+  // A homepage of the owner's own (a custom domain) is never touched.
+  db.repos[0].homepage = 'https://pr-x.example.com';
+  gh.homepage = 'https://pr-x.example.com';
+  fs.writeFileSync(path.join(DATA, '.pipeline-state.json'), JSON.stringify({ lastDaily: new Date().toLocaleDateString('en-CA') }));
+  await tick();
+  assert.deepEqual(gh.edits, []);
+});
+
 test('once the MVP is complete the pipeline starts the go-live itself; then the production URL, homepage and live audit fill in', async () => {
   idea('pr-x', { stage: 'building', repo: 'https://github.com/o/pr-x', milestonesDone: ['M1', 'M2'], build: { milestone: 'MVP', status: 'merged' } });
   fs.writeFileSync(path.join(DATA, 'ideas', 'pr-x', 'revenue.json'), '{}');
