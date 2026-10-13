@@ -156,6 +156,8 @@ test.beforeEach(() => {
   buildResult = { ok: true, milestone: 'M1', prUrl: 'https://github.com/o/pr-x/pull/1', testsPassing: true, engine: 'claude', model: 'claude-opus-5-5' };
   // These tests build new ideas in the weekly slot; the new-build hold (policy.build.startNew) has its own test.
   policy.build.startNew = true;
+  // The cap tests below exercise the 24-hour cap; the real policy has none in practice (99) since 2026-10-13.
+  policy.build.manualPerDay = 2;
   // No focus products unless a growth test names one (policy.growth.focus is tiebreak in the real policy).
   policy.growth.focus = [];
   policy.growth.auto = true;

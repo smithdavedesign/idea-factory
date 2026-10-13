@@ -12,12 +12,12 @@ const policy = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'policy.jso
 
 const ROADMAP = '# Roadmap\n\n## M1 — core\nexit\n\n## M2 — more\nexit\n';
 
-test('policy: builds run Opus at xhigh, Sonnet on the subscription if Opus is unavailable, the free pool last, 2 manual starts a day', () => {
+test('policy: builds run Opus at xhigh, Sonnet on the subscription if Opus is unavailable, the free pool last, no daily cap on manual starts', () => {
   assert.equal(policy.build.model, 'opus');
   assert.equal(policy.build.effort, 'xhigh');
   assert.equal(policy.build.claudeFallbackModel, 'sonnet');
   assert.equal(policy.build.fallback, 'free-agent');
-  assert.equal(policy.build.manualPerDay, 2);
+  assert.ok(policy.build.manualPerDay >= 99, 'no daily cap in practice (David, 2026-10-13)');
 });
 
 test('Claude Code gets model, effort and its own fallback on the subscription only', () => {
