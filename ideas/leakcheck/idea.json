@@ -1,0 +1,29 @@
+{
+  "title": "leakcheck — revenue-path audit for agency client sites (forms, checkout, GA4/GTM tags)",
+  "repoName": "leakcheck",
+  "oneLiner": "For small digital agencies, it checks the parts of each client's site that make money (forms, booking, checkout, GA4/GTM tags) and sends an evidence-backed report with screenshots and suggested fixes, starting with a $500 audit.",
+  "overlaps": "none (closest: feedwarden and listvault, both passed as prevention-only; no portfolio repo covers site/tag monitoring)",
+  "tags": [
+    "agencies",
+    "monitoring",
+    "analytics"
+  ],
+  "effort": "Medium",
+  "confidence": "Low",
+  "sources": [
+    "https://www.theagentsofchange.com/?p=24503",
+    "https://pagecrawl.io/blog/analytics-tag-tamper-monitoring",
+    "https://www.littlewarden.com/pricing/",
+    "https://www.observepoint.com/pricing/",
+    "https://www.webtonic.io/blog/best-ga4-implementation-tools",
+    "https://www.goinflow.com/google-tag-manager-audits/",
+    "https://business.minstercommunitypost.com/minstercommunitypost/article/newsusa-2026-3-11-broken-contact-forms-are-costing-small-businesses-thousands",
+    "https://community.shopify.com/t/is-google-ads-conversion-tracking-broken-from-ga4-google-sales-channel-enablement/204560",
+    "https://piotrlitwa.com/pricing.html",
+    "https://www.capterra.com/p/156853/Ghost-Inspector/pricing/",
+    "https://www.templatemonster.com/website-maintenance-services/subscription-checkout/"
+  ],
+  "seedId": "seed-28176d",
+  "slug": "leakcheck",
+  "recordedAt": "2026-10-13T04:40:09.900Z"
+}
