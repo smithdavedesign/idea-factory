@@ -1,0 +1,34 @@
+{
+  "title": "citeproof — repeat-run AI visibility reports for local-service agencies",
+  "repoName": "citeproof",
+  "oneLiner": "For small local-marketing agencies, it runs each client's buyer prompts many times on the agency's own API keys and sends a white-label report with mention rates, confidence ranges, competitors named instead and cited sources, with raw answers kept as evidence.",
+  "overlaps": "none in David's portfolio (closest: the factory's other agency tools, leakcheck and patchwell, both passed). In the market: ThriveStack citedby, Rankability, LocalSeen, Otterly, Peec.",
+  "tags": [
+    "serious",
+    "business",
+    "saas",
+    "reach:community",
+    "ai",
+    "marketing",
+    "agencies"
+  ],
+  "effort": "Medium",
+  "confidence": "Low",
+  "sources": [
+    "https://www.searchenginejournal.com/ai-recommendations-change-with-nearly-every-query-sparktoro/",
+    "https://dupple.com/blog/best-ai-search-visibility-tools-2026",
+    "https://www.tooljunction.io/blog/ai-search-visibility-geo-platforms",
+    "https://insites.com/selling-ai-visibility-to-local-business-clients",
+    "https://agencyanalytics.com/features/ai-tracker",
+    "https://www.airops.com/glossary/answer-variance",
+    "https://alternativeto.net/software/localseen/about/",
+    "https://es.trustpilot.com/review/locals-rank.com",
+    "https://cloro.dev/blog/white-label-ai-visibility/",
+    "https://www.capterra.ca/software/1097547/Locals-Rank",
+    "https://marketful.com/?p=37628",
+    "https://ecorpit.com/agent-web-search-api-cost-comparison-2026/"
+  ],
+  "seedId": "seed-85c54e",
+  "slug": "citeproof",
+  "recordedAt": "2026-10-13T05:34:31.736Z"
+}
