@@ -1,0 +1,11 @@
+{
+  "stage": "pass",
+  "review": {
+    "verdict": "pass",
+    "score": 4,
+    "summary": "The M1 lockfile report is a weekend build at $0, but it duplicates free tools (npm audit, osv-scanner, Dependabot alerts) and proves nothing about paying agencies. The real product is a supported, liability-carrying service sold to a hard-to-reach buyer, which doesn't fit a day job and no sales calls.",
+    "at": "2026-10-13T04:59:35.977Z",
+    "notionAt": "2026-10-13T04:59:36.877Z"
+  },
+  "updatedAt": "2026-10-13T04:59:36.878Z"
+}

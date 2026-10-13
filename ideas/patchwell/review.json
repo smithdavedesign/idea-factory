@@ -1,0 +1,87 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "The M1 lockfile report is a weekend build at $0, but it duplicates free tools (npm audit, osv-scanner, Dependabot alerts) and proves nothing about paying agencies. The real product is a supported, liability-carrying service sold to a hard-to-reach buyer, which doesn't fit a day job and no sales calls.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "RESEARCH.md says outright that no forum thread or agency owner voices the pain. The evidence is one CVE event (React2Shell) plus vendor price lists for WordPress care plans and Next.js retainers. Price lists show a category exists, not that agencies want a wholesale automated version. No one has asked for it, paid, or complained."
+    },
+    "statusQuo": {
+      "score": 5,
+      "evidence": "Agencies today use Dependabot/Renovate (free), npm audit, GitHub security alerts, or hours-based retainers at $200-$1,200/mo. That is a real, costly workaround for agencies that sell care plans, but the free tools already cover 'which sites are exposed' and open the PRs. The unserved part is judgement on breaking upgrades plus a client-facing report, which is a thin slice."
+    },
+    "specificity": {
+      "score": 3,
+      "evidence": "The buyer is 'owner or lead dev of a 2-15 person agency with 10-40 Next.js sites'. That is a filter, not a person. No named agency, no consequence beyond 'a CVE lands'. Agencies with that many Next.js sites and no technical owner are the rare case, and hard to find without calls."
+    },
+    "wedge": {
+      "score": 5,
+      "evidence": "The free lockfile health report is genuinely small and shippable in a weekend. But a free report is the weakest possible wedge here: osv-scanner, npm audit and Dependabot already produce the same list. The paid wedge (CI-gated patch PR, M3) needs a GitHub App with write access to client repos, which is a trust and security sale."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "AI coding agents and GitHub's own agent (Copilot, Dependabot with AI fixes) are moving into exactly this slot and GitHub can bundle it free. A white-label layer on top of a platform feature gets squeezed. Agent-built sites also multiply the number of unmaintained repos, which helps, but the platform owner captures it."
+    }
+  },
+  "premises": [
+    "Agencies with 10-40 Next.js client sites feel enough patching pain to pay $79-$399/site/month. Not supported: no direct evidence of the pain, only price lists.",
+    "Dependabot/Renovate are inputs, not good-enough substitutes for the target buyer. Partly supported: they leave breakage and reporting to humans, but the free tools plus one technical person are enough for most agencies.",
+    "An agency will grant an outside app write access to client repos. Unsupported, and the research itself rates broad write scope a high-severity finding.",
+    "A fixed-scope async service can run alongside a day job with no sales calls. Unsupported: patch breakage, CVE emergencies (24h SLA) and liability for broken client sites all produce support work.",
+    "A free lockfile report generates a meaningful demand signal. Weak: people use free checkers once; email capture measures curiosity, not willingness to pay."
+  ],
+  "alternatives": [
+    "Minimal viable: a single static page plus a CLI/web form that reports React2Shell exposure from a pasted lockfile. Ships in a weekend, but it replicates `npm audit` / osv-scanner and has no moat.",
+    "Extend RepoHQ (David's existing repo): package its fix-and-verify factory as a GitHub Action or hosted check for outside repos. Reuses working code, but the audience is developers, not agencies, and it still needs a buyer.",
+    "Lateral: skip software and test demand by cold-offering a manual 'Next.js CVE audit + patch PR' at a fixed price to 10 agencies. Fastest real signal, but it needs outreach, which David has ruled out.",
+    "Ideal architecture: GitHub App with scoped tokens, portfolio, white-label reports, receipts, gated model-assisted fixes. This is M3-M4 scale and carries liability and support load."
+  ],
+  "wedge": "A free, no-login lockfile exposure report for Next.js/React CVEs with a white-label PDF/HTML the agency can forward to a client. Only worth testing if the page can show agencies asking for the monitoring and patching, not just running the report once.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "TypeScript, lockfile parser, OSV.dev querybatch (free, no key), Next.js on Vercel Hobby, fixtures in Vitest. One test that proves M1: next@15.5.6 fixture returns a critical finding with 15.5.7 as the fix, from a mocked OSV call. Real M1 proof of demand needs agencies, which the build does not supply."
+  },
+  "risks": [
+    "Free tools (npm audit, osv-scanner, Dependabot alerts, Snyk free) already answer the M1 question, so the lead magnet gets no pull.",
+    "Liability if a patch breaks a client site; paid tier demands write access to client repos and security trust.",
+    "Ongoing human support and 24h emergency SLA conflict with a day job and no sales calls.",
+    "Buyer is reachable only through outreach or communities; the technical-owner agencies who read forums are the ones who don't need it.",
+    "Platform risk: GitHub/Copilot agent and Dependabot AI fixes can bundle this for free.",
+    "Model-cost margin unknown; free models are barred on client code, which breaks the $0 rule at M4."
+  ],
+  "killCriteria": "Drop it if, within 14 days, fewer than 10 agency emails are captured, or fewer than 3 people reply asking for monitoring or patching beyond the one-off report. Drop it if no agency says they would pay $99+/site/month when asked, or if the only interested people are individual developers.",
+  "landing": {
+    "headline": "Is your client's Next.js site exposed to React2Shell?",
+    "subhead": "Paste a lockfile, see every vulnerable Next.js/React/npm package and the patched version, in a report you can forward to your client.",
+    "bullets": [
+      "Flags Next.js and React versions in critical CVE ranges",
+      "Names the exact patched version for each",
+      "White-label report to send to clients",
+      "Weekly watch across all your client sites (waitlist)"
+    ],
+    "cta": "Check my lockfile",
+    "audience": "Owners and lead developers of small web agencies and freelancers who maintain several Next.js/React client sites."
+  },
+  "launch": {
+    "channels": [
+      {
+        "name": "r/webdev",
+        "url": "https://www.reddit.com/r/webdev/",
+        "why": "Freelancers and agency devs discuss client maintenance."
+      },
+      {
+        "name": "r/nextjs",
+        "url": "https://www.reddit.com/r/nextjs/",
+        "why": "Next.js users reacting to CVEs like React2Shell."
+      },
+      {
+        "name": "Indie Hackers",
+        "url": "https://www.indiehackers.com/",
+        "why": "Agency owners and solo founders who sell care plans."
+      }
+    ],
+    "post": "After React2Shell I wondered how agencies keep 20+ Next.js client sites patched. I built a free lockfile checker that shows which versions are exposed and what to upgrade to: {url}. Do you maintain client sites, and what do you use today (Dependabot, manual, a retainer)? Would a weekly white-label report for all your sites be worth paying for?"
+  }
+}
