@@ -4,9 +4,12 @@
   "oneLiner": "Helps businesses operating chatbots in Hawaii comply with the AI Disclosure and Safety Act by adding disclosures, suicide prevention protocols, content filters, and generating annual reports.",
   "overlaps": "none",
   "tags": [
+    "serious",
+    "business",
+    "saas",
+    "reach:search",
     "ai",
-    "compliance",
-    "saas"
+    "compliance"
   ],
   "effort": "Medium",
   "confidence": "Medium",

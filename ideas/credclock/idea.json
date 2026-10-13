@@ -4,6 +4,10 @@
   "oneLiner": "For owners and managers of 1–10 clinician practices, it tracks each clinician's license, DEA and malpractice expiry plus the 120-day CAQH clock and flags documents that will block the next attestation, at a flat price instead of per-provider fees.",
   "overlaps": "none — closest repo is RepoHQ/Github-HQ (portfolio dashboard), which does not track credentials",
   "tags": [
+    "serious",
+    "business",
+    "saas",
+    "reach:search",
     "healthcare",
     "compliance",
     "small-business"
