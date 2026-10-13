@@ -1,6 +1,6 @@
 // System test of one pipeline tick for "Start build now" (RepoHQ idea_build_requests): a temporary
 // record (IDEA_PIPELINE_DATA), RepoHQ's database faked in memory, the builder and OpenClaw stubbed. Checks the request is claimed, the build runs with the owner's note, the row and Slack get
-// the result, the 24-hour cap holds, and an idea that can't be built is refused. Run: npm test
+// the result, builds run side by side up to the concurrency limit, and an idea that can't be built is refused. Run: npm test
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('fs');
@@ -133,6 +133,10 @@ Module._load = function (request, parent, ...rest) {
   return realLoad.call(this, request, parent, ...rest);
 };
 process.env.IDEA_PIPELINE_DATA = DATA;
+// Build jobs run in this process (bin/idea-build-job.js runJob), and memory is plentiful unless a test says otherwise.
+process.env.IDEA_BUILD_INLINE = '1';
+const ROOMY = JSON.stringify({ hostFreePct: 50, dockerTotalMb: 16000, containers: [] });
+process.env.IDEA_BUILD_PROBE = ROOMY;
 process.env.IDEA_DATABASE_URL = 'postgres://fake';
 process.env.HOME = HOME;
 // The launch checklist probes live URLs: never reach the network from tests.
@@ -156,8 +160,10 @@ test.beforeEach(() => {
   buildResult = { ok: true, milestone: 'M1', prUrl: 'https://github.com/o/pr-x/pull/1', testsPassing: true, engine: 'claude', model: 'claude-opus-5-5' };
   // These tests build new ideas in the weekly slot; the new-build hold (policy.build.startNew) has its own test.
   policy.build.startNew = true;
-  // The cap tests below exercise the 24-hour cap; the real policy has none in practice (99) since 2026-10-13.
-  policy.build.manualPerDay = 2;
+  // Three builds at once, one slot kept for requests (the real policy); no build running.
+  policy.build.concurrency = { max: 3, reserveForRequests: 1, reserveMemoryMb: 2000, minFreeMemoryPct: 10, retryAfterHours: 24, hungAfterHours: 6 };
+  process.env.IDEA_BUILD_PROBE = ROOMY;
+  fs.rmSync(path.join(DATA, '.builds'), { recursive: true, force: true });
   // No focus products unless a growth test names one (policy.growth.focus is tiebreak in the real policy).
   policy.growth.focus = [];
   policy.growth.auto = true;
@@ -169,6 +175,13 @@ test.beforeEach(() => {
   promoteResult = { promoted: [], errors: [] };
 });
 test.after(() => { Module._load = realLoad; fs.rmSync(DATA, { recursive: true, force: true }); fs.rmSync(HOME, { recursive: true, force: true }); });
+
+const readState = (slug) => JSON.parse(fs.readFileSync(path.join(DATA, 'ideas', slug, 'state.json'), 'utf8'));
+// A build already running: its slot, with a live pid (this process; the tick tests check pids, not ps).
+function running(slug, extra = {}) {
+  fs.mkdirSync(path.join(DATA, '.builds'), { recursive: true });
+  fs.writeFileSync(path.join(DATA, '.builds', `slot-${slug}.json`), JSON.stringify({ slug, milestone: 'MVP', kind: 'request', requestId: null, pid: process.pid, startedAt: new Date().toISOString(), ...extra }));
+}
 
 test('a request for an approved idea builds M1 now, with the note, and reports to the row and Slack', async () => {
   idea('pr-x', { stage: 'repo', repo: 'https://github.com/o/pr-x', ownerApproved: true });
@@ -186,26 +199,93 @@ test('a request for an approved idea builds M1 now, with the note, and reports t
   assert.ok(out.changes.some((c) => /pr-x: M1 PR .*started from the Ideas page/.test(c)));
 });
 
-test('over the 24-hour cap the request waits, with the reason on the row', async () => {
+test('with three builds running, a request waits, with the reason on the row', async () => {
   idea('pr-x', { stage: 'repo', repo: 'https://github.com/o/pr-x', ownerApproved: true });
-  // This week's automatic slot is used too, so nothing builds this tick.
-  idea('other', { stage: 'building', repo: 'https://github.com/o/other', build: { milestone: 'M1', status: 'pr-open', at: new Date().toISOString() } });
-  db = { requests: [{ id: 8, slug: 'pr-x', status: 'pending' }], startsLast24h: 2, log: [] };
+  for (const slug of ['b1', 'b2', 'b3']) running(slug);
+  db = { requests: [{ id: 8, slug: 'pr-x', status: 'pending' }], log: [] };
   await tick();
   assert.equal(builds.length, 0);
   assert.equal(db.requests[0].status, 'pending');
-  assert.match(db.requests[0].result, /waiting: 2 manual builds started in the last 24 h \(the cap is 2\)/);
+  assert.match(db.requests[0].result, /waiting: 3 builds are running \(the limit is 3\)/);
   assert.equal(sent.length, 0);
 });
 
-test('a weekly-slot build of the same idea settles a request that was waiting', async () => {
+test('a request waits while Docker or the Mac is short on memory', async () => {
   idea('pr-x', { stage: 'repo', repo: 'https://github.com/o/pr-x', ownerApproved: true });
-  db = { requests: [{ id: 12, slug: 'pr-x', status: 'pending' }], startsLast24h: 2, log: [] };
+  // A 2.4 GB Docker VM with LiteLLM using 600 MB: 1.8 GB to spare, and a build needs 2 GB.
+  process.env.IDEA_BUILD_PROBE = JSON.stringify({ hostFreePct: 40, dockerTotalMb: 2400, containers: [{ name: 'litellm', mb: 600 }] });
+  db = { requests: [{ id: 8, slug: 'pr-x', status: 'pending' }], log: [] };
   await tick();
-  assert.deepEqual(builds, [{ slug: 'pr-x', milestone: 'MVP', mvp: true }], 'the weekly slot builds it, as an MVP run (policy.build.mode), not a manual start');
-  assert.equal(db.requests[0].status, 'done');
-  assert.match(db.requests[0].result, /MVP PR opened by the weekly build slot/);
-  assert.equal(db.requests[0].pr_url, 'https://github.com/o/pr-x/pull/1');
+  assert.equal(builds.length, 0);
+  assert.match(db.requests[0].result, /waiting: Docker has 1\.8 GB to spare, and a build needs 2\.0 GB/);
+  process.env.IDEA_BUILD_PROBE = JSON.stringify({ hostFreePct: 6, dockerTotalMb: 16000, containers: [] });
+  await tick();
+  assert.equal(builds.length, 0);
+  assert.match(db.requests[0].result, /waiting: the Mac has 6% of its memory free, and a build needs 10%/);
+});
+
+test('three requests start side by side on one tick; a fourth waits for a slot', async () => {
+  const slugs = ['pr-a', 'pr-b', 'pr-c', 'pr-d'];
+  for (const slug of slugs) idea(slug, { stage: 'repo', repo: `https://github.com/o/${slug}`, ownerApproved: true });
+  db = { requests: slugs.map((slug, i) => ({ id: 60 + i, slug, status: 'pending' })), log: [] };
+  await tick();
+  assert.deepEqual(builds.map((b) => b.slug), ['pr-a', 'pr-b', 'pr-c'], 'no daily cap: as many as there are slots');
+  assert.deepEqual(db.requests.map((r) => r.status), ['done', 'done', 'done', 'pending']);
+  assert.match(db.requests[3].result, /waiting: 3 builds are running \(the limit is 3\)/);
+});
+
+test('a request for an idea that is building waits for that build', async () => {
+  idea('pr-x', { stage: 'building', repo: 'https://github.com/o/pr-x', milestonesDone: ['M1'], build: { milestone: 'M2', status: 'running' } });
+  running('pr-x');
+  db = { requests: [{ id: 12, slug: 'pr-x', status: 'pending' }], log: [] };
+  await tick();
+  assert.equal(builds.length, 0);
+  assert.equal(db.requests[0].status, 'pending');
+  assert.match(db.requests[0].result, /waiting: pr-x is building now/);
+});
+
+test("a request waits while the idea's last PR is open, instead of being refused", async () => {
+  idea('pr-x', { stage: 'live', repo: 'https://github.com/o/pr-x', milestonesDone: ['M1', 'M2'], build: { milestone: 'GROWTH', status: 'pr-open', prUrl: 'https://github.com/o/pr-x/pull/7' } });
+  db = { requests: [{ id: 31, slug: 'pr-x', milestone: 'GOLIVE', status: 'pending' }], log: [] };
+  await tick();
+  assert.equal(builds.length, 0);
+  assert.equal(db.requests[0].status, 'pending', 'not failed: the growth PR merges itself soon');
+  assert.match(db.requests[0].result, /waiting: pr-x's GROWTH PR is open; this starts once it's merged or closed/);
+});
+
+test("a build the pipeline started itself isn't retried within a day of failing", async () => {
+  const failedAt = (hours) => ({ stage: 'repo', repo: 'https://github.com/o/pr-x', ownerApproved: true, build: { milestone: 'MVP', status: 'failed', at: new Date(Date.now() - hours * 3_600_000).toISOString(), reason: 'tests failing' } });
+  idea('pr-x', failedAt(1));
+  db = { requests: [], log: [] };
+  await tick();
+  assert.deepEqual(builds, [], 'failed an hour ago: it waits, instead of failing again every tick');
+  idea('pr-x', failedAt(25));
+  await tick();
+  assert.deepEqual(builds.map((b) => b.slug), ['pr-x'], 'a day later it is tried again');
+});
+
+test('a build whose process died is recorded as failed, and its request answered', async () => {
+  idea('pr-x', { stage: 'repo', repo: 'https://github.com/o/pr-x', ownerApproved: true, build: { milestone: 'M1', status: 'running', at: new Date().toISOString() } });
+  running('pr-x', { pid: 4_206_649, requestId: 70, milestone: 'M1' }); // no such process
+  db = { requests: [{ id: 70, slug: 'pr-x', status: 'running' }], log: [] };
+  const out = await tick();
+  const s = readState('pr-x');
+  assert.equal(s.build.status, 'failed');
+  assert.match(s.build.reason, /stopped before it finished/);
+  assert.equal(db.requests[0].status, 'failed');
+  assert.ok(out.errors.some((e) => /build pr-x M1/.test(e)), 'the tick reports it, so the system log alerts');
+  assert.equal(fs.existsSync(path.join(DATA, '.builds', 'slot-pr-x.json')), false, 'its slot is freed');
+  assert.deepEqual(builds, [], 'and it is not retried right away');
+});
+
+test("the tick leaves a building idea's record alone until its build is done", async () => {
+  idea('pr-x', { stage: 'repo', repo: 'https://github.com/o/pr-x', ownerApproved: true, build: { milestone: 'M1', status: 'running' } });
+  running('pr-x');
+  db = { requests: [], log: [], decisions: [{ id: 3, slug: 'pr-x', decision: 'pass', status: 'pending' }] };
+  await tick();
+  assert.equal(readState('pr-x').stage, 'repo', 'not passed in the middle of its build');
+  assert.equal(db.decisions[0].status, 'pending', 'applied once the build is done');
+  assert.equal(readState('pr-x').launch, undefined, 'nor its launch checklist written');
 });
 
 test('an idea that can\'t be built is refused, and the next request still runs', async () => {
@@ -231,7 +311,6 @@ test('a failed build marks the request failed and says so in Slack', async () =>
   assert.ok(out.errors.some((e) => /build pr-x M1/.test(e)), 'the tick reports it, so the system log alerts');
 });
 
-const readState = (slug) => JSON.parse(fs.readFileSync(path.join(DATA, 'ideas', slug, 'state.json'), 'utf8'));
 
 test('a merged MVP PR is picked up on the next tick and marks only the milestones it completed', async () => {
   idea('pr-x', { stage: 'building', repo: 'https://github.com/o/pr-x', ownerApproved: true,
@@ -257,6 +336,7 @@ test('an MVP request builds every remaining milestone in one run', async () => {
 });
 
 test('the launch checklist is written to the record, and the plan is written once M1 is merged', async () => {
+  policy.build.concurrency.max = 0; // no builds: this one is about the checklist and the plan
   idea('pr-x', { stage: 'building', repo: 'https://github.com/o/pr-x', milestonesDone: ['M1'], build: { milestone: 'M1', status: 'merged' } });
   gh.files = 'src/app.js\npublic/privacy.html\n';
   db = { requests: [], startsLast24h: 0, log: [] };
@@ -273,13 +353,15 @@ test('the launch checklist is written to the record, and the plan is written onc
   assert.equal(readState('pr-x').launch.steps.find((x) => x.id === 'plan').done, true, 'the next tick sees the plan');
 });
 
-test('the weekly slot goes to the approved idea closest to money, not the first approved', async () => {
+test('automatic builds go to the approved ideas closest to money first, and leave a slot for requests', async () => {
   idea('a-first', { stage: 'repo', repo: 'https://github.com/o/a-first', ownerApproved: true, review: { verdict: 'pass', score: 3 } });
   idea('b-demand', { stage: 'repo', repo: 'https://github.com/o/b-demand', ownerApproved: true, review: { verdict: 'validate', score: 7 }, validation: { decision: 'build' } });
-  db = { requests: [], startsLast24h: 0, log: [] };
+  idea('c-third', { stage: 'repo', repo: 'https://github.com/o/c-third', ownerApproved: true, review: { verdict: 'validate', score: 5 } });
+  db = { requests: [], log: [] };
   await tick();
-  assert.deepEqual(builds.map((b) => b.slug), ['b-demand']);
+  assert.equal(builds[0].slug, 'b-demand', 'closest to money first');
   assert.equal(builds[0].mvp, true);
+  assert.equal(builds.length, 2, 'two of the three slots: the last is kept for "Start build now"');
 });
 
 test('a go-live request builds the launch-ready changes; its merge is recorded, not as a milestone', async () => {
@@ -441,11 +523,9 @@ test('while new builds are held, an approved idea waits but a started MVP carrie
   idea('fresh', { stage: 'repo', repo: 'https://github.com/o/fresh', ownerApproved: true });
   idea('started', { stage: 'building', repo: 'https://github.com/o/started', milestonesDone: ['M1'], build: { milestone: 'M1', status: 'merged' } });
   fs.writeFileSync(path.join(DATA, 'ideas', 'started', 'revenue.json'), '{}');
-  db = { requests: [], startsLast24h: 0, log: [] };
+  db = { requests: [], log: [] };
   await tick();
-  assert.deepEqual(builds, [], 'the approval waits for a focus product with traction');
-  await tick({ forceDaily: true });
-  assert.deepEqual(builds.map((b) => `${b.slug} ${b.milestone}`), ['started MVP'], 'the daily slot finishes what it started');
+  assert.deepEqual(builds.map((b) => `${b.slug} ${b.milestone}`), ['started MVP'], 'the approval waits for a focus product with traction; the started MVP carries on, on any tick');
 });
 
 test("a built product's funnel is saved, and rewritten only when it changes; a demand test's signals are as before", async () => {
@@ -505,18 +585,22 @@ test('a focus product gets one growth mission a day: the funnel beacon first, as
   assert.equal(builds.length, 1, 'one mission per product per day, and nothing new while its PR waits');
 });
 
-test('no growth mission for a product outside the focus, or on a tick that already built', async () => {
+test('no growth mission for a product outside the focus, or while every slot is taken', async () => {
   liveProduct('pr-g');
-  db = { requests: [], startsLast24h: 0, log: [], funnelRows: visitsOf('pr-g', 'view', 3) };
+  db = { requests: [], log: [], funnelRows: visitsOf('pr-g', 'view', 3) };
   await tick({ forceGrowth: true });
   assert.deepEqual(builds, [], 'not in policy.growth.focus');
   assert.equal(readState('pr-g').growth, undefined);
   policy.growth.focus = ['pr-g'];
-  idea('pr-x', { stage: 'repo', repo: 'https://github.com/o/pr-x', ownerApproved: true });
-  db = { requests: [{ id: 50, slug: 'pr-x', status: 'pending' }], startsLast24h: 0, log: [], funnelRows: visitsOf('pr-g', 'view', 3) };
+  running('other-1'); running('other-2'); // two builds running: the third slot is kept for requests
   await tick({ forceGrowth: true });
-  assert.deepEqual(builds.map((b) => `${b.slug} ${b.milestone}`), ['pr-x M1'], 'the manual build ran; the growth mission waits for a quiet tick');
-  assert.equal(readState('pr-g').growth.next.kind, 'instrumentation', 'still recorded as the next mission');
+  assert.deepEqual(builds, [], 'the mission waits for a free slot');
+  const g = readState('pr-g').growth;
+  assert.equal(g.next.kind, 'instrumentation', 'still recorded as the next mission');
+  assert.deepEqual(g.experiments, [], 'nothing started, so nothing recorded as proposed');
+  fs.rmSync(path.join(DATA, '.builds'), { recursive: true, force: true });
+  await tick({ forceGrowth: true });
+  assert.deepEqual(builds.map((b) => `${b.slug} ${b.milestone}`), ['pr-g GROWTH'], 'a slot is free: the mission starts');
 });
 
 test('a merged growth PR starts its experiment; a closed one abandons it', async () => {
