@@ -6,7 +6,7 @@
     "summary": "Etsy shows people pay $9–$45 for pet wanted posters and cards, but review counts are not sales and ChatGPT does the pet-persona trick free. There is no channel, no named buyer, and the Oct–Dec window would be mostly gone after a test plus a build.",
     "at": "2026-10-13T08:37:03.455Z"
   },
-  "updatedAt": "2026-10-14T02:23:03.466Z",
+  "updatedAt": "2026-10-14T07:27:52.802Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -20,8 +20,8 @@
         "id": "plan",
         "owner": "agent",
         "label": "Road-to-revenue plan written",
-        "done": false,
-        "evidence": "written after M1 merges"
+        "done": true,
+        "evidence": "A dog or cat owner who posts their pet often on Instagram, TikTok or Reddit, or  · $9 once"
       },
       {
         "id": "mvp",
@@ -54,9 +54,9 @@
       {
         "id": "price",
         "owner": "david",
-        "label": "Price decided",
-        "done": false,
-        "evidence": ""
+        "label": "Price: $9 once (from the plan)",
+        "done": true,
+        "evidence": "Matches the cheapest made-to-order Etsy wanted poster ($9.25) and Etsy newspaper-style pet print files (about $9.67). Ha"
       },
       {
         "id": "payments",
@@ -88,13 +88,15 @@
       }
     ],
     "next": {
-      "id": "plan",
-      "label": "Road-to-revenue plan written",
+      "id": "deployed",
+      "label": "Live on a free tier",
       "owner": "agent"
     },
-    "done": 1,
+    "done": 3,
     "total": 10,
-    "updatedAt": "2026-10-14T01:52:19.016Z"
+    "buyer": "A dog or cat owner who posts their pet often on Instagram, TikTok or Reddit, or a friend or relative buying that owner a funny gift in the Oct–Dec gift season",
+    "price": "$9 once",
+    "updatedAt": "2026-10-14T07:27:52.802Z"
   },
   "revenue": {
     "mrr": 0,
