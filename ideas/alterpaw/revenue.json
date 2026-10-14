@@ -1,0 +1,58 @@
+{
+  "buyer": "A dog or cat owner who posts their pet often on Instagram, TikTok or Reddit, or a friend or relative buying that owner a funny gift in the Oct–Dec gift season",
+  "paymentMethod": "Stripe Checkout payment link (no backend needed for the sale; the existing webhook unlocks the download)",
+  "mvpScope": "Upload a pet photo, name, species and 3 traits, pick an alter ego, get the AI-written wanted poster with a watermarked free preview, pay $9 to unlock the clean PNG and PDF. Deployed on a commercial-use free host. The other templates, share loop, gift flow and print upsell are built but not required for the first sale.",
+  "firstTenUsers": "Three friends or family with a dog or cat: make the poster for them and ask for $9, as the review's assignment says. Three or four posts in r/CatsAreAssholes and r/SideProject showing a finished poster, after reading each community's rules. Three small Instagram or TikTok pet accounts, each sent a free poster of their own pet in exchange for a repost.",
+  "price": {
+    "amount": 9,
+    "currency": "USD",
+    "interval": "once",
+    "why": "Matches the cheapest made-to-order Etsy wanted poster ($9.25) and Etsy newspaper-style pet print files (about $9.67). Half of CardMyDog (from $17, unconfirmed) and Etsy's typical $16–$20 digital files. ChatGPT is free, so it can't go higher untested."
+  },
+  "mustHaveBeforeCharging": [
+    "deployed live URL on a commercial-use free tier (not Vercel Hobby)",
+    "Stripe product and Checkout link at $9, mapped to the repo",
+    "a real $9 test purchase by David, then refund, proving the unwatermarked download works",
+    "privacy policy and terms pages",
+    "report link and 30-day photo deletion working",
+    "non-pet photo check working",
+    "refund and contact email stated on the page"
+  ],
+  "launchChannels": [
+    {
+      "name": "Reddit r/SideProject",
+      "url": "https://www.reddit.com/r/SideProject/",
+      "why": "Allows launch posts; gives first strangers and honest feedback on whether they'd pay (check rules before posting)"
+    },
+    {
+      "name": "Reddit r/CatsAreAssholes",
+      "url": "https://www.reddit.com/r/CatsAreAssholes/",
+      "why": "The audience loves 'my cat is a criminal' jokes; post a finished poster as content, no link in the post (check rules first)"
+    },
+    {
+      "name": "Reddit r/dogs",
+      "url": "https://www.reddit.com/r/dogs/",
+      "why": "Large dog-owner audience, but self-promotion is restricted: use only as a place to read the rules and participate, not a launch channel unless allowed"
+    },
+    {
+      "name": "Instagram and TikTok small pet accounts",
+      "url": "https://www.instagram.com/explore/tags/doglovers/",
+      "why": "Send a free poster of their own pet and ask for a repost; the watermark link is the share loop"
+    },
+    {
+      "name": "Product Hunt",
+      "url": "https://www.producthunt.com/",
+      "why": "Free to list; weak for pet owners but a cheap secondary channel"
+    }
+  ],
+  "risks": [
+    "ChatGPT makes the pet-persona image free, and a weekend clone is possible",
+    "No sales-volume evidence anywhere; Etsy shows review counts, not units; CardMyDog's price comes from an unconfirmed directory listing",
+    "Pet communities restrict self-promotion and no pet-specific channel guide was found",
+    "Gift season is short: Oct–Dec, with the build only just finished on 14 Oct",
+    "Free-model humour is uneven, and the product depends on it",
+    "User-uploaded photos bring takedown and deletion obligations",
+    "Vercel Hobby forbids commercial use, so the host must be checked before charging"
+  ],
+  "killCriteria": "Stop if the first 10 hand-sold contacts include zero buyers, if fewer than 5 paid $9 orders come from the first 100 visitors or contacts in 30 days, if buyers keep saying they'd just use ChatGPT, or if fewer than 10% of previews are shared."
+}
