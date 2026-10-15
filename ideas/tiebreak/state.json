@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-15T02:23:57.519Z",
+  "updatedAt": "2026-10-15T05:10:19.833Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -39,22 +39,22 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": true,
-        "evidence": "https://tiebreak-phi.vercel.app"
+        "done": false,
+        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
       },
       {
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
         "done": true,
-        "evidence": "live on the site"
+        "evidence": "privacy ✓ · terms ✓"
       },
       {
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-        "done": true,
-        "evidence": "9/9 launch checks"
+        "done": false,
+        "evidence": "checked once it's live (the go-live build adds what's missing)"
       },
       {
         "id": "price",
@@ -93,15 +93,15 @@
       }
     ],
     "next": {
-      "id": "launched",
-      "label": "Launch posted",
-      "owner": "david"
+      "id": "deployed",
+      "label": "Live on a free tier",
+      "owner": "agent"
     },
-    "done": 7,
+    "done": 5,
     "total": 10,
     "buyer": "A solo Etsy seller (one-person shop) about to publish or change a main listing photo and unable to choose between 2-4 candidates; findable as the people posting 'which picture is best?' threads in the Etsy Community Etsy Success forum and r/EtsySellers. Secondary: indie authors choosing a cover and YouTubers choosing a thumbnail.",
     "price": "$5 once",
-    "updatedAt": "2026-10-13T00:20:12.907Z"
+    "updatedAt": "2026-10-15T05:10:19.833Z"
   },
   "build": {
     "milestone": "GROWTH",
@@ -182,12 +182,9 @@
     ]
   },
   "growth": {
-    "stage": "acquire",
-    "bottleneck": "7 visitors this week, under 50",
-    "next": {
-      "kind": "post",
-      "executor": "owner"
-    },
+    "stage": "launch",
+    "bottleneck": "not launch-ready yet: the go-live build and its audit come first",
+    "next": null,
     "experiments": [
       {
         "id": "tiebreak-20261012-instrumentation",
@@ -236,7 +233,7 @@
         "endsAt": "2026-11-11T17:18:43.438Z"
       }
     ],
-    "checkedAt": "2026-10-15T02:23:57.519Z"
+    "checkedAt": "2026-10-15T05:10:19.833Z"
   },
   "golive": {
     "mergedAt": "2026-10-13T18:28:45.669Z",
