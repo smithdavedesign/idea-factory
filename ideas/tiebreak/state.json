@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-15T06:11:01.539Z",
+  "updatedAt": "2026-10-15T06:26:27.815Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -142,7 +142,7 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-15T05:25:52.980Z",
+    "at": "2026-10-15T06:26:27.815Z",
     "d7": {
       "visit": 7,
       "signup": 0,
@@ -174,10 +174,6 @@
       {
         "host": "google.com",
         "visitors": 2
-      },
-      {
-        "host": "tiebreak-phi.vercel.app",
-        "visitors": 1
       },
       {
         "host": "vercel.com",
