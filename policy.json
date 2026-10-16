@@ -71,7 +71,7 @@
     "_startNew": "false: an idea that has never been built waits for its first build (the weekly slot and approvals) until a focus product (growth.focus) has growth.minVisitorsPerWeek unique visitors in 7 days (lib/pipeline.js newBuildsHeld). Ideas already being built carry on, and Start build now still works. David's call on 2026-10-12: distribution before more MVPs. Go-live and growth builds don't count toward maxPerWeek; each has its own cap."
   },
   "growth": {
-    "focus": ["tiebreak"],
+    "focus": ["tiebreak", "botchelor"],
     "minVisitorsPerWeek": 50,
     "auto": true,
     "maxMissionsPerDay": 2,
