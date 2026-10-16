@@ -211,3 +211,25 @@ test('lessons and proposals: one line per result, the playbook proposal under Pr
   const reverted = G.markReverted({ experiments: [{ ...e, prUrl: 'https://x/pull/9' }] }, 'https://x/pull/9', { url: 'https://x/pull/10', reason: 'launch checks failed', now: NOW }).experiments[0];
   assert.deepEqual([reverted.status, reverted.decision, reverted.reverted.url, reverted.result.note], ['decided', 'revert', 'https://x/pull/10', 'launch checks failed']);
 });
+
+test('visitors left out as a burst are recorded on the funnel and said in its text, never silently dropped', () => {
+  const f = G.funnelOf({ kinds: { visit: { events: 9, d7: 9, prev7: 0, all: 9 }, burst: { events: 25, d7: 24, prev7: 0, all: 24 } } }, { stage: 'building', repo: 'r', page: null, ...deployed });
+  assert.equal(f.burst7d, 24);
+  assert.match(G.funnelText(f), /; 24 more left out as a burst of direct visits$/);
+  assert.equal(G.funnelOf(row, { stage: 'live', repo: 'r', ...deployed }).burst7d, undefined, 'no burst, no field');
+});
+
+test('a burst still counts in the hours after a logged launch post (Reddit app visitors send no referrer)', () => {
+  const ex = G.burstExempt({ tiebreak: [{ channel: 'r/SideProject', postedAt: '2026-10-16T17:00:00Z' }, { postedAt: 'not a date' }], botchelor: [] }, 48);
+  assert.deepEqual(ex, [{ slug: 'tiebreak', from: '2026-10-16T16:00:00.000Z', to: '2026-10-18T17:00:00.000Z' }]);
+  assert.deepEqual(G.burstExempt(null), []);
+});
+
+test("until it starts, an experiment's baseline follows the funnel, so a figure taken mid-burst doesn't stick", () => {
+  const kit = exp('kit', 'proposed', { metric: 'visit', baseline: 15, target: 50 });
+  const now9 = G.advance([kit], { now: NOW, gp: GP, funnel: funnelWith({ visit: 9 }) })[0];
+  assert.deepEqual([now9.status, now9.baseline, now9.target], ['proposed', 9, 50]);
+  assert.equal(G.advance([kit], { now: NOW, gp: GP })[0].baseline, 15, 'no funnel: left as it was');
+  const started = G.advance([{ ...kit, status: 'running' }], { now: NOW, gp: GP, funnel: funnelWith({ visit: 40 }) })[0];
+  assert.equal(started.baseline, 15, 'a running experiment keeps the baseline it started from');
+});

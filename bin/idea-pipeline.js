@@ -342,9 +342,17 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
 
   // 2–3. Demand signals and validation decisions, and each built product's funnel (lib/growth.js).
   let signals = new Map();
+  // Bursts of referrer-less visitors who do nothing are left out of every count (lib/repohq.js cleanSignals),
+  // except in the hours after a logged launch post.
+  const burst = {
+    min: policy.growth?.burstMinVisitors ?? 8,
+    exempt: G.burstExempt(Object.fromEntries(ideaDirs().map((slug) => {
+      try { return [slug, JSON.parse(fs.readFileSync(path.join(IDEAS, slug, 'launch-log.json'), 'utf8')).posts]; } catch { return [slug, []]; }
+    })), policy.growth?.burstExemptHours ?? 48),
+  };
   if (sql) {
     try {
-      const funnels = await R.funnelBySlug(sql);
+      const funnels = await R.funnelBySlug(sql, burst);
       signals = new Map([...funnels].map(([slug, row]) => [slug, G.signalsOf(row)]));
       for (const slug of ideaDirs()) {
         const dir = path.join(IDEAS, slug);
@@ -726,8 +734,8 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
       let r;
       try {
         const span = e.windowDays * 86_400_000;
-        const before = await R.funnelWindow(sql, slug, new Date(new Date(e.startedAt).getTime() - span).toISOString(), e.startedAt);
-        const after = await R.funnelWindow(sql, slug, e.startedAt, e.endsAt);
+        const before = await R.funnelWindow(sql, slug, new Date(new Date(e.startedAt).getTime() - span).toISOString(), e.startedAt, burst);
+        const after = await R.funnelWindow(sql, slug, e.startedAt, e.endsAt, burst);
         r = G.judge(e, before, after, gp, { page: !!s.page });
       } catch (err) { fail(`judge ${e.id}`, err); out.push(e); continue; }
       if (r.decision === 'extend') {
@@ -761,7 +769,7 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
     if (busy.has(slug) || !fs.existsSync(path.join(dir, 'idea.json'))) continue;
     const s = P.readState(dir);
     const log = readLog(dir);
-    let experiments = G.advance(s.growth?.experiments || [], { posts: log?.posts || [], now, gp });
+    let experiments = G.advance(s.growth?.experiments || [], { posts: log?.posts || [], now, gp, funnel: s.funnel });
     if (sql) experiments = await judgeDue(slug, dir, s, experiments);
     const b = G.bottleneck({ ...s, growth: { ...s.growth, experiments } }, { kit: G.kitFacts(readText(path.join(dir, 'LAUNCH-KIT.md')), log), gp, now });
     const growth = { ...(s.growth || {}), stage: b.stage, bottleneck: b.bottleneck, next: b.action, experiments };

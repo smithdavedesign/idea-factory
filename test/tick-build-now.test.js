@@ -61,11 +61,17 @@ function fakeSql(strings, ...values) {
     return Promise.resolve([]);
   }
   if (/FROM repositories WHERE full_name = ANY/.test(q)) return Promise.resolve(db.repos || []);
-  if (/created_at >= \? AND created_at < \? GROUP BY kind/.test(q)) return Promise.resolve(db.window ? db.window(values[1], values[2]) : []);
-  if (/FROM idea_signals GROUP BY slug, kind/.test(q)) return Promise.resolve(db.funnelRows || []);
-  if (/AS host/.test(q)) return Promise.resolve(db.referrerRows || []);
   return Promise.resolve([]); // decisions, seeds, signals, ideas sync, heartbeat: nothing to do here
 }
+// The funnel queries (lib/repohq.js funnelBySlug, funnelWindow) go through sql.query: their burst filter is a shared CTE.
+fakeSql.query = (text, values = []) => {
+  const q = text.replace(/\s+/g, ' ');
+  db.log.push({ q, values });
+  if (/created_at >= \$2 AND created_at < \$3 GROUP BY kind/.test(q)) return Promise.resolve(db.window ? db.window(values[1], values[2]) : []);
+  if (/FROM clean GROUP BY slug, kind/.test(q)) return Promise.resolve(db.funnelRows || []);
+  if (/AS host/.test(q)) return Promise.resolve(db.referrerRows || []);
+  return Promise.resolve([]);
+};
 
 // GitHub answers: PR states by URL, and the files in a repo (for the legal-pages check).
 const gh = { prs: {}, files: '', edits: [], homepage: '', info: {}, calls: [] };
