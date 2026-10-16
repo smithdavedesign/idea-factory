@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-16T04:08:24.983Z",
+  "updatedAt": "2026-10-16T04:23:28.341Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -136,9 +136,9 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-16T04:08:24.983Z",
+    "at": "2026-10-16T04:23:28.341Z",
     "d7": {
-      "visit": 8,
+      "visit": 15,
       "signup": 0,
       "activate": 0,
       "checkout": 0
@@ -150,7 +150,7 @@
       "checkout": 0
     },
     "all": {
-      "visit": 8,
+      "visit": 15,
       "signup": 0,
       "activate": 0,
       "checkout": 0
@@ -163,8 +163,35 @@
     "referrers7d": [
       {
         "host": "direct",
-        "visitors": 8
+        "visitors": 15
       }
     ]
+  },
+  "growth": {
+    "stage": "acquire",
+    "bottleneck": "15 visitors this week, under 50",
+    "next": {
+      "kind": "kit",
+      "executor": "claude",
+      "metric": "visit"
+    },
+    "experiments": [
+      {
+        "id": "botchelor-20261016-kit",
+        "kind": "kit",
+        "executor": "claude",
+        "hypothesis": "Posting the kit's channels, a day or two apart, brings the product to 50 visitors a week.",
+        "metric": "visit",
+        "baseline": 15,
+        "target": 50,
+        "windowDays": 14,
+        "status": "proposed",
+        "createdAt": "2026-10-16T04:23:28.341Z",
+        "updatedAt": "2026-10-16T04:25:15.851Z",
+        "artifact": "LAUNCH-KIT.md",
+        "channels": 4
+      }
+    ],
+    "checkedAt": "2026-10-16T04:23:28.341Z"
   }
 }
