@@ -1,0 +1,59 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "Real pain (paid retries on image-to-video), but there is no named buyer, ChatGPT with a pasted guide is a free substitute, and models are fixing camera control. M1 is text-only, so it doesn't test the photo-aware claim.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "Camera control is unreliable in Wan 2.2 and retries cost about $0.68–$0.91 per Kling clip (stable-diffusion-art.com, marcandrews.com), but only one $19 Gumroad prompt tool exists as a paid analogue and RESEARCH.md says willingness to pay is unproven."
+    },
+    "statusQuo": {
+      "score": 4,
+      "evidence": "Sellers regenerate 3–4 times or paste a free guide into ChatGPT; per-clip waste is a couple of dollars, too small to justify a new subscription, and ChatGPT with an image already writes photo-aware prompts."
+    },
+    "specificity": {
+      "score": 2,
+      "evidence": "The buyer is a category (Etsy/Shopify sellers with 20–200 SKUs, solo agents); no named person or consequence. Hobbyists feel the pain but want it free."
+    },
+    "wedge": {
+      "score": 5,
+      "evidence": "One photo, one model, one camera move, one prompt is shippable in a weekend, but a template table has no moat. A curated tested prompt pack could test demand with no app."
+    },
+    "futureFit": {
+      "score": 3,
+      "evidence": "Models and generators are fixing camera control and adding native camera presets and built-in prompt helpers, which shrinks the problem, and templates need constant upkeep."
+    }
+  },
+  "premises": [
+    "Prompts are the main cause of failed generations (partly contradicted: model asymmetry such as pan-left yielding pan-right is not a prompt problem)",
+    "Sellers will pay for a prompt writer separately from the generator (unsupported)",
+    "A local LLM as the engine works at $0 (true for hobbyists, not for sellers who won't run Ollama)",
+    "Better prompts cut retries by at least 30% (unmeasured)",
+    "Templates stay valid as models change (doubtful)"
+  ],
+  "alternatives": [
+    "Minimal: a $19 one-time pack of tested per-model camera prompts with before/after clips, no app",
+    "Ideal: the full photo-aware app with history and payment from the PRD",
+    "Lateral: a free Custom GPT or browser side panel for Kling and Runway that funnels to the paid pack",
+    "No existing repo of David's covers image-to-video, so there is nothing to extend"
+  ],
+  "wedge": "One landing page promising camera prompts that don't pan the wrong way, with 3 hand-made before/after clips and a $9 pre-pay link.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js on Vercel, two template files, seven presets, Vitest and a free-tier model. M1 takes a text description rather than a photo, so the photo-aware claim is untested until M2. The proving test is a hand-rated 30-photo comparison of attempts to an acceptable clip, plain prompt vs clipcue, which needs generator credits that David would have to pay for."
+  },
+  "risks": [
+    "ChatGPT or Claude plus a pasted guide is a good-enough free substitute",
+    "No named buyer and no proof of willingness to pay",
+    "Retry reduction may be nil if variance is in the model",
+    "Template upkeep as Wan, LTX, Kling and Runway change",
+    "Generators ship their own photo-aware prompt helpers",
+    "Real-estate use adds disclosure issues (California AB 723)"
+  ],
+  "killCriteria": "Drop it if a two-week test gets fewer than 5 waitlist or pre-pay signups from 50 qualified visitors, no seller can be named who spends over $10 a month on retries, the 30-photo test shows less than 30% fewer attempts, or a major generator ships photo-aware prompt suggestions.",
+  "launch": {
+    "channels": [],
+    "post": ""
+  }
+}
