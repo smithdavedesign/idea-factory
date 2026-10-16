@@ -1,0 +1,38 @@
+{
+  "title": "clipcue — photo-aware motion prompts for image-to-video",
+  "repoName": "clipcue",
+  "oneLiner": "For ecommerce sellers and agents paying per clip for image-to-video, it looks at the photo and writes one model-specific camera-and-motion prompt (Wan, LTX, Kling, Runway) using a local LLM, so fewer paid retries are wasted.",
+  "overlaps": "none (closest: AI Film Director Studio, a $19/mo GPT-based prompt tool on Gumroad; no repo in David's portfolio covers image-to-video)",
+  "tags": [
+    "serious",
+    "business",
+    "saas",
+    "reach:search",
+    "ai",
+    "video",
+    "ecommerce"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://stable-diffusion-art.com/wan-2-2-image-to-video/",
+    "https://forum.comfy.org/t/wan-2-2-5b/3665",
+    "https://www.veed.io/learn/wan-2-2-prompting-guide",
+    "https://www.veed.io/learn/ltx-video-prompting-guide",
+    "https://marcandrews.com/kling-ai-credits-explained/",
+    "https://ecommercefastlane.com/best-ai-image-to-video-tools-for-shopify-sellers/",
+    "https://bobbyguions.gumroad.com/l/aifilmdirectorstudio",
+    "https://www.heygen.com/blog/turn-real-estate-photos-into-videos",
+    "https://www.rundiffusion.com/ltx-2-prompt-guide",
+    "https://wiro.ai/blog/ltx-2-distilled-8-motion-prompts-for-image-to-video/",
+    "https://marcandrews.com/kling-ai-for-uk-ecommerce-product-videos-that-convert/",
+    "https://www.zipyourflyer.com/blog/magictours-are-here-the-ai-real-estate-listing-video-service-that-turns-your-photos-into-cinematic-property-videos-same-day/",
+    "https://www.autoreelapp.com/blog/how-much-does-real-estate-photography-cost-compared-to-ai-listing-videos",
+    "https://www.runcomfy.com/comfyui-workflows/motion-lora-camera-push-in-wan-14b-720p-i2v",
+    "https://ltx.io/blog/ltx-2-3-prompt-guide",
+    "https://runware.ai/docs/models/lightricks-ltx-2-5-pro/guides/camera-movement"
+  ],
+  "seedId": "seed-0165c6",
+  "slug": "clipcue",
+  "recordedAt": "2026-10-16T23:08:20.213Z"
+}
