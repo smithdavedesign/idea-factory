@@ -12,15 +12,15 @@
     "decideAfter": "2026-10-26T16:33:05.029Z",
     "extensions": 0
   },
-  "updatedAt": "2026-10-12T16:50:22.654Z",
+  "updatedAt": "2026-10-17T17:46:31.583Z",
   "page": {
     "url": "https://idea-pages-livid.vercel.app/packpass/",
     "deployedAt": "2026-10-12T16:33:05.029Z"
   },
   "signals": {
-    "views": 0,
-    "uniqueVisitors": 0,
+    "views": 1,
+    "uniqueVisitors": 1,
     "signups": 0,
-    "updatedAt": "2026-10-12T16:50:22.654Z"
+    "updatedAt": "2026-10-17T17:46:31.583Z"
   }
 }
