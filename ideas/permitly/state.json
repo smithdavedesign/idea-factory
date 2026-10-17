@@ -1,5 +1,5 @@
 {
-  "stage": "validate",
+  "stage": "pass",
   "review": {
     "verdict": "validate",
     "score": 6,
@@ -12,7 +12,7 @@
     "decideAfter": "2026-10-24T19:21:10.764Z",
     "extensions": 0
   },
-  "updatedAt": "2026-10-11T15:55:53.647Z",
+  "updatedAt": "2026-10-17T17:31:28.042Z",
   "page": {
     "url": "https://idea-pages-livid.vercel.app/permitly/",
     "deployedAt": "2026-10-10T19:21:10.764Z"
@@ -22,5 +22,11 @@
     "uniqueVisitors": 1,
     "signups": 0,
     "updatedAt": "2026-10-11T15:55:53.647Z"
+  },
+  "passReason": "owner",
+  "ownerDecision": {
+    "decision": "pass",
+    "at": "2026-10-17T17:31:28.042Z",
+    "source": "repohq"
   }
 }

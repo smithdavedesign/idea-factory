@@ -6,5 +6,10 @@
     "summary": "Real pain (paid retries on image-to-video), but there is no named buyer, ChatGPT with a pasted guide is a free substitute, and models are fixing camera control. M1 is text-only, so it doesn't test the photo-aware claim.",
     "at": "2026-10-16T23:09:04.848Z"
   },
-  "updatedAt": "2026-10-16T23:09:04.848Z"
+  "updatedAt": "2026-10-17T17:31:28.042Z",
+  "ownerDecision": {
+    "decision": "pass",
+    "at": "2026-10-17T17:31:28.042Z",
+    "source": "repohq"
+  }
 }
