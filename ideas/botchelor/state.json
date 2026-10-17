@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-17T06:14:43.355Z",
+  "updatedAt": "2026-10-17T06:29:47.163Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -76,8 +76,8 @@
         "id": "firstUser",
         "owner": "david",
         "label": "First user or signup",
-        "done": false,
-        "evidence": ""
+        "done": true,
+        "evidence": "1 active user"
       },
       {
         "id": "firstDollar",
@@ -92,11 +92,11 @@
       "label": "Stripe product created and mapped to the repo in RepoHQ",
       "owner": "david"
     },
-    "done": 6,
+    "done": 7,
     "total": 10,
     "buyer": "An adult (18+) who has written an original character and already roleplays it with AI, e.g. a regular in the r/CharacterAI or r/SillyTavernAI subreddits or an AI-roleplay Discord such as the Shapes Inc server; not art-first OC communities, which reject AI. No named individual or community size is verified.",
     "price": "$4 once",
-    "updatedAt": "2026-10-16T05:40:52.692Z"
+    "updatedAt": "2026-10-17T06:29:47.163Z"
   },
   "revenue": {
     "mrr": 0,
@@ -136,11 +136,11 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-17T06:14:43.355Z",
+    "at": "2026-10-17T06:29:47.163Z",
     "d7": {
-      "visit": 18,
+      "visit": 20,
       "signup": 0,
-      "activate": 0,
+      "activate": 1,
       "checkout": 0
     },
     "prev7": {
@@ -150,31 +150,31 @@
       "checkout": 0
     },
     "all": {
-      "visit": 18,
+      "visit": 20,
       "signup": 0,
-      "activate": 0,
+      "activate": 1,
       "checkout": 0
     },
     "seen": {
       "visit": true,
-      "activate": false,
+      "activate": true,
       "checkout": false
     },
     "referrers7d": [
       {
         "host": "direct",
-        "visitors": 18
+        "visitors": 20
       },
       {
         "host": "accounts.google.com",
         "visitors": 1
       }
     ],
-    "burst7d": 24
+    "burst7d": 23
   },
   "growth": {
     "stage": "acquire",
-    "bottleneck": "18 visitors this week, under 50",
+    "bottleneck": "20 visitors this week, under 50",
     "next": {
       "kind": "seo",
       "executor": "build",
@@ -187,7 +187,7 @@
         "executor": "claude",
         "hypothesis": "Posting the kit's channels, a day or two apart, brings the product to 50 visitors a week.",
         "metric": "visit",
-        "baseline": 18,
+        "baseline": 20,
         "target": 50,
         "windowDays": 14,
         "status": "proposed",
@@ -197,6 +197,6 @@
         "channels": 4
       }
     ],
-    "checkedAt": "2026-10-17T05:59:35.204Z"
+    "checkedAt": "2026-10-17T06:29:47.163Z"
   }
 }
