@@ -7,7 +7,7 @@
     "at": "2026-10-11T16:41:39.440Z",
     "notionAt": "2026-10-11T16:41:40.221Z"
   },
-  "updatedAt": "2026-10-13T14:43:50.456Z",
+  "updatedAt": "2026-10-18T15:29:42.022Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -76,14 +76,14 @@
         "owner": "agent",
         "label": "Privacy policy and terms pages",
         "done": true,
-        "evidence": "live on the site"
+        "evidence": "privacy ✓ · terms ✓"
       },
       {
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-        "done": true,
-        "evidence": "9/9 launch checks"
+        "done": false,
+        "evidence": "1/9 launch checks · missing: Home page answers, Page title, Meta description, Social share image (og:image), robots.txt, sitemap.xml, Privacy page, Terms page"
       },
       {
         "id": "price",
@@ -122,15 +122,15 @@
       }
     ],
     "next": {
-      "id": "payments",
-      "label": "Stripe product created and mapped to the repo in RepoHQ",
-      "owner": "david"
+      "id": "launchReady",
+      "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
+      "owner": "agent"
     },
-    "done": 6,
+    "done": 5,
     "total": 10,
     "buyer": "The person who owns the AI coding bill at a 3-30 developer team (founder, tech lead, or agency owner) paying for an Anthropic API/Team org plus Copilot seats; find them among commenters on Claude Code billing issues #81703 and #62338 and on r/ClaudeAI spend threads",
     "price": "$9/month",
-    "updatedAt": "2026-10-13T01:27:58.290Z"
+    "updatedAt": "2026-10-18T15:29:42.022Z"
   },
   "milestonesDone": [
     "M1",

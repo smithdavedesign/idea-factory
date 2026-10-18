@@ -7,7 +7,7 @@
     "at": "2026-10-13T06:11:04.924Z",
     "notionAt": "2026-10-13T06:11:06.537Z"
   },
-  "updatedAt": "2026-10-13T12:42:50.438Z",
+  "updatedAt": "2026-10-18T15:29:42.022Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -43,7 +43,7 @@
         "owner": "agent",
         "label": "Privacy policy and terms pages",
         "done": false,
-        "evidence": "privacy ✗ · terms ✗"
+        "evidence": "not checked yet"
       },
       {
         "id": "launchReady",
@@ -95,7 +95,7 @@
     },
     "done": 0,
     "total": 10,
-    "updatedAt": "2026-10-13T07:58:50.014Z"
+    "updatedAt": "2026-10-18T15:29:42.022Z"
   },
   "revenue": {
     "mrr": 0,
