@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-18T15:29:42.022Z",
+  "updatedAt": "2026-10-18T16:03:09.107Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -103,7 +103,7 @@
     "updatedAt": "2026-10-17T18:01:34.739Z"
   },
   "build": {
-    "milestone": "MVP",
+    "milestone": "GOLIVE",
     "milestones": [
       "M4"
     ],
@@ -111,23 +111,22 @@
       "M4"
     ],
     "stopped": null,
-    "status": "merged",
+    "status": "failed",
     "prUrl": "https://github.com/smithdavedesign/botchelor/pull/2",
     "testsPassing": true,
     "engine": "claude",
     "model": "claude-opus-5-5",
     "effort": "xhigh",
-    "manual": true,
+    "manual": false,
     "sandbox": "docker",
-    "at": "2026-10-13T21:33:18.086Z",
+    "at": "2026-10-18T15:48:12.018Z",
     "advice": {
       "difficulty": 2,
       "reason": "Implementing a feature with multiple components across files and handling game logic with specific rules.",
       "source": "model",
       "model": "local-qwen3"
     },
-    "mergedBy": "agent",
-    "mergedAt": "2026-10-13T22:03:50.900Z"
+    "reason": "couldn't start the build sandbox: sandbox open: Docker is not running"
   },
   "milestonesDone": [
     "M1",
@@ -173,13 +172,9 @@
     "burst7d": 23
   },
   "growth": {
-    "stage": "acquire",
-    "bottleneck": "31 visitors this week, under 50",
-    "next": {
-      "kind": "seo",
-      "executor": "build",
-      "metric": "visit"
-    },
+    "stage": "launch",
+    "bottleneck": "not launch-ready yet: the go-live build and its audit come first",
+    "next": null,
     "experiments": [
       {
         "id": "botchelor-20261016-kit",
@@ -197,6 +192,6 @@
         "channels": 4
       }
     ],
-    "checkedAt": "2026-10-18T13:13:23.994Z"
+    "checkedAt": "2026-10-18T16:03:09.107Z"
   }
 }
