@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-19T20:04:49.461Z",
+  "updatedAt": "2026-10-19T21:05:52.975Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -155,15 +155,15 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-19T06:11:04.091Z",
+    "at": "2026-10-19T21:05:52.975Z",
     "d7": {
-      "visit": 5,
+      "visit": 4,
       "signup": 0,
       "activate": 0,
       "checkout": 0
     },
     "prev7": {
-      "visit": 3,
+      "visit": 4,
       "signup": 0,
       "activate": 0,
       "checkout": 0
@@ -182,7 +182,7 @@
     "referrers7d": [
       {
         "host": "direct",
-        "visitors": 5
+        "visitors": 4
       },
       {
         "host": "vercel.com",
@@ -192,7 +192,7 @@
   },
   "growth": {
     "stage": "acquire",
-    "bottleneck": "5 visitors this week, under 50",
+    "bottleneck": "4 visitors this week, under 50",
     "next": {
       "kind": "post",
       "executor": "owner"
@@ -264,7 +264,7 @@
         "endsAt": "2026-11-02T20:04:49.461Z"
       }
     ],
-    "checkedAt": "2026-10-19T06:11:04.091Z",
+    "checkedAt": "2026-10-19T21:05:52.975Z",
     "plan": {
       "at": "2026-10-19T18:33:38.568Z",
       "items": [
