@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-19T19:48:35.947Z",
+  "updatedAt": "2026-10-19T20:04:49.461Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -110,7 +110,7 @@
       "M2",
       "M3"
     ],
-    "status": "pr-open",
+    "status": "merged",
     "at": "2026-10-19T19:04:15.108Z",
     "manual": false,
     "advice": {
@@ -135,7 +135,18 @@
     "acceptance": {
       "verdict": "pass",
       "unmet": []
-    }
+    },
+    "smoke": {
+      "verdict": "pass",
+      "reasons": [
+        "1 page(s) load like production"
+      ],
+      "previewUrl": "https://tiebreak-fecpgnrmn-david-smiths-projects-fe129786.vercel.app",
+      "sha": "7a46fdc50f0f21eca23a191a8d6b106fa4048ea1",
+      "at": "2026-10-19T20:04:49.461Z"
+    },
+    "mergedBy": "agent",
+    "mergedAt": "2026-10-19T20:04:49.461Z"
   },
   "milestonesDone": [
     "M1",
@@ -245,10 +256,12 @@
         "planItem": "photo-upload-options",
         "title": "Upload photos as poll options",
         "payments": false,
-        "status": "proposed",
+        "status": "running",
         "createdAt": "2026-10-19T19:04:11.441Z",
-        "updatedAt": "2026-10-19T19:48:35.947Z",
-        "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/10"
+        "updatedAt": "2026-10-19T20:04:49.461Z",
+        "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/10",
+        "startedAt": "2026-10-19T20:04:49.461Z",
+        "endsAt": "2026-11-02T20:04:49.461Z"
       }
     ],
     "checkedAt": "2026-10-19T06:11:04.091Z",
