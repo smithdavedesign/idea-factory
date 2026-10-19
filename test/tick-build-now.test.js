@@ -78,6 +78,8 @@ const gh = { prs: {}, files: '', edits: [], homepage: '', info: {}, calls: [] };
 const vercelOut = { ls: '', inspect: '' };
 const revenueRuns = [];
 const kitRuns = [];
+const planRuns = [];
+let planResult = null; // what the weekly plan run returns (bin/idea-plan.js planOne), per test
 const realRevenue = require('../bin/idea-revenue');
 
 const stubs = {
@@ -100,6 +102,8 @@ const stubs = {
     fs.writeFileSync(path.join(DATA, 'ideas', slug, 'LAUNCH-KIT.md'), '# Launch kit\n\n## Order\n1. **r/SideProject**, Tue.\n2. **Indie Hackers**: Thu.\n');
     return { ok: true, slug, channels: ['r/SideProject', 'Indie Hackers'] };
   } },
+  // The weekly plan (bin/idea-plan.js): the items a plan run would write.
+  './idea-plan': { planOne: async (slug, opts) => { planRuns.push({ slug, ...opts }); return planResult || { ok: false, reason: 'no plan in this test' }; } },
   // idea-review reads the real record (not IDEA_PIPELINE_DATA): a test that forces the daily steps reviews nothing.
   './idea-review': { pendingSlugs: () => [], reviewOne: async () => ({ ok: false, reason: 'not in tests' }) },
 };
@@ -109,6 +113,8 @@ Module._load = function (request, parent, ...rest) {
     if (stubs[request]) return stubs[request];
     if (request === 'child_process') return { execFileSync: (cmd, args) => {
       if (cmd === 'openclaw') sent.push(args);
+      // RepoHQ's preview smoke test (factory/bin/smoke.ts under the deployed factory's tsx).
+      if (String(cmd).endsWith(`${path.sep}tsx`) && args[0] === 'factory/bin/smoke.ts') { gh.calls.push(`smoke ${args[1]}`); if (gh.smoke instanceof Error) throw gh.smoke; return gh.smoke || ''; }
       if (cmd === 'gh' && args[0] === 'pr' && args[1] === 'view') {
         const fields = args[args.indexOf('--json') + 1] || '';
         if (fields.includes('mergeCommit')) return JSON.stringify({ number: 9, title: 'Growth: test', mergeCommit: { oid: 'abc1234def5678' } });
@@ -145,6 +151,10 @@ const ROOMY = JSON.stringify({ hostFreePct: 50, dockerTotalMb: 16000, containers
 process.env.IDEA_BUILD_PROBE = ROOMY;
 process.env.IDEA_DATABASE_URL = 'postgres://fake';
 process.env.HOME = HOME;
+// The deployed RepoHQ factory checkout, for the preview smoke test: only its tsx has to exist.
+process.env.REPOHQ_FACTORY_APP = path.join(HOME, 'repohq-app');
+fs.mkdirSync(path.join(HOME, 'repohq-app', 'node_modules', '.bin'), { recursive: true });
+fs.writeFileSync(path.join(HOME, 'repohq-app', 'node_modules', '.bin', 'tsx'), '');
 // The launch checklist probes live URLs: never reach the network from tests.
 globalThis.fetch = async () => ({ status: 404 });
 const { tick, policy } = require('../bin/idea-pipeline');
@@ -173,7 +183,11 @@ test.beforeEach(() => {
   // No focus products unless a growth test names one (policy.growth.focus is tiebreak in the real policy).
   policy.growth.focus = [];
   policy.growth.auto = true;
+  // Any time of day, and no weekly plans (a plan is a real Claude run): the plan has its own test.
+  policy.schedule = { off: true };
+  policy.growth.plan = { auto: false };
   kitRuns.length = 0;
+  planRuns.length = 0; planResult = null; gh.smoke = '';
   // Autonomy has its own tests: the others run with David merging, as before.
   policy.autonomy.merge = false;
   policy.autonomy.revert = false;
@@ -783,4 +797,95 @@ test('decisions from the Ideas page apply on this tick: Build gets its repo now,
   assert.match(db.decisions[2].result, /not yet being built/);
   assert.match(db.decisions[3].result, /no such idea/);
   assert.ok(out.changes.some((c) => c === 'd-build: repo created https://github.com/o/d-build'));
+});
+
+// ── The feature loop: the weekly plan, feature builds, the schedule, the smoke test at merge ────────────
+
+const planItems = [
+  { id: 'compare-pages', title: 'Comparison pages', why: 'Searchers compare tools first.', metric: 'visit', acceptance: ['three /vs/ pages render', 'each is in sitemap.xml'], windowDays: 21, size: 'M', payments: false },
+  { id: 'first-run', title: 'First run', why: 'Nobody reaches the result.', metric: 'activate', acceptance: ['an example is prefilled', 'one click shows a result'], windowDays: 14, size: 'S', payments: false },
+];
+
+test('a measured focus product gets a weekly plan at night, then one feature built from it per night', async () => {
+  policy.growth.focus = ['pr-p'];
+  policy.growth.plan = {};
+  liveProduct('pr-p');
+  planResult = { ok: true, slug: 'pr-p', items: planItems, errors: [] };
+  buildResult = { ...buildResult, milestone: 'GROWTH', prUrl: 'https://github.com/o/pr-p/pull/3' };
+  db = { requests: [], startsLast24h: 0, log: [], funnelRows: visitsOf('pr-p', 'visit', 4) };
+  const out = await tick({ forceGrowth: true });
+  assert.deepEqual(out.errors, []);
+  assert.deepEqual(planRuns.map((r) => r.slug), ['pr-p']);
+  assert.match(planRuns[0].bottleneck, /^acquire: 4 visitors this week/);
+  assert.deepEqual(builds, [], 'the plan ran this tick: the build waits for the next one');
+  assert.deepEqual(readState('pr-p').growth.plan.items.map((i) => i.id), ['compare-pages', 'first-run']);
+  assert.ok(out.changes.some((c) => /^pr-p: weekly plan \(no plan yet\): Comparison pages; First run$/.test(c)), out.changes.join('\n'));
+
+  await tick({ forceGrowth: true });
+  assert.equal(planRuns.length, 1, 'one plan a week');
+  assert.deepEqual(builds.map((b) => [b.slug, b.growth?.experiment.kind, b.growth?.item?.id]), [['pr-p', 'feature', 'compare-pages']]);
+  assert.match(builds[0].growth.task, /^Build this feature: Comparison pages\./);
+  const g = readState('pr-p').growth;
+  const e = g.experiments.find((x) => x.kind === 'feature');
+  assert.deepEqual([e.planItem, e.metric, e.windowDays, e.prUrl], ['compare-pages', 'visit', 21, 'https://github.com/o/pr-p/pull/3']);
+  assert.deepEqual(g.plan.items[0].attempts, [e.id]);
+  await tick({ forceGrowth: true });
+  assert.equal(builds.length, 1, 'one at a time per product: its PR is open');
+});
+
+test("a kit waiting for David's post doesn't hold a planned feature", async () => {
+  policy.growth.focus = ['pr-w'];
+  liveProduct('pr-w', { growth: { plan: { at: new Date().toISOString(), items: planItems }, experiments: [{ id: 'pr-w-kit', kind: 'kit', executor: 'claude', status: 'proposed', createdAt: new Date().toISOString(), windowDays: 14 }] } });
+  buildResult = { ...buildResult, milestone: 'GROWTH', prUrl: 'https://github.com/o/pr-w/pull/4' };
+  db = { requests: [], startsLast24h: 0, log: [], funnelRows: visitsOf('pr-w', 'visit', 4) };
+  await tick({ forceGrowth: true });
+  assert.deepEqual(builds.map((b) => b.growth?.item?.id), ['compare-pages']);
+});
+
+test('quiet hours hold what the pipeline starts by itself, never what David asks for', async () => {
+  // Windows that are never now: every automatic start is in "quiet hours".
+  const h = new Date().getHours();
+  const hh = (x) => `${String((h + x) % 24).padStart(2, '0')}:00`;
+  policy.schedule = { night: { from: hh(3), to: hh(4) }, day: { from: hh(5), to: hh(6) } };
+  idea('q-auto', { stage: 'repo', repo: 'https://github.com/o/q-auto', ownerApproved: true, review: { verdict: 'validate', score: 7 } });
+  idea('q-asked', { stage: 'repo', repo: 'https://github.com/o/q-asked', ownerApproved: true, review: { verdict: 'pass', score: 2 } });
+  db = { requests: [{ id: 41, slug: 'q-asked', milestone: null, note: null, status: 'pending' }], startsLast24h: 0, log: [] };
+  await tick();
+  assert.deepEqual(builds.map((b) => b.slug), ['q-asked'], 'the request ran; the automatic build waits for its window');
+});
+
+const featurePr = (slug, n, extra = {}) => ({ stage: 'live', repo: `https://github.com/o/${slug}`, milestonesDone: ['M1'],
+  build: { milestone: 'GROWTH', kind: 'feature', experiment: `${slug}-x-feature`, status: 'pr-open', prUrl: `https://github.com/o/${slug}/pull/${n}`, testsPassing: true, acceptance: { verdict: 'pass', unmet: [] }, ...extra },
+  growth: { plan: { at: new Date().toISOString(), items: [{ ...planItems[0], attempts: [`${slug}-x-feature`] }] },
+    experiments: [{ id: `${slug}-x-feature`, kind: 'feature', executor: 'build', metric: 'visit', planItem: 'compare-pages', status: 'proposed', windowDays: 21, createdAt: '2026-10-19T23:00:00Z', prUrl: `https://github.com/o/${slug}/pull/${n}` }] } });
+
+test('a green feature PR is smoke-tested on its preview, then merges itself', async () => {
+  policy.autonomy.merge = true;
+  idea('pr-s', featurePr('pr-s', 7));
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-s', 'revenue.json'), '{}');
+  gh.info['https://github.com/o/pr-s/pull/7'] = { statusCheckRollup: green, headRefOid: 'head1' };
+  gh.smoke = JSON.stringify({ verdict: 'pass', reasons: [], previewUrl: 'https://pr-s-git-x.vercel.app' }, null, 1);
+  db = { requests: [], startsLast24h: 0, log: [] };
+  await tick();
+  assert.deepEqual(gh.calls, ['smoke https://github.com/o/pr-s/pull/7', 'pr ready https://github.com/o/pr-s/pull/7', 'pr merge https://github.com/o/pr-s/pull/7']);
+  const st = readState('pr-s');
+  assert.deepEqual([st.build.smoke.verdict, st.build.smoke.sha, st.build.mergedBy], ['pass', 'head1', 'agent']);
+  assert.equal(st.growth.experiments[0].status, 'running', 'the merge starts its experiment');
+});
+
+test('a feature whose preview breaks a page is closed and tried again; payment code waits for David', async () => {
+  policy.autonomy.merge = true;
+  idea('pr-b', featurePr('pr-b', 8));
+  idea('pr-$', featurePr('pr-$', 9));
+  for (const x of ['pr-b', 'pr-$']) fs.writeFileSync(path.join(DATA, 'ideas', x, 'revenue.json'), '{}');
+  gh.info['https://github.com/o/pr-b/pull/8'] = { statusCheckRollup: green, headRefOid: 'h' };
+  gh.info['https://github.com/o/pr-$/pull/9'] = { statusCheckRollup: green, headRefOid: 'h', files: [{ path: 'app/api/checkout/route.ts' }] };
+  gh.smoke = JSON.stringify({ verdict: 'fail', reasons: ['/ returns 500 on the preview, 200 on production'] });
+  db = { requests: [], startsLast24h: 0, log: [] };
+  await tick();
+  assert.deepEqual(gh.calls, ['smoke https://github.com/o/pr-b/pull/8', 'pr close https://github.com/o/pr-b/pull/8']);
+  const e = readState('pr-b').growth.experiments[0];
+  assert.deepEqual([e.status, e.failed], ['abandoned', true]);
+  assert.match(e.reason, /preview breaks pages/);
+  assert.match(readState('pr-$').build.held, /payment code \(app\/api\/checkout\/route\.ts\)/);
 });

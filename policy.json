@@ -71,28 +71,60 @@
     "_startNew": "false: an idea that has never been built waits for its first build (the weekly slot and approvals) until a focus product (growth.focus) has growth.minVisitorsPerWeek unique visitors in 7 days (lib/pipeline.js newBuildsHeld). Ideas already being built carry on, and Start build now still works. David's call on 2026-10-12: distribution before more MVPs. Go-live and growth builds don't count toward maxPerWeek; each has its own cap."
   },
   "growth": {
-    "focus": ["tiebreak", "botchelor"],
+    "focus": [
+      "tiebreak",
+      "botchelor"
+    ],
     "minVisitorsPerWeek": 50,
     "auto": true,
-    "maxMissionsPerDay": 2,
-    "maxBuildsPerWeek": 2,
-    "notBefore": "10:00",
+    "maxMissionsPerDay": 6,
+    "maxBuildsPerWeek": 4,
     "model": "sonnet",
     "effort": "high",
     "timeoutMinutes": 40,
-    "experimentDays": { "default": 14, "seo": 28, "instrumentation": 7 },
+    "experimentDays": {
+      "default": 14,
+      "seo": 28,
+      "instrumentation": 7
+    },
     "proposedMaxDays": 7,
     "parkAfterNoLift": 2,
     "burstMinVisitors": 8,
     "burstExemptHours": 48,
     "_burst": "Visits are left out of every count (funnels, experiment windows, demand tests) when burstMinVisitors or more different visitors arrive in one hour with no referrer and never do anything else: a crawler sweep or a test run, not demand (2026-10-15: botchelor.com's 31 visitors within two hours of going live). The hours burstExemptHours after a logged launch post still count, since Reddit's app and many mobile clients send no referrer. The funnel records how many were left out (burst7d). 0 turns it off.",
-    "_why": "The growth loop (RepoHQ docs/growth-loop-prd.md, idea-pipeline step 5d, lib/growth.js). focus: the live products that get a daily growth step, most important first. Each day, the first matching rule picks one mission per product: a growth build (a draft PR, one change), a launch kit (posts David publishes) or an item in the morning email's Today block. At most maxMissionsPerDay missions a day, one per product, maxBuildsPerWeek growth builds a week, none before notBefore, never on a tick that built; nothing new on a product while something waits for David (an open growth PR, an unposted kit). Growth runs use model at effort on the subscription and never fall back to the free pool. auto false stops new missions. minVisitorsPerWeek is the traction bar, which also lifts build.startNew's hold."
+    "_why": "The growth loop (RepoHQ docs/growth-loop-prd.md, idea-pipeline step 5d, lib/growth.js). focus: the live products that get a daily growth step, most important first. Each day, the first matching rule picks one mission per product: a growth build (a draft PR, one change), a launch kit (posts David publishes) or an item in the morning email's Today block. At most maxMissionsPerDay missions a day, one per product, maxBuildsPerWeek rule-based growth builds a week (features from the weekly plan count separately: feature.maxPerDay), each in its policy.schedule window, never on a tick that built; nothing new on a product while something waits for David (an open growth PR, an unposted kit). Growth runs use model at effort on the subscription and never fall back to the free pool. auto false stops new missions. minVisitorsPerWeek is the traction bar, which also lifts build.startNew's hold.",
+    "plan": {
+      "auto": true,
+      "items": 3,
+      "maxAgeDays": 7,
+      "model": "opus",
+      "effort": "high",
+      "timeoutMinutes": 25,
+      "_why": "The weekly plan (lib/plan.js, bin/idea-plan.js; David's call on 2026-10-19). At night, once a week per focus product (sooner once everything in it is built), Claude on the subscription reads the product's record, funnel, experiments and lessons and writes PLAN.md: up to `items` features, each with the metric it should move and acceptance criteria a test can check. Only for products past launch and instrumenting. auto false stops new plans."
+    },
+    "feature": {
+      "auto": true,
+      "maxPerDay": 3,
+      "model": "opus",
+      "effort": "xhigh",
+      "fallbackModel": "sonnet",
+      "timeoutMinutes": 75,
+      "_why": "Feature builds from the weekly plan: one per product at a time, on Opus at xhigh (Claude Code drops to fallbackModel on the subscription if Opus is unavailable; never the free pool). Each is checked against its acceptance criteria by a separate run (one fix round), smoke-tested on its Vercel preview against production before it merges itself, and judged as an experiment when its window ends. Payment code waits for David (autonomy.ownerOnlyPatterns). maxPerDay across products; policy.schedule decides when."
+    }
   },
   "autonomy": {
     "merge": true,
     "revert": true,
-    "protectedPaths": [".github/workflows/"],
-    "_why": "David's call on 2026-10-12: agents merge everything and he reviews what was done each morning (RepoHQ docs/growth-loop-prd.md, \"Autonomy\"). merge: the pipeline merges its own PRs (growth, go-live, milestones) once its tests passed and every GitHub check is green (CI, GitGuardian, the Vercel preview), with no conflicts (lib/autonomy.js). A growth PR that fails is closed and its mission tried again the next day; a failed roadmap build waits for David. revert: an agent's merge that breaks the live site's launch checks within a day, or an experiment the judge finds clearly worse, is reverted by a revert PR the pipeline merges, and Slack is told. protectedPaths: PRs touching these (the CI that gates merging) are left for David. Set merge false to go back to David merging everything."
+    "protectedPaths": [
+      ".github/workflows/"
+    ],
+    "_why": "David's call on 2026-10-12: agents merge everything and he reviews what was done each morning (RepoHQ docs/growth-loop-prd.md, \"Autonomy\"). merge: the pipeline merges its own PRs (growth, go-live, milestones) once its tests passed and every GitHub check is green (CI, GitGuardian, the Vercel preview), with no conflicts (lib/autonomy.js). A growth PR that fails is closed and its mission tried again the next day; a failed roadmap build waits for David. revert: an agent's merge that breaks the live site's launch checks within a day, or an experiment the judge finds clearly worse, is reverted by a revert PR the pipeline merges, and Slack is told. protectedPaths: PRs touching these (the CI that gates merging) are left for David. Set merge false to go back to David merging everything.",
+    "ownerOnlyPatterns": [
+      "(^|/)(stripe|checkout|billing|payments?|pricing)(/|\\.|-|_)",
+      "webhooks?/stripe",
+      "(^|/)price[s]?\\.(ts|tsx|js|json)$"
+    ],
+    "_ownerOnly": "Files a feature PR (the weekly plan's) may not merge itself with: payment code. Matched case-insensitively against each changed path; such a PR waits for David, as does a plan item marked payments. Go-lives and milestone builds aren't affected (a go-live adds the payment link by design)."
   },
   "signalUrl": "https://repohq.vercel.app/api/ideas/signal",
   "pagesProject": "idea-pages",
@@ -105,5 +137,38 @@
   "golive": {
     "auto": true,
     "_why": "Once an MVP is complete (every roadmap milestone merged), a go-live build makes it launch-ready in the sandbox: SEO basics (titles, meta descriptions, share image, sitemap, robots.txt, JSON-LD), privacy and terms pages, a Buy button on STRIPE_PAYMENT_LINK, a visit beacon to RepoHQ, and a Vercel project through the credential broker. After it merges, the production URL becomes the repo homepage and the live site is audited every 6 hours (checklist step launchReady). \"Get it launch-ready\" on the Ideas page starts one any time after M1."
+  },
+  "schedule": {
+    "night": {
+      "from": "22:00",
+      "to": "07:00"
+    },
+    "day": {
+      "from": "12:00",
+      "to": "17:00"
+    },
+    "starts": {
+      "auto": {
+        "night": 6,
+        "day": 2
+      },
+      "feature": {
+        "night": 2,
+        "day": 1
+      },
+      "growth": {
+        "night": 2,
+        "day": 1
+      },
+      "plan": {
+        "night": 2,
+        "day": 0
+      },
+      "kit": {
+        "night": 0,
+        "day": 2
+      }
+    },
+    "_why": "When the pipeline starts work by itself (lib/schedule.js; David's call on 2026-10-19: \"spread out agent tasks throughout the night and day, but mostly at night\"). starts: the most of each kind that may start per window (a night runs 22:00–07:00 and is named by the date it starts). auto: go-lives, first builds and the rest of started MVPs; feature: the weekly plan's features; growth: rule-based growth builds; plan: weekly plans; kit: launch kits. Quiet hours (07:00–12:00, 17:00–22:00) start nothing automatic, so David's own sessions get the Mac and the subscription. \"Start build now\" requests ignore it. off: true switches the windows off."
   }
 }

@@ -44,6 +44,12 @@
 //      day per product, the funnel's bottleneck starts one mission: a growth build (draft PR) or a launch
 //      kit (bin/idea-growth.js, posts David publishes). A merged growth PR starts its experiment (4a).
 //      When its window ends, the experiment is judged: LEARNINGS.md, a PLAYBOOK.md proposal, or a revert.
+//      The feature loop (lib/plan.js, bin/idea-plan.js): once a week at night, each focus product gets a plan of
+//      2–3 features (PLAN.md); one is built a night as a "feature" mission on Opus, checked against its acceptance
+//      criteria, smoke-tested on its preview before it merges itself, and judged like any experiment.
+//  Schedule (lib/schedule.js, policy.schedule): what the pipeline starts by itself (builds, plans, kits) starts
+//      mostly at night (22:00–07:00), some in the day window (12:00–17:00), nothing in quiet hours.
+//      "Start build now" requests start whenever a slot is free.
 // Daily (Claude Pro subscription, capped by policy):
 //   a. Review new ideas with the gstack frameworks (bin/idea-review.js) → Validate or Pass.
 //   b. Landing page for each new Validate idea (pages/<slug>/), deployed to the free pages project.
@@ -63,6 +69,8 @@ const A = require('../lib/autonomy');
 const { commitAuthor } = require('../lib/author');
 const G = require('../lib/growth');
 const BS = require('../lib/build-slots');
+const SCH = require('../lib/schedule');
+const PL = require('../lib/plan');
 
 const ROOT = path.resolve(__dirname, '..');
 // The record and the pipeline's own files. IDEA_PIPELINE_DATA points them elsewhere (the tick tests).
@@ -148,6 +156,25 @@ function lock() {
 function deployPages() {
   const out = execFileSync('vercel', ['deploy', '--prod', '--yes', '--scope', policy.vercelScope], { cwd: PAGES, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 300_000 });
   return /Aliased|ready/.test(out);
+}
+
+/**
+ * RepoHQ's preview smoke test of a PR (its factory/bin/smoke.ts, from the deployed factory checkout): the preview
+ * in a real browser next to production, and a comment on the PR. → {verdict: pass | fail | skipped, reasons, error?}.
+ * When it can't run at all, the PR isn't held forever: it's "skipped" with why, and the system log says so.
+ */
+function runSmoke(prUrl) {
+  const app = process.env.REPOHQ_FACTORY_APP || path.join(require('os').homedir(), '.repohq-factory', 'app');
+  const tsx = path.join(app, 'node_modules', '.bin', 'tsx');
+  if (!fs.existsSync(tsx)) return { verdict: 'skipped', reasons: ['the RepoHQ factory checkout is not installed'], error: `no ${tsx}` };
+  try {
+    const out = execFileSync(tsx, ['factory/bin/smoke.ts', prUrl, '--comment'], { cwd: app, encoding: 'utf8', timeout: 8 * 60_000, stdio: ['ignore', 'pipe', 'pipe'] });
+    const r = JSON.parse(out.slice(out.indexOf('{')));
+    return { verdict: ['pass', 'fail', 'skipped'].includes(r.verdict) ? r.verdict : 'skipped', reasons: (r.reasons || []).map(String).slice(0, 5), ...(r.previewUrl ? { previewUrl: r.previewUrl } : {}) };
+  } catch (e) {
+    const why = String(e.stderr || e.message || e).trim().split('\n').pop().slice(0, 200);
+    return { verdict: 'skipped', reasons: [`the smoke test couldn't run: ${why}`], error: why };
+  }
 }
 
 function commitRecord(message) {
@@ -538,10 +565,14 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
    * Starts a build of `slug` if a slot is free: kind "request" ("Start build now"), "growth", or "auto"
    * (go-lives and roadmap builds the pipeline starts itself). → {started, reason}.
    */
-  const launchBuild = async (slug, milestone, opts = {}, { kind = 'auto', requestId = null } = {}) => {
+  const launchBuild = async (slug, milestone, opts = {}, { kind = 'auto', requestId = null, sched = 'auto' } = {}) => {
     if (busy.has(slug)) return { started: false, reason: `${slug} is building now` };
+    // What the pipeline starts by itself waits for its window (policy.schedule); David's requests don't.
+    const gate = kind === 'request' ? { ok: true } : SCH.mayStart(sched, now, pstate.schedule, policy.schedule);
+    if (!gate.ok) return { started: false, reason: gate.reason };
     const c = capacityNow();
     if ((kind === 'request' ? c.requests : c.automatic) < 1) return { started: false, reason: kind === 'request' ? c.reason : c.autoReason };
+    if (kind !== 'request') { pstate.schedule = SCH.counted(sched, now, pstate.schedule, policy.schedule); writePstate(); }
     busy.add(slug);
     launched++;
     await startJob({ slug, milestone, opts, kind, requestId, startedAt: new Date().toISOString() });
@@ -593,8 +624,18 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
       const b = s.build || {};
       if (b.status !== 'pr-open' || !b.prUrl) continue;
       let pr;
-      try { pr = JSON.parse(gh(['pr', 'view', b.prUrl, '--json', 'state,mergeable,statusCheckRollup,files,createdAt'])); } catch { continue; }
-      const d = A.mergeDecision({ pr, build: b, protectedPaths: auto.protectedPaths || [], now });
+      try { pr = JSON.parse(gh(['pr', 'view', b.prUrl, '--json', 'state,mergeable,statusCheckRollup,files,createdAt,headRefOid'])); } catch { continue; }
+      const decide = (smoke) => A.mergeDecision({ pr, build: b, protectedPaths: auto.protectedPaths || [], ownerOnlyPatterns: auto.ownerOnlyPatterns || [], smoke, now });
+      let d = decide(b.smoke || null);
+      // A green feature PR's preview is smoke-tested against production first (RepoHQ's factory:smoke), once per commit.
+      if (d.action === 'smoke') {
+        const smoke = { ...runSmoke(b.prUrl), sha: pr.headRefOid || null, at: now.toISOString() };
+        save(slug, { ...s, build: { ...b, smoke } }, `preview smoke test of ${b.prUrl}: ${smoke.verdict}${smoke.reasons?.length ? ` (${smoke.reasons.slice(0, 2).join('; ').slice(0, 200)})` : ''}`);
+        if (smoke.error) emit({ component: 'autonomy', event: 'smoke', status: 'fail', subject: { idea: slug, pr: b.prUrl }, message: `${slug}: the preview smoke test couldn't run: ${smoke.error}` });
+        Object.assign(b, { smoke });
+        d = decide(smoke);
+        if (d.action === 'smoke') continue;
+      }
       if (d.action === 'merge') {
         try {
           gh(['pr', 'ready', b.prUrl]);
@@ -775,42 +816,87 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
     const growth = { ...(s.growth || {}), stage: b.stage, bottleneck: b.bottleneck, next: b.action, experiments };
     if (!G.sameGrowth(s.growth, growth)) save(slug, { ...s, growth: { ...growth, checkedAt: now.toISOString() } }, `growth: ${b.stage}, ${b.bottleneck}${b.action ? `; next: ${b.action.kind} (${b.action.executor})` : ''}`);
   }
+  // The weekly plan (lib/plan.js, bin/idea-plan.js): at night, a focus product that's launch-ready and past
+  // instrumenting gets 2–3 features to build, from its bottleneck and everything tried so far. One plan per tick
+  // (it runs in this process); a failed one isn't retried for 12 hours.
+  const pp = gp.plan || {};
+  if (sql && pp.auto !== false && !planRan) {
+    for (const slug of gp.focus || []) {
+      const dir = path.join(IDEAS, slug);
+      if (busy.has(slug) || !fs.existsSync(path.join(dir, 'idea.json'))) continue;
+      const s = P.readState(dir);
+      if (!s.growth || ['launch', 'instrument', 'park'].includes(s.growth.stage)) continue;
+      if (s.growth.planFailedAt && now - new Date(s.growth.planFailedAt) < 12 * 3_600_000) continue;
+      const due = PL.planDue(s.growth.plan, s.growth.experiments || [], { maxAgeDays: pp.maxAgeDays ?? 7, now });
+      if (!due.due) continue;
+      const gate = SCH.mayStart('plan', now, pstate.schedule, policy.schedule);
+      if (!gate.ok) break;
+      pstate.schedule = SCH.counted('plan', now, pstate.schedule, policy.schedule);
+      writePstate();
+      const { planOne } = require('./idea-plan');
+      let r;
+      try { r = await planOne(slug, { bottleneck: `${s.growth.stage}: ${s.growth.bottleneck}`, funnel: s.funnel ? G.funnelText(s.funnel) : '' }); } catch (e) { r = { ok: false, reason: String(e.message || e).slice(0, 300) }; }
+      const cur = P.readState(dir);
+      if (r.ok) {
+        save(slug, { ...cur, growth: { ...cur.growth, plan: { at: now.toISOString(), items: r.items, ...(r.errors?.length ? { errors: r.errors } : {}) }, planFailedAt: undefined } },
+          `weekly plan (${due.reason}): ${r.items.map((i) => i.title).join('; ')}`);
+      } else {
+        save(slug, { ...cur, growth: { ...cur.growth, planFailedAt: now.toISOString() } }, `weekly plan failed: ${String(r.reason).slice(0, 200)}`);
+        fail(`plan ${slug}`, r.reason);
+      }
+      planRan = true;
+      break;
+    }
+  }
+
   // A growth build takes a slot like any build the pipeline starts itself; a kit runs in this process, so
-  // not on a tick that already wrote a revenue plan.
+  // not on a tick that already wrote a revenue plan or a weekly plan. Each mission waits for its window
+  // (policy.schedule): features and growth builds mostly at night, kits in the day.
   if (!planRan && sql && G.growthDue(pstate.growth, now, gp, { force: forceGrowth })) {
     const today = now.toLocaleDateString('en-CA');
-    const pg = pstate.growth?.date === today ? pstate.growth : { date: today, runs: 0, slugs: [] };
+    const pg = pstate.growth?.date === today ? pstate.growth : { date: today, runs: 0, slugs: [], features: 0 };
     const weekBuilds = G.growthBuildsThisWeek(ideaDirs().map((slug) => P.readState(path.join(IDEAS, slug))), now);
+    const fp = gp.feature || {};
     for (const slug of gp.focus || []) {
       const dir = path.join(IDEAS, slug);
       if (busy.has(slug) || pg.slugs.includes(slug) || !fs.existsSync(path.join(dir, 'idea.json'))) continue;
       const s = P.readState(dir);
-      const next = s.growth?.next;
-      if (!next || next.executor === 'owner' || !G.KINDS[next.kind] || !G.canStart(s)) continue;
-      if (next.executor === 'build' && weekBuilds >= (gp.maxBuildsPerWeek ?? 2)) continue;
+      // The plan's next feature comes first once the product is measured; else the bottleneck's own mission.
+      const item = fp.auto === false ? null : PL.nextItem(s.growth?.plan, s.growth?.experiments || [], now);
+      const featureNow = !!item && !['launch', 'instrument', 'park'].includes(s.growth?.stage) && G.canStartBuild(s) && (pg.features ?? 0) < (fp.maxPerDay ?? 3);
+      const next = featureNow ? { kind: 'feature', executor: 'build', metric: item.metric, item } : s.growth?.next;
+      if (!next || next.executor === 'owner' || !G.KINDS[next.kind]) continue;
+      if (!featureNow && !G.canStart(s)) continue;
+      const sched = next.kind === 'feature' ? 'feature' : next.executor === 'build' ? 'growth' : 'kit';
+      if (!SCH.mayStart(sched, now, pstate.schedule, policy.schedule).ok) continue;
+      if (next.executor === 'build' && next.kind !== 'feature' && weekBuilds >= (gp.maxBuildsPerWeek ?? 2)) continue;
       // No free slot: the mission waits for a tick that has one (nothing is recorded yet).
       if (next.executor === 'build' && capacityNow().automatic < 1) continue;
       const exp = G.newExperiment(slug, next, s, gp, now);
       // Recorded before it starts, so a crash mid-run can't start it twice: the day's counter, then the proposed experiment.
-      pstate.growth = { date: today, runs: pg.runs + 1, slugs: [...pg.slugs, slug] };
+      pstate.growth = { date: today, runs: pg.runs + 1, slugs: [...pg.slugs, slug], features: (pg.features ?? 0) + (featureNow ? 1 : 0) };
       writePstate();
-      save(slug, { ...s, growth: { ...s.growth, experiments: [...(s.growth?.experiments || []), exp] } }, `growth mission: ${G.KINDS[exp.kind].label} (${exp.executor === 'build' ? 'a draft PR' : 'posts for David'}): ${exp.hypothesis}`);
+      const growthNow = { ...s.growth, experiments: [...(s.growth?.experiments || []), exp], ...(featureNow ? { plan: PL.withAttempt(s.growth.plan, item.id, exp.id) } : {}) };
+      save(slug, { ...s, growth: growthNow }, featureNow ? `feature build: ${item.title} (a PR that merges itself once it passes its checks): ${exp.hypothesis}`
+        : `growth mission: ${G.KINDS[exp.kind].label} (${exp.executor === 'build' ? 'a draft PR' : 'posts for David'}): ${exp.hypothesis}`);
       const record = (change) => {
         const cur = P.readState(dir);
         P.writeState(dir, { ...cur, growth: { ...cur.growth, experiments: (cur.growth?.experiments || []).map((e) => (e.id === exp.id ? { ...e, ...change, updatedAt: new Date().toISOString() } : e)) } }, now);
         changed.add(slug);
       };
       if (exp.executor === 'build') {
-        const task = G.missionTask(exp.kind, { slug, signalUrl: policy.signalUrl });
+        const task = featureNow ? G.featureTask(item) : G.missionTask(exp.kind, { slug, signalUrl: policy.signalUrl });
         // How the same kind of experiment went on other products: their records, never their visitors.
         const others = ideaDirs().filter((x) => x !== slug).flatMap((x) => (P.readState(path.join(IDEAS, x)).growth?.experiments || [])
           .filter((e) => e.kind === exp.kind && e.status !== 'proposed').map((e) => ({ slug: x, hypothesis: e.hypothesis, decision: e.decision, status: e.status, reason: e.reason })));
         const brief = G.brief({ slug, exp, state: s, task, learnings: readText(path.join(dir, 'LEARNINGS.md')), playbook: readText(path.join(DATA, 'PLAYBOOK.md')), others });
         // The build job records the PR on the experiment, or abandons it if the run failed (tried again the
         // next day, lib/growth.js failedRun; a PR David closes isn't).
-        const r = await launchBuild(slug, 'GROWTH', { growth: { experiment: exp, task, brief } }, { kind: 'growth' });
+        const r = await launchBuild(slug, 'GROWTH', { growth: { experiment: exp, task, brief, ...(featureNow ? { item } : {}) } }, { kind: 'growth', sched });
         if (!r.started) record({ status: 'abandoned', failed: true, reason: `no build slot: ${r.reason}` });
       } else {
+        pstate.schedule = SCH.counted('kit', now, pstate.schedule, policy.schedule);
+        writePstate();
         const { distributionKitOne } = require('./idea-growth');
         let r;
         try { r = await distributionKitOne(slug); } catch (e) { r = { ok: false, reason: String(e.message || e).slice(0, 300) }; }

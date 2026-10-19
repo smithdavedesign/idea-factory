@@ -233,3 +233,52 @@ test("until it starts, an experiment's baseline follows the funnel, so a figure 
   const started = G.advance([{ ...kit, status: 'running' }], { now: NOW, gp: GP, funnel: funnelWith({ visit: 40 }) })[0];
   assert.equal(started.baseline, 15, 'a running experiment keeps the baseline it started from');
 });
+
+// ── The feature loop (lib/plan.js items built as "feature" missions) ────────────────────────────────
+
+const planItem = { id: 'compare-pages', title: 'Comparison pages', why: 'Searchers compare tools first.', metric: 'visit', acceptance: ['three /vs/ pages render', 'each is in sitemap.xml'], windowDays: 21, payments: false };
+
+test('a feature mission takes its metric, hypothesis and window from the plan item', () => {
+  const now = new Date('2026-10-20T01:00:00Z');
+  const state = { funnel: { d7: { visit: 6, activate: 1 }, seen: { visit: true } } };
+  const e = G.newExperiment('tiebreak', { kind: 'feature', executor: 'build', item: planItem }, state, { minVisitorsPerWeek: 50 }, now);
+  assert.equal(e.id, 'tiebreak-20261020-feature-compare-pages');
+  assert.equal(e.metric, 'visit');
+  assert.equal(e.baseline, 6);
+  assert.equal(e.target, 50);
+  assert.equal(e.windowDays, 21);
+  assert.equal(e.planItem, 'compare-pages');
+  assert.match(e.hypothesis, /^Comparison pages: Searchers compare/);
+  const share = G.newExperiment('tiebreak', { kind: 'feature', executor: 'build', item: { ...planItem, metric: 'activate', target: 0.25 } }, state, {}, now);
+  assert.equal(share.baseline, 0.167);
+  assert.equal(share.target, 0.25);
+});
+
+test('a feature task lists its acceptance criteria and asks for a test of each', () => {
+  const t = G.featureTask(planItem);
+  assert.match(t, /Build this feature: Comparison pages\./);
+  assert.match(t, /1\. three \/vs\/ pages render\n {2}2\. each is in sitemap\.xml/);
+  assert.match(t, /Leave checkout, Stripe and prices/);
+  assert.match(G.featureTask({ ...planItem, payments: true }), /David merges it himself/);
+});
+
+test("a kit waiting for David's post doesn't hold a build, a proposed build does", () => {
+  const kit = { id: 'k', kind: 'kit', executor: 'claude', status: 'proposed' };
+  assert.equal(G.canStart({ growth: { experiments: [kit] } }), false);
+  assert.equal(G.canStartBuild({ growth: { experiments: [kit] } }), true);
+  assert.equal(G.canStartBuild({ growth: { experiments: [{ ...kit, executor: 'build' }] } }), false);
+  assert.equal(G.canStartBuild({ build: { status: 'pr-open' } }), false);
+});
+
+test('a feature that makes a share 30% worse is reverted', () => {
+  const exp = { kind: 'feature', metric: 'activate', target: 0.3, windowDays: 14 };
+  const before = { visit: 100, activate: 20 };
+  const after = { visit: 100, activate: 10 };
+  assert.equal(G.judge(exp, before, after, { minSampleVisits: 30 }, { page: true }).decision, 'revert');
+});
+
+test('without notBefore the schedule decides when missions start', () => {
+  const now = new Date('2026-10-20T02:00:00');
+  assert.equal(G.growthDue(null, now, { maxMissionsPerDay: 4 }), true);
+  assert.equal(G.growthDue(null, now, { notBefore: '10:00' }), false);
+});
