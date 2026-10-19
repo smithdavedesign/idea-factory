@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-19T06:11:04.091Z",
+  "updatedAt": "2026-10-19T19:04:11.441Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -230,9 +230,80 @@
         "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/9",
         "startedAt": "2026-10-14T17:18:43.438Z",
         "endsAt": "2026-11-11T17:18:43.438Z"
+      },
+      {
+        "id": "tiebreak-20261019-feature-photo-upload-options",
+        "kind": "feature",
+        "executor": "build",
+        "hypothesis": "Upload photos as poll options: LAUNCH-KIT.md says the first objection will be that options take an image link and sellers keep photos on their phones. The preview tool and share cards below also need images hosted by tiebreak, so this comes first. It uses the free storage tier, which keeps it at $0.",
+        "metric": "activate",
+        "baseline": 0,
+        "target": 0.1,
+        "windowDays": 14,
+        "planItem": "photo-upload-options",
+        "title": "Upload photos as poll options",
+        "payments": false,
+        "status": "proposed",
+        "createdAt": "2026-10-19T19:04:11.441Z",
+        "updatedAt": "2026-10-19T19:04:11.441Z"
       }
     ],
-    "checkedAt": "2026-10-19T06:11:04.091Z"
+    "checkedAt": "2026-10-19T06:11:04.091Z",
+    "plan": {
+      "at": "2026-10-19T18:33:38.568Z",
+      "items": [
+        {
+          "id": "photo-upload-options",
+          "title": "Upload photos as poll options",
+          "why": "LAUNCH-KIT.md says the first objection will be that options take an image link and sellers keep photos on their phones. The preview tool and share cards below also need images hosted by tiebreak, so this comes first. It uses the free storage tier, which keeps it at $0.",
+          "metric": "activate",
+          "acceptance": [
+            "On / each option has a file input that accepts image/jpeg, image/png and image/webp; picking a file shows a thumbnail preview in that option's slot before submit",
+            "Creating a poll with two uploaded images returns a poll whose options both carry an image URL on tiebreak's own storage, and the poll page renders both as <img> elements that load with status 200",
+            "Uploading a file over 5 MB or with a non-image MIME type is rejected with a 4xx response and an inline error, and no poll is created",
+            "The upload works at phone width (390px) in a Playwright run, and image-link options still work as before (the existing tests pass)"
+          ],
+          "windowDays": 14,
+          "size": "M",
+          "payments": false,
+          "attempts": [
+            "tiebreak-20261019-feature-photo-upload-options"
+          ]
+        },
+        {
+          "id": "thumbnail-compare-tool",
+          "title": "Free side-by-side thumbnail preview tool (Etsy, book cover, YouTube)",
+          "why": "Buyers search for free thumbnail-preview tools, and the existing ones show one image at a time with no vote. tiebreak's tool previews 2–4 candidates side by side and hands them to a poll in one click. This is a search-landing tool, which makes it a different kind of thing from the three content pages in the running SEO experiment.",
+          "metric": "visit",
+          "acceptance": [
+            "/tools/etsy-thumbnail-preview, /tools/book-cover-thumbnail-test and /tools/youtube-thumbnail-preview each return 200 with a unique <title>, meta description and an <h1> naming the tool, and all three are listed in /sitemap.xml",
+            "On /tools/etsy-thumbnail-preview, adding 3 local images renders each one in a search-grid mock at the 1:1, 4:3 and 5:4 crops (9 preview tiles), entirely client-side with no network upload until the user asks for a poll",
+            "On /tools/book-cover-thumbnail-test, each added cover renders at about 160px and about 80px tall next to the others, and the YouTube page renders each candidate at 16:9 in a desktop-grid tile and a phone-feed tile",
+            "Clicking 'Let strangers pick' on any tool page uploads the images and opens the new-poll form prefilled with them as options A–C; submitting it creates a poll (Playwright, desktop and 390px phone)",
+            "Each tool page fires the visit beacon with its own path, so its visitors can be counted apart from the SEO-experiment pages"
+          ],
+          "windowDays": 14,
+          "size": "M",
+          "payments": false,
+          "target": 50
+        },
+        {
+          "id": "poll-share-cards",
+          "title": "Poll share cards and a 'make your own' loop for voters",
+          "why": "The concierge plan and launch posts both get votes by sharing poll links in communities and chats. Right now a link unfurls as plain text. A card showing the actual candidates gets clicked, and every voter who arrives is someone who could make their own poll.",
+          "metric": "visit",
+          "acceptance": [
+            "A poll's page has og:image and twitter:image (summary_large_image) meta tags pointing to a per-poll image route that returns image/png at 1200x630",
+            "The per-poll image shows the poll question and every option (the image thumbnail for an image option, the text for a text option); a closed poll's image marks the winner and the vote split",
+            "After a voter casts a vote, the poll page shows a 'Make your own tiebreak' link to /?ref=poll, and the visit beacon records ref=poll when that link is followed",
+            "A poll with 4 options, a 200-character question and no images still produces a valid PNG without the text overflowing (snapshot test)"
+          ],
+          "windowDays": 14,
+          "size": "S",
+          "payments": false
+        }
+      ]
+    }
   },
   "golive": {
     "mergedAt": "2026-10-13T18:28:45.669Z",
