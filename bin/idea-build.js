@@ -91,6 +91,7 @@ const SCREENSHOT_STEPS = `- Add \`npm run screenshots\` (scripts/screenshots.mjs
 - Sample data only: no secret, token or real person's data in a screenshot. Keep the screenshot run out of \`npm test\`.`;
 /** The reminder round when they're missing: an install, a production build and a browser run. */
 const SCREENSHOT_ROUND_MINUTES = 30;
+const ACCEPTANCE_ROUND_MINUTES = 20;
 
 /** The text from a heading matching `start` up to the next heading matching `stop` (or the end). */
 function extractSection(md, start, stop) {
@@ -237,7 +238,8 @@ Your final message: one line — tests passing or not, and what's left for David
  */
 function growthPrompt(slug, { exp, task, briefFile = null, signalUrl = '', provision = 'direct', ui = true } = {}) {
   const { valueText } = require('../lib/growth');
-  return `You are in the repo for "${slug}", a live product. Make one change, to test one idea about its funnel, and nothing else. Read README.md, PRD.md, REVENUE.md, BUILD.md and GROWTH.md (if present) first${briefFile ? `, then the brief in ${briefFile}: the mission, the product's funnel numbers, what earlier experiments taught, the playbook's rules and gstack's review checklist` : ''}.
+  const what = exp.kind === 'feature' ? 'Build one feature from the weekly plan, to move one number in its funnel, and nothing beyond it.' : 'Make one change, to test one idea about its funnel, and nothing else.';
+  return `You are in the repo for "${slug}", a live product. ${what} Read README.md, PRD.md, REVENUE.md, BUILD.md and GROWTH.md (if present) first${briefFile ? `, then the brief in ${briefFile}: the mission, the product's funnel numbers, what earlier experiments taught, the playbook's rules and gstack's review checklist` : ''}.
 The mission: ${task}
 The experiment: ${exp.hypothesis} Metric: ${valueText(exp.metric, exp.baseline)} now; the target is ${valueText(exp.metric, exp.target)} within ${exp.windowDays} days of the merge.
 1. Make the change, and keep to the mission: no refactors, no features beyond it, no new dependencies unless the mission needs one. Never change a price or hard-code a payment link or key.
@@ -251,6 +253,38 @@ ${ui ? 7 : 6}. Self-review your diff (\`git status\`, \`git diff\`) against gsta
 Provisioning: you can't create services or keys in a growth build. If the change needs something only David can set up, ${provision === 'file' ? 'write one line to `.provision` at the repo root:' : 'run'} ${provision === 'file' ? '' : `${PROVISION} `}request "<what> for ${slug}: <why>"${provision === 'file' ? '' : ' (nothing else from the broker)'}, build behind an env var, and say so in GROWTH.md.
 Install scripts are disabled (npm_config_ignore_scripts); choose packages that work without them, and prefer none.
 Your final message: one line — tests passing or not, and what you changed.`;
+}
+
+/**
+ * The acceptance check of a feature build (pure): a fresh run that reviews the work against the plan item's
+ * criteria and writes its verdict to .acceptance.json (never part of the PR). It reads and runs tests; it doesn't
+ * build, so a builder's "done" isn't the only word on it.
+ */
+function acceptancePrompt(item) {
+  return `You are reviewing a feature someone else just built in this repo; you are not building it. Don't change any file except .acceptance.json.
+The feature: ${item.title}. Its acceptance criteria:
+${item.acceptance.map((a, i) => `${i + 1}. ${a}`).join('\n')}
+For each criterion, find the code that meets it and a test that checks it (run \`npm test\` if you need to). A criterion is met only if the code does it and a test would fail without it.
+Write .acceptance.json at the repo root: {"verdict": "pass" | "fail", "met": ["<criterion>", …], "unmet": [{"criterion": "<criterion>", "why": "<what's missing>"}]}. "pass" only when every criterion is met.
+Your final message: pass or fail, and the unmet criteria.`;
+}
+
+/** The builder's round on what the acceptance check found missing (pure). */
+function acceptanceFixPrompt(unmet) {
+  return `A review of your feature found these acceptance criteria not met:
+${unmet.map((u, i) => `${i + 1}. ${u.criterion}: ${u.why}`).join('\n')}
+Finish them: the code, and a test for each that would fail without it. Keep \`npm test\` passing. Don't touch .acceptance.json. Your final message: one line, what you changed.`;
+}
+
+/** .acceptance.json → {verdict, met, unmet} (pure); anything unreadable is a fail with why. */
+function parseAcceptance(text) {
+  try {
+    const j = JSON.parse(String(text || ''));
+    const unmet = (Array.isArray(j.unmet) ? j.unmet : []).map((u) => (typeof u === 'string' ? { criterion: u, why: '' } : { criterion: String(u?.criterion || ''), why: String(u?.why || '') })).filter((u) => u.criterion);
+    const met = (Array.isArray(j.met) ? j.met : []).map(String);
+    const verdict = j.verdict === 'pass' && !unmet.length ? 'pass' : 'fail';
+    return { verdict, met, unmet };
+  } catch { return { verdict: 'fail', met: [], unmet: [{ criterion: 'the acceptance check', why: 'it wrote no readable .acceptance.json' }] }; }
 }
 
 /** The milestones in ROADMAP.md, in order ("## M1 …", "## M2 …"). */
@@ -384,7 +418,12 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
   if (golive) { planned = ['GOLIVE']; milestone = 'GOLIVE'; }
   if (growth) { planned = ['GROWTH']; milestone = 'GROWTH'; }
   const branch = golive ? 'go-live' : growth ? `growth-${growth.experiment.id}` : milestone.toLowerCase();
-  const eng = growth
+  const isFeature = growth?.experiment.kind === 'feature';
+  // A feature from the weekly plan is real product work: policy.growth.feature's model (Opus by default), longer.
+  const fp = policy.growth?.feature || {};
+  const eng = isFeature
+    ? { model: fp.model || 'opus', effort: fp.effort || 'xhigh', timeoutMinutes: fp.timeoutMinutes ?? 75, fallbackModel: fp.fallbackModel || 'sonnet', fallback: false }
+    : growth
     ? { model: policy.growth?.model || 'sonnet', effort: policy.growth?.effort || null, timeoutMinutes: policy.growth?.timeoutMinutes ?? 40, fallbackModel: undefined, fallback: false }
     : { model: policy.build.model, effort: policy.build.effort, timeoutMinutes: policy.build.timeoutMinutes, fallbackModel: policy.build.claudeFallbackModel, fallback: policy.build.fallback !== 'none' };
   const growthLabel = growth ? require('../lib/growth').KINDS[growth.experiment.kind]?.label || growth.experiment.kind : null;
@@ -429,7 +468,7 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
   };
   let ws;
   try {
-    const minutes = (mvp ? mvpPolicy.maxMinutes + policy.build.timeoutMinutes + 20 : eng.timeoutMinutes + 30) + SCREENSHOT_ROUND_MINUTES;
+    const minutes = (mvp ? mvpPolicy.maxMinutes + policy.build.timeoutMinutes + 20 : eng.timeoutMinutes + 30) + SCREENSHOT_ROUND_MINUTES + (isFeature ? 2 * ACCEPTANCE_ROUND_MINUTES : 0);
     const input = growth ? [growth.brief, buildInput(slug, `a growth change (${growthLabel})`) || ''].join('\n\n') : buildInput(slug, mvp ? `the MVP (${rangeText(planned)})` : milestone);
     ws = await openWorkspace({ slug, milestone, work, input, lifetimeMs: minutes * 60_000, fallback: eng.fallback, broker: !growth });
   } catch (e) {
@@ -471,6 +510,23 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     progress(planned.length, 'checks');
     let patch = await ws.patch();
     if (!patch.trim()) return failBuild(run.reason || 'no changes made', usage);
+
+    // A feature's acceptance criteria, checked by a separate run: one fix round, then the PR says what's unmet
+    // and the pipeline closes it (lib/autonomy.js) so the item is tried again the next night.
+    let acceptance = null;
+    if (isFeature && growth.item) {
+      const judgeOpts = { ...runOpts, timeoutMs: ACCEPTANCE_ROUND_MINUTES * 60_000, engines: ['claude'] };
+      const check = async () => { await ws.claude(acceptancePrompt(growth.item), judgeOpts); return parseAcceptance(await ws.readFile('.acceptance.json')); };
+      acceptance = await check();
+      if (acceptance.verdict === 'fail' && acceptance.unmet.length) {
+        emit({ component: 'build', event: milestone, status: 'info', subject: { idea: slug }, message: `acceptance: ${acceptance.unmet.length} criteria unmet, asking the builder to finish them` });
+        await ws.claude(acceptanceFixPrompt(acceptance.unmet), { ...runOpts, timeoutMs: ACCEPTANCE_ROUND_MINUTES * 60_000, engines: ['claude'] });
+        testsPassing = await ws.test();
+        patch = await ws.patch();
+        acceptance = { ...(await check()), fixRound: true };
+      }
+      usage.acceptance = acceptance.verdict;
+    }
 
     // Screenshot proof: one reminder round, then the PR says what's missing rather than losing the build.
     const checkShots = async () => { const refs = screenshotRefs(await ws.readFile('README.md')); return screenshotProof(refs, await ws.fileSizes(refs)); };
@@ -531,6 +587,9 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
       const exp = growth?.experiment;
       const body = [
         `${golive ? `**${slug}**, made launch-ready (SEO basics, privacy and terms, payment link, visit beacon, Vercel project)` : growth ? `One growth change to **${slug}** (${growthLabel}), from the growth loop` : mvp ? `The MVP for **${slug}** (${planned.join(', ')} in one run)` : `${milestone} for **${slug}**`}, built by the idea pipeline${golive || growth ? '' : ', tests first'}. Engine: ${engine}. Built in ${ws.kind === 'docker' ? 'the factory\'s Docker sandbox' : 'host mode (on the Mac)'}.`, '',
+        ...(acceptance ? [`**Acceptance** (checked by a separate review run${acceptance.fixRound ? ', after one fix round' : ''}): ${acceptance.verdict === 'pass' ? '✅ every criterion met' : `❌ ${acceptance.unmet.length} unmet`}`,
+          ...growth.item.acceptance.map((a) => `- ${acceptance.unmet.some((u) => u.criterion === a) ? '❌' : '✅'} ${a}`),
+          ...acceptance.unmet.filter((u) => u.why).map((u) => `  - unmet: ${u.criterion}: ${u.why}`), ''] : []),
         ...(exp ? [`**The experiment** (\`${exp.id}\`): ${exp.hypothesis}`,
           `- Metric: ${valueText(exp.metric, exp.baseline)} now; the target is ${valueText(exp.metric, exp.target)} within ${exp.windowDays} days of the merge.`,
           '- **Merging starts the experiment; closing this PR abandons it.** The pipeline judges it when the window ends.', ''] : []),
@@ -551,7 +610,7 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
       prUrl = sh('gh', ['pr', 'create', '--draft', '--base', 'main', '--head', branch, '--title', title, '--body', body], work);
     }
     // On merge, the pipeline marks `milestones` done: the ones that completed, not every one attempted.
-    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: stageNow, build: { ...prev, milestone, milestones: golive || growth ? [] : mvp ? completed : [milestone], ...(mvp ? { planned, stopped } : {}), ...(growth ? { experiment: growth.experiment.id, kind: growth.experiment.kind } : {}), ...(golive ? { beacon: 'funnel' } : {}), status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : eng.effort || null, manual: !!manual, sandbox: ws.kind, at: now.toISOString(), ...(advice ? { advice } : {}) } });
+    const s = P.writeState(ideaDir, { ...P.readState(ideaDir), stage: stageNow, build: { ...prev, milestone, milestones: golive || growth ? [] : mvp ? completed : [milestone], ...(mvp ? { planned, stopped } : {}), ...(growth ? { experiment: growth.experiment.id, kind: growth.experiment.kind, ...(growth.experiment.payments ? { payments: true } : {}) } : {}), ...(acceptance ? { acceptance: { verdict: acceptance.verdict, unmet: acceptance.unmet.map((u) => u.criterion) } } : {}), ...(golive ? { beacon: 'funnel' } : {}), status: prUrl ? 'pr-open' : 'local', prUrl, testsPassing, engine: run.engine, model: run.info.model || null, effort: run.engine === 'free' ? null : eng.effort || null, manual: !!manual, sandbox: ws.kind, at: now.toISOString(), ...(advice ? { advice } : {}) } });
     emit({ component: 'build', event: milestone, status: testsPassing ? 'ok' : 'fail', subject: { idea: slug, pr: prUrl || undefined }, durationMs: Date.now() - now.getTime(), data: { ...usage, testsPassing, prUrl, repaired, shotsReminded },
       message: `${mvp ? `MVP (${completed.join(', ') || 'nothing complete'}${stopped ? `; stopped: ${stopped.slice(0, 120)}` : ''})` : milestone} ${prUrl ? `PR ${prUrl}` : 'built locally'}, tests ${testsPassing ? 'passing' : 'failing'}, engine ${run.engine}${advice ? `, advisor ${advice.difficulty}` : ''}` });
     return { ok: true, slug, milestone, prUrl, testsPassing, engine: run.engine, model: run.info.model, builderReason: run.reason, state: s, ...(mvp ? { planned, completed, stopped } : {}) };
@@ -627,7 +686,7 @@ async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSe
       claude: (text, opts) => claudeTask(text, { ...opts, env: { ...opts.env, ...(fs.existsSync(MAC_CHROME) ? { CHROMIUM_PATH: MAC_CHROME } : {}) }, cwd: work, tools: tools(work, gstackFile ? [gstackFile] : [], { broker }), addDirs: gstackFile ? [inputDir] : [] }),
       test: async () => spawnSync('npm', ['test', '--silent'], { cwd: work, encoding: 'utf8', timeout: 10 * 60_000, env: { ...process.env, CI: '1', npm_config_ignore_scripts: 'true' } }).status === 0,
       // Stage all, then reset node_modules: an :(exclude) pathspec on an ignored path makes git 2.5x exit 1.
-      patch: async () => { sh('git', ['add', '-A', '--', '.'], work); sh('git', ['reset', '-q', '--', 'node_modules'], work); return execFileSync('git', ['diff', '--cached', '--binary'], { cwd: work, encoding: 'utf8', maxBuffer: 200 * 1024 * 1024 }); },
+      patch: async () => { sh('git', ['add', '-A', '--', '.'], work); sh('git', ['reset', '-q', '--', 'node_modules', '.acceptance.json'], work); return execFileSync('git', ['diff', '--cached', '--binary'], { cwd: work, encoding: 'utf8', maxBuffer: 200 * 1024 * 1024 }); },
       readFile: async (rel) => { try { return fs.readFileSync(path.join(work, rel), 'utf8'); } catch { return ''; } },
       fileSizes: async (rels) => Object.fromEntries(rels.flatMap((p) => { try { return [[p, fs.lstatSync(path.join(work, p)).size]]; } catch { return []; } })),
       provisionFile: async () => null, // on the host the builder runs the broker itself
@@ -648,8 +707,8 @@ async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSe
       kind: 'docker', gstackFile, secrets: [oauthToken],
       claude: (text, opts) => claudeTask(text, { ...opts, sandbox, oauthToken, cwd: info.workdir, tools: tools(info.workdir, gstackFile ? [gstackFile] : [], { sandbox: true }), addDirs: gstackFile ? [inputDir] : [] }),
       test: async () => (await sb.exec('npm', ['test', '--silent'], { env: { CI: '1', npm_config_ignore_scripts: 'true' }, timeoutMs: 10 * 60_000 })).code === 0,
-      // .provision is a request to the host, never part of the product repo.
-      patch: async () => fs.readFileSync(await sb.patch(['.provision']), 'utf8'),
+      // .provision is a request to the host and .acceptance.json a review's verdict: never part of the product repo.
+      patch: async () => fs.readFileSync(await sb.patch(['.provision', '.acceptance.json']), 'utf8'),
       readFile: async (rel) => { const r = await sb.exec('cat', [rel], { timeoutMs: 30_000 }); return r.code === 0 ? r.output : ''; },
       // "<size> <path>" per file that exists; a missing one only writes to stderr.
       fileSizes: async (rels) => {
@@ -675,7 +734,7 @@ async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSe
   }
 }
 
-module.exports = { buildOne, goLivePrompt, growthPrompt, mvpMilestones, rangeText, tools, milestones, nextMilestone, prompt, milestoneText, engineOrder, manualBuildTarget, buildMessage, engineLabel, buildInput, extractSection, GSTACK_BUILD_SECTIONS, repairPrompt, openWorkspace, sandboxToken, provisionCommands, screenshotRefs, screenshotProof, screenshotPrompt };
+module.exports = { buildOne, goLivePrompt, growthPrompt, mvpMilestones, rangeText, tools, milestones, nextMilestone, prompt, milestoneText, engineOrder, manualBuildTarget, buildMessage, engineLabel, buildInput, extractSection, GSTACK_BUILD_SECTIONS, repairPrompt, openWorkspace, sandboxToken, provisionCommands, screenshotRefs, screenshotProof, screenshotPrompt, acceptancePrompt, acceptanceFixPrompt, parseAcceptance };
 
 if (require.main === module) {
   const slug = process.argv[2];

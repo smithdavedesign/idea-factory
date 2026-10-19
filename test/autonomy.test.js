@@ -47,3 +47,32 @@ test('a revert: branch, git revert (with -m 1 for a merge commit), push, a PR th
   assert.equal(create[create.indexOf('--title') + 1], 'Revert: Growth: tiebreak (search pages)');
   assert.match(create[create.indexOf('--body') + 1], /Reverted by the idea pipeline: launch checks failed/);
 });
+
+// ── Feature PRs (the weekly plan's): acceptance, the preview smoke test, payment code ───────────────
+
+const green = { state: 'OPEN', mergeable: 'MERGEABLE', headRefOid: 'abc', files: [{ path: 'app/vs/page.tsx' }], statusCheckRollup: [{ __typename: 'CheckRun', name: 'Vercel', status: 'COMPLETED', conclusion: 'SUCCESS' }] };
+const feature = { kind: 'feature', testsPassing: true, acceptance: { verdict: 'pass' } };
+const PAY = ['(^|/)(stripe|checkout|billing|payments?)(/|\\.|-)', 'webhooks?/stripe'];
+
+test('a green feature PR runs the smoke test before it merges, for its current commit', () => {
+  assert.equal(A.mergeDecision({ pr: green, build: feature }).action, 'smoke');
+  assert.equal(A.mergeDecision({ pr: green, build: feature, smoke: { sha: 'old', verdict: 'pass' } }).action, 'smoke');
+  assert.equal(A.mergeDecision({ pr: green, build: feature, smoke: { sha: 'abc', verdict: 'pass' } }).action, 'merge');
+  assert.equal(A.mergeDecision({ pr: green, build: feature, smoke: { sha: 'abc', verdict: 'skipped', reasons: ['no Vercel preview for this repo'] } }).action, 'merge');
+  const now = new Date('2026-10-20T02:00:00Z');
+  const notReady = { sha: 'abc', verdict: 'skipped', reasons: ['preview not ready yet'] };
+  assert.equal(A.mergeDecision({ pr: green, build: feature, now, smoke: { ...notReady, at: '2026-10-20T01:55:00Z' } }).action, 'wait');
+  assert.equal(A.mergeDecision({ pr: green, build: feature, now, smoke: { ...notReady, at: '2026-10-20T01:45:00Z' } }).action, 'smoke');
+  const broken = A.mergeDecision({ pr: green, build: feature, smoke: { sha: 'abc', verdict: 'fail', reasons: ['/ returns 500 on the preview'] } });
+  assert.deepEqual([broken.action, /500/.test(broken.reason)], ['fail', true]);
+  // Other pipeline PRs merge as before, without a smoke test.
+  assert.equal(A.mergeDecision({ pr: green, build: { testsPassing: true, milestone: 'GROWTH' } }).action, 'merge');
+});
+
+test('a feature that missed its acceptance criteria fails; payment code waits for David', () => {
+  assert.equal(A.mergeDecision({ pr: green, build: { ...feature, acceptance: { verdict: 'fail', unmet: ['sitemap lists the pages'] } } }).action, 'fail');
+  const pay = { ...green, files: [{ path: 'app/api/checkout/route.ts' }] };
+  assert.equal(A.mergeDecision({ pr: pay, build: feature, ownerOnlyPatterns: PAY }).action, 'leave');
+  assert.equal(A.mergeDecision({ pr: green, build: { ...feature, payments: true } }).action, 'leave');
+  assert.deepEqual(A.ownerOnlyTouched(['lib/stripe.ts', 'app/page.tsx', 'app/api/webhooks/stripe/route.ts'], PAY), ['lib/stripe.ts', 'app/api/webhooks/stripe/route.ts']);
+});
