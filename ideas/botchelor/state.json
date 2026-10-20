@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-20T04:10:45.078Z",
+  "updatedAt": "2026-10-20T05:11:22.139Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -204,6 +204,62 @@
         "channels": 4
       }
     ],
-    "checkedAt": "2026-10-20T04:10:45.078Z"
+    "checkedAt": "2026-10-20T04:10:45.078Z",
+    "plan": {
+      "at": "2026-10-20T05:11:22.139Z",
+      "items": [
+        {
+          "id": "ship-name-generator",
+          "title": "Free OC ship name generator",
+          "why": "\"Ship name generator\" is a search with live demand (one single-purpose tool gets about 3K visits a month per indexator.ai), and nothing that ranks for it links shipping to OCs. Each result page is a shareable /ship/<a>/<b> URL that ends in \"send them on a blind date\", which puts the search traffic one click away from /create.",
+          "metric": "visit",
+          "acceptance": [
+            "GET /tools/ship-name-generator returns 200 with an h1 containing \"Ship Name Generator\", two name inputs, a <title> containing \"Ship Name Generator\" and a canonical link to itself",
+            "Submitting \"Juniper\" and \"Dex\" lands on /ship/juniper/dex, which server-renders at least 5 distinct ship names, each containing at least 2 letters from each input name, and the same URL renders the same names on reload (deterministic, no model call: it works with every LLM env var unset)",
+            "/ship/juniper/dex links to /create with the first name prefilled (the /create name input's value is \"Juniper\") and has og:title containing both names",
+            "A name on the real-person blocklist or with a sexual-content term renders the error message and no ship names, and the result page has noindex",
+            "/sitemap.xml lists /tools/ship-name-generator, and loading the page sends a `visit` to the RepoHQ beacon with path /tools/ship-name-generator"
+          ],
+          "windowDays": 14,
+          "size": "S",
+          "payments": false,
+          "target": 50
+        },
+        {
+          "id": "oc-chemistry-test",
+          "title": "OC chemistry test: will these two make it?",
+          "why": "Writers search for character chemistry and OC relationship generators (Jenova, Taskade and Headcanon Generator all target it), and Botchelor already has the inputs (three traits, a want, a dealbreaker) and a rules engine that decides second date, friends or disaster. Shown as a free test, the engine becomes a search page and a teaser for the episode, and its CTA turns a curious visitor into a char",
+          "metric": "visit",
+          "acceptance": [
+            "GET /tools/oc-chemistry-test returns 200 with a form for two characters, each with name, three traits, a want and a dealbreaker (the same fields and limits as /create), and a <title> containing \"Chemistry Test\"",
+            "Submitting the same two characters twice gives the same 0-100 score and the same predicted ending, one of second_date, friends or disaster; a character whose dealbreaker matches the other's trait always gets \"disaster\" (unit test on the scoring function); it makes no model call",
+            "The result is a shareable URL that server-renders both names, the score, the predicted ending and 3 one-line reasons, with og:title containing both names",
+            "The result page has a \"Watch the real date\" link to /create with both characters' fields prefilled, and inputs under 18, on the real-person blocklist or with sexual content are rejected with the same messages /create uses",
+            "/sitemap.xml lists /tools/oc-chemistry-test, and the home page and /create footer link to both tools"
+          ],
+          "windowDays": 14,
+          "size": "M",
+          "payments": false,
+          "target": 50
+        },
+        {
+          "id": "episode-share-card",
+          "title": "Episode share card: link unfurls as a prediction poll",
+          "why": "Episode pages give only a bare \"Copy link\", and the audience lives in Reddit and Discord, where a link's preview decides whether anyone clicks it. A per-episode image that asks \"How does it end? Second date, friends or disaster\" turns each shared episode into the spectator invite the PRD's share loop counts on. A ?ref tag lets us see those visits apart from \"direct\".",
+          "metric": "visit",
+          "acceptance": [
+            "GET /api/og/episode/{id} returns 200, content-type image/png, 1200x630, for an existing episode, and 404 for an unknown id",
+            "Episode page head has og:image pointing at /api/og/episode/{id}, twitter:card summary_large_image, and for an unaired episode an og:description containing \"Guess how it ends\" that does not contain the episode's ending value",
+            "Neither the image route nor the meta tags include a creator's account name or email before both creators have consented to the reveal (test on an episode with no reveal consent)",
+            "The episode page has share links to reddit.com/submit and bsky.app/intent/compose plus Copy link, and every shared URL carries ?ref=share",
+            "Opening an episode URL with ?ref=share sends a `visit` to the RepoHQ beacon with ref=share, and the page shows a \"Make your own character\" link to /create above the fold for a logged-out visitor"
+          ],
+          "windowDays": 14,
+          "size": "M",
+          "payments": false,
+          "target": 50
+        }
+      ]
+    }
   }
 }
