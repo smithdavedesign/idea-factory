@@ -1,0 +1,67 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "Cheap to build in a weekend, but there is no evidence anyone pays for AI-endpoint recon alerts, free tools (Canarytokens, OpenCanary, a WAF rule) cover most of it, and David has no channel to MSPs. Pass unless MSPs ask for it unprompted.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "Scanning is real (SANS ISC: about 200 AI-recon requests from 49 IPs in two weeks, secondary source only), but no one has asked for a tripwire. Price evidence (Thinkst $7.5k a year, cside $99 a month) shows spending on deception and bot tools, not on this product."
+    },
+    "statusQuo": {
+      "score": 3,
+      "evidence": "Owners do nothing, read logs, or use free Canarytokens/OpenCanary/Beelzebub. The ISC's own fix is a one-line block of /mcp and /sse. Doing nothing as the status quo signals weak pain."
+    },
+    "specificity": {
+      "score": 3,
+      "evidence": "Buyer is a category ('small MSP with 10-50 sites'), not a named person with a consequence. No one is fired for missing recon probes. The self-hosted-AI hobbyist will use free tools."
+    },
+    "wedge": {
+      "score": 5,
+      "evidence": "Build wedge is sharp (four decoy routes, hit log, nginx deny export, one weekend), but the thing someone pays for this week is unclear and the decoy is easy to copy."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "AI endpoint exposure and scanning will grow, but Cloudflare/WAF vendors will add AI-recon rules as a free toggle, and fingerprinted decoys get skipped."
+    }
+  },
+  "premises": [
+    "Small sites are hit often enough that a tripwire fires within days (unproven: one host, secondary source).",
+    "An alert about recon is worth money to the owner (weak: recon is noise, and blocking needs only a WAF or one config line).",
+    "MSPs will pay $29-$79 a month (a guess; the cheap end is crowded with free tools).",
+    "David can reach MSPs (not supported: no demonstrated channel).",
+    "Free tools are not good enough (weakest premise: a technician buying security can assemble them)."
+  ],
+  "alternatives": [
+    "Minimal: a free decoy plus a public 'who is probing AI endpoints' feed as a content and SEO play; builds a channel, earns nothing directly.",
+    "Extend boardping's MSP/security-firm audience with a tripwire add-on; only worth it if boardping finds MSP traction first.",
+    "Ideal: a managed service selling a verified scanner-intel list to MSPs; too heavy for a solo build with no early users.",
+    "Recommended: pass now; if pursued, one free script and a weekly 'who probed you' email, not a SaaS."
+  ],
+  "wedge": "One domain, four decoy routes (/mcp, /sse, /api/tags, /v1/models), one weekly email listing who probed, free. Test whether anyone with real sites asks for it on a second domain.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Hono on Cloudflare Workers or Vercel, D1/Neon free, Vitest, Resend free tier. The one test: POST /mcp with a valid initialize body returns a JSON-RPC result, and 3 hits to /mcp plus 1 to /sse from one IP give a report row with count 4 and the exact line 'deny 203.0.113.5;'. That proves the build, not demand."
+  },
+  "risks": [
+    "No demand signal and no channel to MSPs.",
+    "Free competitors (Canarytokens, OpenCanary, Beelzebub, WAF rules) are good and security buyers expect free tools.",
+    "Alert fatigue: recon is constant and unactionable for most owners.",
+    "Attackers fingerprint and skip decoys.",
+    "Storing hostile input and IP addresses raises privacy and sanitizing duties.",
+    "Selling security to MSPs needs trust and references a new solo product lacks.",
+    "The MCP-scanning claim rests on one secondary article."
+  ],
+  "killCriteria": "Fewer than 5 of 20 MSPs or consultants agree to a free pilot; fewer than 2 say they would pay $29 a month after a real alert; under 60% of pilot sites record a hit in 14 days; setup takes over 10 minutes unaided; or buyers say they would just use Canarytokens or a Cloudflare rule.",
+  "landing": {
+    "headline": "",
+    "subhead": "",
+    "bullets": [],
+    "cta": "",
+    "audience": ""
+  },
+  "launch": {
+    "channels": [],
+    "post": ""
+  }
+}

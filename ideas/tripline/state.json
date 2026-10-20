@@ -1,0 +1,10 @@
+{
+  "stage": "pass",
+  "review": {
+    "verdict": "pass",
+    "score": 4,
+    "summary": "Cheap to build in a weekend, but there is no evidence anyone pays for AI-endpoint recon alerts, free tools (Canarytokens, OpenCanary, a WAF rule) cover most of it, and David has no channel to MSPs. Pass unless MSPs ask for it unprompted.",
+    "at": "2026-10-20T06:47:12.395Z"
+  },
+  "updatedAt": "2026-10-20T06:47:12.395Z"
+}
