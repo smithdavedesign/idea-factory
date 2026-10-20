@@ -1,0 +1,31 @@
+{
+  "title": "tripline — AI-endpoint tripwire for small sites and the MSPs that run them",
+  "repoName": "tripline",
+  "oneLiner": "For small MSPs and site owners, it plants passive decoy MCP/Ollama endpoints and fake AI-credential files, alerts on the first scanner that touches them, and keeps a tracked blocklist, at a flat price instead of Thinkst Canary's $5,000+ a year.",
+  "overlaps": "trapyard (test range that tries to trick your own AI agent) — tripline is the opposite side: a passive internet-facing tripwire for scanners hunting your servers; no other portfolio repo covers it",
+  "tags": [
+    "serious",
+    "business",
+    "saas",
+    "reach:community",
+    "security"
+  ],
+  "effort": "Medium",
+  "confidence": "Low",
+  "sources": [
+    "https://cybersecuritynews.com/internet-wide-scans-target-mcp-servers-claude-credentials/amp/",
+    "https://trapster.cloud/en/blog/thinkst-canary-alternatives",
+    "https://vendr.com/marketplace/thinkst-canary",
+    "https://cside.com/blog/best-tools-for-ai-agent-detection-to-prevent-website-fraud",
+    "https://www.it-connect.fr/securite-ia-plus-de-1-100-serveurs-ollama-exposes-sur-le-web-sans-authentification/",
+    "https://itnext.io/securing-ai-agents-with-honeypots-introducing-beelzebub-mcp-b062a935f451",
+    "https://isc.sans.edu/forums/diary/22268/",
+    "https://labs.cloudsecurityalliance.org/research-rb/csa-research-note-self-hosted-ai-infrastructure-exposure-202/",
+    "https://mcpplaygroundonline.com/blog/mcp-server-security-complete-guide-2026",
+    "https://www.securityhive.io/blog/best-honeypot-solutions-in-2025",
+    "https://www.everydev.ai/tools/agent-monitor"
+  ],
+  "seedId": "seed-5b3e0a",
+  "slug": "tripline",
+  "recordedAt": "2026-10-20T06:46:13.442Z"
+}
