@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-20T13:21:35.602Z",
+  "updatedAt": "2026-10-20T19:09:51.534Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -225,6 +225,22 @@
         "prUrl": "https://github.com/smithdavedesign/botchelor/pull/410",
         "startedAt": "2026-10-20T06:13:55.865Z",
         "endsAt": "2026-11-03T06:13:55.865Z"
+      },
+      {
+        "id": "botchelor-20261020-feature-oc-chemistry-test",
+        "kind": "feature",
+        "executor": "build",
+        "hypothesis": "OC chemistry test: will these two make it?: Writers search for character chemistry and OC relationship generators (Jenova, Taskade and Headcanon Generator all target it), and Botchelor already has the inputs (three traits, a want, a dealbreaker) and a rules engine that decides second date, friends or disaster. Shown as a free test, the engine becomes a search page and a teaser for the episode, and its CTA turns a curious visitor into a char",
+        "metric": "visit",
+        "baseline": 42,
+        "target": 50,
+        "windowDays": 14,
+        "planItem": "oc-chemistry-test",
+        "title": "OC chemistry test: will these two make it?",
+        "payments": false,
+        "status": "proposed",
+        "createdAt": "2026-10-20T19:09:51.534Z",
+        "updatedAt": "2026-10-20T19:09:51.534Z"
       }
     ],
     "checkedAt": "2026-10-20T13:21:35.602Z",
@@ -266,7 +282,10 @@
           "windowDays": 14,
           "size": "M",
           "payments": false,
-          "target": 50
+          "target": 50,
+          "attempts": [
+            "botchelor-20261020-feature-oc-chemistry-test"
+          ]
         },
         {
           "id": "episode-share-card",
