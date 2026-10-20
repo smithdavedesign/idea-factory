@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-20T13:06:28.473Z",
+  "updatedAt": "2026-10-20T13:21:35.602Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -139,9 +139,9 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-20T13:06:28.473Z",
+    "at": "2026-10-20T13:21:35.602Z",
     "d7": {
-      "visit": 41,
+      "visit": 42,
       "signup": 0,
       "activate": 1,
       "checkout": 0
@@ -153,7 +153,7 @@
       "checkout": 0
     },
     "all": {
-      "visit": 41,
+      "visit": 42,
       "signup": 0,
       "activate": 1,
       "checkout": 0
@@ -166,7 +166,7 @@
     "referrers7d": [
       {
         "host": "direct",
-        "visitors": 40
+        "visitors": 41
       },
       {
         "host": "reddit.com",
@@ -185,7 +185,7 @@
   },
   "growth": {
     "stage": "acquire",
-    "bottleneck": "41 visitors this week, under 50",
+    "bottleneck": "42 visitors this week, under 50",
     "next": {
       "kind": "seo",
       "executor": "build",
@@ -198,7 +198,7 @@
         "executor": "claude",
         "hypothesis": "Posting the kit's channels, a day or two apart, brings the product to 50 visitors a week.",
         "metric": "visit",
-        "baseline": 41,
+        "baseline": 42,
         "target": 50,
         "windowDays": 14,
         "status": "proposed",
@@ -227,7 +227,7 @@
         "endsAt": "2026-11-03T06:13:55.865Z"
       }
     ],
-    "checkedAt": "2026-10-20T13:06:28.473Z",
+    "checkedAt": "2026-10-20T13:21:35.602Z",
     "plan": {
       "at": "2026-10-20T05:11:22.139Z",
       "items": [
