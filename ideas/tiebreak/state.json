@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-20T17:53:52.314Z",
+  "updatedAt": "2026-10-20T20:40:41.501Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -153,7 +153,7 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-20T00:22:38.341Z",
+    "at": "2026-10-20T20:40:41.501Z",
     "d7": {
       "visit": 2,
       "signup": 0,
@@ -180,7 +180,7 @@
     "referrers7d": [
       {
         "host": "direct",
-        "visitors": 2
+        "visitors": 1
       },
       {
         "host": "vercel.com",
