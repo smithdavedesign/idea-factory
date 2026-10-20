@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-20T05:11:22.139Z",
+  "updatedAt": "2026-10-20T05:28:19.993Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -202,6 +202,22 @@
         "updatedAt": "2026-10-16T04:25:15.851Z",
         "artifact": "LAUNCH-KIT.md",
         "channels": 4
+      },
+      {
+        "id": "botchelor-20261020-feature-ship-name-generator",
+        "kind": "feature",
+        "executor": "build",
+        "hypothesis": "Free OC ship name generator: \"Ship name generator\" is a search with live demand (one single-purpose tool gets about 3K visits a month per indexator.ai), and nothing that ranks for it links shipping to OCs. Each result page is a shareable /ship/<a>/<b> URL that ends in \"send them on a blind date\", which puts the search traffic one click away from /create.",
+        "metric": "visit",
+        "baseline": 40,
+        "target": 50,
+        "windowDays": 14,
+        "planItem": "ship-name-generator",
+        "title": "Free OC ship name generator",
+        "payments": false,
+        "status": "proposed",
+        "createdAt": "2026-10-20T05:28:19.993Z",
+        "updatedAt": "2026-10-20T05:28:19.993Z"
       }
     ],
     "checkedAt": "2026-10-20T04:10:45.078Z",
@@ -223,7 +239,10 @@
           "windowDays": 14,
           "size": "S",
           "payments": false,
-          "target": 50
+          "target": 50,
+          "attempts": [
+            "botchelor-20261020-feature-ship-name-generator"
+          ]
         },
         {
           "id": "oc-chemistry-test",
