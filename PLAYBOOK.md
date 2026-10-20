@@ -18,4 +18,4 @@ deletes it.
 
 ## Proposed
 
-None yet.
+- Counting visits on every page, first uses and Buy clicks shows where visitors drop off. (kept on tiebreak, 2026-10-20: old beacon → beacon live)

@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-20T07:48:12.574Z",
+  "updatedAt": "2026-10-20T17:53:52.314Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -219,12 +219,25 @@
         "baseline": 0,
         "target": 1,
         "windowDays": 7,
-        "status": "running",
+        "status": "decided",
         "createdAt": "2026-10-13T17:33:21.140Z",
-        "updatedAt": "2026-10-13T17:53:21.415Z",
+        "updatedAt": "2026-10-20T17:53:52.314Z",
         "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/7",
         "startedAt": "2026-10-13T17:53:21.415Z",
-        "endsAt": "2026-10-20T17:53:21.415Z"
+        "endsAt": "2026-10-20T17:53:21.415Z",
+        "decision": "keep",
+        "decidedAt": "2026-10-20T17:53:52.314Z",
+        "result": {
+          "lift": true,
+          "value": 1,
+          "before": 0,
+          "sample": 2,
+          "note": "2 visits counted by the new beacon",
+          "ranWith": [
+            "search pages",
+            "feature"
+          ]
+        }
       },
       {
         "id": "tiebreak-20261014-seo",
@@ -281,7 +294,7 @@
         "reason": "web, web, mobile failed"
       }
     ],
-    "checkedAt": "2026-10-20T00:22:38.341Z",
+    "checkedAt": "2026-10-20T17:53:52.314Z",
     "plan": {
       "at": "2026-10-19T18:33:38.568Z",
       "items": [
