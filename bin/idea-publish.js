@@ -208,7 +208,7 @@ function createRepo(srcDir, idea, full) {
   g('init', '-q', '-b', 'main');
   g('add', '-A');
   g('commit', '-q', '-m', `Idea: ${idea.title}`.slice(0, 200));
-  execFileSync('gh', ['repo', 'create', full, '--private',
+  execFileSync('gh', ['repo', 'create', full, '--public',
     '--description', repoDescription(idea),
     '--source', dir, '--remote', 'origin', '--push'], { stdio: 'pipe' });
   // RepoHQ and the factory tell idea repos apart from real projects by this topic.
