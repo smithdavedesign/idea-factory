@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-21T07:23:13.443Z",
+  "updatedAt": "2026-10-21T08:10:10.912Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -109,8 +109,8 @@
       "M4"
     ],
     "stopped": null,
-    "status": "running",
-    "prUrl": "https://github.com/smithdavedesign/botchelor/pull/453",
+    "status": "merged",
+    "prUrl": "https://github.com/smithdavedesign/botchelor/pull/521",
     "testsPassing": true,
     "engine": "claude",
     "model": "claude-opus-5-5",
@@ -125,19 +125,11 @@
       "model": "local-qwen3"
     },
     "reason": "couldn't start the build sandbox: sandbox open: Docker is not running",
-    "experiment": "botchelor-20261020-feature-oc-chemistry-test",
+    "experiment": "botchelor-20261021-feature-episode-share-card",
     "kind": "feature",
     "acceptance": {
-      "verdict": "fail",
-      "unmet": [
-        "2. Submitting the same two characters twice gives the same 0-100 score and the same predicted ending, one of second_date, friends or disaster; a character whose dealbreaker matches the other's trait always gets \"disaster\" (unit test on the scoring function); it makes no model call"
-      ]
-    },
-    "progress": {
-      "step": 1,
-      "steps": 2,
-      "label": "GROWTH",
-      "at": "2026-10-21T07:23:13.443Z"
+      "verdict": "pass",
+      "unmet": []
     }
   },
   "milestonesDone": [
@@ -265,9 +257,12 @@
         "planItem": "episode-share-card",
         "title": "Episode share card: link unfurls as a prediction poll",
         "payments": false,
-        "status": "proposed",
+        "status": "running",
         "createdAt": "2026-10-21T07:22:46.258Z",
-        "updatedAt": "2026-10-21T07:22:46.258Z"
+        "updatedAt": "2026-10-21T08:10:10.912Z",
+        "prUrl": "https://github.com/smithdavedesign/botchelor/pull/521",
+        "startedAt": "2026-10-21T08:10:10.912Z",
+        "endsAt": "2026-11-04T08:10:10.912Z"
       }
     ],
     "checkedAt": "2026-10-21T05:33:06.620Z",
