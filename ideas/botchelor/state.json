@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-21T07:22:46.258Z",
+  "updatedAt": "2026-10-21T07:23:13.443Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -109,7 +109,7 @@
       "M4"
     ],
     "stopped": null,
-    "status": "closed",
+    "status": "running",
     "prUrl": "https://github.com/smithdavedesign/botchelor/pull/453",
     "testsPassing": true,
     "engine": "claude",
@@ -117,7 +117,7 @@
     "effort": "xhigh",
     "manual": false,
     "sandbox": "docker",
-    "at": "2026-10-20T19:10:06.351Z",
+    "at": "2026-10-21T07:23:09.503Z",
     "advice": {
       "difficulty": 2,
       "reason": "Implementing a feature with multiple components across files and handling game logic with specific rules.",
@@ -132,6 +132,12 @@
       "unmet": [
         "2. Submitting the same two characters twice gives the same 0-100 score and the same predicted ending, one of second_date, friends or disaster; a character whose dealbreaker matches the other's trait always gets \"disaster\" (unit test on the scoring function); it makes no model call"
       ]
+    },
+    "progress": {
+      "step": 1,
+      "steps": 2,
+      "label": "GROWTH",
+      "at": "2026-10-21T07:23:13.443Z"
     }
   },
   "milestonesDone": [
