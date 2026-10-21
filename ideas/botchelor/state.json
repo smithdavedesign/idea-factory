@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-21T05:33:06.620Z",
+  "updatedAt": "2026-10-21T07:22:46.258Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -246,6 +246,22 @@
         "prUrl": "https://github.com/smithdavedesign/botchelor/pull/453",
         "failed": true,
         "reason": "acceptance criteria not met: 2. Submitting the same two characters twice gives the same 0-100 score and the same predicted ending, one of second_date, friends or disaster; a character whose dealbreaker matches the other's trait a"
+      },
+      {
+        "id": "botchelor-20261021-feature-episode-share-card",
+        "kind": "feature",
+        "executor": "build",
+        "hypothesis": "Episode share card: link unfurls as a prediction poll: Episode pages give only a bare \"Copy link\", and the audience lives in Reddit and Discord, where a link's preview decides whether anyone clicks it. A per-episode image that asks \"How does it end? Second date, friends or disaster\" turns each shared episode into the spectator invite the PRD's share loop counts on. A ?ref tag lets us see those visits apart from \"direct\".",
+        "metric": "visit",
+        "baseline": 43,
+        "target": 50,
+        "windowDays": 14,
+        "planItem": "episode-share-card",
+        "title": "Episode share card: link unfurls as a prediction poll",
+        "payments": false,
+        "status": "proposed",
+        "createdAt": "2026-10-21T07:22:46.258Z",
+        "updatedAt": "2026-10-21T07:22:46.258Z"
       }
     ],
     "checkedAt": "2026-10-21T05:33:06.620Z",
@@ -307,7 +323,10 @@
           "windowDays": 14,
           "size": "M",
           "payments": false,
-          "target": 50
+          "target": 50,
+          "attempts": [
+            "botchelor-20261021-feature-episode-share-card"
+          ]
         }
       ]
     }
