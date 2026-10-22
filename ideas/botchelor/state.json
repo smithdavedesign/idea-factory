@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-22T07:06:14.747Z",
+  "updatedAt": "2026-10-22T08:27:26.688Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -109,15 +109,15 @@
       "M4"
     ],
     "stopped": null,
-    "status": "merged",
-    "prUrl": "https://github.com/smithdavedesign/botchelor/pull/521",
-    "testsPassing": true,
+    "status": "closed",
+    "prUrl": "https://github.com/smithdavedesign/botchelor/pull/636",
+    "testsPassing": false,
     "engine": "claude",
     "model": "claude-opus-5-5",
     "effort": "xhigh",
     "manual": false,
     "sandbox": "docker",
-    "at": "2026-10-21T07:23:09.503Z",
+    "at": "2026-10-22T07:06:42.833Z",
     "advice": {
       "difficulty": 2,
       "reason": "Implementing a feature with multiple components across files and handling game logic with specific rules.",
@@ -125,7 +125,7 @@
       "model": "local-qwen3"
     },
     "reason": "couldn't start the build sandbox: sandbox open: Docker is not running",
-    "experiment": "botchelor-20261021-feature-episode-share-card",
+    "experiment": "botchelor-20261022-feature-oc-chemistry-test",
     "kind": "feature",
     "acceptance": {
       "verdict": "pass",
@@ -276,9 +276,12 @@
         "planItem": "oc-chemistry-test",
         "title": "OC chemistry test: will these two make it?",
         "payments": false,
-        "status": "proposed",
+        "status": "abandoned",
         "createdAt": "2026-10-22T07:06:14.747Z",
-        "updatedAt": "2026-10-22T07:06:14.747Z"
+        "updatedAt": "2026-10-22T08:27:26.688Z",
+        "prUrl": "https://github.com/smithdavedesign/botchelor/pull/636",
+        "failed": true,
+        "reason": "its tests failed in the pipeline's run"
       }
     ],
     "checkedAt": "2026-10-22T05:31:15.007Z",
