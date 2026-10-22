@@ -1,12 +1,12 @@
 {
-  "stage": "repo",
+  "stage": "building",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-12T05:03:28.813Z",
+  "updatedAt": "2026-10-22T21:19:51.588Z",
   "repo": "https://github.com/smithdavedesign/covercheck",
   "revenue": {
     "mrr": 0,
@@ -32,22 +32,22 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": false,
-        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
+        "done": true,
+        "evidence": "https://covercheck-jade.vercel.app"
       },
       {
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
-        "done": false,
-        "evidence": "privacy ✗ · terms ✗"
+        "done": true,
+        "evidence": "live on the site"
       },
       {
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
         "done": false,
-        "evidence": "checked once it's live (the go-live build adds what's missing)"
+        "evidence": "6/9 launch checks · missing: Social share image (og:image), robots.txt, sitemap.xml"
       },
       {
         "id": "price",
@@ -90,8 +90,44 @@
       "label": "Road-to-revenue plan written",
       "owner": "agent"
     },
-    "done": 0,
+    "done": 2,
     "total": 10,
-    "updatedAt": "2026-10-12T05:03:28.813Z"
-  }
+    "updatedAt": "2026-10-22T21:19:51.588Z"
+  },
+  "build": {
+    "milestone": "MVP",
+    "milestones": [
+      "M1",
+      "M2",
+      "M3"
+    ],
+    "planned": [
+      "M1",
+      "M2",
+      "M3"
+    ],
+    "stopped": null,
+    "status": "merged",
+    "prUrl": "https://github.com/smithdavedesign/covercheck/pull/1",
+    "testsPassing": true,
+    "engine": "claude",
+    "model": "claude-opus-5-5",
+    "effort": "xhigh",
+    "manual": false,
+    "sandbox": "docker",
+    "at": "2026-10-22T19:49:03.671Z",
+    "advice": {
+      "difficulty": 2,
+      "reason": "involves multiple components, integration, and testable exit criteria requiring precise implementation.",
+      "source": "model",
+      "model": "local-qwen3"
+    },
+    "mergedBy": "agent",
+    "mergedAt": "2026-10-22T21:19:51.588Z"
+  },
+  "milestonesDone": [
+    "M1",
+    "M2",
+    "M3"
+  ]
 }
