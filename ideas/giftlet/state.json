@@ -6,7 +6,7 @@
     "summary": "Thin demand evidence (Etsy snippets, no volume data), a $2–$5 template floor, and no distribution channel for a one-time, deadline-driven consumer purchase. Photo hosting of real people adds a moderation burden for a low-ticket product.",
     "at": "2026-10-13T08:18:51.267Z"
   },
-  "updatedAt": "2026-10-22T21:36:27.695Z",
+  "updatedAt": "2026-10-22T21:52:30.024Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -20,8 +20,8 @@
         "id": "plan",
         "owner": "agent",
         "label": "Road-to-revenue plan written",
-        "done": false,
-        "evidence": "written after M1 merges"
+        "done": true,
+        "evidence": "A person whose partner's birthday or anniversary is 1-7 days away, with no gift  · $9 once"
       },
       {
         "id": "mvp",
@@ -54,9 +54,9 @@
       {
         "id": "price",
         "owner": "david",
-        "label": "Price decided",
-        "done": false,
-        "evidence": ""
+        "label": "Price: $9 once (from the plan)",
+        "done": true,
+        "evidence": "Sits just above the $2-$9 Etsy template and animated-letter floor and Kudoboard's $5.99-$8.99 single boards, and far bel"
       },
       {
         "id": "payments",
@@ -88,13 +88,15 @@
       }
     ],
     "next": {
-      "id": "plan",
-      "label": "Road-to-revenue plan written",
+      "id": "deployed",
+      "label": "Live on a free tier",
       "owner": "agent"
     },
-    "done": 1,
+    "done": 3,
     "total": 10,
-    "updatedAt": "2026-10-22T21:36:27.695Z"
+    "buyer": "A person whose partner's birthday or anniversary is 1-7 days away, with no gift and no design skill; first found among long-distance partners (r/LongDistance) and last-minute askers in gift threads (r/GiftIdeas)",
+    "price": "$9 once",
+    "updatedAt": "2026-10-22T21:52:30.024Z"
   },
   "revenue": {
     "mrr": 0,
