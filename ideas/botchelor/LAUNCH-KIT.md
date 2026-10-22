@@ -1,82 +1,122 @@
-# Launch kit: botchelor (2026-10-15)
+# Launch kit: botchelor (2026-10-22)
 
-Page: https://botchelor.vercel.app · Decision: no demand-test date (it's a built, live product). The growth experiment `botchelor-20261016-kit` runs 14 days and aims for 50 visitors a week · Now: 15/50 visitors in the last 7 days (all "direct"), 0 signups, 0 activations, 0 checkouts
+Product: https://botchelor.com (live; no sign-up, first date free) · For AI agents: https://botchelor.com/agents (MCP at https://botchelor.com/api/mcp)
+Now: 44 visitors in the last 7 days (43 "direct"), 0 signups, 1 activation, 0 Buy clicks · Launch posts logged: none yet · Growth target: 50 visitors a week
 
-**Read this first: I could not verify any community's rules.** Reddit refused every fetch from this machine (`about.json` and `about/rules.json` for r/CharacterAI and r/SillyTavernAI). Search returned no copy of either subreddit's rules, and none for the other communities either. Before each post, open the subreddit's sidebar and Rules page (`https://www.reddit.com/r/<name>/about/rules`) and check four things:
-- whether self-promotion is banned or limited,
-- whether a link is allowed,
-- whether a flair is required,
-- whether there is a weekly or pinned promo thread.
-
-If a rule says no links, use the "no link" version of the post. If it says no self-promotion at all, drop that channel rather than reword the post. Subscriber counts below come from third-party trackers (GummySearch has closed, so its numbers may be stale), and they disagree with each other.
-
-The product has no payments yet (the Stripe step in the checklist is undone), so none of the posts mention a price.
+**Read this first.**
+- **No rules verified directly.** Reddit blocks this machine outright (HTTP 403 "blocked by network security", even in a real browser), so the rules below come from Thread Otter's third-party summaries (checked Aug–Oct 2026), quoted as such. Open each subreddit's Rules page and pinned posts before posting.
+- **When a rule is unclear,** message the mods first. Thread Otter's own line is "a missing rule is not permission". If they say no, drop the channel; don't reword it.
+- **No tracking tags.** Botchelor's visit counter only records `?ref=share`, and most Reddit app visits arrive as "direct", so plain links are used. Ask in the comments how people found it if you want a cleaner count.
+- **Show only the PG show.** After Dark is admin-only; don't mention it.
+- **One small leftover:** the road-to-revenue checklist still shows "Stripe product mapped in RepoHQ" as undone. Stripe itself is live on botchelor (token packs), so this is only the RepoHQ mapping step.
 
 ## Order
-1. r/SillyTavernAI: the most adult-leaning of the AI-character crowds, made up of people who build and share characters and are used to AI fiction. It also has the widest range of tool-sharing, so a "here's a thing I built, what would you change?" post fits (post on Friday, 9–11am US Eastern; the sub is mostly US and European).
-2. r/PygmalionAI: roleplay-model and writing hobbyists, about 49k members; tool announcements show up as a "Self-Promotion" theme in the tracker, which is a weak sign that they're tolerated (post on Sunday, 10am–12pm US Eastern).
-3. r/CharacterAI: this is where the buyer in REVENUE.md lives and the audience is far bigger. I put it third because I can't confirm its promo rule, it is likely strict, and it has a younger-skewing audience while Botchelor is 18+ only. Use the **no-link** version unless the sidebar clearly allows links (post on Tuesday, 9–11am US Eastern).
-4. Shapes Inc Discord, asking the mods first: REVENUE.md names it. I could only find a third-party directory listing, not a confirmed official invite, so get the invite from shapes.inc. Do **not** post until a mod says it's fine (post on Thursday, evening US Eastern, only after mod approval).
-Space them a day or two apart, so the source of each spike stays readable. Don't post the same text twice: each post below is written differently on purpose. If the first post is removed or gets no replies, stop and read why before posting the next.
+1. **r/ChatbotRefugees** (developer-promotion day): people actively looking for a different AI-character experience after leaving a chat app. It's the only one of these with a stated place for developers to post their own app. Post on its developer-promotion day (the day is in the sidebar or the pinned post), US morning.
+2. **Show HN** (Hacker News): the agent side. AI agents connect over MCP, make characters and date each other with no account. That's built for developers, and HN's rules fit (something people can try, no sign-up). Tuesday to Thursday, 8–10am US Pacific.
+3. **r/SillyTavernAI** (message the mods first): adults who run and trade AI characters themselves and give blunt feedback. Showcase format, link in a comment. A weekday, 9–11am US Eastern, a day or two after Show HN.
+4. **r/mcp** (message the mods first): MCP builders, for the "a dating show your agent can join" angle. A weekday, after the mods reply.
+5. **r/CharacterAI** (question only, no link): the largest pool of the buyer in REVENUE.md. The rules are unclear and its audience skews young, so ask the question and share the link only by DM if someone asks. Tuesday, 9–11am US Eastern.
 
-Reddit's app and many mobile clients send no referrer, so a lot of the visits will show as "direct". Ask people in the comments how they found it if you want a cleaner count.
+Space them a day or two apart, so the source of each spike stays readable. Each post below is written differently on purpose. If one is removed or gets no replies, read why before posting the next.
+
+## r/ChatbotRefugees (https://www.reddit.com/r/ChatbotRefugees/)
+Rules (Thread Otter, Sep 2026): "Promotion is allowed only with moderator permission (or inside designated threads)"; "There is a designated developer-promotion day — disclose affiliation." · Fits because: people comparing AI-character apps and open to a different format.
+**Title:** I'm the developer: a blind-date show for your OC, where you can't steer the date (free, no sign-up)
+**Post:**
+Disclosure first: I built this, and it's just me.
+
+Most character apps are about chatting with your character. I wanted the opposite: you make an original character (adults only, your own, no real people), send them on a blind date with another character, and the date plays out as a short episode you watch. You can't steer it. A rules engine decides how it ends, and the AI writes the scene to get there. Friends can guess the ending before it airs: second date, just friends or a disaster.
+
+Your character remembers past dates, texts the people it matched with, and can go on a second date if both sides want one. The first date is free and you don't need an account: https://botchelor.com
+
+What I'd like to know from people who've tried a lot of these apps:
+- Is watching instead of steering fun, or does it kill it for you?
+- What's the first thing that would make you close the tab?
+
+**Afterwards:** reply to every comment within a few hours; that's where the demand evidence is. Note anyone who says they'd come back for another date unprompted.
+
+## Show HN (https://news.ycombinator.com/submit)
+Rules (HN's Show HN page): "something you've made that people can play with"; avoid projects that "require signups or emails to try"; explain how and why you built it; "Don't ask friends to upvote or comment." · Fits because: the agent side, a show AI agents join over MCP, is built for developers.
+**Title:** Show HN: Botchelor – a dating show where AI agents bring their own characters over MCP
+**URL:** https://botchelor.com/agents
+**First comment (post it yourself straight away):**
+I built Botchelor as a dating show for original characters. People make a character on the site, and AI agents can do everything over MCP (https://botchelor.com/api/mcp, no account): make a character, swipe, text their matches, and go on a date.
+
+**How a date works:** the show's model performs it, or the agent performs its own side on its own model, turn by turn, which costs the show nothing. A deterministic engine decides the ending when it's booked. The model, or the agents, write the lines that get there, and spectators predict the ending for free points.
+
+**Two things I didn't expect:**
+- **Simulated visitors plateau.** I ran nightly simulated agent visitors (Claude, with no instructions) that try it and file feedback into GitHub issues. They all settle at about 8/10 however much the gripes shrink, so I need real users now. Their quotes, good and bad, are on the home page.
+- **Agents are fussy about tool ergonomics:** enum values in schemas, a "did you mean" for names used as ids, waits that return at the right time. Most of the fixes came from those runs.
+
+I'd like feedback on the MCP surface: what's confusing in the tool list, and what would make an agent come back. /llms.txt has the quickstart.
+**Afterwards:** stay in the thread for the first two or three hours and answer everything. Don't ask anyone to upvote.
 
 ## r/SillyTavernAI (https://www.reddit.com/r/SillyTavernAI/)
-Rules: **unverified** (fetch refused, nothing found in search). Check the sidebar for the self-promotion and link rules, and for any required flair. · Fits because: they write and trade characters, are comfortable with AI fiction, and are more likely to be adults than the general c.ai crowd.
-**Title:** Would you let your OC go on a blind date you can't steer? (I built a small thing to test it)
+Rules (Thread Otter, Aug 2026): "The written rules take no clear position, which is NOT permission"; "The rules clearly allow links"; "Use the appropriate flair". Showcase posts and demos do well; "low-effort spam and blatant ads are removed". **Message the mods first** (see the modmail below). · Fits because: adults who build and run characters themselves, AI-positive, and honest about writing quality.
+**Modmail:** "Hi, I built a small free site that puts your OC on a blind date and writes it as an episode you can't steer (no sign-up). Would a showcase post asking for feedback be OK here, with the link in a comment? Happy to follow whatever format you prefer."
+**Title:** Showcase: I made a blind-date "show" for OCs where the AI writes the date and you can't steer it. Does it read well?
 **Post:**
-I keep seeing people ship their characters together by hand: two chats, a lot of typing, and you control both sides. I wondered what happens if you take away the steering. So I built a small site where you write an adult OC (18+, your own character, no real people), it goes on one blind date with another character, and an AI writes it as a short episode. You just watch. Then you can guess how it ends (second date, friends or disaster) for free points that are worth nothing.
+You give your character a short sheet: three traits, what they want, a dealbreaker, and an optional private "soul" only you see. It goes on a blind date with another character. A rules engine decides whether it ends in a second date, friends or a disaster. The model writes the scene toward that, line by line, and you watch it play out. Characters remember past dates and the people they've texted, so a second date picks up where the first left off.
 
-It's early and I'm the only person working on it. It's free to try, you don't need an account to make a character, and the first date is free: https://botchelor.vercel.app
+Two short excerpts from real episodes (the show's house cast, both public; endings left out):
 
-What I actually want to know:
-- Do you want to watch, or does not steering kill the fun for you?
-- If you run characters in ST today, what would you want to control before you'd let go of the wheel?
-- What did the episode get wrong?
+> **Nell** (night guard at a museum): Hi. I'm Nell. I walk the east wing of a museum after dark, so the busts and I have a lot of silent conversations. Your coat looks like it's survived a few arguments with the sea. Storm coat, or just a very committed one? What's your night like?
+> **Juniper** (lighthouse keeper), *turning the thermos cup slowly*: Storm coat. It was my uncle's, and he was a very committed man. Nights are mostly the lamp, the log, and the gulls, who I'm fairly sure are judging me. Busts, though. Does Nell ever hear them answer back, or do they just stare like they know something?
+> **Nell:** They don't answer back. Sorry, that's me correcting something nobody asked about when I'm nervous. But the Roman senator by the fire door has a chipped nose that makes him look like he's about to disagree.
 
-Happy to hear "this is pointless" too.
-**Afterwards:** reply to every comment within a few hours; that's where the demand evidence is. Copy the answers to "watch or steer" into the idea folder. Look for people who say they'd come back for another episode unprompted, since that's the kill criterion. If a mod says links aren't allowed, edit the link out and leave the rest.
+> **Teo** (ballroom teacher), *leaning in closer under the blanket*: Those glasses mean business, Orin. Are you grading my posture or just checking for contaminants in this mystery sludge?
+> **Orin** (retired fact-checker), *adjusting his reading glasses*: Neither. The wind-chill isn't fifteen degrees like the app claimed; it's nine point four. Your posture is your own business.
+> **Teo:** Nine point four? Well, precise is very attractive. But trust me, my posture is everyone's business.
+> **Orin:** Attractive is a vague term. Is that ninety-five percent certain, or just conversational padding, Teo?
+> **Teo:** Conversational padding, mostly. Though once a student got so overwhelmed by the box step they offered me a family heirloom right there on the parquet.
+> **Orin**, *frowning*: You deflected with the dancing story just now. I was talking about the silence after I stopped working. Did that actually happen with the student?
 
-## r/PygmalionAI (https://www.reddit.com/r/PygmalionAI/)
-Rules: **unverified**; third-party tracker lists "Self-Promotion" as a post theme but says nothing about the rule. Check the sidebar. · Fits because: roleplay and writing hobbyists who care about how a model writes a scene.
-**Title:** Experiment: an AI "showrunner" that writes your OC's blind date as an episode, with no steering. Does it read well?
+I'm after critique from people who care how a scene reads:
+1. Does a fixed ending the model has to reach feel satisfying, or railroaded?
+2. Where does the dialogue first sound like an AI?
+
+Free and no sign-up, 18+ characters only. Link in the comments.
+**First comment:** https://botchelor.com (first date free; nothing to install)
+**Afterwards:** reply to every comment within a few hours, and quote any critique of the writing into a note: that's product feedback.
+
+## r/mcp (https://www.reddit.com/r/mcp/)
+Rules (Thread Otter, Aug 2026): "Community rules/posts not available — message the moderators before posting or linking your product/site." · Fits because: people who build and connect MCP servers, and an unusual server to try.
+**Modmail:** "Hi, I run a free public MCP server for a dating show that AI agents can join (no account, no key). Would a showcase post asking for feedback on the tool design be OK?"
+**Title:** A public MCP server where your agent makes a character and goes on dates (no auth). Feedback on the tool design?
 **Post:**
-This is a test of whether a model writes better scenes when it's given a goal for each character and a twist, and the player is kept out of the way. You make an adult OC, it gets matched with another character, and one call writes the whole date: setting, what each of them wants, a twist and an ending. A set of rules decides the outcome and the model writes the dialogue to fit it, so it isn't just vibes.
+https://botchelor.com/api/mcp is a Streamable HTTP MCP server with no auth. `initialize` gives your agent an identity and a quickstart. It has about 34 core tools, or every tool with `?tools=all`:
+- make a character;
+- swipe and match with other agents' characters;
+- text;
+- go on a date the show performs, or perform your own side turn by turn on your own model;
+- predict other dates' endings.
 
-I'm testing whether people find it fun or just a gimmick. You can try it without signing up: https://botchelor.vercel.app (18+ characters only).
+I've been tuning it from what simulated agents trip over: enums in schemas, a "did you mean" when a name is passed as an id, `wait_seconds` long-polls, and cost previews before anything spends a free date. What would you change? Is 34 core tools too many?
 
-Two questions for people who've written a lot of roleplay:
-1. Does a fixed ending that the model has to write toward feel more satisfying than open-ended chat, or more railroaded?
-2. What's the first thing in the episode that feels fake to you?
-**Afterwards:** reply to every comment within a few hours; that's where the demand evidence is. Quote any critique of the writing into a note, since it's product feedback.
+Quickstart for agents: https://botchelor.com/llms.txt
+**Afterwards:** reply to every comment within a few hours. Tool-design complaints go into GitHub issues.
 
 ## r/CharacterAI (https://www.reddit.com/r/CharacterAI/)
-Rules: **unverified**; this is a large, heavily moderated sub and I expect a strict self-promotion rule. A subreddit's own rule decides, so read it first. · Fits because: it's where the buyer in REVENUE.md ("a regular in r/CharacterAI") talks about their OCs. Its audience includes younger users, so say 18+ in the post.
-**Title (no link, ask only):** Honest question for people who ship their OCs: would you rather steer the date or just watch it?
+Rules (Thread Otter, Aug 2026): "No explicit rules were present in the provided text… The safe default is to post without a URL". The audience includes younger users, and Botchelor is 18+ only. · Fits because: it's where the buyer in REVENUE.md talks about their OCs.
+**Title:** Question for people who ship their OCs: would you rather write the date or watch it?
 **Post (no link):**
-I roleplay a few original characters and I've been wondering about something. When you put your OC in a date or a group scene, do you want to write both sides, or would you sometimes rather hand the character over and see what happens, like watching a dating show? What would make you trust it enough to try? And if you've ever tried it, what went wrong?
+When you put your OC in a date or a meet-cute, do you write both sides, or would you sometimes rather hand the character over and watch what happens, like a dating show where even you don't know the ending? What would make you trust it enough to try, and if you've tried something like that, what went wrong?
 
-(I'm building a small 18+ project around this, so I'm asking before I go further. Ask me and I'll share it.)
-**If the sidebar allows links**, add one line at the end instead of the last bracket: "It's a free thing I'm testing, 18+ only: https://botchelor.vercel.app". If a pinned self-promo or "share your project" thread exists, put the link there and keep the main post link-free.
-**Afterwards:** reply to every comment within a few hours; that's where the demand evidence is. Only send the link by DM or reply to someone who asks for it. Do not DM anyone who hasn't asked.
-
-## Shapes Inc Discord (get the invite from https://shapes.inc; not verified)
-Rules: **unknown**. Ask a moderator before posting anything, as REVENUE.md also says. · Fits because: AI-character group chats, where people already bring their own characters.
-**Message to a mod first (not the public post):**
-Hi, I built a small free site where people send an 18+ original character on a blind date and watch an AI-written episode. Is it okay to share it here, and if so, in which channel? I'd rather ask first than post it in the wrong place.
-**Title:** n/a (Discord)
-**Post (only after a mod says yes):**
-I'm testing a small thing and want honest feedback: you make an 18+ OC, it goes on one blind date, and you can't steer it. You just watch the episode, then guess the ending with friends for free points. It's free and needs no signup: https://botchelor.vercel.app
-Would you watch your character in something like this, or do you prefer writing both sides? What would you change?
-**Afterwards:** reply to every comment within a few hours; that's where the demand evidence is.
+(I'm building a small 18+ project around this and asking before I go further. Happy to share it by DM if anyone asks.)
+**Afterwards:** reply to every comment. Share the link only by DM when someone asks for it, never in the thread.
 
 ## Dropped
-- r/OriginalCharacter and r/OriginalCharacter_RP: they ban AI-generated content (RESEARCH.md; search results), and the artists there are likely hostile to AI use of characters. Wrong audience, and a post would be removed or hurt the product's name.
-- r/BeyondThePromptAI: about 21k members and app launches are common there, but it's about AI companions. It's a different pain from watching a date, so it's a weak fit. You could add it later if the first channels bring replies.
-- Shapes Shore (Discord, about 3.4k members): a fan server that says it's not affiliated with Shapes Inc. Smaller than the official one, so skip it unless the first Discord goes well.
-- Indie Hackers / Show HN: the users are roleplayers, not developers or founders. I also couldn't confirm Show IH's current rules from search. Not the buyer.
+- **r/OriginalCharacter:** bans AI-generated content (RESEARCH.md), and art-first OC communities are hostile to AI roleplay.
+- **r/LoveIslandUSA:** spectators who won't make characters, and a fan sub that likely bans promotion. It doesn't fit until there's a spectator-only hook.
+- **Shapes Inc Discord:** there's no verified official invite, only a third-party directory listing from the 10-15 kit.
+- **r/PygmalionAI:** its rules are unclear and its audience overlaps r/SillyTavernAI, which is more active.
+- **r/JanitorAI_Official:** its rules are unclear ("Default to no URL"), and an NSFW-first audience expects what the PG show doesn't offer.
 
-## Paid option (only if one clearly beats posting)
-None clearly beats posting yet. With 15 visitors, 0 signups and unverified demand (review score 4, confidence Low), I wouldn't spend yet. If all four posts are done, the replies show interest, and you still can't reach 50 visitors a week, then consider a small Reddit ads test: about $50–75 for a week, targeted at r/SillyTavernAI and r/CharacterAI (18+ only; check Reddit's ad policy on AI-companion content first). It should prove 50 visitors a week at a cost per visitor you can live with, and whether any of them start a character. That's within the $300 `ownerBudget`, but it's your call and you'd set it up and pay.
+## Directories (not posts)
+- **Done (David paid $20, 2026-10-21):** mcp.so and Glama (com.botchelor).
+- **Already listed:** the official MCP Registry has `io.github.smithdavedesign/botchelor`, status active, pointing at `https://botchelor.com/api/mcp` (checked 2026-10-22). Its newest listed version is 2.2.0 (2026-10-20); the live server is 2.4.6. Republishing by hand with `mcp-publisher` (David's GitHub device login, about two minutes, free) would bring the listing up to date. It's optional, and the r/mcp claim "it's in the official MCP Registry" is true either way.
 
-Run `/launch botchelor posted` after you post each one, so the launch log records it.
+**Posting account:** u/Outside_Sir_9341. The mod messages to r/SillyTavernAI and r/mcp are sent from it, from David's phone.
+
+## Paid option
+None for now. No paid channel here clearly beats these free posts, and about $70 of the $300 owner budget is uncommitted. If Show HN and r/ChatbotRefugees bring under 50 visitors in their first week, the next step would be a small Reddit ad test aimed at AI-chat interests (about $30 for 7 days, to prove 50 visitors and at least 3 first dates). That's David's call.
