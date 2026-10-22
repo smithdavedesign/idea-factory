@@ -1,0 +1,47 @@
+{
+  "buyer": "A person whose partner's birthday or anniversary is 1-7 days away, with no gift and no design skill; first found among long-distance partners (r/LongDistance) and last-minute askers in gift threads (r/GiftIdeas)",
+  "paymentMethod": "Stripe Checkout after preview (already built in M2, unlock on webhook); David creates the Stripe product and maps it in RepoHQ",
+  "mvpScope": "Five-question form plus 3 photos, AI-written page with an edit step, one theme for birthday and anniversary, preview before paying, unlisted noindex link, takedown link, $9 Stripe unlock. Hold back the $19 tier, keepsake PDF and retirement theme until the first paid orders",
+  "firstTenUsers": "Make three pages yourself for friends and watch them use the form; offer 10 free pages to r/LongDistance members in return for a screen recording and honest reaction; then post the paid $9 offer in 2-3 last-minute gift threads a week in r/GiftIdeas. Count only strangers' $9 charges toward the test.",
+  "price": {
+    "amount": 9,
+    "currency": "USD",
+    "interval": "once",
+    "why": "Sits just above the $2-$9 Etsy template and animated-letter floor and Kudoboard's $5.99-$8.99 single boards, and far below the $40-$60 custom Etsy love-letter sites; an impulse price for a last-minute need, and high enough to cover Stripe's fee"
+  },
+  "mustHaveBeforeCharging": [
+    "deployed on a free tier at a live URL",
+    "Stripe live checkout tested end to end with a real $9 charge and a refund",
+    "privacy policy and terms pages live",
+    "working takedown and report path",
+    "stated refund rule (refund on request within 7 days)",
+    "screenshots of the live main flow in docs/screenshots/ and the README"
+  ],
+  "launchChannels": [
+    {
+      "name": "r/LongDistance",
+      "url": "https://www.reddit.com/r/LongDistance/",
+      "why": "Members give digital gifts often; read the self-promo rules first and lead with a real example page"
+    },
+    {
+      "name": "r/GiftIdeas",
+      "url": "https://www.reddit.com/r/GiftIdeas/",
+      "why": "Last-minute gift threads where a specific asker needs exactly this; check the rules before posting"
+    },
+    {
+      "name": "Indie Hackers",
+      "url": "https://www.indiehackers.com/",
+      "why": "Feedback from builders, not gift buyers; not expected to produce the first dollar"
+    }
+  ],
+  "risks": [
+    "Almost no demand evidence: Etsy pages returned 403, no volume data, and the review passed it only 4/10",
+    "$9 against $2-$5 templates and free chatbots that write the same copy",
+    "One-time, deadline-driven purchase with no repeat loop; every sale is a new acquisition",
+    "Reddit self-promotion rules may block the only free channels",
+    "Photos of real people, possibly minors: permanent moderation and takedown duty",
+    "Generic AI copy; recipient 'make one' credit is untested and probably weak",
+    "Seasonal: Valentine's Day is the real test, about 16 weeks away"
+  ],
+  "killCriteria": "Stop if, 30 days after a live launch with checkout and policy pages working, there are fewer than 3 paid $9 orders from strangers, or buyers insist on manual edits, or moderation and takedown work costs more than about two hours a month"
+}
