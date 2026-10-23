@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-23T07:30:17.887Z",
+  "updatedAt": "2026-10-23T08:52:09.968Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -109,9 +109,9 @@
       "M4"
     ],
     "stopped": null,
-    "status": "running",
-    "prUrl": "https://github.com/smithdavedesign/botchelor/pull/636",
-    "testsPassing": false,
+    "status": "merged",
+    "prUrl": "https://github.com/smithdavedesign/botchelor/pull/721",
+    "testsPassing": true,
     "engine": "claude",
     "model": "claude-opus-5-5",
     "effort": "xhigh",
@@ -125,18 +125,23 @@
       "model": "local-qwen3"
     },
     "reason": "couldn't start the build sandbox: sandbox open: Docker is not running",
-    "experiment": "botchelor-20261022-feature-oc-chemistry-test",
+    "experiment": "botchelor-20261023-feature-oc-chemistry-test",
     "kind": "feature",
     "acceptance": {
       "verdict": "pass",
       "unmet": []
     },
-    "progress": {
-      "step": 1,
-      "steps": 2,
-      "label": "GROWTH",
-      "at": "2026-10-23T07:30:17.887Z"
-    }
+    "smoke": {
+      "verdict": "pass",
+      "reasons": [
+        "1 page(s) load like production"
+      ],
+      "previewUrl": "https://botchelor-6q9ol9j0t-david-smiths-projects-fe129786.vercel.app",
+      "sha": "b17c45806c32d430375fe21be5e81722534dc2e4",
+      "at": "2026-10-23T08:52:09.968Z"
+    },
+    "mergedBy": "agent",
+    "mergedAt": "2026-10-23T08:52:09.968Z"
   },
   "milestonesDone": [
     "M1",
@@ -145,15 +150,15 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-23T07:29:58.305Z",
+    "at": "2026-10-23T08:52:09.968Z",
     "d7": {
-      "visit": 45,
+      "visit": 44,
       "signup": 0,
       "activate": 1,
       "checkout": 0
     },
     "prev7": {
-      "visit": 7,
+      "visit": 8,
       "signup": 0,
       "activate": 0,
       "checkout": 0
@@ -172,7 +177,7 @@
     "referrers7d": [
       {
         "host": "direct",
-        "visitors": 44
+        "visitors": 43
       },
       {
         "host": "reddit.com",
@@ -190,7 +195,7 @@
   },
   "growth": {
     "stage": "acquire",
-    "bottleneck": "45 visitors this week, under 50",
+    "bottleneck": "44 visitors this week, under 50",
     "next": {
       "kind": "seo",
       "executor": "build",
@@ -301,76 +306,68 @@
         "planItem": "oc-chemistry-test",
         "title": "OC chemistry test: will these two make it?",
         "payments": false,
-        "status": "proposed",
+        "status": "running",
         "createdAt": "2026-10-23T07:29:58.305Z",
-        "updatedAt": "2026-10-23T07:29:58.305Z"
+        "updatedAt": "2026-10-23T08:52:09.968Z",
+        "prUrl": "https://github.com/smithdavedesign/botchelor/pull/721",
+        "startedAt": "2026-10-23T08:52:09.968Z",
+        "endsAt": "2026-11-06T08:52:09.968Z"
       }
     ],
-    "checkedAt": "2026-10-23T07:29:58.305Z",
+    "checkedAt": "2026-10-23T08:52:09.968Z",
     "plan": {
-      "at": "2026-10-20T05:11:22.139Z",
+      "at": "2026-10-23T08:52:09.968Z",
       "items": [
         {
-          "id": "ship-name-generator",
-          "title": "Free OC ship name generator",
-          "why": "\"Ship name generator\" is a search with live demand (one single-purpose tool gets about 3K visits a month per indexator.ai), and nothing that ranks for it links shipping to OCs. Each result page is a shareable /ship/<a>/<b> URL that ends in \"send them on a blind date\", which puts the search traffic one click away from /create.",
+          "id": "daily-date",
+          "title": "Daily Date: one blind date a day to predict, no account",
+          "why": "RESEARCH.md's strongest behavioural evidence is the Love Island habit: more than a quarter of mobile viewers played the prediction game. The launch kit dropped r/LoveIslandUSA because Botchelor has \"no spectator-only hook\". A single house-cast date each day at a fixed URL, predicted without an account and ending in a copyable, spoiler-free result line, gives spectators a reason to come back and so",
           "metric": "visit",
           "acceptance": [
-            "GET /tools/ship-name-generator returns 200 with an h1 containing \"Ship Name Generator\", two name inputs, a <title> containing \"Ship Name Generator\" and a canonical link to itself",
-            "Submitting \"Juniper\" and \"Dex\" lands on /ship/juniper/dex, which server-renders at least 5 distinct ship names, each containing at least 2 letters from each input name, and the same URL renders the same names on reload (deterministic, no model call: it works with every LLM env var unset)",
-            "/ship/juniper/dex links to /create with the first name prefilled (the /create name input's value is \"Juniper\") and has og:title containing both names",
-            "A name on the real-person blocklist or with a sexual-content term renders the error message and no ship names, and the result page has noindex",
-            "/sitemap.xml lists /tools/ship-name-generator, and loading the page sends a `visit` to the RepoHQ beacon with path /tools/ship-name-generator"
+            "GET /daily returns 200 for a logged-out visitor and shows today's date number, both house characters' names and sheets, and a prediction form with exactly three choices (second_date, friends, disaster). Before a pick, the server-rendered HTML does not contain the episode's ending value or its last scene",
+            "The same UTC day always serves the same episode, a different day serves a different one, and /daily/{n} serves past day n with its ending shown. The day's episode is chosen deterministically from the house-cast pool (unit test with a frozen clock), and it works with every LLM env var unset if that day's episode is already stored",
+            "Submitting a pick without an account reveals the episode, says whether the pick was right, and keeps a streak count in localStorage: two correct days in a row show \"Streak: 2\" in a Playwright test that advances the clock",
+            "A \"Copy result\" button copies text that contains \"Botchelor Daily #{n}\", an emoji for right or wrong, the streak and a URL ending in /daily?ref=daily, and does not contain the ending value or either character's name",
+            "/daily has og:title containing \"Botchelor Daily\" and is listed in /sitemap.xml; the home page links to it above the fold; loading /daily?ref=daily sends a `visit` to the RepoHQ beacon with ref=daily"
+          ],
+          "windowDays": 14,
+          "size": "M",
+          "payments": false,
+          "target": 50
+        },
+        {
+          "id": "character-card-export",
+          "title": "Export your OC as a SillyTavern character card",
+          "why": "REVENUE.md's buyer is an adult who already roleplays their OC with AI, and that audience (r/SillyTavernAI, card hubs) passes characters around as V2 cards: a PNG with chara_card_v2 JSON in a tEXt chunk. Giving a creator their own Botchelor character as a card that opens in SillyTavern, with a creator_notes line pointing to its dates, adds a backlink to every card that gets shared. It also gives th",
+          "metric": "visit",
+          "acceptance": [
+            "GET /api/characters/{id}/card.png for a character owned by the requester returns 200, content-type image/png, and a tEXt chunk with keyword \"chara\" whose base64 JSON has spec \"chara_card_v2\", spec_version \"2.0\", and data.name, data.description (bio, want, dealbreaker) and data.personality (the three traits) equal to the character's fields (unit test parses the PNG)",
+            "data.creator_notes contains https://botchelor.com/c/{id}?ref=card and the text \"AI-generated character from Botchelor (18+)\", and the card contains no account name, email or private \"soul\" field",
+            "The same route returns 403 for a character the requester doesn't own and 404 for an unknown id; house characters and characters hidden by reports can't be exported",
+            "The character page shows a \"Download SillyTavern card\" button only to its owner, and a test that opens the downloaded file with @lenml/char-card-reader (or an equivalent parser) reads back the same name",
+            "GET /c/{id}?ref=card returns 200 for a logged-out visitor, shows the character's public sheet and links to its episodes and to /create, and sends a `visit` to the RepoHQ beacon with ref=card"
+          ],
+          "windowDays": 14,
+          "size": "M",
+          "payments": false,
+          "target": 50
+        },
+        {
+          "id": "meet-cute-generator",
+          "title": "Free blind-date / meet-cute prompt generator for two OCs",
+          "why": "Writers already use single-purpose generators for this: Story Shack runs a dating-show concept generator, a shipping prompt generator and a meet-cute generator, and CodeItBro runs an OTP prompt generator. Botchelor's showrunner already has the setting and twist seeds these tools output. Two names in, a deterministic setting, twist and stake out, ending in \"watch them actually go on this date\", put",
+          "metric": "visit",
+          "acceptance": [
+            "GET /tools/meet-cute-generator returns 200 with an h1 containing \"Meet-Cute Generator\", two name inputs, a <title> containing \"Meet-Cute\" and a canonical link to itself",
+            "Submitting \"Juniper\" and \"Dex\" lands on /meet-cute/juniper/dex, which server-renders a setting, a twist and a stake drawn from the showrunner's own seed lists; the same URL gives the same scenario on reload, and \"Reroll\" goes to a ?v=2 variant with a different setting (deterministic, no model call, works with every LLM env var unset)",
+            "The result page links to /create with the first name prefilled and the scenario's setting passed as the date seed, and has og:title containing both names",
+            "A name on the real-person blocklist or with a sexual-content term shows the same error /create shows and renders no scenario, and the result page has noindex",
+            "/sitemap.xml lists /tools/meet-cute-generator, and the other /tools pages link to it"
           ],
           "windowDays": 14,
           "size": "S",
           "payments": false,
-          "target": 50,
-          "attempts": [
-            "botchelor-20261020-feature-ship-name-generator"
-          ]
-        },
-        {
-          "id": "oc-chemistry-test",
-          "title": "OC chemistry test: will these two make it?",
-          "why": "Writers search for character chemistry and OC relationship generators (Jenova, Taskade and Headcanon Generator all target it), and Botchelor already has the inputs (three traits, a want, a dealbreaker) and a rules engine that decides second date, friends or disaster. Shown as a free test, the engine becomes a search page and a teaser for the episode, and its CTA turns a curious visitor into a char",
-          "metric": "visit",
-          "acceptance": [
-            "GET /tools/oc-chemistry-test returns 200 with a form for two characters, each with name, three traits, a want and a dealbreaker (the same fields and limits as /create), and a <title> containing \"Chemistry Test\"",
-            "Submitting the same two characters twice gives the same 0-100 score and the same predicted ending, one of second_date, friends or disaster; a character whose dealbreaker matches the other's trait always gets \"disaster\" (unit test on the scoring function); it makes no model call",
-            "The result is a shareable URL that server-renders both names, the score, the predicted ending and 3 one-line reasons, with og:title containing both names",
-            "The result page has a \"Watch the real date\" link to /create with both characters' fields prefilled, and inputs under 18, on the real-person blocklist or with sexual content are rejected with the same messages /create uses",
-            "/sitemap.xml lists /tools/oc-chemistry-test, and the home page and /create footer link to both tools"
-          ],
-          "windowDays": 14,
-          "size": "M",
-          "payments": false,
-          "target": 50,
-          "attempts": [
-            "botchelor-20261020-feature-oc-chemistry-test",
-            "botchelor-20261022-feature-oc-chemistry-test",
-            "botchelor-20261023-feature-oc-chemistry-test"
-          ]
-        },
-        {
-          "id": "episode-share-card",
-          "title": "Episode share card: link unfurls as a prediction poll",
-          "why": "Episode pages give only a bare \"Copy link\", and the audience lives in Reddit and Discord, where a link's preview decides whether anyone clicks it. A per-episode image that asks \"How does it end? Second date, friends or disaster\" turns each shared episode into the spectator invite the PRD's share loop counts on. A ?ref tag lets us see those visits apart from \"direct\".",
-          "metric": "visit",
-          "acceptance": [
-            "GET /api/og/episode/{id} returns 200, content-type image/png, 1200x630, for an existing episode, and 404 for an unknown id",
-            "Episode page head has og:image pointing at /api/og/episode/{id}, twitter:card summary_large_image, and for an unaired episode an og:description containing \"Guess how it ends\" that does not contain the episode's ending value",
-            "Neither the image route nor the meta tags include a creator's account name or email before both creators have consented to the reveal (test on an episode with no reveal consent)",
-            "The episode page has share links to reddit.com/submit and bsky.app/intent/compose plus Copy link, and every shared URL carries ?ref=share",
-            "Opening an episode URL with ?ref=share sends a `visit` to the RepoHQ beacon with ref=share, and the page shows a \"Make your own character\" link to /create above the fold for a logged-out visitor"
-          ],
-          "windowDays": 14,
-          "size": "M",
-          "payments": false,
-          "target": 50,
-          "attempts": [
-            "botchelor-20261021-feature-episode-share-card"
-          ]
+          "target": 50
         }
       ]
     }
