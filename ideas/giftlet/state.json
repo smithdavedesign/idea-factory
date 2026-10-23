@@ -6,7 +6,7 @@
     "summary": "Thin demand evidence (Etsy snippets, no volume data), a $2–$5 template floor, and no distribution channel for a one-time, deadline-driven consumer purchase. Photo hosting of real people adds a moderation burden for a low-ticket product.",
     "at": "2026-10-13T08:18:51.267Z"
   },
-  "updatedAt": "2026-10-22T21:52:30.024Z",
+  "updatedAt": "2026-10-23T06:26:27.958Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -103,7 +103,7 @@
     "updatedAt": "2026-10-13T12:42:50.438Z"
   },
   "build": {
-    "milestone": "MVP",
+    "milestone": "GOLIVE",
     "milestones": [
       "M1",
       "M2",
@@ -115,7 +115,7 @@
       "M3"
     ],
     "stopped": null,
-    "status": "merged",
+    "status": "running",
     "prUrl": "https://github.com/smithdavedesign/giftlet/pull/1",
     "testsPassing": true,
     "engine": "claude",
@@ -123,15 +123,19 @@
     "effort": "xhigh",
     "manual": false,
     "sandbox": "docker",
-    "at": "2026-10-22T19:49:03.652Z",
+    "at": "2026-10-23T06:26:23.553Z",
     "advice": {
       "difficulty": 2,
       "reason": "Involves multiple endpoints, data handling, HTML generation, and edge case handling across several components.",
       "source": "model",
       "model": "local-qwen3"
     },
-    "mergedBy": "agent",
-    "mergedAt": "2026-10-22T21:19:51.588Z"
+    "progress": {
+      "step": 1,
+      "steps": 2,
+      "label": "GOLIVE",
+      "at": "2026-10-23T06:26:27.957Z"
+    }
   },
   "milestonesDone": [
     "M1",

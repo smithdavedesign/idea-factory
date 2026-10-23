@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-23T06:25:52.979Z",
+  "updatedAt": "2026-10-23T06:41:24.760Z",
   "repo": "https://github.com/smithdavedesign/covercheck",
   "revenue": {
     "mrr": 0,
@@ -46,8 +46,8 @@
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-        "done": false,
-        "evidence": "6/9 launch checks · missing: Social share image (og:image), robots.txt, sitemap.xml"
+        "done": true,
+        "evidence": "9/9 launch checks"
       },
       {
         "id": "price",
@@ -86,15 +86,15 @@
       }
     ],
     "next": {
-      "id": "launchReady",
-      "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-      "owner": "agent"
+      "id": "payments",
+      "label": "Stripe product created and mapped to the repo in RepoHQ",
+      "owner": "david"
     },
-    "done": 5,
+    "done": 6,
     "total": 10,
     "buyer": "Treasurer or president of a self-managed HOA/condo association with 5-15 recurring vendors; secondary: owner of a 1-3 person property-management firm with up to ~40 vendors",
     "price": "$15/month",
-    "updatedAt": "2026-10-23T04:32:53.869Z"
+    "updatedAt": "2026-10-23T06:41:24.760Z"
   },
   "build": {
     "milestone": "GOLIVE",
