@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-23T06:04:46.729Z",
+  "updatedAt": "2026-10-23T06:25:52.979Z",
   "repo": "https://github.com/smithdavedesign/covercheck",
   "revenue": {
     "mrr": 0,
@@ -105,7 +105,7 @@
       "M3"
     ],
     "stopped": null,
-    "status": "pr-open",
+    "status": "merged",
     "prUrl": "https://github.com/smithdavedesign/covercheck/pull/2",
     "testsPassing": true,
     "engine": "claude",
@@ -120,7 +120,9 @@
       "source": "model",
       "model": "local-qwen3"
     },
-    "beacon": "funnel"
+    "beacon": "funnel",
+    "mergedBy": "agent",
+    "mergedAt": "2026-10-23T06:25:52.979Z"
   },
   "milestonesDone": [
     "M1",
@@ -153,5 +155,10 @@
       "checkout": false
     },
     "referrers7d": []
+  },
+  "golive": {
+    "mergedAt": "2026-10-23T06:25:52.979Z",
+    "prUrl": "https://github.com/smithdavedesign/covercheck/pull/2",
+    "beacon": "funnel"
   }
 }

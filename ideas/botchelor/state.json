@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-23T05:46:00.915Z",
+  "updatedAt": "2026-10-23T06:25:52.979Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -35,7 +35,7 @@
         "owner": "agent",
         "label": "Live on a free tier",
         "done": true,
-        "evidence": "https://botchelor.com/"
+        "evidence": "https://botchelor.com"
       },
       {
         "id": "legal",
@@ -96,7 +96,7 @@
     "total": 10,
     "buyer": "An adult (18+) who has written an original character and already roleplays it with AI, e.g. a regular in the r/CharacterAI or r/SillyTavernAI subreddits or an AI-roleplay Discord such as the Shapes Inc server; not art-first OC communities, which reject AI. No named individual or community size is verified.",
     "price": "$4 once",
-    "updatedAt": "2026-10-23T05:08:02.047Z"
+    "updatedAt": "2026-10-23T06:25:52.979Z"
   },
   "revenue": {
     "mrr": 0,
@@ -139,21 +139,21 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-23T05:46:00.915Z",
+    "at": "2026-10-23T06:25:52.979Z",
     "d7": {
-      "visit": 47,
+      "visit": 46,
       "signup": 0,
       "activate": 1,
       "checkout": 0
     },
     "prev7": {
-      "visit": 4,
+      "visit": 6,
       "signup": 0,
       "activate": 0,
       "checkout": 0
     },
     "all": {
-      "visit": 50,
+      "visit": 51,
       "signup": 0,
       "activate": 1,
       "checkout": 0
@@ -166,7 +166,7 @@
     "referrers7d": [
       {
         "host": "direct",
-        "visitors": 46
+        "visitors": 45
       },
       {
         "host": "reddit.com",
@@ -180,12 +180,11 @@
         "host": "vercel.com",
         "visitors": 1
       }
-    ],
-    "burst7d": 8
+    ]
   },
   "growth": {
     "stage": "acquire",
-    "bottleneck": "47 visitors this week, under 50",
+    "bottleneck": "46 visitors this week, under 50",
     "next": {
       "kind": "seo",
       "executor": "build",
@@ -285,7 +284,7 @@
         "reason": "its tests failed in the pipeline's run"
       }
     ],
-    "checkedAt": "2026-10-23T05:46:00.915Z",
+    "checkedAt": "2026-10-23T06:25:52.979Z",
     "plan": {
       "at": "2026-10-20T05:11:22.139Z",
       "items": [
