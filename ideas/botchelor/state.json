@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-23T04:17:39.520Z",
+  "updatedAt": "2026-10-23T04:32:53.869Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -201,11 +201,12 @@
         "baseline": 50,
         "target": 51,
         "windowDays": 14,
-        "status": "proposed",
+        "status": "abandoned",
         "createdAt": "2026-10-16T04:23:28.341Z",
-        "updatedAt": "2026-10-16T04:25:15.851Z",
+        "updatedAt": "2026-10-23T04:32:53.869Z",
         "artifact": "LAUNCH-KIT.md",
-        "channels": 4
+        "channels": 4,
+        "reason": "no post within 7 days of the kit"
       },
       {
         "id": "botchelor-20261020-feature-ship-name-generator",
@@ -284,7 +285,7 @@
         "reason": "its tests failed in the pipeline's run"
       }
     ],
-    "checkedAt": "2026-10-22T19:48:59.625Z",
+    "checkedAt": "2026-10-23T04:32:53.869Z",
     "plan": {
       "at": "2026-10-20T05:11:22.139Z",
       "items": [
