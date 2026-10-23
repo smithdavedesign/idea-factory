@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-23T07:12:09.034Z",
+  "updatedAt": "2026-10-23T07:14:59.415Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -110,8 +110,8 @@
       "M2",
       "M3"
     ],
-    "status": "closed",
-    "at": "2026-10-22T08:27:45.082Z",
+    "status": "running",
+    "at": "2026-10-23T07:14:57.455Z",
     "manual": false,
     "advice": {
       "difficulty": 2,
@@ -144,6 +144,12 @@
       "previewUrl": "https://tiebreak-fecpgnrmn-david-smiths-projects-fe129786.vercel.app",
       "sha": "7a46fdc50f0f21eca23a191a8d6b106fa4048ea1",
       "at": "2026-10-19T20:04:49.461Z"
+    },
+    "progress": {
+      "step": 1,
+      "steps": 2,
+      "label": "GROWTH",
+      "at": "2026-10-23T07:14:59.415Z"
     }
   },
   "milestonesDone": [

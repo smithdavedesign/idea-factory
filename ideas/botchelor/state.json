@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-23T06:25:52.979Z",
+  "updatedAt": "2026-10-23T07:29:58.305Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -139,15 +139,15 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-23T06:25:52.979Z",
+    "at": "2026-10-23T07:29:58.305Z",
     "d7": {
-      "visit": 46,
+      "visit": 45,
       "signup": 0,
       "activate": 1,
       "checkout": 0
     },
     "prev7": {
-      "visit": 6,
+      "visit": 7,
       "signup": 0,
       "activate": 0,
       "checkout": 0
@@ -166,7 +166,7 @@
     "referrers7d": [
       {
         "host": "direct",
-        "visitors": 45
+        "visitors": 44
       },
       {
         "host": "reddit.com",
@@ -184,7 +184,7 @@
   },
   "growth": {
     "stage": "acquire",
-    "bottleneck": "46 visitors this week, under 50",
+    "bottleneck": "45 visitors this week, under 50",
     "next": {
       "kind": "seo",
       "executor": "build",
@@ -282,9 +282,25 @@
         "prUrl": "https://github.com/smithdavedesign/botchelor/pull/636",
         "failed": true,
         "reason": "its tests failed in the pipeline's run"
+      },
+      {
+        "id": "botchelor-20261023-feature-oc-chemistry-test",
+        "kind": "feature",
+        "executor": "build",
+        "hypothesis": "OC chemistry test: will these two make it?: Writers search for character chemistry and OC relationship generators (Jenova, Taskade and Headcanon Generator all target it), and Botchelor already has the inputs (three traits, a want, a dealbreaker) and a rules engine that decides second date, friends or disaster. Shown as a free test, the engine becomes a search page and a teaser for the episode, and its CTA turns a curious visitor into a char",
+        "metric": "visit",
+        "baseline": 45,
+        "target": 50,
+        "windowDays": 14,
+        "planItem": "oc-chemistry-test",
+        "title": "OC chemistry test: will these two make it?",
+        "payments": false,
+        "status": "proposed",
+        "createdAt": "2026-10-23T07:29:58.305Z",
+        "updatedAt": "2026-10-23T07:29:58.305Z"
       }
     ],
-    "checkedAt": "2026-10-23T06:25:52.979Z",
+    "checkedAt": "2026-10-23T07:29:58.305Z",
     "plan": {
       "at": "2026-10-20T05:11:22.139Z",
       "items": [
@@ -326,7 +342,8 @@
           "target": 50,
           "attempts": [
             "botchelor-20261020-feature-oc-chemistry-test",
-            "botchelor-20261022-feature-oc-chemistry-test"
+            "botchelor-20261022-feature-oc-chemistry-test",
+            "botchelor-20261023-feature-oc-chemistry-test"
           ]
         },
         {
