@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-23T07:29:58.305Z",
+  "updatedAt": "2026-10-23T07:30:17.887Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -109,7 +109,7 @@
       "M4"
     ],
     "stopped": null,
-    "status": "closed",
+    "status": "running",
     "prUrl": "https://github.com/smithdavedesign/botchelor/pull/636",
     "testsPassing": false,
     "engine": "claude",
@@ -117,7 +117,7 @@
     "effort": "xhigh",
     "manual": false,
     "sandbox": "docker",
-    "at": "2026-10-22T07:06:42.833Z",
+    "at": "2026-10-23T07:30:13.986Z",
     "advice": {
       "difficulty": 2,
       "reason": "Implementing a feature with multiple components across files and handling game logic with specific rules.",
@@ -130,6 +130,12 @@
     "acceptance": {
       "verdict": "pass",
       "unmet": []
+    },
+    "progress": {
+      "step": 1,
+      "steps": 2,
+      "label": "GROWTH",
+      "at": "2026-10-23T07:30:17.887Z"
     }
   },
   "milestonesDone": [
