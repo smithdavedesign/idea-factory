@@ -6,7 +6,7 @@
     "summary": "Thin demand evidence (Etsy snippets, no volume data), a $2–$5 template floor, and no distribution channel for a one-time, deadline-driven consumer purchase. Photo hosting of real people adds a moderation burden for a low-ticket product.",
     "at": "2026-10-13T08:18:51.267Z"
   },
-  "updatedAt": "2026-10-23T06:26:27.958Z",
+  "updatedAt": "2026-10-23T07:12:09.034Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -104,19 +104,15 @@
   },
   "build": {
     "milestone": "GOLIVE",
-    "milestones": [
-      "M1",
-      "M2",
-      "M3"
-    ],
+    "milestones": [],
     "planned": [
       "M1",
       "M2",
       "M3"
     ],
     "stopped": null,
-    "status": "running",
-    "prUrl": "https://github.com/smithdavedesign/giftlet/pull/1",
+    "status": "merged",
+    "prUrl": "https://github.com/smithdavedesign/giftlet/pull/2",
     "testsPassing": true,
     "engine": "claude",
     "model": "claude-opus-5-5",
@@ -130,16 +126,18 @@
       "source": "model",
       "model": "local-qwen3"
     },
-    "progress": {
-      "step": 1,
-      "steps": 2,
-      "label": "GOLIVE",
-      "at": "2026-10-23T06:26:27.957Z"
-    }
+    "beacon": "funnel",
+    "mergedBy": "agent",
+    "mergedAt": "2026-10-23T07:12:09.034Z"
   },
   "milestonesDone": [
     "M1",
     "M2",
     "M3"
-  ]
+  ],
+  "golive": {
+    "mergedAt": "2026-10-23T07:12:09.034Z",
+    "prUrl": "https://github.com/smithdavedesign/giftlet/pull/2",
+    "beacon": "funnel"
+  }
 }

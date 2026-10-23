@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-22T09:12:48.882Z",
+  "updatedAt": "2026-10-23T07:12:09.034Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -321,6 +321,22 @@
         "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/13",
         "failed": true,
         "reason": "web, web, mobile failed"
+      },
+      {
+        "id": "tiebreak-20261023-feature-poll-share-cards",
+        "kind": "feature",
+        "executor": "build",
+        "hypothesis": "Poll share cards and a 'make your own' loop for voters: The concierge plan and launch posts both get votes by sharing poll links in communities and chats. Right now a link unfurls as plain text. A card showing the actual candidates gets clicked, and every voter who arrives is someone who could make their own poll.",
+        "metric": "visit",
+        "baseline": 0,
+        "target": 50,
+        "windowDays": 14,
+        "planItem": "poll-share-cards",
+        "title": "Poll share cards and a 'make your own' loop for voters",
+        "payments": false,
+        "status": "proposed",
+        "createdAt": "2026-10-23T07:12:09.034Z",
+        "updatedAt": "2026-10-23T07:12:09.034Z"
       }
     ],
     "checkedAt": "2026-10-22T08:27:26.688Z",
@@ -380,7 +396,10 @@
           ],
           "windowDays": 14,
           "size": "S",
-          "payments": false
+          "payments": false,
+          "attempts": [
+            "tiebreak-20261023-feature-poll-share-cards"
+          ]
         }
       ]
     }
