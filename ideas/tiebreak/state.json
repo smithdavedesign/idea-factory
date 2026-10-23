@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-23T08:00:40.053Z",
+  "updatedAt": "2026-10-23T08:21:50.229Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -110,7 +110,7 @@
       "M2",
       "M3"
     ],
-    "status": "pr-open",
+    "status": "closed",
     "at": "2026-10-23T07:14:57.455Z",
     "manual": false,
     "advice": {
@@ -334,10 +334,12 @@
         "planItem": "poll-share-cards",
         "title": "Poll share cards and a 'make your own' loop for voters",
         "payments": false,
-        "status": "proposed",
+        "status": "abandoned",
         "createdAt": "2026-10-23T07:12:09.034Z",
-        "updatedAt": "2026-10-23T08:00:39.957Z",
-        "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/15"
+        "updatedAt": "2026-10-23T08:21:50.229Z",
+        "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/15",
+        "failed": true,
+        "reason": "web, web, mobile failed"
       }
     ],
     "checkedAt": "2026-10-22T08:27:26.688Z",
