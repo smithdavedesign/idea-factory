@@ -7,7 +7,7 @@
     "at": "2026-10-13T06:29:40.990Z",
     "notionAt": "2026-10-13T06:29:42.454Z"
   },
-  "updatedAt": "2026-10-20T23:27:24.856Z",
+  "updatedAt": "2026-10-23T05:46:00.915Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -35,22 +35,22 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": true,
-        "evidence": "https://squadwrap.vercel.app"
+        "done": false,
+        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
       },
       {
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
         "done": true,
-        "evidence": "live on the site"
+        "evidence": "privacy ✓ · terms ✓"
       },
       {
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-        "done": true,
-        "evidence": "9/9 launch checks"
+        "done": false,
+        "evidence": "checked once it's live (the go-live build adds what's missing)"
       },
       {
         "id": "price",
@@ -89,15 +89,15 @@
       }
     ],
     "next": {
-      "id": "payments",
-      "label": "Stripe product created and mapped to the repo in RepoHQ",
-      "owner": "david"
+      "id": "deployed",
+      "label": "Live on a free tier",
+      "owner": "agent"
     },
-    "done": 6,
+    "done": 4,
     "total": 10,
     "buyer": "The person who runs a 4–12 person friend/roommate/club group chat (ages ~20–35) and posts year-in-review content in December; first reached through David's own group chats and r/roommates-style communities",
     "price": "$6 once",
-    "updatedAt": "2026-10-13T21:48:19.057Z"
+    "updatedAt": "2026-10-23T05:46:00.915Z"
   },
   "revenue": {
     "mrr": 0,

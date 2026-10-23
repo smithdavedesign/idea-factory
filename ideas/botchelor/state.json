@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-23T05:08:02.047Z",
+  "updatedAt": "2026-10-23T05:46:00.915Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -139,15 +139,15 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-23T04:17:39.520Z",
+    "at": "2026-10-23T05:46:00.915Z",
     "d7": {
-      "visit": 50,
+      "visit": 47,
       "signup": 0,
       "activate": 1,
       "checkout": 0
     },
     "prev7": {
-      "visit": 1,
+      "visit": 4,
       "signup": 0,
       "activate": 0,
       "checkout": 0
@@ -166,7 +166,7 @@
     "referrers7d": [
       {
         "host": "direct",
-        "visitors": 49
+        "visitors": 46
       },
       {
         "host": "reddit.com",
@@ -184,12 +184,12 @@
     "burst7d": 8
   },
   "growth": {
-    "stage": "monetize",
-    "bottleneck": "1 active users this week and no Buy clicks",
+    "stage": "acquire",
+    "bottleneck": "47 visitors this week, under 50",
     "next": {
-      "kind": "paywall",
+      "kind": "seo",
       "executor": "build",
-      "metric": "checkout"
+      "metric": "visit"
     },
     "experiments": [
       {
@@ -285,7 +285,7 @@
         "reason": "its tests failed in the pipeline's run"
       }
     ],
-    "checkedAt": "2026-10-23T04:32:53.869Z",
+    "checkedAt": "2026-10-23T05:46:00.915Z",
     "plan": {
       "at": "2026-10-20T05:11:22.139Z",
       "items": [
