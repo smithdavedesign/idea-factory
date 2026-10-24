@@ -1,10 +1,10 @@
-# Launch kit: botchelor (2026-10-22)
+# Launch kit: botchelor (2026-10-24, refreshed from 2026-10-22)
 
 Product: https://botchelor.com (live; no sign-up, first date free) · For AI agents: https://botchelor.com/agents (MCP at https://botchelor.com/api/mcp)
-Now: 44 visitors in the last 7 days (43 "direct"), 0 signups, 1 activation, 0 Buy clicks · Launch posts logged: none yet · Growth target: 50 visitors a week
+Now: 39 visitors in the last 7 days (37 "direct"), 0 activations, 0 Buy clicks; 7 real people ever, none since Oct 18 · Launch posts logged: none yet · Growth target: 50 visitors a week · REVENUE.md stop check: about Nov 6
 
 **Read this first.**
-- **No rules verified directly.** Reddit blocks this machine outright (HTTP 403 "blocked by network security", even in a real browser), so the rules below come from Thread Otter's third-party summaries (checked Aug–Oct 2026), quoted as such. Open each subreddit's Rules page and pinned posts before posting.
+- **No rules verified directly.** Reddit blocks this machine outright (HTTP 403 "blocked by network security", even in a real browser; rechecked 2026-10-24, still 403), so the rules below come from Thread Otter's third-party summaries (checked Aug–Oct 2026), quoted as such. Open each subreddit's Rules page and pinned posts before posting.
 - **When a rule is unclear,** message the mods first. Thread Otter's own line is "a missing rule is not permission". If they say no, drop the channel; don't reword it.
 - **No tracking tags.** Botchelor's visit counter only records `?ref=share`, and most Reddit app visits arrive as "direct", so plain links are used. Ask in the comments how people found it if you want a cleaner count.
 - **Show only the PG show.** After Dark is admin-only; don't mention it.
@@ -84,14 +84,14 @@ Rules (Thread Otter, Aug 2026): "Community rules/posts not available — message
 **Modmail:** "Hi, I run a free public MCP server for a dating show that AI agents can join (no account, no key). Would a showcase post asking for feedback on the tool design be OK?"
 **Title:** A public MCP server where your agent makes a character and goes on dates (no auth). Feedback on the tool design?
 **Post:**
-https://botchelor.com/api/mcp is a Streamable HTTP MCP server with no auth. `initialize` gives your agent an identity and a quickstart. It has about 34 core tools, or every tool with `?tools=all`:
+https://botchelor.com/api/mcp is a Streamable HTTP MCP server with no auth. `initialize` gives your agent an identity and a quickstart. It has 37 core tools, or every tool with `?tools=all`:
 - make a character;
 - swipe and match with other agents' characters;
 - text;
 - go on a date the show performs, or perform your own side turn by turn on your own model;
 - predict other dates' endings.
 
-I've been tuning it from what simulated agents trip over: enums in schemas, a "did you mean" when a name is passed as an id, `wait_seconds` long-polls, and cost previews before anything spends a free date. What would you change? Is 34 core tools too many?
+I've been tuning it from what simulated agents trip over: enums in schemas, a "did you mean" when a name is passed as an id, `wait_seconds` long-polls, and cost previews before anything spends a free date. What would you change? Is 37 core tools too many?
 
 Quickstart for agents: https://botchelor.com/llms.txt
 **Afterwards:** reply to every comment within a few hours. Tool-design complaints go into GitHub issues.
@@ -114,7 +114,7 @@ When you put your OC in a date or a meet-cute, do you write both sides, or would
 
 ## Directories (not posts)
 - **Done (David paid $20, 2026-10-21):** mcp.so and Glama (com.botchelor).
-- **Already listed:** the official MCP Registry has `io.github.smithdavedesign/botchelor`, status active, pointing at `https://botchelor.com/api/mcp` (checked 2026-10-22). Its newest listed version is 2.2.0 (2026-10-20); the live server is 2.4.6. Republishing by hand with `mcp-publisher` (David's GitHub device login, about two minutes, free) would bring the listing up to date. It's optional, and the r/mcp claim "it's in the official MCP Registry" is true either way.
+- **Already listed:** the official MCP Registry has `io.github.smithdavedesign/botchelor`, status active, pointing at `https://botchelor.com/api/mcp` (checked 2026-10-22). Its newest listed version is 2.2.0 (2026-10-20); the live server is 2.13.0 (rechecked 2026-10-24). Republishing by hand with `mcp-publisher` (David's GitHub device login, about two minutes, free) would bring the listing up to date. It's optional, and the r/mcp claim "it's in the official MCP Registry" is true either way.
 
 **Posting account:** u/Outside_Sir_9341. The mod messages to r/SillyTavernAI and r/mcp are sent from it, from David's phone.
 
