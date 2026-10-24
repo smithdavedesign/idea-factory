@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-24T19:23:49.988Z",
+  "updatedAt": "2026-10-24T19:40:46.374Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -34,22 +34,22 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": true,
-        "evidence": "https://botchelor.com/"
+        "done": false,
+        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
       },
       {
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
-        "done": true,
-        "evidence": "live on the site"
+        "done": false,
+        "evidence": "not checked yet"
       },
       {
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-        "done": true,
-        "evidence": "9/9 launch checks"
+        "done": false,
+        "evidence": "checked once it's live (the go-live build adds what's missing)"
       },
       {
         "id": "price",
@@ -88,15 +88,15 @@
       }
     ],
     "next": {
-      "id": "launched",
-      "label": "Launch posted",
-      "owner": "david"
+      "id": "deployed",
+      "label": "Live on a free tier",
+      "owner": "agent"
     },
-    "done": 8,
+    "done": 5,
     "total": 10,
     "buyer": "An adult (18+) who has written an original character and already roleplays it with AI, e.g. a regular in the r/CharacterAI or r/SillyTavernAI subreddits or an AI-roleplay Discord such as the Shapes Inc server; not art-first OC communities, which reject AI. No named individual or community size is verified.",
     "price": "$4 once",
-    "updatedAt": "2026-10-24T18:40:27.226Z"
+    "updatedAt": "2026-10-24T19:40:46.374Z"
   },
   "revenue": {
     "mrr": 0,
@@ -197,13 +197,9 @@
     "burst7d": 18
   },
   "growth": {
-    "stage": "acquire",
-    "bottleneck": "49 visitors this week, under 50",
-    "next": {
-      "kind": "seo",
-      "executor": "build",
-      "metric": "visit"
-    },
+    "stage": "launch",
+    "bottleneck": "not launch-ready yet: the go-live build and its audit come first",
+    "next": null,
     "experiments": [
       {
         "id": "botchelor-20261016-kit",
@@ -335,7 +331,7 @@
         "reason": "couldn't start the build sandbox: sandbox open: Docker is not running"
       }
     ],
-    "checkedAt": "2026-10-24T19:23:49.988Z",
+    "checkedAt": "2026-10-24T19:40:46.374Z",
     "plan": {
       "at": "2026-10-23T08:52:09.968Z",
       "items": [

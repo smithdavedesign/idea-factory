@@ -6,7 +6,7 @@
     "summary": "Etsy shows people pay $9–$45 for pet wanted posters and cards, but review counts are not sales and ChatGPT does the pet-persona trick free. There is no channel, no named buyer, and the Oct–Dec window would be mostly gone after a test plus a build.",
     "at": "2026-10-13T08:37:03.455Z"
   },
-  "updatedAt": "2026-10-14T07:27:52.802Z",
+  "updatedAt": "2026-10-24T19:40:46.374Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -42,7 +42,7 @@
         "owner": "agent",
         "label": "Privacy policy and terms pages",
         "done": false,
-        "evidence": "privacy ✗ · terms ✗"
+        "evidence": "not checked yet"
       },
       {
         "id": "launchReady",
@@ -96,7 +96,7 @@
     "total": 10,
     "buyer": "A dog or cat owner who posts their pet often on Instagram, TikTok or Reddit, or a friend or relative buying that owner a funny gift in the Oct–Dec gift season",
     "price": "$9 once",
-    "updatedAt": "2026-10-14T07:27:52.802Z"
+    "updatedAt": "2026-10-24T19:40:46.374Z"
   },
   "revenue": {
     "mrr": 0,
