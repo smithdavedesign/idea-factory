@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-24T08:58:18.827Z",
+  "updatedAt": "2026-10-24T12:15:31.765Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -148,15 +148,15 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-24T08:58:18.827Z",
+    "at": "2026-10-24T12:15:31.765Z",
     "d7": {
-      "visit": 40,
+      "visit": 39,
       "signup": 0,
       "activate": 0,
       "checkout": 0
     },
     "prev7": {
-      "visit": 23,
+      "visit": 24,
       "signup": 0,
       "activate": 1,
       "checkout": 0
@@ -175,7 +175,7 @@
     "referrers7d": [
       {
         "host": "direct",
-        "visitors": 38
+        "visitors": 37
       },
       {
         "host": "reddit.com",
@@ -197,7 +197,7 @@
   },
   "growth": {
     "stage": "acquire",
-    "bottleneck": "40 visitors this week, under 50",
+    "bottleneck": "39 visitors this week, under 50",
     "next": {
       "kind": "seo",
       "executor": "build",
@@ -334,7 +334,7 @@
         "reason": "couldn't start the build sandbox: sandbox open: Docker is not running"
       }
     ],
-    "checkedAt": "2026-10-24T08:58:18.827Z",
+    "checkedAt": "2026-10-24T12:15:31.765Z",
     "plan": {
       "at": "2026-10-23T08:52:09.968Z",
       "items": [
