@@ -7,7 +7,7 @@
     "at": "2026-10-11T16:41:39.440Z",
     "notionAt": "2026-10-11T16:41:40.221Z"
   },
-  "updatedAt": "2026-10-24T18:40:27.226Z",
+  "updatedAt": "2026-10-24T20:44:47.090Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -68,22 +68,22 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": false,
-        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
+        "done": true,
+        "evidence": "https://codespend.vercel.app"
       },
       {
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
         "done": true,
-        "evidence": "privacy ✓ · terms ✓"
+        "evidence": "live on the site"
       },
       {
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-        "done": false,
-        "evidence": "checked once it's live (the go-live build adds what's missing)"
+        "done": true,
+        "evidence": "9/9 launch checks"
       },
       {
         "id": "price",
@@ -122,15 +122,15 @@
       }
     ],
     "next": {
-      "id": "deployed",
-      "label": "Live on a free tier",
-      "owner": "agent"
+      "id": "payments",
+      "label": "Stripe product created and mapped to the repo in RepoHQ",
+      "owner": "david"
     },
-    "done": 4,
+    "done": 6,
     "total": 10,
     "buyer": "The person who owns the AI coding bill at a 3-30 developer team (founder, tech lead, or agency owner) paying for an Anthropic API/Team org plus Copilot seats; find them among commenters on Claude Code billing issues #81703 and #62338 and on r/ClaudeAI spend threads",
     "price": "$9/month",
-    "updatedAt": "2026-10-24T18:40:27.226Z"
+    "updatedAt": "2026-10-24T20:44:47.090Z"
   },
   "milestonesDone": [
     "M1",

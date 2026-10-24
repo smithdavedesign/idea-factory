@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-12T05:03:28.813Z",
+  "updatedAt": "2026-10-24T20:30:42.667Z",
   "repo": "https://github.com/smithdavedesign/lienclock",
   "revenue": {
     "mrr": 0,
@@ -93,5 +93,17 @@
     "done": 0,
     "total": 10,
     "updatedAt": "2026-10-12T05:03:28.813Z"
+  },
+  "build": {
+    "milestone": "MVP",
+    "planned": [
+      "M1",
+      "M2",
+      "M3"
+    ],
+    "status": "failed",
+    "at": "2026-10-24T20:29:32.150Z",
+    "manual": false,
+    "reason": "couldn't start the build sandbox: sandbox open: Docker is not running"
   }
 }
