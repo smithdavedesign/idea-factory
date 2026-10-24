@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-24T17:03:42.620Z",
+  "updatedAt": "2026-10-24T17:35:52.497Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -148,9 +148,9 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-24T12:15:31.765Z",
+    "at": "2026-10-24T17:35:52.497Z",
     "d7": {
-      "visit": 39,
+      "visit": 41,
       "signup": 0,
       "activate": 0,
       "checkout": 0
@@ -162,7 +162,7 @@
       "checkout": 0
     },
     "all": {
-      "visit": 61,
+      "visit": 63,
       "signup": 0,
       "activate": 1,
       "checkout": 0
@@ -178,6 +178,10 @@
         "visitors": 37
       },
       {
+        "host": "news.ycombinator.com",
+        "visitors": 2
+      },
+      {
         "host": "reddit.com",
         "visitors": 2
       },
@@ -188,16 +192,13 @@
       {
         "host": "google.com",
         "visitors": 1
-      },
-      {
-        "host": "vercel.com",
-        "visitors": 1
       }
-    ]
+    ],
+    "burst7d": 14
   },
   "growth": {
     "stage": "acquire",
-    "bottleneck": "39 visitors this week, under 50",
+    "bottleneck": "41 visitors this week, under 50",
     "next": {
       "kind": "seo",
       "executor": "build",
@@ -334,7 +335,7 @@
         "reason": "couldn't start the build sandbox: sandbox open: Docker is not running"
       }
     ],
-    "checkedAt": "2026-10-24T12:15:31.765Z",
+    "checkedAt": "2026-10-24T17:35:52.497Z",
     "plan": {
       "at": "2026-10-23T08:52:09.968Z",
       "items": [
