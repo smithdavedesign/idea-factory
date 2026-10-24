@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-24T07:23:14.551Z",
+  "updatedAt": "2026-10-24T07:25:51.761Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -109,7 +109,7 @@
       "M4"
     ],
     "stopped": null,
-    "status": "merged",
+    "status": "failed",
     "prUrl": "https://github.com/smithdavedesign/botchelor/pull/721",
     "testsPassing": true,
     "engine": "claude",
@@ -117,7 +117,7 @@
     "effort": "xhigh",
     "manual": false,
     "sandbox": "docker",
-    "at": "2026-10-23T07:30:13.986Z",
+    "at": "2026-10-24T07:25:31.281Z",
     "advice": {
       "difficulty": 2,
       "reason": "Implementing a feature with multiple components across files and handling game logic with specific rules.",
@@ -139,9 +139,7 @@
       "previewUrl": "https://botchelor-6q9ol9j0t-david-smiths-projects-fe129786.vercel.app",
       "sha": "b17c45806c32d430375fe21be5e81722534dc2e4",
       "at": "2026-10-23T08:52:09.968Z"
-    },
-    "mergedBy": "agent",
-    "mergedAt": "2026-10-23T08:52:09.968Z"
+    }
   },
   "milestonesDone": [
     "M1",
@@ -329,9 +327,11 @@
         "planItem": "daily-date",
         "title": "Daily Date: one blind date a day to predict, no account",
         "payments": false,
-        "status": "proposed",
+        "status": "abandoned",
         "createdAt": "2026-10-24T07:23:14.551Z",
-        "updatedAt": "2026-10-24T07:23:14.551Z"
+        "updatedAt": "2026-10-24T07:25:51.761Z",
+        "failed": true,
+        "reason": "couldn't start the build sandbox: sandbox open: Docker is not running"
       }
     ],
     "checkedAt": "2026-10-24T06:52:06.132Z",
