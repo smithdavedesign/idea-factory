@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-12T05:03:28.813Z",
+  "updatedAt": "2026-10-24T20:14:03.715Z",
   "repo": "https://github.com/smithdavedesign/grantgate",
   "revenue": {
     "mrr": 0,
@@ -93,5 +93,18 @@
     "done": 0,
     "total": 10,
     "updatedAt": "2026-10-12T05:03:28.813Z"
+  },
+  "build": {
+    "milestone": "MVP",
+    "planned": [
+      "M1",
+      "M2",
+      "M3",
+      "M4"
+    ],
+    "status": "failed",
+    "at": "2026-10-24T20:12:34.588Z",
+    "manual": false,
+    "reason": "couldn't start the build sandbox: sandbox open: Docker is not running"
   }
 }
