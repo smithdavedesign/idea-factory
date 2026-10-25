@@ -1,68 +1,73 @@
-# Plan: tiebreak, week of 2026-10-19
+# Plan: tiebreak, week of 2026-10-26
 
-The bottleneck is visits: 5 this week, against the 50 a week the playbook asks for before any conversion work. Three content pages from the SEO experiment are live, but the launch posts haven't gone up yet. Sellers, authors and YouTubers search for free *tools* that show how an image looks at thumbnail size ([Listadum](https://www.listadum.com/etsy-thumbnail-preview-tool), [Bookwriter](https://www.bookwriter.vip/cover-thumbnail-legibility-test), [ThumbPreviewer](https://alternativeto.net/software/thumbpreviewer/about/)). Those tools preview one image at a time and nobody votes on the result. So this week builds a side-by-side preview tool for 2–4 candidates that ends in "let strangers pick", plus share cards so each poll that does get shared brings visitors back. Photo upload comes first because the tool and the share cards both depend on it, and the launch kit says sellers will raise it as their first objection.
+The bottleneck is visits: 0 this week and 7 ever, against the playbook's 50 a week before any conversion work. Last week's plan didn't fail as an idea; it never shipped. The thumbnail tool failed three builds and the share cards failed three more, every time on "web, web, mobile failed", even though they were web-only features. So this week re-plans the two visit features, split into small single-purpose PRs that leave `mobile/` alone: per-poll share cards first (the smallest, and a test of whether the pipeline can land anything), then one search-landing tool page per buyer. Each tool page is its own experiment. Search shows that creators already use free, pre-publish, human-vote thumbnail testers ([CollabPals](https://www.collabpals.com/thumbnail-tester), [Touhfa Arena](https://touhfa.art/arena/)), and that sellers and authors otherwise fall back to PickFu (from $15–$50 a poll) or Google Forms and newsletter polls ([Helium10](https://www.helium10.com/blog/pickfu-a-b-testing-tool/), [MobileRead](https://www.mobileread.com/forums/showthread.php?p=3974517)).
 
 ## Items
 ```json
 [
   {
-    "id": "photo-upload-options",
-    "title": "Upload photos as poll options",
-    "why": "LAUNCH-KIT.md says the first objection will be that options take an image link and sellers keep photos on their phones. The preview tool and share cards below also need images hosted by tiebreak, so this comes first. It uses the free storage tier, which keeps it at $0.",
-    "metric": "activate",
-    "windowDays": 14,
-    "size": "M",
-    "payments": false,
-    "acceptance": [
-      "On / each option has a file input that accepts image/jpeg, image/png and image/webp; picking a file shows a thumbnail preview in that option's slot before submit",
-      "Creating a poll with two uploaded images returns a poll whose options both carry an image URL on tiebreak's own storage, and the poll page renders both as <img> elements that load with status 200",
-      "Uploading a file over 5 MB or with a non-image MIME type is rejected with a 4xx response and an inline error, and no poll is created",
-      "The upload works at phone width (390px) in a Playwright run, and image-link options still work as before (the existing tests pass)"
-    ]
-  },
-  {
-    "id": "thumbnail-compare-tool",
-    "title": "Free side-by-side thumbnail preview tool (Etsy, book cover, YouTube)",
-    "why": "Buyers search for free thumbnail-preview tools, and the existing ones show one image at a time with no vote. tiebreak's tool previews 2–4 candidates side by side and hands them to a poll in one click. This is a search-landing tool, which makes it a different kind of thing from the three content pages in the running SEO experiment.",
+    "id": "poll-share-cards-og",
+    "title": "Per-poll share card (og:image) showing the candidates",
+    "why": "Every route to voters in the record (launch kit, concierge plan) is someone pasting a poll link into a chat or forum, and today that link unfurls as plain text. Different from the two failed poll-share-cards builds (#15, #16): this one is only the image route and the meta tags. The 'make your own' loop and the closed-poll split are dropped, and nothing outside the web app's poll page and a new image route changes.",
     "metric": "visit",
-    "target": 50,
-    "windowDays": 14,
-    "size": "M",
-    "payments": false,
-    "acceptance": [
-      "/tools/etsy-thumbnail-preview, /tools/book-cover-thumbnail-test and /tools/youtube-thumbnail-preview each return 200 with a unique <title>, meta description and an <h1> naming the tool, and all three are listed in /sitemap.xml",
-      "On /tools/etsy-thumbnail-preview, adding 3 local images renders each one in a search-grid mock at the 1:1, 4:3 and 5:4 crops (9 preview tiles), entirely client-side with no network upload until the user asks for a poll",
-      "On /tools/book-cover-thumbnail-test, each added cover renders at about 160px and about 80px tall next to the others, and the YouTube page renders each candidate at 16:9 in a desktop-grid tile and a phone-feed tile",
-      "Clicking 'Let strangers pick' on any tool page uploads the images and opens the new-poll form prefilled with them as options A–C; submitting it creates a poll (Playwright, desktop and 390px phone)",
-      "Each tool page fires the visit beacon with its own path, so its visitors can be counted apart from the SEO-experiment pages"
-    ]
-  },
-  {
-    "id": "poll-share-cards",
-    "title": "Poll share cards and a 'make your own' loop for voters",
-    "why": "The concierge plan and launch posts both get votes by sharing poll links in communities and chats. Right now a link unfurls as plain text. A card showing the actual candidates gets clicked, and every voter who arrives is someone who could make their own poll.",
-    "metric": "visit",
+    "target": 10,
     "windowDays": 14,
     "size": "S",
     "payments": false,
     "acceptance": [
-      "A poll's page has og:image and twitter:image (summary_large_image) meta tags pointing to a per-poll image route that returns image/png at 1200x630",
-      "The per-poll image shows the poll question and every option (the image thumbnail for an image option, the text for a text option); a closed poll's image marks the winner and the vote split",
-      "After a voter casts a vote, the poll page shows a 'Make your own tiebreak' link to /?ref=poll, and the visit beacon records ref=poll when that link is followed",
-      "A poll with 4 options, a 200-character question and no images still produces a valid PNG without the text overflowing (snapshot test)"
+      "GET /polls/<id> (the poll page) HTML contains og:image and twitter:image meta tags, plus twitter:card=summary_large_image, pointing to a per-poll image route",
+      "The per-poll image route returns 200 with content-type image/png, and the PNG is 1200x630",
+      "For a 2-option image poll the PNG contains both option images (snapshot test). For a 4-option text poll with a 200-character question it renders without text overflowing the canvas (snapshot test)",
+      "An unknown poll id returns a 404 from the image route, and a private poll's image route returns a generic tiebreak card rather than its options",
+      "No file under mobile/ changes in the PR, and the web and mobile CI checks pass"
+    ]
+  },
+  {
+    "id": "etsy-listing-photo-test",
+    "title": "Free Etsy listing photo tester: 2–4 photos in a mock Etsy search grid, then 'let strangers pick'",
+    "why": "The paying buyer in REVENUE.md is an Etsy seller choosing a main photo, and search turns up no free Etsy-specific tool that compares candidates and collects votes, only PickFu (paid, Amazon-focused) and live split testers. Different from the three failed thumbnail-compare-tool builds (#11–#13): one page for one buyer instead of three tool pages in one PR, with the poll handoff reusing the existing create form and upload (PR #10) rather than new upload code.",
+    "metric": "visit",
+    "target": 20,
+    "windowDays": 14,
+    "size": "M",
+    "payments": false,
+    "acceptance": [
+      "/tools/etsy-listing-photo-test returns 200 with a unique <title>, a meta description and an <h1> naming the tool, and appears in /sitemap.xml",
+      "Adding 3 local images renders each one as a 1:1-cropped tile inside a mock Etsy search-results grid, next to the others, with no network request carrying the image until the user asks for a poll (Playwright network log)",
+      "Clicking 'Let strangers pick' opens the new-poll form with the 3 images as options A–C, and submitting it creates a poll whose page renders all three (Playwright, desktop and 390px phone)",
+      "Loading the page fires the visit beacon with path /tools/etsy-listing-photo-test, so its visitors count apart from the SEO-experiment pages",
+      "No file under mobile/ changes in the PR, and the web and mobile CI checks pass"
+    ]
+  },
+  {
+    "id": "youtube-thumbnail-test",
+    "title": "Free YouTube thumbnail tester: 2–4 thumbnails in desktop and phone feed mocks, then a vote",
+    "why": "Creators already search for free pre-publish thumbnail testers with human votes (CollabPals' credit exchange, Touhfa Arena, which is limited to 2 thumbnails over 5 days), and the research shows they pay TubeBuddy for the same decision. tiebreak takes 2–4 options and closes at a vote target. It reuses the Etsy page's grid component, so it's a small second PR, measured on its own path.",
+    "metric": "visit",
+    "target": 10,
+    "windowDays": 14,
+    "size": "S",
+    "payments": false,
+    "acceptance": [
+      "/tools/youtube-thumbnail-test returns 200 with a unique <title>, a meta description and an <h1> naming the tool, and appears in /sitemap.xml",
+      "Adding 2 local images renders each at 16:9 in a desktop home-grid tile and in a phone-feed tile at 390px width (4 preview tiles), entirely client-side",
+      "Clicking 'Let strangers pick' opens the new-poll form prefilled with the images as options, and submitting it creates a poll (Playwright, desktop and 390px phone)",
+      "Loading the page fires the visit beacon with path /tools/youtube-thumbnail-test",
+      "No file under mobile/ changes in the PR, and the web and mobile CI checks pass"
     ]
   }
 ]
 ```
 
 ## Notes
-- **Nothing here replaces posting.** growth.next is an owner post, and the launch kit (r/SideProject, r/EtsySellers, Indie Hackers, r/selfpublish, r/PartneredYoutube) still hasn't gone out. These features give those posts somewhere better to land, and the tool pages give the link-banning communities something genuinely useful to point to. They don't make visitors without the posts.
-- **Overlap with the running SEO experiment** (`tiebreak-20261014-seo`, ends 2026-11-11). The tool pages are also search pages, so the per-path beacon in thumbnail-compare-tool's acceptance criteria is there to keep the two results separate. If the pipeline holds strictly to "one change per experiment", ship the tool pages as their own experiment, and judge the SEO pages only on their own paths.
-- **Upload means storing images from strangers.** The existing report button and the 3-reports-hide rule apply. If David wants an automated image filter before upload goes live, that's a separate item, and the free options are thin. This is his call.
+- **Fix the build failures before spending another session on features.** Six feature attempts since 2026-10-20 failed. Five failed every check, including the mobile one, on web-only work (#11, #12, #13, #15, and #16 failing tests in the pipeline's run). One failed because Docker wasn't running. `state.json` also has `build.stopped: "M3: tests failing"` and `testsPassing: false` next to an acceptance verdict of "pass". That pattern looks like main itself is red (or the sandbox can't install or typecheck the workspace), not like six bad features. I couldn't open the repo or the CI logs from this session, so this is an inference. Someone should read `gh run view --log-failed` on #16 first. If main is red, a fix PR comes before item 1. Each item's "mobile/ untouched, checks pass" criterion is there to tell a broken feature apart from a broken pipeline.
+- **The posts are still the biggest lever, and they're David's.** growth.next is an owner post, and none of the launch kit (r/SideProject, r/EtsySellers, Indie Hackers, r/selfpublish, r/PartneredYoutube) has gone out. 0 visitors mostly means nobody has been told. These features give the posts better places to land, such as a tool page to link from Indie Hackers and a share card for every poll link, but they don't replace the posts.
+- **PR #10 (photo upload)** is recorded as a running experiment until 2026-11-02. Items 2 and 3 hand images to the poll form through it. If it isn't actually live on main, the handoff has to fall back to the form's existing image fields, and the builder should check that first.
 - **Left out:**
-  - Pricing changes, the Pro page and the $5 checkout: the playbook says distribution first, and nothing here touches payments.
-  - More content pages in the style of the SEO experiment, until that experiment reports.
-  - Demographic targeting or written reasons: the review says that's PickFu's turf, and if buyers ask for it that's a kill signal.
+  - A "PickFu alternative" compare page and more content pages: they're the same kind of change as the running SEO experiment (`tiebreak-20261014-seo`, ends 2026-11-11). Revisit once it reports.
+  - The "make your own tiebreak" voter loop and the closed-poll result split on share cards: cut so the share-card PR stays small. They're the natural next items once share cards land.
+  - A book-cover tool page: the third buyer, and the weakest search signal (authors mostly use PickFu, Google Forms or newsletters). Add it if the Etsy page draws visitors.
+  - A Discord bot for creators' own servers: it needs David to create a Discord app and its token, so it's too big for this week.
+  - The $5 checkout, pricing and the Pro page: the playbook says distribution comes first, and the Stripe step is still David's.
   - Native-app work: the bottleneck is web search and shared links.
-  - LEARNINGS.md doesn't exist yet, so there were no lessons from this product to build on.
-- **Instrumentation experiment** (`tiebreak-20261013-instrumentation`) ends 2026-10-20. Its result should confirm that the visit beacon fires on every path before these windows start.
+- **David to decide:** whether the YouTube page is worth building before r/PartneredYoutube answers the launch kit's question ("is Test & Compare enough?"). If you'd rather not invest in the creator segment yet, drop item 3. The plan works with items 1 and 2 alone.

@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-25T10:50:51.795Z",
+  "updatedAt": "2026-10-25T11:46:25.976Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -110,7 +110,7 @@
       "M2",
       "M3"
     ],
-    "status": "running",
+    "status": "closed",
     "at": "2026-10-25T10:50:50.228Z",
     "manual": false,
     "advice": {
@@ -122,14 +122,14 @@
     "reason": "couldn't start the build sandbox: sandbox open: Docker is not running",
     "milestones": [],
     "stopped": "M3: tests failing",
-    "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/15",
-    "testsPassing": true,
+    "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/16",
+    "testsPassing": false,
     "engine": "claude",
     "model": "claude-opus-5-5",
     "effort": "xhigh",
     "sandbox": "docker",
     "note": "M3 shipped in #1 (its exit-criteria tests pass on main); M4, the native app (David asked for iPhone + Android), merged as #2 on 2026-10-12; go-live as #3.",
-    "experiment": "tiebreak-20261023-feature-poll-share-cards",
+    "experiment": "tiebreak-20261025-feature-poll-share-cards",
     "kind": "feature",
     "beacon": "funnel",
     "acceptance": {
@@ -144,12 +144,6 @@
       "previewUrl": "https://tiebreak-fecpgnrmn-david-smiths-projects-fe129786.vercel.app",
       "sha": "7a46fdc50f0f21eca23a191a8d6b106fa4048ea1",
       "at": "2026-10-19T20:04:49.461Z"
-    },
-    "progress": {
-      "step": 1,
-      "steps": 2,
-      "label": "GROWTH",
-      "at": "2026-10-25T10:50:51.795Z"
     }
   },
   "milestonesDone": [
@@ -377,74 +371,68 @@
         "planItem": "poll-share-cards",
         "title": "Poll share cards and a 'make your own' loop for voters",
         "payments": false,
-        "status": "proposed",
+        "status": "abandoned",
         "createdAt": "2026-10-25T10:50:34.933Z",
-        "updatedAt": "2026-10-25T10:50:34.933Z"
+        "updatedAt": "2026-10-25T11:46:25.976Z",
+        "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/16",
+        "failed": true,
+        "reason": "its tests failed in the pipeline's run"
       }
     ],
     "checkedAt": "2026-10-22T08:27:26.688Z",
     "plan": {
-      "at": "2026-10-19T18:33:38.568Z",
+      "at": "2026-10-25T11:46:25.976Z",
       "items": [
         {
-          "id": "photo-upload-options",
-          "title": "Upload photos as poll options",
-          "why": "LAUNCH-KIT.md says the first objection will be that options take an image link and sellers keep photos on their phones. The preview tool and share cards below also need images hosted by tiebreak, so this comes first. It uses the free storage tier, which keeps it at $0.",
-          "metric": "activate",
-          "acceptance": [
-            "On / each option has a file input that accepts image/jpeg, image/png and image/webp; picking a file shows a thumbnail preview in that option's slot before submit",
-            "Creating a poll with two uploaded images returns a poll whose options both carry an image URL on tiebreak's own storage, and the poll page renders both as <img> elements that load with status 200",
-            "Uploading a file over 5 MB or with a non-image MIME type is rejected with a 4xx response and an inline error, and no poll is created",
-            "The upload works at phone width (390px) in a Playwright run, and image-link options still work as before (the existing tests pass)"
-          ],
-          "windowDays": 14,
-          "size": "M",
-          "payments": false,
-          "attempts": [
-            "tiebreak-20261019-feature-photo-upload-options"
-          ]
-        },
-        {
-          "id": "thumbnail-compare-tool",
-          "title": "Free side-by-side thumbnail preview tool (Etsy, book cover, YouTube)",
-          "why": "Buyers search for free thumbnail-preview tools, and the existing ones show one image at a time with no vote. tiebreak's tool previews 2–4 candidates side by side and hands them to a poll in one click. This is a search-landing tool, which makes it a different kind of thing from the three content pages in the running SEO experiment.",
+          "id": "poll-share-cards-og",
+          "title": "Per-poll share card (og:image) showing the candidates",
+          "why": "Every route to voters in the record (launch kit, concierge plan) is someone pasting a poll link into a chat or forum, and today that link unfurls as plain text. Different from the two failed poll-share-cards builds (#15, #16): this one is only the image route and the meta tags. The 'make your own' loop and the closed-poll split are dropped, and nothing outside the web app's poll page and a new ima",
           "metric": "visit",
           "acceptance": [
-            "/tools/etsy-thumbnail-preview, /tools/book-cover-thumbnail-test and /tools/youtube-thumbnail-preview each return 200 with a unique <title>, meta description and an <h1> naming the tool, and all three are listed in /sitemap.xml",
-            "On /tools/etsy-thumbnail-preview, adding 3 local images renders each one in a search-grid mock at the 1:1, 4:3 and 5:4 crops (9 preview tiles), entirely client-side with no network upload until the user asks for a poll",
-            "On /tools/book-cover-thumbnail-test, each added cover renders at about 160px and about 80px tall next to the others, and the YouTube page renders each candidate at 16:9 in a desktop-grid tile and a phone-feed tile",
-            "Clicking 'Let strangers pick' on any tool page uploads the images and opens the new-poll form prefilled with them as options A–C; submitting it creates a poll (Playwright, desktop and 390px phone)",
-            "Each tool page fires the visit beacon with its own path, so its visitors can be counted apart from the SEO-experiment pages"
-          ],
-          "windowDays": 14,
-          "size": "M",
-          "payments": false,
-          "target": 50,
-          "attempts": [
-            "tiebreak-20261020-feature-thumbnail-compare-tool",
-            "tiebreak-20261021-feature-thumbnail-compare-tool",
-            "tiebreak-20261022-feature-thumbnail-compare-tool"
-          ]
-        },
-        {
-          "id": "poll-share-cards",
-          "title": "Poll share cards and a 'make your own' loop for voters",
-          "why": "The concierge plan and launch posts both get votes by sharing poll links in communities and chats. Right now a link unfurls as plain text. A card showing the actual candidates gets clicked, and every voter who arrives is someone who could make their own poll.",
-          "metric": "visit",
-          "acceptance": [
-            "A poll's page has og:image and twitter:image (summary_large_image) meta tags pointing to a per-poll image route that returns image/png at 1200x630",
-            "The per-poll image shows the poll question and every option (the image thumbnail for an image option, the text for a text option); a closed poll's image marks the winner and the vote split",
-            "After a voter casts a vote, the poll page shows a 'Make your own tiebreak' link to /?ref=poll, and the visit beacon records ref=poll when that link is followed",
-            "A poll with 4 options, a 200-character question and no images still produces a valid PNG without the text overflowing (snapshot test)"
+            "GET /polls/<id> (the poll page) HTML contains og:image and twitter:image meta tags, plus twitter:card=summary_large_image, pointing to a per-poll image route",
+            "The per-poll image route returns 200 with content-type image/png, and the PNG is 1200x630",
+            "For a 2-option image poll the PNG contains both option images (snapshot test). For a 4-option text poll with a 200-character question it renders without text overflowing the canvas (snapshot test)",
+            "An unknown poll id returns a 404 from the image route, and a private poll's image route returns a generic tiebreak card rather than its options",
+            "No file under mobile/ changes in the PR, and the web and mobile CI checks pass"
           ],
           "windowDays": 14,
           "size": "S",
           "payments": false,
-          "attempts": [
-            "tiebreak-20261023-feature-poll-share-cards",
-            "tiebreak-20261024-feature-poll-share-cards",
-            "tiebreak-20261025-feature-poll-share-cards"
-          ]
+          "target": 10
+        },
+        {
+          "id": "etsy-listing-photo-test",
+          "title": "Free Etsy listing photo tester: 2–4 photos in a mock Etsy search grid, then 'let strangers pick'",
+          "why": "The paying buyer in REVENUE.md is an Etsy seller choosing a main photo, and search turns up no free Etsy-specific tool that compares candidates and collects votes, only PickFu (paid, Amazon-focused) and live split testers. Different from the three failed thumbnail-compare-tool builds (#11–#13): one page for one buyer instead of three tool pages in one PR, with the poll handoff reusing the existing",
+          "metric": "visit",
+          "acceptance": [
+            "/tools/etsy-listing-photo-test returns 200 with a unique <title>, a meta description and an <h1> naming the tool, and appears in /sitemap.xml",
+            "Adding 3 local images renders each one as a 1:1-cropped tile inside a mock Etsy search-results grid, next to the others, with no network request carrying the image until the user asks for a poll (Playwright network log)",
+            "Clicking 'Let strangers pick' opens the new-poll form with the 3 images as options A–C, and submitting it creates a poll whose page renders all three (Playwright, desktop and 390px phone)",
+            "Loading the page fires the visit beacon with path /tools/etsy-listing-photo-test, so its visitors count apart from the SEO-experiment pages",
+            "No file under mobile/ changes in the PR, and the web and mobile CI checks pass"
+          ],
+          "windowDays": 14,
+          "size": "M",
+          "payments": false,
+          "target": 20
+        },
+        {
+          "id": "youtube-thumbnail-test",
+          "title": "Free YouTube thumbnail tester: 2–4 thumbnails in desktop and phone feed mocks, then a vote",
+          "why": "Creators already search for free pre-publish thumbnail testers with human votes (CollabPals' credit exchange, Touhfa Arena, which is limited to 2 thumbnails over 5 days), and the research shows they pay TubeBuddy for the same decision. tiebreak takes 2–4 options and closes at a vote target. It reuses the Etsy page's grid component, so it's a small second PR, measured on its own path.",
+          "metric": "visit",
+          "acceptance": [
+            "/tools/youtube-thumbnail-test returns 200 with a unique <title>, a meta description and an <h1> naming the tool, and appears in /sitemap.xml",
+            "Adding 2 local images renders each at 16:9 in a desktop home-grid tile and in a phone-feed tile at 390px width (4 preview tiles), entirely client-side",
+            "Clicking 'Let strangers pick' opens the new-poll form prefilled with the images as options, and submitting it creates a poll (Playwright, desktop and 390px phone)",
+            "Loading the page fires the visit beacon with path /tools/youtube-thumbnail-test",
+            "No file under mobile/ changes in the PR, and the web and mobile CI checks pass"
+          ],
+          "windowDays": 14,
+          "size": "S",
+          "payments": false,
+          "target": 10
         }
       ]
     }
