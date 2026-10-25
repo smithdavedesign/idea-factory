@@ -6,7 +6,7 @@
     "summary": "A fun summons-and-jury twist on AI-judge apps, but there is zero evidence anyone pays for a joke verdict and the flow is copyable in a weekend. If it's worth anything, it's a Court mode inside tiebreak, not its own product.",
     "at": "2026-10-13T08:00:55.104Z"
   },
-  "updatedAt": "2026-10-13T12:42:50.438Z",
+  "updatedAt": "2026-10-25T05:25:07.955Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -99,5 +99,19 @@
   "revenue": {
     "mrr": 0,
     "updatedAt": "2026-10-13T12:42:50.438Z"
+  },
+  "build": {
+    "milestone": "MVP",
+    "planned": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5"
+    ],
+    "status": "failed",
+    "at": "2026-10-25T05:23:14.374Z",
+    "manual": false,
+    "reason": "couldn't start the build sandbox: sandbox open: Docker is not running"
   }
 }
