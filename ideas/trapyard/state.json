@@ -7,7 +7,7 @@
     "at": "2026-10-13T06:11:04.924Z",
     "notionAt": "2026-10-13T06:11:06.537Z"
   },
-  "updatedAt": "2026-10-25T10:03:39.038Z",
+  "updatedAt": "2026-10-25T10:19:47.780Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -21,15 +21,15 @@
         "id": "plan",
         "owner": "agent",
         "label": "Road-to-revenue plan written",
-        "done": false,
-        "evidence": "written after M1 merges"
+        "done": true,
+        "evidence": "Founder or CTO of a 3–50 person startup or agency that ships an agent (browsing, · $149 once"
       },
       {
         "id": "mvp",
         "owner": "agent",
         "label": "MVP built: every roadmap milestone merged",
-        "done": false,
-        "evidence": "0/4 milestones merged"
+        "done": true,
+        "evidence": "4/4 milestones merged"
       },
       {
         "id": "deployed",
@@ -55,9 +55,9 @@
       {
         "id": "price",
         "owner": "david",
-        "label": "Price decided",
-        "done": false,
-        "evidence": ""
+        "label": "Price: $149 once (from the plan)",
+        "done": true,
+        "evidence": "Anchored on a freelancer listing for agent prompt-injection hardening (report plus retest) from $300 and on Lakera Pro a"
       },
       {
         "id": "payments",
@@ -89,13 +89,15 @@
       }
     ],
     "next": {
-      "id": "plan",
-      "label": "Road-to-revenue plan written",
+      "id": "legal",
+      "label": "Privacy policy and terms pages",
       "owner": "agent"
     },
-    "done": 1,
+    "done": 4,
     "total": 10,
-    "updatedAt": "2026-10-25T10:03:39.038Z"
+    "buyer": "Founder or CTO of a 3–50 person startup or agency that ships an agent (browsing, tool-calling or spending) to business customers, with a prospect's security questionnaire asking for prompt-injection test evidence while a deal waits. Not yet named; find via the places in firstTenUsers.",
+    "price": "$149 once",
+    "updatedAt": "2026-10-25T10:19:47.780Z"
   },
   "revenue": {
     "mrr": 0,
