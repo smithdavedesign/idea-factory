@@ -1,12 +1,12 @@
 {
-  "stage": "repo",
+  "stage": "building",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-24T20:14:03.715Z",
+  "updatedAt": "2026-10-25T20:25:18.692Z",
   "repo": "https://github.com/smithdavedesign/grantgate",
   "revenue": {
     "mrr": 0,
@@ -102,9 +102,21 @@
       "M3",
       "M4"
     ],
-    "status": "failed",
-    "at": "2026-10-24T20:12:34.588Z",
+    "status": "running",
+    "at": "2026-10-25T20:13:42.702Z",
     "manual": false,
-    "reason": "couldn't start the build sandbox: sandbox open: Docker is not running"
+    "reason": "couldn't start the build sandbox: sandbox open: Docker is not running",
+    "advice": {
+      "difficulty": 2,
+      "reason": "Involves parsing URLs, handling scopes, and implementing a risk assessment function with testable fixtures.",
+      "source": "model",
+      "model": "local-qwen3"
+    },
+    "progress": {
+      "step": 2,
+      "steps": 5,
+      "label": "M2 (2 of 4)",
+      "at": "2026-10-25T20:25:18.690Z"
+    }
   }
 }
