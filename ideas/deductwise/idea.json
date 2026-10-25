@@ -1,0 +1,30 @@
+{
+  "title": "Deductwise — state-correct security deposit statement for small landlords",
+  "repoName": "deductwise",
+  "oneLiner": "For self-managing landlords with 1–10 units, it turns a move-out into a prorated, state-rule-checked itemized deposit statement with an evidence bundle before the deadline that can cost them 2–3x the deposit.",
+  "overlaps": "none close in the portfolio; nearest are covercheck (HOA vendor insurance) and ownerbrief (property-manager owner letters, passed) — different user and moment",
+  "tags": [
+    "serious",
+    "consumer",
+    "one-time",
+    "reach:search",
+    "real-estate",
+    "compliance"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://www.landlordstudio.com/blog/security-deposit-return-letter-f8403",
+    "https://www.verticalrent.com/blog/returning-a-security-deposit-state-deadlines-every-landlord-must-know",
+    "https://apps.apple.com/app/proofmi/id6756241402",
+    "https://capterra.com/p/147659/Turbo-Tenant/",
+    "https://ipropertymanagement.com/laws/landlord-carpet-replacement-law",
+    "https://www.daeryunlaw.com/us/practices/detail/security-deposit-refund",
+    "https://terms.law/Demand-Letters/respond/landlord-tenant/california-landlord-respond-security-deposit.html",
+    "https://www.tenantcloud.com/?p=7558",
+    "https://ezel.ai/templates/security-deposit-itemization-letter/ut",
+    "https://www.terms.law/practice-areas/security-deposit-attorney/"
+  ],
+  "slug": "deductwise",
+  "recordedAt": "2026-10-25T16:09:13.802Z"
+}
