@@ -1,0 +1,65 @@
+{
+  "buyer": "Owner or office manager of a 5-50 person Google Workspace business with no IT staff (small accounting practice, agency, clinic, bookkeeping shop) who is the de facto Workspace admin; secondary: the outsourced IT/MSP who looks after several such firms",
+  "paymentMethod": "Stripe Checkout payment link (no backend needed); license code emailed by hand for the first ten buyers, offline-signed key verified in the extension later",
+  "mvpScope": "Free: detect Google OAuth authorize requests, plain-English high/medium/low scope labels, warn-only interstitial. Paid: hard block of high-risk grants for unknown client_ids, allowlist/denylist with shareable policy JSON for staff, passphrase-encrypted local grant ledger with CSV export. Must work end to end in real Chrome against a live Google consent screen.",
+  "firstTenUsers": "Run five interviews from r/gsuite and r/msp threads, showing a real blocked consent screen and watching rather than demoing. Offer the most engaged three a hand-delivered $49 license with a 30-day refund. Ask two or three small-firm owners from David's own network for a 20-minute screen share. Post Show HN once the Web Store listing is live and convert the office-manager types who write in. Ask each buyer for an introduction to an MSP or peer.",
+  "price": {
+    "amount": 49,
+    "currency": "USD",
+    "interval": "year",
+    "why": "Flat per business up to 50 seats. Nudge Security is $750/month (unreachable at this size) and a 10-person firm already pays ~$90/month for a password manager, so about $4/month equivalent is an easy line item; free Google Admin controls and the AppTotal extension cap what can be charged. Annual keeps Stripe's fee near 3.5% instead of ~9% on a $5 monthly charge. Drop to $29 if nobody pays at $49."
+  },
+  "mustHaveBeforeCharging": [
+    "competitive check: install AppTotal's extension and confirm blocking, policy sharing and ledger are not already offered free",
+    "checkout (Stripe payment link at $49/year) and a manual license-key delivery process",
+    "privacy policy and terms pages (state plainly that all data stays on the device)",
+    "Chrome Web Store listing accepted (one-time $5 developer fee needs David's approval)",
+    "M2 gate and M3 ledger verified in real Chrome, with desktop screenshots in docs/screenshots/ and the README",
+    "launch basics: og:image, robots.txt, sitemap.xml",
+    "fair comparison page vs Google Admin, AppTotal and Nudge",
+    "30-day no-questions refund promise"
+  ],
+  "launchChannels": [
+    {
+      "name": "r/gsuite",
+      "url": "https://www.reddit.com/r/gsuite/",
+      "why": "Admins asking how to stop staff approving third-party apps; the exact pain, good for interviews"
+    },
+    {
+      "name": "r/msp",
+      "url": "https://www.reddit.com/r/msp/",
+      "why": "MSPs managing small-business Workspace tenants; answers whether the real buyer is the IT provider"
+    },
+    {
+      "name": "Google Workspace Admin Community",
+      "url": "https://support.google.com/a/community",
+      "why": "Threads on third-party app access control from de facto admins; useful answers with a link where rules allow"
+    },
+    {
+      "name": "r/smallbusiness",
+      "url": "https://www.reddit.com/r/smallbusiness/",
+      "why": "Owner-level security worries; weak for conversion, decent for interviews"
+    },
+    {
+      "name": "Hacker News Show HN",
+      "url": "https://news.ycombinator.com/show",
+      "why": "Installs and Web Store reviews for the free tier plus technical credibility; poor for paying buyers"
+    },
+    {
+      "name": "LinkedIn direct outreach",
+      "url": "https://www.linkedin.com/",
+      "why": "DM owners of 5-50 person firms in one niche and city with a single question about how they handle staff approving Google apps"
+    }
+  ],
+  "risks": [
+    "AppTotal already ships a Chrome extension showing OAuth risk on the consent screen, price unknown and possibly free; our paid delta (blocking, shared policy, ledger) may not matter to buyers",
+    "Google Admin third-party app control is free for the same buyer",
+    "No evidence yet that firms under 50 people pay for OAuth-specific protection; the status quo is doing nothing",
+    "Chrome Web Store may reject or delay a gating extension that reads authorization URLs",
+    "Users may disable the gate; a gate that never fires looks like it does nothing, so churn at renewal",
+    "Local-only design gives no license enforcement or usage telemetry",
+    "Support burden for a security product at very low revenue",
+    "Nudge Security pricing came from aggregators that disagree; AppTotal's listing was unreadable"
+  ],
+  "killCriteria": "Stop if, within 2 weeks of the Web Store listing going live and after 10 real interviews, fewer than 2 of 10 say they would pay $5-9/month, or if there are zero card payments from the first 30 qualified conversations at $49 and then at $29, or if AppTotal turns out to offer free blocking, or if the Web Store rejects the extension twice. Keep going only if there are 3 paying customers within 60 days."
+}
