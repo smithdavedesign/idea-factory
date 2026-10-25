@@ -1,0 +1,30 @@
+{
+  "title": "ownshot — dated proof of your own product photos for Etsy sellers wrongly flagged",
+  "repoName": "ownshot",
+  "oneLiner": "For handmade Etsy sellers whose photos get copied and whose listings are then auto-flagged under Creativity Standards, it keeps independently timestamped originals per listing and builds an appeal-ready packet for $9 or $12 a month.",
+  "overlaps": "none (Open-Travel, giftlet and alterpaw are unrelated; closest idea in the record is proofpack, a passed Stripe-dispute evidence packet)",
+  "tags": [
+    "serious",
+    "business",
+    "saas",
+    "reach:community",
+    "ecommerce",
+    "etsy"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://valueaddedresource.net/etsy-creativity-standards-takedowns-no-appeal",
+    "https://investors.etsy.com/_assets/_d7ee8700714b0f6cfcd5c437caf5f524/etsy/db/1016/9831/pdf/2024_Transparency_Report_Digital.pdf",
+    "https://beancount.io/blog/2026/07/09/etsy-2026-fee-hike-ai-disclosure-rules-handmade-sellers-guide",
+    "https://creatoreconomytools.com/tool/pixsy",
+    "https://profittree.io/blog/best-etsy-seller-seo-tools-2026",
+    "https://freetsa.org/index_en.php",
+    "https://blog.tineye.com/new-image-search-pricing/",
+    "https://community.etsy.com/t5/Technical-Issues/Listing-has-been-deactivated-by-Etsy-for-violating-creative/m-p/148332897",
+    "https://freetsa.org/tsr",
+    "https://getcoai.com/news/etsy-balances-ai-and-authenticity-with-new-creativity-standards-for-sellers"
+  ],
+  "slug": "ownshot",
+  "recordedAt": "2026-10-25T16:06:22.951Z"
+}
