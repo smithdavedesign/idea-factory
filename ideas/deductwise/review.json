@@ -1,0 +1,53 @@
+{
+  "verdict": "pass",
+  "score": 5,
+  "summary": "Real, costly pain for 1–10 unit landlords, but it is a once-per-move-out purchase with no first-person demand evidence, crowded free templates, and ChatGPT as a close substitute. Cheap to build, yet the paid wedge over free tools is unproven and reach is weak.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "RESEARCH.md found no first-person landlord complaints; all pain evidence is law-firm and vendor blog content (verticalrent, landlordstudio), and the stats (40% of small claims, 68% of renters) are second-hand. Competitor pricing (TurboTenant $119/yr, ProofMi $39–$119/yr) shows landlords pay for adjacent tools, not for this. No one has asked for it or paid."
+    },
+    "statusQuo": {
+      "score": 5,
+      "evidence": "Landlords use free templates (Landlord Studio, Paperform), a lawyer, or ChatGPT with a pasted statute, per RESEARCH.md. The workaround is cheap and mostly good enough for the letter; the real gap (state deadline, proration, evidence) is a correctness risk landlords may not feel until they lose a case."
+    },
+    "specificity": {
+      "score": 5,
+      "evidence": "Buyer is a self-managing 1–10 unit landlord at move-out, a concrete moment with a real consequence (2–3x deposit plus fees). But there is no named person or quote; 'accidental landlord' is still a category, and they handle 1–4 move-outs a year, so they are hard to find and reach."
+    },
+    "wedge": {
+      "score": 6,
+      "evidence": "Deadline + receipt-rule check + prorated line items + PDF for five states is a clean, deterministic, weekend-sized wedge, and $19 per packet is easy to price-test. Weakness: the free preview of the same calculation may be all they need."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "General AI will keep improving at drafting letters, shrinking the template value; the durable part is a maintained, verified statute table and stored evidence, which carries ongoing liability and upkeep. Purchase is episodic with low repeat rate."
+    }
+  },
+  "premises": [
+    "Small landlords lose money or cases from missed deadlines and unprorated deductions — supported by law-firm and vendor sources, not by landlords' own words.",
+    "They will pay $19 for correctness when free templates and ChatGPT exist — unsupported; no evidence.",
+    "A state-rule table for five states can be kept accurate enough to avoid liability — plausible but a real ongoing cost and risk.",
+    "Landlords can be reached at the move-out moment through search or communities — weak; search is crowded with free templates."
+  ],
+  "alternatives": [
+    "Minimal: free state deadline + proration calculator page as SEO and email capture, with the paid PDF added only if the calculator gets traffic.",
+    "Ideal: annual plan with reminders, a move-in evidence vault and 50 states — heavier, needs a maintained legal table, and is a different product.",
+    "Lateral: sell to small property managers or as an embed/affiliate to TurboTenant-style suites rather than direct to landlords.",
+    "Extend an existing repo: none close in the portfolio; ownerbrief and covercheck serve different users."
+  ],
+  "wedge": "A free-to-preview, $19-to-download prorated, state-checked itemized statement for CA/TX/FL/NY/WA with a deadline countdown.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js on Vercel with a static rules table, a proration function and pdf-lib. The one test that proves M1: the roadmap's deadline cases (CA 2026-03-22, TX 2026-03-31, NY 2026-03-15), the 300.00 proration and the 1550.00 refund all pass. Statute accuracy is the real work, not the code."
+  },
+  "risks": [
+    "Free templates and ChatGPT cover most of the value",
+    "Wrong statute data could harm users and create unauthorized-practice-of-law exposure",
+    "Once-a-year purchase pattern, low repeat",
+    "Search keywords are crowded and landlord communities dislike promotion",
+    "Demand evidence is secondary-source only"
+  ],
+  "killCriteria": "Drop if, after two weeks in landlord communities and search, fewer than 50 relevant visitors, under 5% waitlist/start rate, or no one answers a price question at $19; or if testers say ChatGPT with the statute is good enough."
+}

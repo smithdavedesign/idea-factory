@@ -1,0 +1,54 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "Etsy's wrongful photo-copy flags are a real pain, but nothing shows a third-party timestamp changes Etsy's decision or that sellers would pay for one. Sellers also only feel the pain after a flag, when it's too late to have timestamped anything.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "One trade article plus forum thread titles. No evidence anyone pays for or asks for dated proof; RESEARCH admits no source shows sellers paying for appeal help."
+    },
+    "statusQuo": {
+      "score": 4,
+      "evidence": "Support emails, forum advocates, or relisting and losing reviews. Real cost, but the decision sits inside Etsy's automated process."
+    },
+    "specificity": {
+      "score": 4,
+      "evidence": "Buyer is a clear solo handmade shop with a Star Seller badge, but nobody has been spoken to and value and pain arrive at different moments."
+    },
+    "wedge": {
+      "score": 5,
+      "evidence": "The $9 post-flag packet is cheap to build but useless to a seller with no earlier dated originals; the prevention subscription is hard to sell."
+    },
+    "futureFit": {
+      "score": 3,
+      "evidence": "Etsy may add its own appeal route or attestation; a third-party vault depends on Etsy and the copy sweep costs more than the price."
+    }
+  },
+  "premises": [
+    "Wrongly flagged handmade sellers exist in volume (one article)",
+    "They would pay $9 once or $12 a month (unsupported)",
+    "Independent RFC 3161 timestamps influence Etsy's review (unsupported, central)",
+    "Sellers will upload before being flagged (weak)",
+    "A timestamp proves existence, not authorship (true, limits value)"
+  ],
+  "alternatives": [
+    "Minimal: free guide and checklist on timestamping photos with FreeTSA plus appeal tips",
+    "Ideal: vault plus Etsy API plus weekly copy sweep (L effort, sweep exceeds zero cost)",
+    "Lateral: interview 5 flagged sellers and the VAR-named advocate before building anything",
+    "No existing repo of David's to extend; proofpack is the closest and was passed"
+  ],
+  "wedge": "A $9 one-off packet for a seller who was just flagged and already has dated originals, which is rarely the case.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js, Supabase free, FreeTSA, pdf-lib, exifr. Proving test: upload a JPEG and openssl ts -verify on the stored .tsr exits 0, with a one-byte change reporting MISMATCH. The M3 copy sweep is not zero-cost."
+  },
+  "risks": [
+    "Etsy may give timestamps no weight",
+    "Pain arrives after the moment the product must be used",
+    "Etsy may fix the bot or add an appeal route",
+    "Reverse-image sweep costs more than the plan price",
+    "Dependence on a single platform"
+  ],
+  "killCriteria": "Drop it if no seller or advocate says an independent timestamp would be attached or considered, or fewer than 5 of 30 sellers say they would pay $9 in a two-week test."
+}

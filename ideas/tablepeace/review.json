@@ -1,0 +1,56 @@
+{
+  "verdict": "pass",
+  "score": 5,
+  "summary": "A real wedge (private family input for seating conflicts), but evidence is forum anecdotes only, it is a one-time $19 purchase against free tools, and 'text Mom' is the likely status quo. Seasonal timing and no founder fit make it not worth a test slot.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "WeddingWire threads show seating drama, but no prevalence data and no one asking for a tool; paid solvers exist ($19-$29) but do not prove demand for the contributor-link wedge."
+    },
+    "statusQuo": {
+      "score": 5,
+      "evidence": "Sticky notes, spreadsheets, free Zola/Seatbee, and a call or text to the parents; cheap and probably good enough."
+    },
+    "specificity": {
+      "score": 5,
+      "evidence": "Buyer is an engaged couple with 80-200 guests; a category, nobody spoken to, and no founder fit in David's interests."
+    },
+    "wedge": {
+      "score": 6,
+      "evidence": "Contributor links, not the solver, are the differentiator; a free-2-links / $19 unlock is sound, but the wedge is a token form that is easy to copy."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "One-time, low-frequency purchase with no retention; AI makes solvers a commodity and free tools improve."
+    }
+  },
+  "premises": [
+    "Conflict knowledge sits with parents and the wedding party — plausible, unmeasured.",
+    "Couples will send a link rather than text or call — unsupported.",
+    "Family members will honestly submit keep-apart notes in writing — unsupported.",
+    "Couples will pay $19 despite free Seatbee/Zola — weakly supported.",
+    "Search can reach buyers in the 3-6 week window — plausible but crowded and seasonal."
+  ],
+  "alternatives": [
+    "Solver-only static page, free: fastest, no wedge, competes directly with free tools.",
+    "Contributor-link MVP per the PRD: tests the wedge, medium effort, low demand evidence.",
+    "Lateral: a family-input form only that exports a conflict list to the couple's existing tool; smallest build, tests the real hypothesis, hard to charge for.",
+    "No existing David repo covers weddings or seating; the pettycourt and squadwrap ideas share the friend-submitted-links pattern but are not code."
+  ],
+  "wedge": "A fake-door flow: add guests, generate 1-3 private contributor links, see who flagged whom; no solver, PDF or payment yet.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js on Vercel, Turso free, TypeScript hill-climb solver. M1 as written is only the solver, which does not test the wedge. Proving test: 150 guests, 30 pair rules, 15 tables of 10, zero must-avoid violations in under 2 seconds."
+  },
+  "risks": [
+    "Free anchors (Seatbee, Zola) cap the price",
+    "Seasonality: May-Oct weddings, 3-6 week buying window, and it is late October",
+    "One-time purchase, no repeat revenue",
+    "Wedge is easy to copy",
+    "Sensitive family-feud data needs deletion and strict isolation",
+    "Contributors may refuse to write down conflicts",
+    "Competitor details are from unverified marketplace listings"
+  ],
+  "killCriteria": "After two weeks, fewer than 3 waitlist signups from 50+ visitors, or nobody reaches the link-generation step; couples say they would just text their parents; or Zola/Seatbee add contributor input."
+}
