@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-25T22:41:49.945Z",
+  "updatedAt": "2026-10-25T23:49:04.854Z",
   "repo": "https://github.com/smithdavedesign/lienclock",
   "revenue": {
     "mrr": 0,
@@ -32,8 +32,8 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": false,
-        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
+        "done": true,
+        "evidence": "https://lienclock-eta.vercel.app"
       },
       {
         "id": "legal",
@@ -47,7 +47,7 @@
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
         "done": false,
-        "evidence": "checked once it's live (the go-live build adds what's missing)"
+        "evidence": "4/9 launch checks · missing: Social share image (og:image), robots.txt, sitemap.xml, Privacy page, Terms page"
       },
       {
         "id": "price",
@@ -90,9 +90,9 @@
       "label": "Road-to-revenue plan written",
       "owner": "agent"
     },
-    "done": 0,
+    "done": 1,
     "total": 10,
-    "updatedAt": "2026-10-12T05:03:28.813Z"
+    "updatedAt": "2026-10-25T23:49:04.854Z"
   },
   "build": {
     "milestone": "MVP",
@@ -101,21 +101,30 @@
       "M2",
       "M3"
     ],
-    "status": "running",
+    "status": "merged",
     "at": "2026-10-25T22:01:36.095Z",
     "manual": false,
     "reason": "couldn't start the build sandbox: sandbox open: Docker is not running",
+    "milestones": [
+      "M1"
+    ],
+    "stopped": "M2: the builder stopped (timed out after 45 min)",
+    "prUrl": "https://github.com/smithdavedesign/lienclock/pull/1",
+    "testsPassing": true,
+    "engine": "claude",
+    "model": "claude-opus-5-5",
+    "effort": "xhigh",
+    "sandbox": "docker",
     "advice": {
       "difficulty": 2,
       "reason": "Involves multiple components, state logic, and testable exit criteria across different systems.",
       "source": "model",
       "model": "local-qwen3"
     },
-    "progress": {
-      "step": 2,
-      "steps": 4,
-      "label": "M2 (2 of 3)",
-      "at": "2026-10-25T22:41:49.772Z"
-    }
-  }
+    "mergedBy": "agent",
+    "mergedAt": "2026-10-25T23:49:04.854Z"
+  },
+  "milestonesDone": [
+    "M1"
+  ]
 }
