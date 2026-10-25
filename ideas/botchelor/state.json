@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-25T12:25:26.792Z",
+  "updatedAt": "2026-10-25T14:01:29.522Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -109,9 +109,9 @@
       "M4"
     ],
     "stopped": null,
-    "status": "running",
-    "prUrl": "https://github.com/smithdavedesign/botchelor/pull/721",
-    "testsPassing": true,
+    "status": "closed",
+    "prUrl": "https://github.com/smithdavedesign/botchelor/pull/859",
+    "testsPassing": false,
     "engine": "claude",
     "model": "claude-opus-5-5",
     "effort": "xhigh",
@@ -125,7 +125,7 @@
       "model": "local-qwen3"
     },
     "reason": "couldn't start the build sandbox: sandbox open: Docker is not running",
-    "experiment": "botchelor-20261023-feature-oc-chemistry-test",
+    "experiment": "botchelor-20261025-feature-daily-date",
     "kind": "feature",
     "acceptance": {
       "verdict": "pass",
@@ -139,12 +139,6 @@
       "previewUrl": "https://botchelor-6q9ol9j0t-david-smiths-projects-fe129786.vercel.app",
       "sha": "b17c45806c32d430375fe21be5e81722534dc2e4",
       "at": "2026-10-23T08:52:09.968Z"
-    },
-    "progress": {
-      "step": 1,
-      "steps": 2,
-      "label": "GROWTH",
-      "at": "2026-10-25T12:25:26.782Z"
     }
   },
   "milestonesDone": [
@@ -352,9 +346,12 @@
         "planItem": "daily-date",
         "title": "Daily Date: one blind date a day to predict, no account",
         "payments": false,
-        "status": "proposed",
+        "status": "abandoned",
         "createdAt": "2026-10-25T12:23:03.881Z",
-        "updatedAt": "2026-10-25T12:23:03.881Z"
+        "updatedAt": "2026-10-25T14:01:29.522Z",
+        "prUrl": "https://github.com/smithdavedesign/botchelor/pull/859",
+        "failed": true,
+        "reason": "its tests failed in the pipeline's run"
       }
     ],
     "checkedAt": "2026-10-25T02:24:27.214Z",
