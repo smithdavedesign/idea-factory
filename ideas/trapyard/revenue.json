@@ -1,0 +1,58 @@
+{
+  "buyer": "Founder or CTO of a 3–50 person startup or agency that ships an agent (browsing, tool-calling or spending) to business customers, with a prospect's security questionnaire asking for prompt-injection test evidence while a deal waits. Not yet named; find via the places in firstTenUsers.",
+  "paymentMethod": "Stripe Checkout payment link ($149 one-time per agent, report plus one retest); an unpaid session returns 402 for the full report; refunds by hand",
+  "mvpScope": "Already built (M1–M4, live at https://trapyard.vercel.app): four trap classes (planted instruction, leaked secret, out-of-scope tool, overspend), per-run canaries, HTML/JSON report with payload, request log and replay command per failure, dated scenario version, CI diff. Must still be proven: a stranger gets a real agent through a hosted run unaided and the report has no false 'fell' results.",
+  "firstTenUsers": "Before any public launch, DM about 10 people: authors of recent Hacker News and r/AI_Agents posts about shipping agents to enterprises or going through security reviews, and any founder in David's own network shipping an agent. Offer a free watched run on their real agent in exchange for a real questionnaire line or prospect email; then ask the ones who say it would help to pay $149 for the retest. Follow with a Show HN and the Reddit threads for the free gauntlet.",
+  "price": {
+    "amount": 149,
+    "currency": "USD",
+    "interval": "once",
+    "why": "Anchored on a freelancer listing for agent prompt-injection hardening (report plus retest) from $300 and on Lakera Pro at $99/month, far below $16K+ red-team engagements; set under the PRD's $299 because demand is unproven and the author is unknown. Raise to $299 if the first buyers pay without pushback."
+  },
+  "mustHaveBeforeCharging": [
+    "Stripe Checkout payment link created by David and mapped in RepoHQ",
+    "privacy policy and terms pages (terms: listed traps only, behavior on the range only, no guarantee, no certification)",
+    "meta description, og:image, robots.txt, sitemap.xml",
+    "sample report visible on the home page",
+    "at least one outside person has run the gauntlet on a real agent unaided",
+    "first paid report hand-checked for false 'fell' results",
+    "manual refund path"
+  ],
+  "launchChannels": [
+    {
+      "name": "Hacker News (Show HN)",
+      "url": "https://news.ycombinator.com/showhn.html",
+      "why": "Agent builders and security-minded founders read it; a free gauntlet with a sample report fits the format."
+    },
+    {
+      "name": "r/AI_Agents",
+      "url": "https://www.reddit.com/r/AI_Agents/",
+      "why": "People shipping agents; answer injection-testing questions with the free run."
+    },
+    {
+      "name": "r/LLMDevs",
+      "url": "https://www.reddit.com/r/LLMDevs/",
+      "why": "Developers asking how to test LLM apps for injection."
+    },
+    {
+      "name": "Model Context Protocol GitHub discussions",
+      "url": "https://github.com/modelcontextprotocol",
+      "why": "MCP tool-server builders are exactly who needs tool-environment traps."
+    },
+    {
+      "name": "Indie Hackers",
+      "url": "https://www.indiehackers.com/",
+      "why": "Small founders selling agents to businesses; post build log and ask for security-review stories."
+    }
+  ],
+  "risks": [
+    "Demand is unproven: evidence is questionnaire text and vendor blogs, no buyer who lost a deal (review demand score 3/10)",
+    "Free promptfoo/garak/PyRIT is the real competitor; OpenAI is acquiring promptfoo and may bundle agent testing",
+    "A reviewer may not accept a vendor-run self-test report",
+    "Liability if a clean report precedes an incident; must never read as certification",
+    "Unknown solo author selling security assurance",
+    "Scenarios go stale; public gauntlet publishes attack techniques",
+    "Hosted wiring of a tool server into a customer's agent may be a setup cliff"
+  ],
+  "killCriteria": "Stop if, after about 15 contacts, fewer than 2 of 5 who see the sample say it would help a real security review and nobody shares a real questionnaire or prospect request; or fewer than 20 distinct agents run the free gauntlet within 30 days of the public post; or nobody pays $149–$299 within 60 days of the public post."
+}
