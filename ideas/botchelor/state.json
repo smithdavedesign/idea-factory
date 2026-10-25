@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-25T00:04:41.330Z",
+  "updatedAt": "2026-10-25T00:20:18.068Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -148,9 +148,9 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-25T00:04:41.330Z",
+    "at": "2026-10-25T00:20:18.068Z",
     "d7": {
-      "visit": 54,
+      "visit": 55,
       "signup": 0,
       "activate": 0,
       "checkout": 0
@@ -162,7 +162,7 @@
       "checkout": 0
     },
     "all": {
-      "visit": 76,
+      "visit": 77,
       "signup": 0,
       "activate": 1,
       "checkout": 0
@@ -175,7 +175,7 @@
     "referrers7d": [
       {
         "host": "direct",
-        "visitors": 44
+        "visitors": 45
       },
       {
         "host": "news.ycombinator.com",
@@ -198,7 +198,7 @@
   },
   "growth": {
     "stage": "activate",
-    "bottleneck": "54 visitors this week and nobody used the core action",
+    "bottleneck": "55 visitors this week and nobody used the core action",
     "next": {
       "kind": "landing",
       "executor": "build",
@@ -335,7 +335,7 @@
         "reason": "couldn't start the build sandbox: sandbox open: Docker is not running"
       }
     ],
-    "checkedAt": "2026-10-25T00:04:41.330Z",
+    "checkedAt": "2026-10-25T00:20:18.068Z",
     "plan": {
       "at": "2026-10-23T08:52:09.968Z",
       "items": [
