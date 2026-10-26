@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-26T00:04:47.259Z",
+  "updatedAt": "2026-10-26T06:02:17.970Z",
   "repo": "https://github.com/smithdavedesign/lienclock",
   "revenue": {
     "mrr": 0,
@@ -97,14 +97,13 @@
   "build": {
     "milestone": "MVP",
     "planned": [
-      "M1",
       "M2",
       "M3"
     ],
-    "status": "merged",
-    "at": "2026-10-25T22:01:36.095Z",
+    "status": "failed",
+    "at": "2026-10-26T06:02:17.223Z",
     "manual": false,
-    "reason": "couldn't start the build sandbox: sandbox open: Docker is not running",
+    "reason": "couldn't start the build sandbox: sandbox open: sandbox image build failed (repohq-factory-egress:b046ec052dd7): ERROR: Error response from daemon: Docker Desktop is unable to start",
     "milestones": [
       "M1"
     ],
@@ -120,9 +119,7 @@
       "reason": "Involves multiple components, state logic, and testable exit criteria across different systems.",
       "source": "model",
       "model": "local-qwen3"
-    },
-    "mergedBy": "agent",
-    "mergedAt": "2026-10-25T23:49:04.854Z"
+    }
   },
   "milestonesDone": [
     "M1"

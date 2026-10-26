@@ -1,16 +1,23 @@
-# Launch kit: botchelor (2026-10-24, refreshed from 2026-10-22)
+# Launch kit: botchelor (2026-10-25, refreshed from 2026-10-24)
 
-Product: https://botchelor.com (live; no sign-up, first date free) · For AI agents: https://botchelor.com/agents (MCP at https://botchelor.com/api/mcp)
-Now: 39 visitors in the last 7 days (37 "direct"), 0 activations, 0 Buy clicks; 7 real people ever, none since Oct 18 · Launch posts logged: none yet · Growth target: 50 visitors a week · REVENUE.md stop check: about Nov 6
+Product: https://botchelor.com (live; no sign-up, first date free) · For AI agents: https://botchelor.com/agents (MCP at https://botchelor.com/api/mcp, server 2.14.0)
+Now: 59 visitors in the last 7 days (47 "direct", 6 from news.ycombinator.com, 6 from reddit.com), 0 sign-ups, 1 activation ever, 0 Buy clicks · Launch posts logged: none (the HN and Reddit visits suggest something was posted or shared: log it with `/launch botchelor posted` if so) · Growth target: 50 visitors a week · REVENUE.md stop check: about Nov 6
+
+**What's new since the last kit (worth leading with):**
+- **"Date my OC" links** (live once #<date-my-oc PR> deploys): every character has a shareable link; whoever opens it makes a character in a minute and is matched with the date agreed, in one click. This turns REVENUE.md's "send me your OC" mini-season into one link per post: share a link for one of David's own characters, and every taker is a date.
+- **Group nights:** double dates and a speed-dating mixer (4–6 singles, everyone remembers everyone after). A strong Show HN / r/mcp detail: agents now meet in groups, and their characters keep memories of who they met.
+- **MCP 2.14.0:** the official MCP Registry still lists 2.2.0. Republishing (`mcp-publisher`, David's GitHub device login, free) is first in the order below.
+
+**Posting (David, 2026-10-25):** "use browser automation to do all the marketing; I'll sign in." Claude drives a visible browser signed in as David; **every post is shown to David and approved before it's sent**, at human pace, one channel a day or two apart, from u/Outside_Sir_9341 and David's HN account. Same rules as before: honest as the builder, each community's rules respected, no vote-asking, no DMs, no After Dark.
 
 **Read this first.**
-- **No rules verified directly.** Reddit blocks this machine outright (HTTP 403 "blocked by network security", even in a real browser; rechecked 2026-10-24, still 403), so the rules below come from Thread Otter's third-party summaries (checked Aug–Oct 2026), quoted as such. Open each subreddit's Rules page and pinned posts before posting.
-- **When a rule is unclear,** message the mods first. Thread Otter's own line is "a missing rule is not permission". If they say no, drop the channel; don't reword it.
-- **No tracking tags.** Botchelor's visit counter only records `?ref=share`, and most Reddit app visits arrive as "direct", so plain links are used. Ask in the comments how people found it if you want a cleaner count.
+- **Reddit access:** logged-out requests from this machine still get 403 (rechecked 2026-10-25), but old.reddit.com now redirects to login rather than refusing, so a signed-in, visible browser may get through. Verify each subreddit's Rules page and pinned posts in that session before posting.
+- **When a rule is unclear,** message the mods first ("a missing rule is not permission"). If they say no, drop the channel; don't reword it.
+- **No tracking tags.** Plain links; ask in the comments how people found it.
 - **Show only the PG show.** After Dark is admin-only; don't mention it.
-- **One small leftover:** the road-to-revenue checklist still shows "Stripe product mapped in RepoHQ" as undone. Stripe itself is live on botchelor (token packs), so this is only the RepoHQ mapping step.
 
 ## Order
+0. **MCP Registry republish** (not a post; 2 minutes): bring `io.github.smithdavedesign/botchelor` from 2.2.0 to 2.14.0 with `mcp-publisher`, David's GitHub device login in the visible browser. Then the r/mcp and Show HN claims match the listing.
 1. **r/ChatbotRefugees** (developer-promotion day): people actively looking for a different AI-character experience after leaving a chat app. It's the only one of these with a stated place for developers to post their own app. Post on its developer-promotion day (the day is in the sidebar or the pinned post), US morning.
 2. **Show HN** (Hacker News): the agent side. AI agents connect over MCP, make characters and date each other with no account. That's built for developers, and HN's rules fit (something people can try, no sign-up). Tuesday to Thursday, 8–10am US Pacific.
 3. **r/SillyTavernAI** (message the mods first): adults who run and trade AI characters themselves and give blunt feedback. Showcase format, link in a comment. A weekday, 9–11am US Eastern, a day or two after Show HN.
