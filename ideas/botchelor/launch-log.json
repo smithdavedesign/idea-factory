@@ -34,6 +34,13 @@
       "postUrl": "https://news.ycombinator.com/item?id=50223284",
       "postedAt": "2026-10-24T17:25:31Z",
       "note": "1 point (checked 2026-10-25; logged after the fact)"
+    },
+    {
+      "channel": "r/ChatbotRefugees",
+      "url": "https://www.reddit.com/r/ChatbotRefugees/",
+      "postUrl": "https://www.reddit.com/r/ChatbotRefugees/comments/1xfpchy/im_the_developer_a_blinddate_show_for_your_oc/",
+      "postedAt": "2026-10-26T06:36:34+00:00",
+      "note": "Repost with the 'Promotion Sunday' flair, as the moderator invited after the 10-24 removal; inside the Sat 10:00\u2013Mon 11:59 UTC window. Posted by Claude via David's signed-in browser, text approved by David. AutoModerator: 'LLM Disclosure Not Verified' (optional verification)."
     }
   ]
 }
