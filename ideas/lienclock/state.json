@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-25T23:49:04.854Z",
+  "updatedAt": "2026-10-26T00:04:47.259Z",
   "repo": "https://github.com/smithdavedesign/lienclock",
   "revenue": {
     "mrr": 0,
@@ -26,7 +26,7 @@
         "owner": "agent",
         "label": "MVP built: every roadmap milestone merged",
         "done": false,
-        "evidence": "0/3 milestones merged"
+        "evidence": "1/3 milestones merged"
       },
       {
         "id": "deployed",
@@ -92,7 +92,7 @@
     },
     "done": 1,
     "total": 10,
-    "updatedAt": "2026-10-25T23:49:04.854Z"
+    "updatedAt": "2026-10-26T00:04:47.259Z"
   },
   "build": {
     "milestone": "MVP",
