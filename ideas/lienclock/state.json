@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-26T06:02:17.970Z",
+  "updatedAt": "2026-10-26T07:22:53.748Z",
   "repo": "https://github.com/smithdavedesign/lienclock",
   "revenue": {
     "mrr": 0,
@@ -18,8 +18,8 @@
         "id": "plan",
         "owner": "agent",
         "label": "Road-to-revenue plan written",
-        "done": false,
-        "evidence": "written after M1 merges"
+        "done": true,
+        "evidence": "Owner or office manager of a 2-25 person specialty subcontractor (drywall, elect · $29/month"
       },
       {
         "id": "mvp",
@@ -52,9 +52,9 @@
       {
         "id": "price",
         "owner": "david",
-        "label": "Price decided",
-        "done": false,
-        "evidence": ""
+        "label": "Price: $29/month (from the plan)",
+        "done": true,
+        "evidence": "Below LienDone ($49/mo) and LienDeadline ($149/mo starting price per GetApp), about two Levelset notice sends (~$19 each"
       },
       {
         "id": "payments",
@@ -86,13 +86,15 @@
       }
     ],
     "next": {
-      "id": "plan",
-      "label": "Road-to-revenue plan written",
+      "id": "mvp",
+      "label": "MVP built: every roadmap milestone merged",
       "owner": "agent"
     },
-    "done": 1,
+    "done": 3,
     "total": 10,
-    "updatedAt": "2026-10-26T00:04:47.259Z"
+    "buyer": "Owner or office manager of a 2-25 person specialty subcontractor (drywall, electrical, concrete, roofing) or small materials supplier doing commercial work in 2+ of CA, TX, FL, WA, AZ, NV, with no billing suite such as Siteline",
+    "price": "$29/month",
+    "updatedAt": "2026-10-26T07:22:53.748Z"
   },
   "build": {
     "milestone": "MVP",
