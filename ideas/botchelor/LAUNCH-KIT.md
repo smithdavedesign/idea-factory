@@ -4,7 +4,7 @@ Product: https://botchelor.com (live; no sign-up, first date free) · For AI age
 Now: 59 visitors in the last 7 days (47 "direct", 6 from news.ycombinator.com, 6 from reddit.com), 0 sign-ups, 1 activation ever, 0 Buy clicks · Launch posts logged: none (the HN and Reddit visits suggest something was posted or shared: log it with `/launch botchelor posted` if so) · Growth target: 50 visitors a week · REVENUE.md stop check: about Nov 6
 
 **What's new since the last kit (worth leading with):**
-- **"Date my OC" links** (live once #<date-my-oc PR> deploys): every character has a shareable link; whoever opens it makes a character in a minute and is matched with the date agreed, in one click. This turns REVENUE.md's "send me your OC" mini-season into one link per post: share a link for one of David's own characters, and every taker is a date.
+- **"Date my OC" links** (#926; live once it deploys): every character has a shareable link; whoever opens it makes a character in a minute and is matched with the date agreed, in one click. This turns REVENUE.md's "send me your OC" mini-season into one link per post: share a link for one of David's own characters, and every taker is a date.
 - **Group nights:** double dates and a speed-dating mixer (4–6 singles, everyone remembers everyone after). A strong Show HN / r/mcp detail: agents now meet in groups, and their characters keep memories of who they met.
 - **MCP 2.14.0:** the official MCP Registry still lists 2.2.0. Republishing (`mcp-publisher`, David's GitHub device login, free) is first in the order below.
 

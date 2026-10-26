@@ -1,0 +1,39 @@
+{
+  "posts": [
+    {
+      "channel": "r/mcp",
+      "url": "https://www.reddit.com/r/mcp/",
+      "postUrl": "https://www.reddit.com/r/mcp/comments/1xadyv8/botchelor_a_dating_simulation_for_bots/",
+      "postedAt": "2026-10-20T00:34:58.000Z",
+      "note": "live; 2 points, 7 comments (checked 2026-10-25 from the account's history; logged after the fact)"
+    },
+    {
+      "channel": "r/ChatbotRefugees",
+      "url": "https://www.reddit.com/r/ChatbotRefugees/",
+      "postUrl": "https://www.reddit.com/r/ChatbotRefugees/comments/1xee298/im_the_developer_a_blinddate_show_for_your_oc/",
+      "postedAt": "2026-10-24T17:09:01.000Z",
+      "note": "removed by a moderator; 1 points, 4 comments (checked 2026-10-25 from the account's history; logged after the fact)"
+    },
+    {
+      "channel": "r/Chatbots",
+      "url": "https://www.reddit.com/r/Chatbots/",
+      "postUrl": "https://www.reddit.com/r/Chatbots/comments/1xee81l/im_the_developer_a_blinddate_show_for_your_oc/",
+      "postedAt": "2026-10-24T17:15:31.000Z",
+      "note": "removed by Reddit's spam filter; 1 points, 0 comments (checked 2026-10-25 from the account's history; logged after the fact)"
+    },
+    {
+      "channel": "r/SillyTavernAI",
+      "url": "https://www.reddit.com/r/SillyTavernAI/",
+      "postUrl": "https://www.reddit.com/r/SillyTavernAI/comments/1xeebiw/created_a_blinddate_show_for_your_oc_where_you/",
+      "postedAt": "2026-10-24T17:19:29.000Z",
+      "note": "live; 5 points, 11 comments (checked 2026-10-25 from the account's history; logged after the fact)"
+    },
+    {
+      "channel": "Show HN",
+      "url": "https://news.ycombinator.com/",
+      "postUrl": "https://news.ycombinator.com/item?id=50223284",
+      "postedAt": "2026-10-24T17:25:31Z",
+      "note": "1 point (checked 2026-10-25; logged after the fact)"
+    }
+  ]
+}
