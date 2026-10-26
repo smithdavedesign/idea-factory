@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-26T07:22:53.748Z",
+  "updatedAt": "2026-10-26T07:24:28.499Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -110,8 +110,8 @@
       "M2",
       "M3"
     ],
-    "status": "closed",
-    "at": "2026-10-25T10:50:50.228Z",
+    "status": "failed",
+    "at": "2026-10-26T07:24:08.279Z",
     "manual": false,
     "advice": {
       "difficulty": 2,
@@ -390,9 +390,11 @@
         "planItem": "poll-share-cards-og",
         "title": "Per-poll share card (og:image) showing the candidates",
         "payments": false,
-        "status": "proposed",
+        "status": "abandoned",
         "createdAt": "2026-10-26T07:22:53.748Z",
-        "updatedAt": "2026-10-26T07:22:53.748Z"
+        "updatedAt": "2026-10-26T07:24:28.499Z",
+        "failed": true,
+        "reason": "couldn't start the build sandbox: sandbox open: Docker is not running"
       }
     ],
     "checkedAt": "2026-10-22T08:27:26.688Z",
