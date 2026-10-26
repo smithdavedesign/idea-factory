@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-25T22:17:40.506Z",
+  "updatedAt": "2026-10-26T02:22:58.646Z",
   "repo": "https://github.com/smithdavedesign/grantgate",
   "revenue": {
     "mrr": 0,
@@ -39,8 +39,8 @@
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
-        "done": false,
-        "evidence": "privacy ✗ · terms ✗"
+        "done": true,
+        "evidence": "privacy ✓ · terms ✓"
       },
       {
         "id": "launchReady",
@@ -86,15 +86,15 @@
       }
     ],
     "next": {
-      "id": "legal",
-      "label": "Privacy policy and terms pages",
+      "id": "launchReady",
+      "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
       "owner": "agent"
     },
-    "done": 4,
+    "done": 5,
     "total": 10,
     "buyer": "Owner or office manager of a 5-50 person Google Workspace business with no IT staff (small accounting practice, agency, clinic, bookkeeping shop) who is the de facto Workspace admin; secondary: the outsourced IT/MSP who looks after several such firms",
     "price": "$49/year",
-    "updatedAt": "2026-10-25T22:17:40.506Z"
+    "updatedAt": "2026-10-26T02:22:58.646Z"
   },
   "build": {
     "milestone": "MVP",
