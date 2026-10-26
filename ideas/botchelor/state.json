@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-26T07:39:08.207Z",
+  "updatedAt": "2026-10-26T07:40:52.208Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -109,7 +109,7 @@
       "M4"
     ],
     "stopped": null,
-    "status": "closed",
+    "status": "failed",
     "prUrl": "https://github.com/smithdavedesign/botchelor/pull/859",
     "testsPassing": false,
     "engine": "claude",
@@ -117,7 +117,7 @@
     "effort": "xhigh",
     "manual": false,
     "sandbox": "docker",
-    "at": "2026-10-25T12:25:04.448Z",
+    "at": "2026-10-26T07:40:32.026Z",
     "advice": {
       "difficulty": 2,
       "reason": "Implementing a feature with multiple components across files and handling game logic with specific rules.",
@@ -365,9 +365,11 @@
         "planItem": "daily-date",
         "title": "Daily Date: one blind date a day to predict, no account",
         "payments": false,
-        "status": "proposed",
+        "status": "abandoned",
         "createdAt": "2026-10-26T07:39:08.207Z",
-        "updatedAt": "2026-10-26T07:39:08.207Z"
+        "updatedAt": "2026-10-26T07:40:52.208Z",
+        "failed": true,
+        "reason": "couldn't start the build sandbox: sandbox open: Docker is not running"
       }
     ],
     "checkedAt": "2026-10-25T02:24:27.214Z",
