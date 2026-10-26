@@ -1,0 +1,59 @@
+{
+  "buyer": "Owner or office manager of a 2-25 person specialty subcontractor (drywall, electrical, concrete, roofing) or small materials supplier doing commercial work in 2+ of CA, TX, FL, WA, AZ, NV, with no billing suite such as Siteline",
+  "paymentMethod": "Stripe Checkout payment link (no backend needed); enable accounts by hand for the first 10 customers",
+  "mvpScope": "Magic-link login, add a job (state, role, project type, first-furnish date), per-job deadline list with statute citation and last-verified date and protected/at-risk/missed status, email alerts at 14/7/2 days, update last-furnish date to recompute. ICS feed and email-forward intake are not required before charging.",
+  "firstTenUsers": "Run 20 direct emails to owners of small drywall, electrical and concrete subs in California, Texas and Washington found on Google Maps, offering to compute their next real job's deadlines free and asking for $29/month after; plus helpful answers (not spam) in r/Construction, r/Contractor and ContractorTalk lien-threads linking a per-state deadline calculator page. Target 10 conversations, 3 pilots, 3 paying by 2026-12-31.",
+  "price": {
+    "amount": 29,
+    "currency": "USD",
+    "interval": "month",
+    "why": "Below LienDone ($49/mo) and LienDeadline ($149/mo starting price per GetApp), about two Levelset notice sends (~$19 each). Drop to $19 if the first 10 pitches push back; LienDeadline's free tier is the real competitor."
+  },
+  "mustHaveBeforeCharging": [
+    "Stripe Checkout payment link at $29/month",
+    "privacy policy and terms pages",
+    "visible 'reference tool, not legal advice' disclaimer",
+    "every rule verified against statute text for the launch states, with last-verified date shown",
+    "email alerts confirmed working end to end on a real job",
+    "og:image, robots.txt, sitemap",
+    "watched at least 3 real subs enter a job unaided"
+  ],
+  "launchChannels": [
+    {
+      "name": "r/Construction",
+      "url": "https://www.reddit.com/r/Construction/",
+      "why": "Trade subreddit; lien and unpaid-invoice questions come up. Answer questions helpfully first, check rules before posting links."
+    },
+    {
+      "name": "r/Contractor",
+      "url": "https://www.reddit.com/r/Contractor/",
+      "why": "Small contractor owners, the target buyer."
+    },
+    {
+      "name": "ContractorTalk forums",
+      "url": "https://www.contractortalk.com/",
+      "why": "Long-running contractor forum with business and legal sections; owners discuss unpaid work."
+    },
+    {
+      "name": "CFMA community (cafe.cfma.org)",
+      "url": "https://cafe.cfma.org/",
+      "why": "Construction finance managers; a thread on lien rule tripping already exists, though from a competitor."
+    },
+    {
+      "name": "Direct outreach to small subs in CA/TX/WA",
+      "url": "https://www.google.com/maps",
+      "why": "Find 2-25 person specialty subs by trade and city, email the owner with a free deadline check; the only channel with real conversations."
+    }
+  ],
+  "risks": [
+    "A wrong deadline can cost a customer a lien right; liability and disclaimer wording unresolved",
+    "LienDeadline has a free tier and 50-state coverage; Levelset/Siteline have funded content marketing",
+    "Small subs may use a lien attorney or spreadsheet rather than SaaS",
+    "Demand evidence is vendor marketing only; no first-hand buyer quote",
+    "Ongoing rule maintenance as statutes change",
+    "No known network in the trade, so reach is cold",
+    "Price figures come from third-party listings and may be out of date",
+    "M2/M3 build timed out; remaining engineering is unfinished"
+  ],
+  "killCriteria": "Stop on 2026-12-31 if fewer than 3 of 10 interviewed subs report a missed or near-missed notice in the last 12 months, or if no one pays $29 (or $19) after 100 landing visitors and 10 direct pitches. Also stop if the paying job turns out to be notice sending."
+}
