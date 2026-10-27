@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-26T06:17:19.792Z",
+  "updatedAt": "2026-10-27T06:27:05.571Z",
   "repo": "https://github.com/smithdavedesign/grantgate",
   "revenue": {
     "mrr": 0,
@@ -136,5 +136,32 @@
     "mergedAt": "2026-10-26T05:58:50.362Z",
     "prUrl": "https://github.com/smithdavedesign/grantgate/pull/2",
     "beacon": "funnel"
+  },
+  "funnel": {
+    "at": "2026-10-27T06:27:05.571Z",
+    "d7": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "prev7": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "all": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "seen": {
+      "visit": false,
+      "activate": false,
+      "checkout": false
+    },
+    "referrers7d": []
   }
 }

@@ -7,7 +7,7 @@
     "at": "2026-10-13T06:29:40.990Z",
     "notionAt": "2026-10-13T06:29:42.454Z"
   },
-  "updatedAt": "2026-10-24T19:40:46.374Z",
+  "updatedAt": "2026-10-27T06:27:05.571Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -139,7 +139,7 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-20T23:27:24.856Z",
+    "at": "2026-10-27T06:27:05.571Z",
     "d7": {
       "visit": 0,
       "signup": 0,
@@ -147,19 +147,19 @@
       "checkout": 0
     },
     "prev7": {
-      "visit": 1,
+      "visit": 0,
       "signup": 0,
       "activate": 0,
       "checkout": 0
     },
     "all": {
-      "visit": 1,
+      "visit": 0,
       "signup": 0,
       "activate": 0,
       "checkout": 0
     },
     "seen": {
-      "visit": true,
+      "visit": false,
       "activate": false,
       "checkout": false
     },

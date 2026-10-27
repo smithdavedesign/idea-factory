@@ -9,18 +9,20 @@
   },
   "validation": {
     "startedAt": "2026-10-12T16:33:05.029Z",
-    "decideAfter": "2026-10-26T16:33:05.029Z",
-    "extensions": 0
+    "decideAfter": "2026-11-10T06:27:05.571Z",
+    "extensions": 1,
+    "decision": "extend",
+    "reason": "only 0 visitors (need 50 to judge): extended 14 days — share the launch post"
   },
-  "updatedAt": "2026-10-17T17:46:31.583Z",
+  "updatedAt": "2026-10-27T06:27:05.571Z",
   "page": {
     "url": "https://idea-pages-livid.vercel.app/packpass/",
     "deployedAt": "2026-10-12T16:33:05.029Z"
   },
   "signals": {
-    "views": 1,
-    "uniqueVisitors": 1,
+    "views": 0,
+    "uniqueVisitors": 0,
     "signups": 0,
-    "updatedAt": "2026-10-17T17:46:31.583Z"
+    "updatedAt": "2026-10-27T06:27:05.571Z"
   }
 }

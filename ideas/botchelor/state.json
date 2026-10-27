@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-26T07:40:52.208Z",
+  "updatedAt": "2026-10-27T06:27:05.571Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -76,8 +76,8 @@
         "id": "firstUser",
         "owner": "david",
         "label": "First user or signup",
-        "done": true,
-        "evidence": "1 active user"
+        "done": false,
+        "evidence": ""
       },
       {
         "id": "firstDollar",
@@ -92,11 +92,11 @@
       "label": "Stripe product created and mapped to the repo in RepoHQ",
       "owner": "david"
     },
-    "done": 8,
+    "done": 7,
     "total": 10,
     "buyer": "An adult (18+) who has written an original character and already roleplays it with AI, e.g. a regular in the r/CharacterAI or r/SillyTavernAI subreddits or an AI-roleplay Discord such as the Shapes Inc server; not art-first OC communities, which reject AI. No named individual or community size is verified.",
     "price": "$4 once",
-    "updatedAt": "2026-10-26T06:51:33.447Z"
+    "updatedAt": "2026-10-27T06:27:05.571Z"
   },
   "revenue": {
     "mrr": 0,
@@ -148,61 +148,39 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-10-25T02:39:32.784Z",
+    "at": "2026-10-27T06:27:05.571Z",
     "d7": {
-      "visit": 59,
+      "visit": 0,
       "signup": 0,
       "activate": 0,
       "checkout": 0
     },
     "prev7": {
-      "visit": 26,
+      "visit": 0,
       "signup": 0,
-      "activate": 1,
+      "activate": 0,
       "checkout": 0
     },
     "all": {
-      "visit": 81,
+      "visit": 0,
       "signup": 0,
-      "activate": 1,
+      "activate": 0,
       "checkout": 0
     },
     "seen": {
-      "visit": true,
-      "activate": true,
+      "visit": false,
+      "activate": false,
       "checkout": false
     },
-    "referrers7d": [
-      {
-        "host": "direct",
-        "visitors": 47
-      },
-      {
-        "host": "news.ycombinator.com",
-        "visitors": 6
-      },
-      {
-        "host": "reddit.com",
-        "visitors": 6
-      },
-      {
-        "host": "accounts.google.com",
-        "visitors": 1
-      },
-      {
-        "host": "google.com",
-        "visitors": 1
-      }
-    ],
-    "burst7d": 18
+    "referrers7d": []
   },
   "growth": {
-    "stage": "activate",
-    "bottleneck": "59 visitors this week and nobody used the core action",
+    "stage": "instrument",
+    "bottleneck": "its beacon only counts home-page views, so activations and Buy clicks aren't measured",
     "next": {
-      "kind": "landing",
+      "kind": "instrumentation",
       "executor": "build",
-      "metric": "activate"
+      "metric": "beacon"
     },
     "experiments": [
       {
@@ -372,7 +350,7 @@
         "reason": "couldn't start the build sandbox: sandbox open: Docker is not running"
       }
     ],
-    "checkedAt": "2026-10-25T02:24:27.214Z",
+    "checkedAt": "2026-10-27T06:27:05.571Z",
     "plan": {
       "at": "2026-10-23T08:52:09.968Z",
       "items": [

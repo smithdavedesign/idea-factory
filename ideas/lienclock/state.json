@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-26T07:22:53.748Z",
+  "updatedAt": "2026-10-27T06:27:05.571Z",
   "repo": "https://github.com/smithdavedesign/lienclock",
   "revenue": {
     "mrr": 0,
@@ -125,5 +125,32 @@
   },
   "milestonesDone": [
     "M1"
-  ]
+  ],
+  "funnel": {
+    "at": "2026-10-27T06:27:05.571Z",
+    "d7": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "prev7": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "all": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "seen": {
+      "visit": false,
+      "activate": false,
+      "checkout": false
+    },
+    "referrers7d": []
+  }
 }
