@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-27T11:38:48.439Z",
+  "updatedAt": "2026-10-27T11:39:18.696Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -117,14 +117,14 @@
     "effort": "xhigh",
     "manual": false,
     "sandbox": "docker",
-    "at": "2026-10-26T07:40:32.026Z",
+    "at": "2026-10-27T11:39:11.260Z",
     "advice": {
       "difficulty": 2,
       "reason": "Implementing a feature with multiple components across files and handling game logic with specific rules.",
       "source": "model",
       "model": "local-qwen3"
     },
-    "reason": "couldn't start the build sandbox: sandbox open: Docker is not running",
+    "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets Oct 29, 4pm (UTC)",
     "experiment": "botchelor-20261025-feature-daily-date",
     "kind": "feature",
     "acceptance": {
@@ -358,9 +358,11 @@
         "baseline": 0,
         "target": 1,
         "windowDays": 7,
-        "status": "proposed",
+        "status": "abandoned",
         "createdAt": "2026-10-27T11:38:48.439Z",
-        "updatedAt": "2026-10-27T11:38:48.439Z"
+        "updatedAt": "2026-10-27T11:39:18.696Z",
+        "failed": true,
+        "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets Oct 29, 4pm (UTC)"
       }
     ],
     "checkedAt": "2026-10-27T06:27:05.571Z",
