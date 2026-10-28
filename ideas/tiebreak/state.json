@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-27T10:46:21.398Z",
+  "updatedAt": "2026-10-28T10:13:29.720Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -413,6 +413,22 @@
         "updatedAt": "2026-10-27T10:46:21.398Z",
         "failed": true,
         "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets Oct 29, 4pm (UTC)"
+      },
+      {
+        "id": "tiebreak-20261028-feature-poll-share-cards-og",
+        "kind": "feature",
+        "executor": "build",
+        "hypothesis": "Per-poll share card (og:image) showing the candidates: Every route to voters in the record (launch kit, concierge plan) is someone pasting a poll link into a chat or forum, and today that link unfurls as plain text. Different from the two failed poll-share-cards builds (#15, #16): this one is only the image route and the meta tags. The 'make your own' loop and the closed-poll split are dropped, and nothing outside the web app's poll page and a new ima",
+        "metric": "visit",
+        "baseline": 0,
+        "target": 10,
+        "windowDays": 14,
+        "planItem": "poll-share-cards-og",
+        "title": "Per-poll share card (og:image) showing the candidates",
+        "payments": false,
+        "status": "proposed",
+        "createdAt": "2026-10-28T10:13:29.720Z",
+        "updatedAt": "2026-10-28T10:13:29.720Z"
       }
     ],
     "checkedAt": "2026-10-22T08:27:26.688Z",
@@ -437,7 +453,8 @@
           "target": 10,
           "attempts": [
             "tiebreak-20261026-feature-poll-share-cards-og",
-            "tiebreak-20261027-feature-poll-share-cards-og"
+            "tiebreak-20261027-feature-poll-share-cards-og",
+            "tiebreak-20261028-feature-poll-share-cards-og"
           ]
         },
         {
