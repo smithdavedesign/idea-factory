@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-28T10:13:29.720Z",
+  "updatedAt": "2026-10-28T10:13:42.347Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -111,7 +111,7 @@
       "M3"
     ],
     "status": "failed",
-    "at": "2026-10-27T10:46:18.313Z",
+    "at": "2026-10-28T10:13:39.123Z",
     "manual": false,
     "advice": {
       "difficulty": 2,
@@ -426,9 +426,11 @@
         "planItem": "poll-share-cards-og",
         "title": "Per-poll share card (og:image) showing the candidates",
         "payments": false,
-        "status": "proposed",
+        "status": "abandoned",
         "createdAt": "2026-10-28T10:13:29.720Z",
-        "updatedAt": "2026-10-28T10:13:29.720Z"
+        "updatedAt": "2026-10-28T10:13:42.347Z",
+        "failed": true,
+        "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets Oct 29, 4pm (UTC)"
       }
     ],
     "checkedAt": "2026-10-22T08:27:26.688Z",
