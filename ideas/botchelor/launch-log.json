@@ -40,7 +40,21 @@
       "url": "https://www.reddit.com/r/ChatbotRefugees/",
       "postUrl": "https://www.reddit.com/r/ChatbotRefugees/comments/1xfpchy/im_the_developer_a_blinddate_show_for_your_oc/",
       "postedAt": "2026-10-26T06:36:34+00:00",
-      "note": "Repost with the 'Promotion Sunday' flair, as the moderator invited after the 10-24 removal; inside the Sat 10:00\u2013Mon 11:59 UTC window. Posted by Claude via David's signed-in browser, text approved by David. AutoModerator: 'LLM Disclosure Not Verified' (optional verification)."
+      "note": "Repost with the 'Promotion Sunday' flair, as the moderator invited after the 10-24 removal; inside the Sat 10:00\u2013Mon 11:59 UTC window. Posted by Claude via David's signed-in browser, text approved by David. AutoModerator: 'LLM Disclosure Not Verified' (optional verification). UPDATE 2026-10-29: removed by the sub's AI AutoModerator as 'outside the window' although posted 06:35 UTC Monday (inside it); David chose not to modmail."
+    },
+    {
+      "channel": "r/ChatbotRefugees (October Promotions megathread)",
+      "url": "https://www.reddit.com/r/ChatbotRefugees/comments/1wwersg/",
+      "postUrl": "https://www.reddit.com/r/ChatbotRefugees/comments/1wwersg/monthly_platform_alternatives_promotions/19ru6n912xu5e/",
+      "postedAt": "2026-10-29T16:11:37+00:00",
+      "note": "Comment with Chud's date link (https://botchelor.com/date/dfc77e4eb130; date_invites counts takers). Text approved by David; posted via his signed-in browser."
+    },
+    {
+      "channel": "HN (email, not a post)",
+      "url": "mailto:hn@ycombinator.com",
+      "postUrl": "",
+      "postedAt": "2026-10-29T16:11:37+00:00",
+      "note": "Asked for the second-chance pool for item 50223284; sent from David's Gmail with his approval."
     }
   ]
 }

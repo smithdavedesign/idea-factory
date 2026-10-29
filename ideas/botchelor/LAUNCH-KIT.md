@@ -113,6 +113,9 @@ When you put your OC in a date or a meet-cute, do you write both sides, or would
 **Afterwards:** reply to every comment. Share the link only by DM when someone asks for it, never in the thread.
 
 ## Dropped
+- **r/CharacterAI** (2026-10-29, rules read in David's session): it's Character.AI's official, company-sponsored sub. Rule 4: "Any self-promotion or promotion of other tools or services is not allowed"; Rule 5: no advertising or self-promotion; and users are 13+, while Botchelor is 18+. Dropped, not worked around.
+- **r/SillyTavernAI, further posts** (2026-10-29): Rule 12, "Applications, platforms, or 'alternatives' to SillyTavern that are promoted on the subreddit must either be open source … or support self-hosting". Botchelor is neither; a comment in someone's help thread drew "Rule 12". The 10-24 post is still up; post nothing more there.
+- **r/ChatbotRefugees**: only in the monthly Promotions megathread or on Promotion Sunday (Sat 10:00 to Mon 11:59 UTC). Its AI moderator removed an in-window post on 10-26; David chose not to appeal. The one-time "Approved Developer" disclosure (modmail) is drafted in the 2026-10-29 conversation if he changes his mind.
 - **r/OriginalCharacter:** bans AI-generated content (RESEARCH.md), and art-first OC communities are hostile to AI roleplay.
 - **r/LoveIslandUSA:** spectators who won't make characters, and a fan sub that likely bans promotion. It doesn't fit until there's a spectator-only hook.
 - **Shapes Inc Discord:** there's no verified official invite, only a third-party directory listing from the 10-15 kit.
