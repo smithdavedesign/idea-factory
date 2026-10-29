@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-29T16:18:47.748Z",
+  "updatedAt": "2026-10-29T17:24:37.475Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -34,22 +34,22 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": false,
-        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
+        "done": true,
+        "evidence": "https://botchelor.com"
       },
       {
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
         "done": true,
-        "evidence": "privacy ✓ · terms ✓"
+        "evidence": "live on the site"
       },
       {
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-        "done": false,
-        "evidence": "checked once it's live (the go-live build adds what's missing)"
+        "done": true,
+        "evidence": "9/9 launch checks"
       },
       {
         "id": "price",
@@ -88,15 +88,15 @@
       }
     ],
     "next": {
-      "id": "deployed",
-      "label": "Live on a free tier",
-      "owner": "agent"
+      "id": "payments",
+      "label": "Stripe product created and mapped to the repo in RepoHQ",
+      "owner": "david"
     },
-    "done": 5,
+    "done": 7,
     "total": 10,
     "buyer": "An adult (18+) who has written an original character and already roleplays it with AI, e.g. a regular in the r/CharacterAI or r/SillyTavernAI subreddits or an AI-roleplay Discord such as the Shapes Inc server; not art-first OC communities, which reject AI. No named individual or community size is verified.",
     "price": "$4 once",
-    "updatedAt": "2026-10-29T16:18:47.748Z"
+    "updatedAt": "2026-10-29T17:24:37.475Z"
   },
   "revenue": {
     "mrr": 0,
@@ -175,8 +175,8 @@
     "referrers7d": []
   },
   "growth": {
-    "stage": "launch",
-    "bottleneck": "not launch-ready yet: the go-live build and its audit come first",
+    "stage": "instrument",
+    "bottleneck": "its beacon only counts home-page views, so activations and Buy clicks aren't measured",
     "next": null,
     "experiments": [
       {
@@ -391,7 +391,7 @@
         "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets 4pm (UTC)"
       }
     ],
-    "checkedAt": "2026-10-29T16:18:47.748Z",
+    "checkedAt": "2026-10-29T17:24:37.475Z",
     "plan": {
       "at": "2026-10-23T08:52:09.968Z",
       "items": [
