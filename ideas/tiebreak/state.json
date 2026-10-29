@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-28T10:13:42.347Z",
+  "updatedAt": "2026-10-29T08:54:46.914Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -431,6 +431,22 @@
         "updatedAt": "2026-10-28T10:13:42.347Z",
         "failed": true,
         "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets Oct 29, 4pm (UTC)"
+      },
+      {
+        "id": "tiebreak-20261029-feature-etsy-listing-photo-test",
+        "kind": "feature",
+        "executor": "build",
+        "hypothesis": "Free Etsy listing photo tester: 2–4 photos in a mock Etsy search grid, then 'let strangers pick': The paying buyer in REVENUE.md is an Etsy seller choosing a main photo, and search turns up no free Etsy-specific tool that compares candidates and collects votes, only PickFu (paid, Amazon-focused) and live split testers. Different from the three failed thumbnail-compare-tool builds (#11–#13): one page for one buyer instead of three tool pages in one PR, with the poll handoff reusing the existing",
+        "metric": "visit",
+        "baseline": 0,
+        "target": 20,
+        "windowDays": 14,
+        "planItem": "etsy-listing-photo-test",
+        "title": "Free Etsy listing photo tester: 2–4 photos in a mock Etsy search grid, then 'let strangers pick'",
+        "payments": false,
+        "status": "proposed",
+        "createdAt": "2026-10-29T08:54:46.914Z",
+        "updatedAt": "2026-10-29T08:54:46.914Z"
       }
     ],
     "checkedAt": "2026-10-22T08:27:26.688Z",
@@ -474,7 +490,10 @@
           "windowDays": 14,
           "size": "M",
           "payments": false,
-          "target": 20
+          "target": 20,
+          "attempts": [
+            "tiebreak-20261029-feature-etsy-listing-photo-test"
+          ]
         },
         {
           "id": "youtube-thumbnail-test",
