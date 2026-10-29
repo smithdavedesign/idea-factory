@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-29T08:54:46.914Z",
+  "updatedAt": "2026-10-29T08:55:01.287Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -111,7 +111,7 @@
       "M3"
     ],
     "status": "failed",
-    "at": "2026-10-28T10:13:39.123Z",
+    "at": "2026-10-29T08:54:58.129Z",
     "manual": false,
     "advice": {
       "difficulty": 2,
@@ -119,7 +119,7 @@
       "source": "model",
       "model": "local-qwen3"
     },
-    "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets Oct 29, 4pm (UTC)",
+    "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets 4pm (UTC)",
     "milestones": [],
     "stopped": "M3: tests failing",
     "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/16",
@@ -444,9 +444,11 @@
         "planItem": "etsy-listing-photo-test",
         "title": "Free Etsy listing photo tester: 2–4 photos in a mock Etsy search grid, then 'let strangers pick'",
         "payments": false,
-        "status": "proposed",
+        "status": "abandoned",
         "createdAt": "2026-10-29T08:54:46.914Z",
-        "updatedAt": "2026-10-29T08:54:46.914Z"
+        "updatedAt": "2026-10-29T08:55:01.287Z",
+        "failed": true,
+        "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets 4pm (UTC)"
       }
     ],
     "checkedAt": "2026-10-22T08:27:26.688Z",
