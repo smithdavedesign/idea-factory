@@ -7,7 +7,7 @@
     "at": "2026-10-10T19:04:52.289Z",
     "notionAt": "2026-10-10T19:06:17.271Z"
   },
-  "updatedAt": "2026-10-29T09:41:07.096Z",
+  "updatedAt": "2026-10-30T07:16:19.307Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -25,8 +25,8 @@
         "id": "plan",
         "owner": "agent",
         "label": "Road-to-revenue plan written",
-        "done": false,
-        "evidence": "written after M1 merges"
+        "done": true,
+        "evidence": "A senior developer or tech lead (2-20 person team) who reviews or ships 20+ file · $9 once"
       },
       {
         "id": "mvp",
@@ -59,9 +59,9 @@
       {
         "id": "price",
         "owner": "david",
-        "label": "Price decided",
-        "done": false,
-        "evidence": ""
+        "label": "Price: $9 once (from the plan)",
+        "done": true,
+        "evidence": "Graphite Starter is about $20/user/month and CodeRabbit Essentials about $24/user/month, but those are full review platf"
       },
       {
         "id": "payments",
@@ -93,13 +93,15 @@
       }
     ],
     "next": {
-      "id": "plan",
-      "label": "Road-to-revenue plan written",
+      "id": "deployed",
+      "label": "Live on a free tier",
       "owner": "agent"
     },
-    "done": 1,
+    "done": 3,
     "total": 10,
-    "updatedAt": "2026-10-27T08:36:58.929Z"
+    "buyer": "A senior developer or tech lead (2-20 person team) who reviews or ships 20+ file AI-generated branches weekly and pays for their own dev tools (Cursor/Copilot/Claude); reachable as people who post about giant AI PRs on Hacker News, r/ClaudeAI and dev.to",
+    "price": "$9 once",
+    "updatedAt": "2026-10-30T07:16:19.307Z"
   },
   "build": {
     "milestone": "GOLIVE",
