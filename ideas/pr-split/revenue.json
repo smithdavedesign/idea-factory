@@ -1,0 +1,51 @@
+{
+  "buyer": "A senior developer or tech lead (2-20 person team) who reviews or ships 20+ file AI-generated branches weekly and pays for their own dev tools (Cursor/Copilot/Claude); reachable as people who post about giant AI PRs on Hacker News, r/ClaudeAI and dev.to",
+  "paymentMethod": "Stripe Checkout payment link (no backend); the success page shows the license/download instructions for the paid build (private GitHub release or key file), fulfilled manually for the first ten buyers",
+  "mvpScope": "On three real branches of 20+ files, the CLI proposes a split where every stacked layer builds and passes tests (the validation loop is the only thing worth paying for), with --dry-run, --execute and gh PR opening working end to end. Free tier: dry-run plan. Paid: --execute with validation and PR opening.",
+  "firstTenUsers": "Do the review's assignment first: find three people who complained about a giant PR in dev.to comments on the code-review-bottleneck article, Hacker News threads on AI-generated PRs, and r/ClaudeAI posts, and offer them a free run on their branch in exchange for a failure report. Then a Show HN and one r/ClaudeAI post. Convert the ones whose branches came out green with the $9 link.",
+  "price": {
+    "amount": 9,
+    "currency": "USD",
+    "interval": "once",
+    "why": "Graphite Starter is about $20/user/month and CodeRabbit Essentials about $24/user/month, but those are full review platforms; four splitters are free and GitHub's gh-stack is free. A $9 one-time license sits under impulse-buy level for someone who already pays $20+/month for an agent. Low-confidence price: no evidence anyone will pay anything."
+  },
+  "mustHaveBeforeCharging": [
+    "Live landing page on a free tier with the demo screenshots of the main flow",
+    "Build-verified test passing on 3 real messy branches (kill criterion 2)",
+    "Stripe Checkout payment link and a working fulfilment path (paid build or key)",
+    "Privacy policy and terms pages",
+    "Clear statement that code is sent only to the user's chosen LLM (default local Ollama)",
+    "Positioning versus gh stack: pr-split decomposes, gh stack manages the result"
+  ],
+  "launchChannels": [
+    {
+      "name": "Hacker News (Show HN)",
+      "url": "https://news.ycombinator.com/showhn.html",
+      "why": "Developers who complain about giant AI PRs gather here; fast, free demand signal"
+    },
+    {
+      "name": "r/ClaudeAI",
+      "url": "https://www.reddit.com/r/ClaudeAI/",
+      "why": "Heavy agent users generating large branches; also where the status-quo workaround (prompt the agent) is discussed"
+    },
+    {
+      "name": "dev.to",
+      "url": "https://dev.to/",
+      "why": "The source article on growing review bottlenecks was posted here; comments name people with the pain"
+    },
+    {
+      "name": "github/gh-stack discussions and issues",
+      "url": "https://github.com/github/gh-stack",
+      "why": "Users of native stacks who need an automated decomposition step"
+    }
+  ],
+  "risks": [
+    "No evidence of willingness to pay; review scored 3/10",
+    "GitHub native stacks (gh stack, with an agent skill) and coding agents absorb decomposition",
+    "Four free splitters exist; a plain agent prompt is nearly free",
+    "File-level splits break builds on mixed-concern files; hunk-level is a non-goal",
+    "Trust: tool creates branches and PRs",
+    "Last build milestone (GOLIVE) failed on a spend limit, so the product is not yet deployed"
+  ],
+  "killCriteria": "Stop if any holds: fewer than 5 of 50 landing visitors sign up in two weeks; the build-verified test fails on 2 of 3 real branches; nobody out of the first ~20 people contacted agrees to pay $9 within 30 days; or GitHub/Claude Code ships agent-driven splitting covering the use case."
+}
