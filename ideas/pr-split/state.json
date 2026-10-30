@@ -7,7 +7,7 @@
     "at": "2026-10-10T19:04:52.289Z",
     "notionAt": "2026-10-10T19:06:17.271Z"
   },
-  "updatedAt": "2026-10-30T10:32:00.855Z",
+  "updatedAt": "2026-10-30T10:47:45.768Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -134,5 +134,32 @@
     "M1",
     "M2",
     "M3"
-  ]
+  ],
+  "funnel": {
+    "at": "2026-10-30T10:47:45.768Z",
+    "d7": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "prev7": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "all": {
+      "visit": 0,
+      "signup": 0,
+      "activate": 0,
+      "checkout": 0
+    },
+    "seen": {
+      "visit": false,
+      "activate": false,
+      "checkout": false
+    },
+    "referrers7d": []
+  }
 }
