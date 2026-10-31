@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-31T07:00:43.134Z",
+  "updatedAt": "2026-10-31T08:20:22.503Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -39,22 +39,22 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": true,
-        "evidence": "https://tiebreak-phi.vercel.app"
+        "done": false,
+        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
       },
       {
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
         "done": true,
-        "evidence": "live on the site"
+        "evidence": "privacy ✓ · terms ✓"
       },
       {
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-        "done": true,
-        "evidence": "9/9 launch checks"
+        "done": false,
+        "evidence": "checked once it's live (the go-live build adds what's missing)"
       },
       {
         "id": "price",
@@ -93,15 +93,15 @@
       }
     ],
     "next": {
-      "id": "payments",
-      "label": "Stripe product created and mapped to the repo in RepoHQ",
-      "owner": "david"
+      "id": "deployed",
+      "label": "Live on a free tier",
+      "owner": "agent"
     },
-    "done": 6,
+    "done": 4,
     "total": 10,
     "buyer": "A solo Etsy seller (one-person shop) about to publish or change a main listing photo and unable to choose between 2-4 candidates; findable as the people posting 'which picture is best?' threads in the Etsy Community Etsy Success forum and r/EtsySellers. Secondary: indie authors choosing a cover and YouTubers choosing a thumbnail.",
     "price": "$5 once",
-    "updatedAt": "2026-10-31T05:40:59.100Z"
+    "updatedAt": "2026-10-31T08:20:22.503Z"
   },
   "build": {
     "milestone": "GROWTH",
@@ -111,7 +111,7 @@
       "M3"
     ],
     "status": "closed",
-    "at": "2026-10-30T07:32:37.681Z",
+    "at": "2026-10-31T07:01:33.049Z",
     "manual": false,
     "advice": {
       "difficulty": 2,
@@ -122,14 +122,14 @@
     "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets 4pm (UTC)",
     "milestones": [],
     "stopped": "M3: tests failing",
-    "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/17",
-    "testsPassing": true,
+    "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/18",
+    "testsPassing": false,
     "engine": "claude",
     "model": "claude-opus-5-5",
     "effort": "xhigh",
     "sandbox": "docker",
     "note": "M3 shipped in #1 (its exit-criteria tests pass on main); M4, the native app (David asked for iPhone + Android), merged as #2 on 2026-10-12; go-live as #3.",
-    "experiment": "tiebreak-20261030-feature-etsy-listing-photo-test",
+    "experiment": "tiebreak-20261031-feature-etsy-listing-photo-test",
     "kind": "feature",
     "beacon": "funnel",
     "acceptance": {
@@ -180,12 +180,9 @@
     "referrers7d": []
   },
   "growth": {
-    "stage": "acquire",
-    "bottleneck": "0 visitors this week, under 50",
-    "next": {
-      "kind": "post",
-      "executor": "owner"
-    },
+    "stage": "launch",
+    "bottleneck": "not launch-ready yet: the go-live build and its audit come first",
+    "next": null,
     "experiments": [
       {
         "id": "tiebreak-20261012-instrumentation",
@@ -481,12 +478,15 @@
         "planItem": "etsy-listing-photo-test",
         "title": "Free Etsy listing photo tester: 2–4 photos in a mock Etsy search grid, then 'let strangers pick'",
         "payments": false,
-        "status": "proposed",
+        "status": "abandoned",
         "createdAt": "2026-10-31T07:00:43.134Z",
-        "updatedAt": "2026-10-31T07:00:43.134Z"
+        "updatedAt": "2026-10-31T08:20:22.503Z",
+        "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/18",
+        "failed": true,
+        "reason": "its tests failed in the pipeline's run"
       }
     ],
-    "checkedAt": "2026-10-31T05:40:59.100Z",
+    "checkedAt": "2026-10-31T08:20:22.503Z",
     "plan": {
       "at": "2026-10-25T11:46:25.976Z",
       "items": [
