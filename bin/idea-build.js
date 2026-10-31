@@ -55,6 +55,8 @@ const ROOT = path.resolve(__dirname, '..');
 // The record and the build's scratch space; IDEA_PIPELINE_DATA points them elsewhere (tests), like the pipeline.
 const DATA = process.env.IDEA_PIPELINE_DATA || ROOT;
 const policy = JSON.parse(fs.readFileSync(path.join(ROOT, 'policy.json'), 'utf8'));
+// RepoHQ's address for links in messages (policy.repohqUrl: the Tailscale name while Vercel is blocked).
+const repohqUrl = () => String(policy.repohqUrl || 'https://repohq.vercel.app').replace(/\/+$/, '');
 const GH_OWNER = process.env.IDEA_GH_OWNER || 'smithdavedesign';
 
 /** The credential broker (ai-stack bin/provision): fixed verbs, values never printed. */
@@ -221,7 +223,7 @@ ${note}
    - "visit" on every public page, once per browser session (sessionStorage);
    - "activate" the first time someone uses the product's core action, once per browser (localStorage); name that action in LAUNCH-READY.md;
    - "checkout" when someone clicks Buy.
-   The referrer is document.referrer only when it comes from another site (its origin differs from location.origin), else null, so share links never leave the page. Send nothing when navigator.webdriver is true (bots, screenshot runs), on preview deployments (Vercel's VERCEL_ENV isn't "production"; Next.js sees it as NEXT_PUBLIC_VERCEL_ENV), or when localStorage "repohq:notrack" is set (the owner's browser). The privacy page names the three events.
+   The referrer is document.referrer only when it comes from another site (its origin differs from location.origin), else null, so share links never leave the page. Send nothing when navigator.webdriver is true (bots, screenshot runs), on anything but the production build (send only when NEXT_PUBLIC_DEPLOY_ENV, else Vercel's NEXT_PUBLIC_VERCEL_ENV, is "production"; the Cloudflare build script sets NEXT_PUBLIC_DEPLOY_ENV=production, so the product counts visitors on either host), or when localStorage "repohq:notrack" is set (the owner's browser). The privacy page names the three events.
 5. Deployment: ${provision === 'file' ? `you can't provision from here; write \`.provision\` at the repo root with these lines, and the pipeline runs them through the credential broker after the build:
 ${provisionLines.map((l) => `  ${l}`).join('\n')}` : `run ${provisionLines.map((l) => `\`${PROVISION} ${l}\``).join(' and ')}.`}
 6. Keep \`npm test\` passing, and add tests for what you can: the pages render, robots.txt and the sitemap exist, and the Buy button is hidden without the env var.
@@ -379,11 +381,11 @@ function engineLabel(run, build = policy.build) {
 
 /** The Slack message when a build started from the Ideas page finishes (pure). */
 function buildMessage({ slug, milestone, r, effort }) {
-  if (!r.ok) return `🔨 ${milestone} build for *${slug}* failed: ${String(r.reason || 'unknown').slice(0, 300)}\nTry again from https://repohq.vercel.app/ideas/${slug}`;
+  if (!r.ok) return `🔨 ${milestone} build for *${slug}* failed: ${String(r.reason || 'unknown').slice(0, 300)}\nTry again from ${repohqUrl()}/ideas/${slug}`;
   const engine = r.engine === 'free' ? `free pool (${r.model || 'free-agent'}), the subscription couldn't take it` : `${r.model || 'Claude'}${effort ? `, effort ${effort}` : ''}`;
   return [`🔨 ${milestone} for *${slug}* is ready for review: ${r.prUrl || '(no PR: built locally)'}`,
     `Tests ${r.testsPassing ? 'passing ✅' : 'failing ❌'} · ${engine}`,
-    `Merge it to unlock the next milestone: https://repohq.vercel.app/ideas/${slug}`].join('\n');
+    `Merge it to unlock the next milestone: ${repohqUrl()}/ideas/${slug}`].join('\n');
 }
 
 /** Engine order: Claude first, unless the advisor acts and rated the milestone routine (1). */

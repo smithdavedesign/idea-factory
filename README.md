@@ -12,7 +12,7 @@ The idea pipeline's home and **record**. Every researched idea lives here in ful
 | `idea.json` | Title, repo name, one-liner, closest existing repo (`overlaps`), tags (one each for vibe, audience, money and where the first users come from, `ai`, topics: SKILL.md; RepoHQ's Ideas page filters on them), effort, confidence, sources |
 
 Git is the record because it never truncates, keeps history, and agents read it natively. David
-decides on RepoHQ's **Ideas page** (https://repohq.vercel.app/ideas): Approve build, Demand test first
+decides on RepoHQ's **Ideas page** (policy.repohqUrl + `/ideas`; on the Mac behind Tailscale since 2026-10-31): Approve build, Demand test first
 or Pass. The pipeline applies each decision on its next tick (`applyDecision` in `bin/idea-pipeline.js`).
 `Build` creates a private product repo, a copy of the idea's folder, and starts M1 on the same tick.
 There is no Notion board since 2026-10-12: the Ideas page is the board.

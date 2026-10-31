@@ -41,7 +41,7 @@ test('the reply carries the verdict, the page for a validate, and the Ideas page
   const v = S.seedMessage({ idea, slug: 'pollswipe', review: { verdict: 'validate', score: 7, summary: 'Real pain.' }, pageUrl: 'https://p/pollswipe/' });
   assert.match(v, /^💡 Researched your idea: \*pollswipe\* \(pollswipe\)\nPost two options/);
   assert.match(v, /Review: \*validate\*, 7\/10\. Real pain\.\nDemand test page: https:\/\/p\/pollswipe\//);
-  assert.match(v, /Decide: https:\/\/repohq\.vercel\.app\/ideas$/);
+  assert.equal(v.split('\n').pop(), `Decide: ${require('../policy.json').repohqUrl}/ideas`);
   const p = S.seedMessage({ idea, slug: 'pollswipe', review: { verdict: 'pass', score: 3, summary: 'Crowded.' } });
   assert.match(p, /Review: \*pass\*, 3\/10\. Crowded\.\nYour call wins/);
   assert.match(S.seedMessage({ idea, slug: 'pollswipe', reviewError: 'usage limit' }), /review didn't run \(usage limit\); it's reviewed at 09:30/);
