@@ -1,0 +1,21 @@
+// The idea-factory Worker (Cloudflare Workers, free plan): landing pages from pages/ and the public
+// demand-signal endpoint, POST /api/ideas/signal (worker/ideas.mjs says why). No build step: the credential
+// broker deploys this checkout as it is and injects the token:
+//   provision cloudflare deploy idea-factory <this checkout>
+// Secrets (Worker secrets, never in this file): DATABASE_URL (insert-only role on RepoHQ's idea_signals)
+// and IDEA_SIGNAL_SALT: `provision cloudflare secret idea-factory <KEY>`.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "idea-factory",
+  "main": "worker/ideas.mjs",
+  "compatibility_date": "2026-10-15",
+  "assets": {
+    "directory": "pages",
+    "binding": "ASSETS",
+    // /permitly/ → pages/permitly/index.html, like the old Vercel project's cleanUrls + trailingSlash.
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "none"
+  },
+  "workers_dev": true,
+  "observability": { "enabled": true }
+}
