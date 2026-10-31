@@ -108,7 +108,8 @@ test('new builds wait until a focus product has traction (policy.build.startNew 
   assert.equal(P.newBuildsHeld(held, [['tb', { funnel: { d7: { visit: 50 } } }]]), false, 'a focus product with traction lifts the hold');
   assert.equal(P.newBuildsHeld(held, [['other', { funnel: { d7: { visit: 500 } } }]]), true, 'only focus products count');
   assert.equal(P.newBuildsHeld({ build: {} }, []), false, 'without the setting nothing is held');
-  assert.equal(policy.build.startNew, false, "David's call on 2026-10-12: distribution before more MVPs");
+  // David's call on 2026-10-12: distribution before more MVPs; on 2026-10-31 first builds may start at night.
+  assert.equal(policy.build.startNew, 'night', 'held in the day, first builds at night');
   assert.ok(policy.growth.focus.includes('tiebreak'));
 });
 

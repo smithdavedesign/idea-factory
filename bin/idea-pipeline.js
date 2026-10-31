@@ -71,6 +71,7 @@ const G = require('../lib/growth');
 const BS = require('../lib/build-slots');
 const SCH = require('../lib/schedule');
 const PL = require('../lib/plan');
+const UL = require('../lib/usage-limit');
 
 const ROOT = path.resolve(__dirname, '..');
 // The record and the pipeline's own files. IDEA_PIPELINE_DATA points them elsewhere (the tick tests).
@@ -128,7 +129,7 @@ function applyDecision(state, d, { reviewed = true, now = new Date() } = {}) {
  * pipeline, before reviews existed, wait for one of those.
  */
 function buildable(s) {
-  if (s.stage !== 'repo' || (s.build && s.build.status !== 'failed')) return false;
+  if (s.stage !== 'repo' || (s.build && !['failed', 'paused'].includes(s.build.status))) return false;
   if (s.build?.status === 'failed' && s.build.retried) return false;
   return s.ownerApproved === true || s.validation?.decision === 'build' || (!!s.review && s.review.verdict !== 'pass');
 }
@@ -244,10 +245,21 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
     const done = BS.takeResults(SLOTS);
     for (const x of done) {
       changed.add(x.slug);
+      if (x.usageLimited) {
+        note(x.slug, `${x.milestone} paused at the Claude usage limit, resumes after ${x.resumeAt}`);
+        // A paused growth build doesn't use up its product's mission for the day: it goes again after the reset.
+        if (x.kind === 'growth' && pstate.growth?.slugs?.includes(x.slug)) {
+          pstate.growth = { ...pstate.growth, slugs: pstate.growth.slugs.filter((s) => s !== x.slug), features: Math.max(0, (pstate.growth.features ?? 0) - 1) };
+        }
+        continue;
+      }
       if (x.ok) note(x.slug, `${x.milestone} PR ${x.prUrl} (tests ${x.testsPassing ? 'passing' : 'failing'}, ${x.engine === 'free' ? 'free-pool backup' : `Claude subscription${x.model ? ` ${x.model}` : ''}`}${x.kind === 'request' ? ', started from the Ideas page' : ''})`);
       else fail(`build ${x.slug} ${x.milestone}`, x.reason);
       for (const e of x.errors || []) fail(`build ${x.slug}`, e);
     }
+    // The subscription is at its usage limit: hold the builds this pipeline starts itself until it resets.
+    const hold = UL.holdAfter(pstate.usageHold, done);
+    if (done.some((x) => x.usageLimited)) { pstate.usageHold = hold; writePstate(); }
     return done;
   };
   const finished = takeResults();
@@ -541,8 +553,12 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
   // this tick counts against it. IDEA_BUILD_PROBE (JSON) stands in for the measurement in the tick tests.
   let probed = null;
   let launched = 0;
-  const capacityNow = () => BS.capacity({ running: busy.size, pending: launched, cfg: cc,
-    probe: probed || (probed = process.env.IDEA_BUILD_PROBE ? JSON.parse(process.env.IDEA_BUILD_PROBE) : BS.probe()) });
+  const capacityNow = () => {
+    const c = BS.capacity({ running: busy.size, pending: launched, cfg: cc,
+      probe: probed || (probed = process.env.IDEA_BUILD_PROBE ? JSON.parse(process.env.IDEA_BUILD_PROBE) : BS.probe()) });
+    // At the Claude usage limit only David's requests start (lib/usage-limit.js).
+    return UL.holdActive(pstate.usageHold, new Date()) ? { ...c, automatic: 0, autoReason: `the Claude subscription is at its usage limit until ${pstate.usageHold.until}` } : c;
+  };
 
   /** Starts a build job detached (bin/idea-build-job.js) and records its slot; in the tick tests, runs it here. */
   const startJob = async (job) => {
@@ -706,8 +722,9 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
     const { nextMilestone } = require('./idea-build');
     const fresh = idleStates();
     const nextOf = (slug, s) => nextMilestone(fs.existsSync(path.join(IDEAS, slug, 'ROADMAP.md')) ? fs.readFileSync(path.join(IDEAS, slug, 'ROADMAP.md'), 'utf8') : '', s.milestonesDone || []);
-    const firstBuilds = P.newBuildsHeld(policy, fresh) ? [] : fresh.filter(([, s]) => buildable(s));
-    const queue = byRevenue([...firstBuilds, ...fresh.filter(([slug, s]) => s.stage === 'building' && s.build?.status === 'merged' && nextOf(slug, s))])
+    const firstBuilds = P.newBuildsHeld(policy, fresh, now) ? [] : fresh.filter(([, s]) => buildable(s));
+    // A build paused at the usage limit goes again (it isn't merged, so its milestone is still next).
+    const queue = byRevenue([...firstBuilds, ...fresh.filter(([slug, s]) => s.stage === 'building' && ['merged', 'paused'].includes(s.build?.status) && nextOf(slug, s))])
       .filter(([, s]) => BS.retryDue(s, cc, now));
     for (const [slug, s] of queue) {
       if (capacityNow().automatic < 1) break;
