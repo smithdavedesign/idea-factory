@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-31T08:20:22.503Z",
+  "updatedAt": "2026-10-31T19:36:43.392Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -39,22 +39,22 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": false,
-        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
+        "done": true,
+        "evidence": "https://tiebreak.1426davejobs.workers.dev"
       },
       {
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
         "done": true,
-        "evidence": "privacy ✓ · terms ✓"
+        "evidence": "live on the site"
       },
       {
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-        "done": false,
-        "evidence": "checked once it's live (the go-live build adds what's missing)"
+        "done": true,
+        "evidence": "9/9 launch checks"
       },
       {
         "id": "price",
@@ -93,15 +93,15 @@
       }
     ],
     "next": {
-      "id": "deployed",
-      "label": "Live on a free tier",
-      "owner": "agent"
+      "id": "payments",
+      "label": "Stripe product created and mapped to the repo in RepoHQ",
+      "owner": "david"
     },
-    "done": 4,
+    "done": 6,
     "total": 10,
     "buyer": "A solo Etsy seller (one-person shop) about to publish or change a main listing photo and unable to choose between 2-4 candidates; findable as the people posting 'which picture is best?' threads in the Etsy Community Etsy Success forum and r/EtsySellers. Secondary: indie authors choosing a cover and YouTubers choosing a thumbnail.",
     "price": "$5 once",
-    "updatedAt": "2026-10-31T08:20:22.503Z"
+    "updatedAt": "2026-10-31T19:36:43.392Z"
   },
   "build": {
     "milestone": "GROWTH",
@@ -180,9 +180,12 @@
     "referrers7d": []
   },
   "growth": {
-    "stage": "launch",
-    "bottleneck": "not launch-ready yet: the go-live build and its audit come first",
-    "next": null,
+    "stage": "acquire",
+    "bottleneck": "0 visitors this week, under 50",
+    "next": {
+      "kind": "post",
+      "executor": "owner"
+    },
     "experiments": [
       {
         "id": "tiebreak-20261012-instrumentation",
@@ -312,12 +315,13 @@
         "planItem": "thumbnail-compare-tool",
         "title": "Free side-by-side thumbnail preview tool (Etsy, book cover, YouTube)",
         "payments": false,
-        "status": "abandoned",
+        "status": "running",
         "createdAt": "2026-10-22T08:27:26.688Z",
-        "updatedAt": "2026-10-22T09:12:48.882Z",
+        "updatedAt": "2026-10-31T16:31:43.000Z",
         "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/13",
-        "failed": true,
-        "reason": "web, web, mobile failed"
+        "note": "reopened 2026-10-31: closed only because GitHub Actions never ran (account billing block), not for its code",
+        "startedAt": "2026-10-31T16:31:43.000Z",
+        "endsAt": "2026-11-14T16:31:43.000Z"
       },
       {
         "id": "tiebreak-20261023-feature-poll-share-cards",
@@ -331,12 +335,13 @@
         "planItem": "poll-share-cards",
         "title": "Poll share cards and a 'make your own' loop for voters",
         "payments": false,
-        "status": "abandoned",
+        "status": "running",
         "createdAt": "2026-10-23T07:12:09.034Z",
-        "updatedAt": "2026-10-23T08:21:50.229Z",
+        "updatedAt": "2026-10-31T16:28:36.000Z",
         "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/15",
-        "failed": true,
-        "reason": "web, web, mobile failed"
+        "note": "reopened 2026-10-31: closed only because GitHub Actions never ran (account billing block), not for its code",
+        "startedAt": "2026-10-31T16:28:36.000Z",
+        "endsAt": "2026-11-14T16:28:36.000Z"
       },
       {
         "id": "tiebreak-20261024-feature-poll-share-cards",
@@ -409,7 +414,9 @@
         "createdAt": "2026-10-27T10:45:38.530Z",
         "updatedAt": "2026-10-27T10:46:21.398Z",
         "failed": true,
-        "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets Oct 29, 4pm (UTC)"
+        "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets Oct 29, 4pm (UTC)",
+        "paused": true,
+        "note": "hit the Claude usage limit (marked paused 2026-10-31, lib/usage-limit.js)"
       },
       {
         "id": "tiebreak-20261028-feature-poll-share-cards-og",
@@ -427,7 +434,9 @@
         "createdAt": "2026-10-28T10:13:29.720Z",
         "updatedAt": "2026-10-28T10:13:42.347Z",
         "failed": true,
-        "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets Oct 29, 4pm (UTC)"
+        "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets Oct 29, 4pm (UTC)",
+        "paused": true,
+        "note": "hit the Claude usage limit (marked paused 2026-10-31, lib/usage-limit.js)"
       },
       {
         "id": "tiebreak-20261029-feature-etsy-listing-photo-test",
@@ -445,7 +454,9 @@
         "createdAt": "2026-10-29T08:54:46.914Z",
         "updatedAt": "2026-10-29T08:55:01.287Z",
         "failed": true,
-        "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets 4pm (UTC)"
+        "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets 4pm (UTC)",
+        "paused": true,
+        "note": "hit the Claude usage limit (marked paused 2026-10-31, lib/usage-limit.js)"
       },
       {
         "id": "tiebreak-20261030-feature-etsy-listing-photo-test",
@@ -483,10 +494,12 @@
         "updatedAt": "2026-10-31T08:20:22.503Z",
         "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/18",
         "failed": true,
-        "reason": "its tests failed in the pipeline's run"
+        "reason": "its tests failed in the pipeline's run",
+        "paused": true,
+        "note": "hit the Claude usage limit (marked paused 2026-10-31, lib/usage-limit.js)"
       }
     ],
-    "checkedAt": "2026-10-31T08:20:22.503Z",
+    "checkedAt": "2026-10-31T19:36:43.392Z",
     "plan": {
       "at": "2026-10-25T11:46:25.976Z",
       "items": [
@@ -509,7 +522,8 @@
           "attempts": [
             "tiebreak-20261026-feature-poll-share-cards-og",
             "tiebreak-20261027-feature-poll-share-cards-og",
-            "tiebreak-20261028-feature-poll-share-cards-og"
+            "tiebreak-20261028-feature-poll-share-cards-og",
+            "tiebreak-20261023-feature-poll-share-cards"
           ]
         },
         {
@@ -531,7 +545,8 @@
           "attempts": [
             "tiebreak-20261029-feature-etsy-listing-photo-test",
             "tiebreak-20261030-feature-etsy-listing-photo-test",
-            "tiebreak-20261031-feature-etsy-listing-photo-test"
+            "tiebreak-20261031-feature-etsy-listing-photo-test",
+            "tiebreak-20261022-feature-thumbnail-compare-tool"
           ]
         },
         {
@@ -549,7 +564,10 @@
           "windowDays": 14,
           "size": "S",
           "payments": false,
-          "target": 10
+          "target": 10,
+          "attempts": [
+            "tiebreak-20261022-feature-thumbnail-compare-tool"
+          ]
         }
       ]
     }
