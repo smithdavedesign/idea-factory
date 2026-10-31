@@ -503,7 +503,13 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
           note(slug, `launch checks regressed on ${liveNow}: missing ${result.missing.join(', ')}`);
           // An agent's merge in the last day broke the live site: undo it (policy.autonomy.revert).
           const b = state.build || {};
-          if (policy.autonomy?.revert && b.mergedBy === 'agent' && b.prUrl && !b.reverted && now - new Date(b.mergedAt) < 24 * 3_600_000) {
+          // Not when the host is down for the whole account (Vercel's 402 DEPLOYMENT_DISABLED on 2026-10-31):
+          // every site fails then, and reverting would undo good merges.
+          const hostBlocked = await GL.hostBlocked(liveNow);
+          if (hostBlocked) {
+            note(slug, `launch checks failed because the host is blocked for the account (${hostBlocked}), not the code: no revert`);
+            emit({ component: 'autonomy', event: 'host-blocked', status: 'fail', subject: { idea: slug }, message: `${slug}: ${liveNow} answers ${hostBlocked}: the hosting account is blocked, so no merge was reverted` });
+          } else if (policy.autonomy?.revert && b.mergedBy === 'agent' && b.prUrl && !b.reverted && now - new Date(b.mergedAt) < 24 * 3_600_000) {
             const reason = `the live site's launch checks failed after it merged (missing ${result.missing.join(', ')})`;
             const r = revertMerged(slug, b.prUrl, reason, { breakage: true });
             if (r.ok) {
@@ -641,6 +647,14 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
       if (b.status !== 'pr-open' || !b.prUrl) continue;
       let pr;
       try { pr = JSON.parse(gh(['pr', 'view', b.prUrl, '--json', 'state,mergeable,statusCheckRollup,files,createdAt,headRefOid'])); } catch { continue; }
+      // A check run that failed within seconds may be a job GitHub never started (account billing): its
+      // annotations say so, and then it doesn't count against the PR (lib/autonomy.js accountBlocked).
+      for (const c of pr.statusCheckRollup || []) {
+        const job = String(c.detailsUrl || '').match(/github\.com\/([^/]+\/[^/]+)\/actions\/runs\/\d+\/job\/(\d+)/);
+        const secs = (new Date(c.completedAt || 0) - new Date(c.startedAt || 0)) / 1000;
+        if (!job || A.checkState(c) !== 'fail' || !(secs >= 0 && secs < 30)) continue;
+        try { c.blocked = A.ACCOUNT_BLOCK.test(gh(['api', `repos/${job[1]}/check-runs/${job[2]}/annotations`, '--jq', '[.[].message] | join(" ")'])); } catch { /* unknown: counts as failed */ }
+      }
       const decide = (smoke) => A.mergeDecision({ pr, build: b, protectedPaths: auto.protectedPaths || [], ownerOnlyPatterns: auto.ownerOnlyPatterns || [], smoke, now });
       let d = decide(b.smoke || null);
       // A green feature PR's preview is smoke-tested against production first (RepoHQ's factory:smoke), once per commit.
@@ -660,6 +674,12 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
         save(slug, { ...s, build: { ...b, mergedBy: 'agent', mergedAt: now.toISOString() } }, `merged its own PR ${b.prUrl} (${d.reason})`);
         emit({ component: 'autonomy', event: 'merge', status: 'info', subject: { idea: slug, pr: b.prUrl }, message: `${slug}: merged ${b.prUrl} (${d.reason})` });
         if (pstate.audit?.[slug]) { pstate.audit[slug].at = '1970-01-01T00:00:00.000Z'; writePstate(); }
+      } else if (d.blocked) {
+        // Said once per PR: the morning email's Ops section shows it until the account is sorted out.
+        if (b.held !== d.reason) {
+          save(slug, { ...s, build: { ...b, held: d.reason } }, `PR waiting, not closed: ${d.reason} (${b.prUrl})`);
+          emit({ component: 'autonomy', event: 'ci-blocked', status: 'fail', subject: { idea: slug, pr: b.prUrl }, message: `${slug}: ${d.reason} (${b.prUrl})` });
+        }
       } else if (d.action === 'fail' && b.milestone === 'GROWTH') {
         try { gh(['pr', 'close', b.prUrl, '--comment', `Closed by the growth loop: ${d.reason}. The mission is tried again tomorrow.`]); } catch (e) { fail(`close ${slug} ${b.prUrl}`, e); continue; }
         const growth = { ...s.growth, experiments: (s.growth?.experiments || []).map((e) => (e.id === b.experiment ? { ...e, status: 'abandoned', failed: true, reason: d.reason, updatedAt: now.toISOString() } : e)) };

@@ -76,3 +76,20 @@ test('a feature that missed its acceptance criteria fails; payment code waits fo
   assert.equal(A.mergeDecision({ pr: green, build: { ...feature, payments: true } }).action, 'leave');
   assert.deepEqual(A.ownerOnlyTouched(['lib/stripe.ts', 'app/page.tsx', 'app/api/webhooks/stripe/route.ts'], PAY), ['lib/stripe.ts', 'app/api/webhooks/stripe/route.ts']);
 });
+
+test('a check the account blocked holds the PR instead of failing it', () => {
+  const now = new Date('2026-10-31T12:00:00Z');
+  const vercelBlocked = { __typename: 'StatusContext', context: 'Vercel', state: 'FAILURE', description: 'Account is blocked.' };
+  const jobBlocked = { __typename: 'CheckRun', name: 'web', status: 'COMPLETED', conclusion: 'FAILURE', blocked: true };
+  const jobFailed = { __typename: 'CheckRun', name: 'mobile', status: 'COMPLETED', conclusion: 'FAILURE' };
+  const green = { __typename: 'CheckRun', name: 'GitGuardian', status: 'COMPLETED', conclusion: 'SUCCESS' };
+  const d = A.mergeDecision({ pr: open({ statusCheckRollup: [vercelBlocked, jobBlocked, green] }), build: { testsPassing: true }, now });
+  assert.equal(d.action, 'wait');
+  assert.equal(d.blocked, true);
+  assert.match(d.reason, /Vercel, web couldn't run: the GitHub or Vercel account is blocked/);
+  // A real failure next to a blocked one still fails, naming only the real one.
+  const f = A.mergeDecision({ pr: open({ statusCheckRollup: [vercelBlocked, jobFailed] }), build: { testsPassing: true }, now });
+  assert.deepEqual([f.action, f.reason], ['fail', 'mobile failed']);
+  assert.equal(A.ACCOUNT_BLOCK.test('The job was not started because recent account payments have failed or your spending limit needs to be increased.'), true);
+  assert.equal(A.accountBlocked({ state: 'FAILURE', description: 'Deployment has failed' }), false, 'an ordinary failed deploy is the code');
+});
