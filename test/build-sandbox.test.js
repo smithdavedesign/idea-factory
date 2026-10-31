@@ -310,7 +310,7 @@ test('go-live: one launch-readiness run in the sandbox, the broker gets the Verc
   for (const kind of ['visit', 'activate', 'checkout']) assert.match(p, new RegExp(`- "${kind}" `), `the beacon sends ${kind}`);
   assert.match(p, /navigator\.webdriver/, 'bots and screenshot runs are not visitors');
   assert.match(p, /repohq:notrack/, "the owner's own browser can opt out");
-  assert.match(p, /VERCEL_ENV isn't "production"/, 'previews send nothing');
+  assert.match(p, /send only when NEXT_PUBLIC_DEPLOY_ENV, else Vercel's NEXT_PUBLIC_VERCEL_ENV, is "production"/, 'previews send nothing, on either host');
   assert.match(p, /The privacy page names the three events/);
   assert.match(p, /STRIPE_PAYMENT_LINK env var .* hidden when the variable is unset/);
   assert.match(p, /request "Stripe payment link for demo: \$9\/month, per REVENUE\.md"/);

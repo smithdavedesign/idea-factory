@@ -86,3 +86,12 @@ test('hostBlocked tells an account-wide hosting block from a broken site', async
   assert.equal(await GL2.hostBlocked('https://x.vercel.app', { fetchFn: res(500) }), null, 'a 500 is the code: revert as before');
   assert.equal(await GL2.hostBlocked('https://x.vercel.app', { fetchFn: async () => { throw new Error('ENOTFOUND'); } }), null);
 });
+
+test('pickProduction: the first address that answers, else the fallback (a silent Worker is not production)', async () => {
+  const status = { 'https://tiebreak-phi.vercel.app': 402, 'https://tiebreak.sub.workers.dev': 200, 'https://down.sub.workers.dev': 404 };
+  const fetchFn = async (url) => { if (!(url in status)) throw new Error('ECONNREFUSED'); return { status: status[url] }; };
+  assert.equal(await G.pickProduction(['https://tiebreak-phi.vercel.app', 'https://tiebreak.sub.workers.dev'], { fallback: 'https://tiebreak-phi.vercel.app', fetchFn }), 'https://tiebreak.sub.workers.dev', 'Vercel blocked, Worker serving');
+  assert.equal(await G.pickProduction(['https://tiebreak-phi.vercel.app', 'https://down.sub.workers.dev'], { fallback: 'https://tiebreak-phi.vercel.app', fetchFn }), 'https://tiebreak-phi.vercel.app', 'neither answers: keep Vercel');
+  assert.equal(await G.pickProduction([null, 'https://down.sub.workers.dev'], { fallback: null, fetchFn }), null, 'no deploy anywhere');
+  assert.equal(await G.pickProduction([null, 'https://nowhere.sub.workers.dev'], { fetchFn }), null, 'never throws');
+});

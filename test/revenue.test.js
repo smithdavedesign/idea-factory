@@ -73,6 +73,7 @@ test('build queues go to the idea closest to money; ties keep approval order', (
 
 test('live URL: the homepage, then <repo>.vercel.app; legal pages from the repo tree', async () => {
   assert.deepEqual(LF.urlCandidates('https://dawnlog.dev', 'DawnLog'), ['https://dawnlog.dev', 'https://dawnlog.vercel.app']);
+  assert.deepEqual(LF.urlCandidates('', 'TieBreak', { workersSubdomain: 'sub' }), ['https://tiebreak.sub.workers.dev', 'https://tiebreak.vercel.app'], 'the Worker first: ours by its subdomain');
   assert.deepEqual(LF.urlCandidates('not a url', 'x'), ['https://x.vercel.app']);
   const seen = [];
   const fetchFn = async (url) => { seen.push(url); if (url.includes('dawnlog.dev')) throw new Error('ENOTFOUND'); return { status: 200 }; };

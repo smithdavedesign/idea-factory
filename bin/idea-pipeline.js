@@ -495,7 +495,13 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
       const fresh = (c, hours) => c && now.getTime() - new Date(c.at).getTime() < hours * 3_600_000;
       // The product's own production URL (its Vercel project in the owner's team), once it has deployed.
       pstate.prod = pstate.prod || {};
-      if (!fresh(pstate.prod[slug], 1)) pstate.prod[slug] = { at: now.toISOString(), url: GL.productionUrl(full.split('/')[1], policy.vercelScope) };
+      // Vercel's production URL, or the product's Worker when that's the one answering (lib/golive.js pickProduction).
+      if (!fresh(pstate.prod[slug], 1)) {
+        const name = full.split('/')[1];
+        const worker = policy.workersSubdomain ? LF.workerUrl(name, policy.workersSubdomain) : null;
+        const vercelUrl = GL.productionUrl(name, policy.vercelScope);
+        pstate.prod[slug] = { at: now.toISOString(), url: await GL.pickProduction([vercelUrl, worker], { fallback: vercelUrl }) };
+      }
       const prodUrl = pstate.prod[slug].url;
       // A repo without a homepage gets its production URL, so RepoHQ (and everyone) knows where it lives.
       // RepoHQ may not have synced a new repo yet: then ask GitHub. A homepage that's set is never
@@ -517,7 +523,7 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
           note(slug, misplaced(homepage) ? `homepage moved to ${prodUrl} (${homepage} is behind Vercel's login)` : `homepage set to ${prodUrl}`);
         } catch (e) { fail(`homepage ${slug}`, e); }
       }
-      if (!fresh(pstate.live[slug], 1)) pstate.live[slug] = { at: now.toISOString(), url: await LF.liveUrl([...new Set([...(prodUrl ? [prodUrl] : []), ...LF.urlCandidates(row?.homepage, full.split('/')[1])])], { owned: (u) => u === prodUrl || LF.ownedByTeam(u, policy.vercelScope) }) };
+      if (!fresh(pstate.live[slug], 1)) pstate.live[slug] = { at: now.toISOString(), url: await LF.liveUrl([...new Set([...(prodUrl ? [prodUrl] : []), ...LF.urlCandidates(row?.homepage, full.split('/')[1], { workersSubdomain: policy.workersSubdomain })])], { owned: (u) => u === prodUrl || LF.ownedByTeam(u, policy.vercelScope) }) };
       pstate.audit = pstate.audit || {};
       const liveNow = pstate.live[slug].url;
       if (liveNow && (!fresh(pstate.audit[slug], 6) || pstate.audit[slug].url !== liveNow)) {

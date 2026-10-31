@@ -84,7 +84,7 @@ test('PR and Slack name the engine; a failed manual build says so', () => {
   assert.match(B.engineLabel({ engine: 'free', info: { model: 'free-agent' }, primaryReason: 'usage limit reached' }), /^free pool \(free-agent\) — the subscription couldn't take it: usage limit/);
   const ok = B.buildMessage({ slug: 'pr-split', milestone: 'M1', r: { ok: true, prUrl: 'https://github.com/o/pr-split/pull/1', testsPassing: true, engine: 'claude', model: 'claude-opus-5-5' }, effort: 'xhigh' });
   assert.match(ok, /^🔨 M1 for \*pr-split\* is ready for review: https:\/\/github\.com\/o\/pr-split\/pull\/1\nTests passing ✅ · claude-opus-5-5, effort xhigh/);
-  assert.match(B.buildMessage({ slug: 'pr-split', milestone: 'M1', r: { ok: false, reason: 'tests never ran' } }), /M1 build for \*pr-split\* failed: tests never ran\nTry again from https:\/\/repohq\.vercel\.app\/ideas\/pr-split/);
+  assert.match(B.buildMessage({ slug: 'pr-split', milestone: 'M1', r: { ok: false, reason: 'tests never ran' } }), /M1 build for \*pr-split\* failed: tests never ran\nTry again from https:\/\/davids-macbook-pro\.tail39508b\.ts\.net\/ideas\/pr-split/);
 });
 
 test('builds get infrastructure only through the credential broker', () => {
