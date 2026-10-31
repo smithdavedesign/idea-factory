@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-10-31T03:25:04.293Z",
+  "updatedAt": "2026-10-31T05:29:28.902Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -103,7 +103,7 @@
     "updatedAt": "2026-10-17T18:01:34.739Z"
   },
   "build": {
-    "milestone": "GROWTH",
+    "milestone": "GOLIVE",
     "milestones": [],
     "planned": [
       "M4"
@@ -117,14 +117,14 @@
     "effort": "xhigh",
     "manual": false,
     "sandbox": "docker",
-    "at": "2026-10-29T09:26:04.617Z",
+    "at": "2026-10-31T05:29:04.857Z",
     "advice": {
       "difficulty": 2,
       "reason": "Implementing a feature with multiple components across files and handling game logic with specific rules.",
       "source": "model",
       "model": "local-qwen3"
     },
-    "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets 4pm (UTC)",
+    "reason": "couldn't start the build sandbox: sandbox open: Docker is not running",
     "experiment": "botchelor-20261025-feature-daily-date",
     "kind": "feature",
     "acceptance": {
