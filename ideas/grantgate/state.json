@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-31T07:00:43.134Z",
+  "updatedAt": "2026-10-31T09:05:56.811Z",
   "repo": "https://github.com/smithdavedesign/grantgate",
   "revenue": {
     "mrr": 0,
@@ -32,22 +32,22 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": true,
-        "evidence": "https://grantgate-ashen.vercel.app"
+        "done": false,
+        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
       },
       {
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
         "done": true,
-        "evidence": "live on the site"
+        "evidence": "privacy ✓ · terms ✓"
       },
       {
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-        "done": true,
-        "evidence": "9/9 launch checks"
+        "done": false,
+        "evidence": "checked once it's live (the go-live build adds what's missing)"
       },
       {
         "id": "price",
@@ -86,15 +86,15 @@
       }
     ],
     "next": {
-      "id": "payments",
-      "label": "Stripe product created and mapped to the repo in RepoHQ",
-      "owner": "david"
+      "id": "deployed",
+      "label": "Live on a free tier",
+      "owner": "agent"
     },
-    "done": 6,
+    "done": 4,
     "total": 10,
     "buyer": "Owner or office manager of a 5-50 person Google Workspace business with no IT staff (small accounting practice, agency, clinic, bookkeeping shop) who is the de facto Workspace admin; secondary: the outsourced IT/MSP who looks after several such firms",
     "price": "$49/year",
-    "updatedAt": "2026-10-31T07:00:43.134Z"
+    "updatedAt": "2026-10-31T09:05:56.811Z"
   },
   "build": {
     "milestone": "GOLIVE",

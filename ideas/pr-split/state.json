@@ -7,7 +7,7 @@
     "at": "2026-10-10T19:04:52.289Z",
     "notionAt": "2026-10-10T19:06:17.271Z"
   },
-  "updatedAt": "2026-10-30T20:59:30.360Z",
+  "updatedAt": "2026-10-31T09:05:56.811Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -39,22 +39,22 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": true,
-        "evidence": "https://pr-split.vercel.app"
+        "done": false,
+        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
       },
       {
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
-        "done": true,
-        "evidence": "live on the site"
+        "done": false,
+        "evidence": "privacy ✗ · terms ✗"
       },
       {
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-        "done": true,
-        "evidence": "9/9 launch checks"
+        "done": false,
+        "evidence": "checked once it's live (the go-live build adds what's missing)"
       },
       {
         "id": "price",
@@ -93,15 +93,15 @@
       }
     ],
     "next": {
-      "id": "payments",
-      "label": "Stripe product created and mapped to the repo in RepoHQ",
-      "owner": "david"
+      "id": "deployed",
+      "label": "Live on a free tier",
+      "owner": "agent"
     },
-    "done": 6,
+    "done": 3,
     "total": 10,
     "buyer": "A senior developer or tech lead (2-20 person team) who reviews or ships 20+ file AI-generated branches weekly and pays for their own dev tools (Cursor/Copilot/Claude); reachable as people who post about giant AI PRs on Hacker News, r/ClaudeAI and dev.to",
     "price": "$9 once",
-    "updatedAt": "2026-10-30T10:32:00.855Z"
+    "updatedAt": "2026-10-31T09:05:56.811Z"
   },
   "build": {
     "milestone": "GOLIVE",
