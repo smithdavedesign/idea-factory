@@ -45,6 +45,8 @@ const { execFileSync, spawnSync } = require('child_process');
 const { claudeTask, FREE_MODEL } = require('../lib/claude');
 const { scanPatch, formatFindings, knownSecrets } = require('../lib/secret-scan');
 const { startSession } = require('../lib/sandbox');
+const UL = require('../lib/usage-limit');
+const MACHINE = require('../lib/machine');
 const P = require('../lib/pipeline');
 const { emit } = require('../lib/events');
 const { authorArgs, commitAuthor } = require('../lib/author');
@@ -507,6 +509,16 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
     const engine = engineLabel(run, growth ? { model: eng.model, effort: eng.effort } : policy.build);
     const usage = { milestone, manual: !!manual, model: run.info.model ?? null, engine: run.engine, effort: run.engine === 'free' ? null : eng.effort || null, sandbox: ws.kind,
       fellBack: steps.some((x) => x.fellBack), ...(mvp ? { planned, completed, stopped } : {}), ...(run.primaryReason ? { primaryReason: String(run.primaryReason).slice(0, 200) } : {}) };
+    // The subscription hit its usage limit: no PR of half-built work. Paused, not failed: the tick holds the
+    // builds it starts itself until the reset and this one goes again first (lib/usage-limit.js). An MVP run
+    // with milestones already complete still opens its PR for those.
+    if (!run.ok && UL.isUsageLimit(run.reason) && !(mvp && completed.length)) {
+      const resume = UL.resumeAt(run.reason, new Date());
+      const reason = `paused at the Claude usage limit, resumes after ${resume.toISOString()}: ${String(run.reason).slice(0, 200)}`;
+      P.writeState(ideaDir, { ...P.readState(ideaDir), stage: state.stage === 'live' ? 'live' : (state.milestonesDone || []).length ? 'building' : 'repo', build: { ...prev, milestone, ...(mvp ? { planned } : {}), status: 'paused', at: now.toISOString(), manual: !!manual, reason, resumeAt: resume.toISOString() } });
+      emit({ component: 'build', event: milestone, status: 'info', subject: { idea: slug }, message: `${slug}: ${reason}`, durationMs: Date.now() - now.getTime(), data: { ...usage, usageLimited: true, resumeAt: resume.toISOString() } });
+      return { ok: false, slug, milestone, reason, usageLimited: true, resumeAt: resume.toISOString() };
+    }
     progress(planned.length, 'checks');
     let patch = await ws.patch();
     if (!patch.trim()) return failBuild(run.reason || 'no changes made', usage);
@@ -696,6 +708,13 @@ async function openWorkspace({ slug, milestone, work, input, lifetimeMs, startSe
   }
   const oauthToken = token();
   if (!oauthToken) throw new Error(`no Claude subscription token for the sandbox: run \`claude setup-token\`, then \`security add-generic-password -U -s ${policy.build.tokenService || 'idea-build-claude-token'} -a "$USER" -w <token>\``);
+  // Docker up (started if it isn't) and Ollama's idle models out of RAM before the sandbox opens (lib/machine.js).
+  if (startSessionFn === startSession && !process.env.IDEA_SANDBOX_CMD) {
+    const docker = await MACHINE.ensureDocker();
+    if (!docker.ok) throw new Error(`sandbox open: ${docker.reason}`);
+    const freed = await MACHINE.freeOllama();
+    if (docker.started || freed.length) emit({ component: 'build', event: milestone, status: 'info', subject: { idea: slug }, message: `${slug}: ${[docker.started ? `started Docker (${docker.how})` : '', freed.length ? `unloaded ${freed.join(', ')} from Ollama` : ''].filter(Boolean).join('; ')}` });
+  }
   const sb = startSessionFn({ log: () => {} });
   try {
     const info = await sb.open(work, { allowHosts: ['api.anthropic.com'], allowModels: fallback ? [FREE_MODEL] : [], lifetimeMs });

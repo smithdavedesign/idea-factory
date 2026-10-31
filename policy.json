@@ -67,7 +67,7 @@
       "stopOnFallback": true
     },
     "_mode": "\"mvp\" (\"let it rip\"): approving a build, and the weekly slot, build every remaining roadmap milestone in one sandbox session, then open one PR. It stops at the first milestone whose tests fail, that falls back off the subscription (stopOnFallback), or after maxMinutes; the PR has what is done and the next build starts there. \"milestone\": one milestone per build, as before. Start build now offers both.",
-    "startNew": false,
+    "startNew": "night",
     "_startNew": "false: an idea that has never been built waits for its first build (the weekly slot and approvals) until a focus product (growth.focus) has growth.minVisitorsPerWeek unique visitors in 7 days (lib/pipeline.js newBuildsHeld). Ideas already being built carry on, and Start build now still works. David's call on 2026-10-12: distribution before more MVPs. Go-live and growth builds don't count toward maxPerWeek; each has its own cap."
   },
   "growth": {
@@ -78,7 +78,7 @@
     "minVisitorsPerWeek": 50,
     "auto": true,
     "maxMissionsPerDay": 6,
-    "maxBuildsPerWeek": 4,
+    "maxBuildsPerWeek": 6,
     "model": "sonnet",
     "effort": "high",
     "timeoutMinutes": 40,
@@ -104,7 +104,7 @@
     },
     "feature": {
       "auto": true,
-      "maxPerDay": 3,
+      "maxPerDay": 6,
       "model": "opus",
       "effort": "xhigh",
       "fallbackModel": "sonnet",
@@ -149,15 +149,15 @@
     },
     "starts": {
       "auto": {
-        "night": 6,
+        "night": 8,
         "day": 2
       },
       "feature": {
-        "night": 2,
+        "night": 4,
         "day": 1
       },
       "growth": {
-        "night": 2,
+        "night": 3,
         "day": 1
       },
       "plan": {
@@ -169,6 +169,6 @@
         "day": 2
       }
     },
-    "_why": "When the pipeline starts work by itself (lib/schedule.js; David's call on 2026-10-19: \"spread out agent tasks throughout the night and day, but mostly at night\"). starts: the most of each kind that may start per window (a night runs 22:00–07:00 and is named by the date it starts). auto: go-lives, first builds and the rest of started MVPs; feature: the weekly plan's features; growth: rule-based growth builds; plan: weekly plans; kit: launch kits. Quiet hours (07:00–12:00, 17:00–22:00) start nothing automatic, so David's own sessions get the Mac and the subscription. \"Start build now\" requests ignore it. off: true switches the windows off."
+    "_why": "When the pipeline starts work by itself (lib/schedule.js; David's call on 2026-10-19: \"spread out agent tasks throughout the night and day, but mostly at night\"). starts: the most of each kind that may start per window (a night runs 22:00–07:00 and is named by the date it starts). auto: go-lives, first builds and the rest of started MVPs; feature: the weekly plan's features; growth: rule-based growth builds; plan: weekly plans; kit: launch kits. Quiet hours (07:00–12:00, 17:00–22:00) start nothing automatic, so David's own sessions get the Mac and the subscription. \"Start build now\" requests ignore it. off: true switches the windows off. 2026-10-31 (David: \"tackle bigger PRs at night and really push the PC\", items 1-5): first builds may start at night while the focus hold applies (build.startNew 'night'; still held in the day), and the night window allows 8 auto, 4 feature and 3 growth starts (was 6/2/2), feature.maxPerDay 6 (was 3), growth.maxBuildsPerWeek 6 (was 4). A build at the Claude usage limit pauses instead of opening a half-built PR, and automatic starts wait for the reset (lib/usage-limit.js); a build starts Docker if it's down and unloads Ollama's idle models first (lib/machine.js). The binding limit is the subscription's usage window, not the Mac: the hold makes the night use it fully without wasting runs."
   }
 }

@@ -62,7 +62,8 @@ async function runJob(job, { sql = null } = {}) {
   } else if (kind === 'growth' && opts.growth?.experiment) {
     // The experiment gets its PR; a run that failed is tried again the next day (lib/growth.js failedRun).
     const exp = opts.growth.experiment;
-    const change = r.ok && r.prUrl ? { prUrl: r.prUrl } : { status: 'abandoned', failed: true, reason: String(r.reason || 'no PR was opened').slice(0, 300) };
+    // At the usage limit it's paused, not failed: tried again first once the limit resets (lib/plan.js).
+    const change = r.ok && r.prUrl ? { prUrl: r.prUrl } : { status: 'abandoned', failed: true, ...(r.usageLimited ? { paused: true } : {}), reason: String(r.reason || 'no PR was opened').slice(0, 300) };
     const cur = P.readState(dir);
     P.writeState(dir, { ...cur, growth: { ...cur.growth, experiments: (cur.growth?.experiments || []).map((e) => (e.id === exp.id ? { ...e, ...change, updatedAt: new Date().toISOString() } : e)) } });
   }
@@ -70,7 +71,7 @@ async function runJob(job, { sql = null } = {}) {
   if (sql) await R.syncIdeas(sql, [R.ideaRecord(dir, slug)], { prune: false }).catch((e) => fail('repohq sync', R.explain(e)));
   const result = {
     slug, milestone, kind, ok: !!r.ok, prUrl: r.prUrl || null, testsPassing: !!r.testsPassing, engine: r.engine || null, model: r.model || null,
-    reason: r.ok ? null : String(r.reason || 'build failed').slice(0, 300), errors, startedAt: job.startedAt || null, at: new Date().toISOString(),
+    reason: r.ok ? null : String(r.reason || 'build failed').slice(0, 300), ...(r.usageLimited ? { usageLimited: true, resumeAt: r.resumeAt } : {}), errors, startedAt: job.startedAt || null, at: new Date().toISOString(),
   };
   BS.writeResult(SLOTS, result);
   return result;
