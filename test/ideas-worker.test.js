@@ -86,7 +86,9 @@ test('the Worker routes the signal path to the handler and everything else to th
   const page = await W.default.fetch(new Request('https://w.dev/permitly/'), { ...ENV, ASSETS: assets });
   assert.equal(await page.text(), 'asset /permitly/');
   const health = await W.default.fetch(new Request('https://w.dev/api/health'), ENV);
-  assert.deepEqual(await health.json(), { ok: true, db: true });
+  assert.deepEqual(await health.json(), { ok: true, db: true, salt: true });
+  const unset = await W.default.fetch(new Request('https://w.dev/api/health'), {});
+  assert.equal(unset.status, 503, 'secrets missing: the collector alerts');
 });
 
 test('wrangler.jsonc: a Worker named after the repo, serving pages/, no build step (the broker refuses one)', () => {

@@ -114,7 +114,11 @@ export default {
   async fetch(request, env) {
     const { pathname } = new URL(request.url);
     if (pathname === SIGNAL_PATH || pathname === `${SIGNAL_PATH}/`) return handleSignal(request, env);
-    if (pathname === '/api/health') return json({ ok: true, db: !!env.DATABASE_URL });
+    // RepoHQ's collector probes this: 503 until both secrets are set, so a deploy without them alerts.
+    if (pathname === '/api/health') {
+      const ready = !!env.DATABASE_URL && !!env.IDEA_SIGNAL_SALT;
+      return json({ ok: ready, db: !!env.DATABASE_URL, salt: !!env.IDEA_SIGNAL_SALT }, ready ? 200 : 503);
+    }
     // Everything else: a landing page (static assets answer first; this is only reached on a miss).
     return env.ASSETS ? env.ASSETS.fetch(request) : new Response('Not found', { status: 404 });
   },
