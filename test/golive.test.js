@@ -77,3 +77,12 @@ test('go-live can run after M1 when nothing is in flight; it starts by itself on
   assert.equal(G.goLiveDue({ ...base, launch: { steps: steps(true, true) } }), false, 'already launch-ready');
   assert.equal(G.goLiveDue({ ...base, golive: { mergedAt: 'x' }, launch: { steps: steps(true, false) } }), false, 'one go-live build; after that the audit says what\'s missing');
 });
+
+test('hostBlocked tells an account-wide hosting block from a broken site', async () => {
+  const GL2 = require('../lib/golive');
+  const res = (status, body = '') => async () => ({ status, text: async () => body });
+  assert.equal(await GL2.hostBlocked('https://x.vercel.app', { fetchFn: res(402, 'Payment required\n\nDEPLOYMENT_DISABLED\n') }), 'HTTP 402 DEPLOYMENT_DISABLED');
+  assert.equal(await GL2.hostBlocked('https://x.vercel.app', { fetchFn: res(200, '<html>') }), null);
+  assert.equal(await GL2.hostBlocked('https://x.vercel.app', { fetchFn: res(500) }), null, 'a 500 is the code: revert as before');
+  assert.equal(await GL2.hostBlocked('https://x.vercel.app', { fetchFn: async () => { throw new Error('ENOTFOUND'); } }), null);
+});
