@@ -7,7 +7,7 @@
     "at": "2026-10-10T19:04:13.883Z",
     "notionAt": "2026-10-10T19:06:17.271Z"
   },
-  "updatedAt": "2026-10-24T19:40:46.374Z",
+  "updatedAt": "2026-10-31T04:36:19.485Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -39,22 +39,22 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": true,
-        "evidence": "https://pr-receipt.vercel.app"
+        "done": false,
+        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
       },
       {
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
-        "done": true,
-        "evidence": "live on the site"
+        "done": false,
+        "evidence": "privacy ✗ · terms ✗"
       },
       {
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-        "done": true,
-        "evidence": "9/9 launch checks"
+        "done": false,
+        "evidence": "checked once it's live (the go-live build adds what's missing)"
       },
       {
         "id": "price",
@@ -93,15 +93,15 @@
       }
     ],
     "next": {
-      "id": "payments",
-      "label": "Stripe product created and mapped to the repo in RepoHQ",
-      "owner": "david"
+      "id": "deployed",
+      "label": "Live on a free tier",
+      "owner": "agent"
     },
-    "done": 6,
+    "done": 3,
     "total": 10,
     "buyer": "Engineering lead or founder of a 2-10 person team on metered Claude API or Teams premium seats (roughly $1k/month agent spend) who has to explain a $400+ monthly agent bill; found via ccusage/claude-burn-rate issue threads and r/ClaudeAI cost posts. Not solo flat-subscription users.",
     "price": "$9/month",
-    "updatedAt": "2026-10-24T19:40:46.374Z"
+    "updatedAt": "2026-10-31T04:36:19.485Z"
   },
   "build": {
     "milestone": "GOLIVE",

@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-27T06:27:05.571Z",
+  "updatedAt": "2026-10-31T04:36:19.485Z",
   "repo": "https://github.com/smithdavedesign/lienclock",
   "revenue": {
     "mrr": 0,
@@ -32,8 +32,8 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": true,
-        "evidence": "https://lienclock-eta.vercel.app"
+        "done": false,
+        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
       },
       {
         "id": "legal",
@@ -47,7 +47,7 @@
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
         "done": false,
-        "evidence": "4/9 launch checks · missing: Social share image (og:image), robots.txt, sitemap.xml, Privacy page, Terms page"
+        "evidence": "checked once it's live (the go-live build adds what's missing)"
       },
       {
         "id": "price",
@@ -90,11 +90,11 @@
       "label": "MVP built: every roadmap milestone merged",
       "owner": "agent"
     },
-    "done": 3,
+    "done": 2,
     "total": 10,
     "buyer": "Owner or office manager of a 2-25 person specialty subcontractor (drywall, electrical, concrete, roofing) or small materials supplier doing commercial work in 2+ of CA, TX, FL, WA, AZ, NV, with no billing suite such as Siteline",
     "price": "$29/month",
-    "updatedAt": "2026-10-26T07:22:53.748Z"
+    "updatedAt": "2026-10-31T04:36:19.485Z"
   },
   "build": {
     "milestone": "MVP",
