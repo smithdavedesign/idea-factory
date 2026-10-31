@@ -5,7 +5,7 @@
     "perProductUsd": 300,
     "_why": "David, 2026-10-12: \"I am ok moving a product forward for a few hundred.\" Agents still never spend or hold a card (maxMonthlySpendUsd stays 0): they propose a spend with what it should buy (ads to fill a demand test, a domain, a paid tier for a product that takes payments) and David approves and pays."
   },
-  "hosting": "Vercel Pro (David upgraded the team on 2026-10-13, which allows commercial use: a product may take payments where it is; don't ask for another host), Neon free. Pro includes $20 of usage a month for every product together: keep products light and ask before anything metered beyond that.",
+  "hosting": "Vercel Pro (David upgraded the team on 2026-10-13, which allows commercial use), Neon free. Since 2026-10-31 the Vercel team is soft-blocked until 2026-11-30 (402 on every new deploy and on several products): Cloudflare Workers (free plan, agent account, no card) is the second host. A Next.js product gets the OpenNext adapter (@opennextjs/cloudflare, wrangler.jsonc named after the repo, `npm run cf:build`) and deploys with `provision cloudflare deploy <repo> <checkout>` (ai-stack README, Hosting on Cloudflare Workers); tiebreak runs there. Keep products light enough for both free tiers (Worker bundle under 3 MiB gzip) and ask before anything metered.",
   "research": {
     "seeded": {
       "maxPerDay": 10,
@@ -126,9 +126,12 @@
     ],
     "_ownerOnly": "Files a feature PR (the weekly plan's) may not merge itself with: payment code. Matched case-insensitively against each changed path; such a PR waits for David, as does a plan item marked payments. Go-lives and milestone builds aren't affected (a go-live adds the payment link by design)."
   },
-  "signalUrl": "https://repohq.vercel.app/api/ideas/signal",
+  "signalUrl": "https://idea-factory.1426davejobs.workers.dev/api/ideas/signal",
+  "_signalUrl": "The public demand-signal endpoint: landing pages and every product beacon POST here. Since 2026-10-31 the idea-factory Worker (worker/ideas.mjs) on Cloudflare, writing to RepoHQ's idea_signals; RepoHQ's own /api/ideas/signal does the same but RepoHQ now runs on the Mac behind Tailscale, which the public can't reach. Changing it re-renders the live landing pages on the next tick (lib/pipeline.js pageStale); products carry it in their code.",
   "pagesProject": "idea-pages",
-  "pagesBaseUrl": "https://idea-pages-livid.vercel.app",
+  "pagesBaseUrl": "https://idea-factory.1426davejobs.workers.dev",
+  "pagesHost": "cloudflare",
+  "_pagesHost": "Where pages/ is published: cloudflare (the idea-factory Worker, provision cloudflare deploy idea-factory <checkout>) or vercel (pagesProject in vercelScope, the old host; 402 since 2026-10-31).",
   "vercelScope": "team_ONe0JJaVwgXIAUMHZ7OUgkku",
   "revenue": {
     "maxPerDay": 2,

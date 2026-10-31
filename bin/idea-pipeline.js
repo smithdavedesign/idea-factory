@@ -52,7 +52,7 @@
 //      "Start build now" requests start whenever a slot is free.
 // Daily (Claude Pro subscription, capped by policy):
 //   a. Review new ideas with the gstack frameworks (bin/idea-review.js) → Validate or Pass.
-//   b. Landing page for each new Validate idea (pages/<slug>/), deployed to the free pages project.
+//   b. Landing page for each new Validate idea (pages/<slug>/), deployed to the free pages host (policy.pagesHost).
 // (Builds aren't daily steps any more: they start on any tick with a free slot.)
 const fs = require('fs');
 const path = require('path');
@@ -154,7 +154,19 @@ function lock() {
   return true;
 }
 
+// The credential broker (ai-stack bin/provision): Cloudflare deploys with the token from the keychain.
+const PROVISION = process.env.PROVISION_BIN || path.join(require('os').homedir(), 'ai-stack', 'bin', 'provision');
+
+/**
+ * Publish pages/. policy.pagesHost "cloudflare" (since 2026-10-31, when Vercel's soft block took the old
+ * pages project down with a 402): the idea-factory Worker (wrangler.jsonc, worker/ideas.mjs) serves pages/
+ * and the signal endpoint, deployed from this checkout by the broker. Otherwise the Vercel pages project.
+ */
 function deployPages() {
+  if (policy.pagesHost === 'cloudflare') {
+    const out = execFileSync(PROVISION, ['cloudflare', 'deploy', 'idea-factory', DATA], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 900_000 });
+    return /deployed/.test(out);
+  }
   const out = execFileSync('vercel', ['deploy', '--prod', '--yes', '--scope', policy.vercelScope], { cwd: PAGES, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: 300_000 });
   return /Aliased|ready/.test(out);
 }
@@ -303,10 +315,31 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
         live++;
       } catch (e) { fail(`page ${slug}`, e); }
     }
-    if (!newPages.length) return [];
+    // Pages already up, after a host or signal-URL move: re-rendered with the current signal URL, and
+    // their recorded address follows pagesBaseUrl. Their demand-test window isn't restarted.
+    const moved = [];
+    for (const [slug, state] of states) {
+      if (state.stage !== 'validate' || !state.page) continue;
+      try {
+        const file = path.join(PAGES, slug, 'index.html');
+        const stale = P.pageStale(fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '', state.page.url, { slug, signalUrl: policy.signalUrl, baseUrl: policy.pagesBaseUrl });
+        if (!stale.html && !stale.url) continue;
+        if (stale.html) {
+          const review = JSON.parse(fs.readFileSync(path.join(IDEAS, slug, 'review.json'), 'utf8'));
+          fs.mkdirSync(path.join(PAGES, slug), { recursive: true });
+          fs.writeFileSync(file, P.renderLanding({ slug, landing: review.landing, signalUrl: policy.signalUrl }));
+        }
+        moved.push({ slug, url: `${policy.pagesBaseUrl}/${slug}/`, newUrl: stale.url });
+      } catch (e) { fail(`page ${slug}`, e); }
+    }
+    if (!newPages.length && !moved.length) return [];
     try {
       deployPages();
       for (const { slug, url } of newPages) save(slug, { ...P.readState(path.join(IDEAS, slug)), page: { url, deployedAt: now.toISOString() }, validation: P.startValidation(now, policy) }, `landing page ${url}`);
+      for (const { slug, url, newUrl } of moved) {
+        const st = P.readState(path.join(IDEAS, slug));
+        save(slug, { ...st, page: { ...st.page, url, deployedAt: now.toISOString(), ...(newUrl ? { previousUrl: st.page.url } : {}) } }, newUrl ? `landing page moved to ${url}` : `landing page re-rendered for the new signal URL`);
+      }
       return newPages;
     } catch (e) { fail('deploy pages', e); return []; }
   };
