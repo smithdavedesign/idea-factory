@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-10-31T19:36:43.392Z",
+  "updatedAt": "2026-11-01T08:21:40.108Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -501,73 +501,41 @@
     ],
     "checkedAt": "2026-10-31T19:36:43.392Z",
     "plan": {
-      "at": "2026-10-25T11:46:25.976Z",
+      "at": "2026-11-01T08:21:40.108Z",
       "items": [
         {
-          "id": "poll-share-cards-og",
-          "title": "Per-poll share card (og:image) showing the candidates",
-          "why": "Every route to voters in the record (launch kit, concierge plan) is someone pasting a poll link into a chat or forum, and today that link unfurls as plain text. Different from the two failed poll-share-cards builds (#15, #16): this one is only the image route and the meta tags. The 'make your own' loop and the closed-poll split are dropped, and nothing outside the web app's poll page and a new ima",
+          "id": "newsletter-vote-links",
+          "title": "Vote-from-your-newsletter: copyable email and Substack blocks with one link per option",
+          "why": "Authors already ask their own lists to pick a cover by a deadline (Neve's Substack, Sara Foster, Alexis Grant's 4,000-subscriber list, where most of her votes came from the newsletter), and sellers and creators have Instagram audiences or email lists. A block of option images, each linking to its own vote, turns every click from a reader into a tiebreak visit and every poll creator into a distribu",
           "metric": "visit",
           "acceptance": [
-            "GET /polls/<id> (the poll page) HTML contains og:image and twitter:image meta tags, plus twitter:card=summary_large_image, pointing to a per-poll image route",
-            "The per-poll image route returns 200 with content-type image/png, and the PNG is 1200x630",
-            "For a 2-option image poll the PNG contains both option images (snapshot test). For a 4-option text poll with a 200-character question it renders without text overflowing the canvas (snapshot test)",
-            "An unknown poll id returns a 404 from the image route, and a private poll's image route returns a generic tiebreak card rather than its options",
-            "No file under mobile/ changes in the PR, and the web and mobile CI checks pass"
-          ],
-          "windowDays": 14,
-          "size": "S",
-          "payments": false,
-          "target": 10,
-          "attempts": [
-            "tiebreak-20261026-feature-poll-share-cards-og",
-            "tiebreak-20261027-feature-poll-share-cards-og",
-            "tiebreak-20261028-feature-poll-share-cards-og",
-            "tiebreak-20261023-feature-poll-share-cards"
-          ]
-        },
-        {
-          "id": "etsy-listing-photo-test",
-          "title": "Free Etsy listing photo tester: 2–4 photos in a mock Etsy search grid, then 'let strangers pick'",
-          "why": "The paying buyer in REVENUE.md is an Etsy seller choosing a main photo, and search turns up no free Etsy-specific tool that compares candidates and collects votes, only PickFu (paid, Amazon-focused) and live split testers. Different from the three failed thumbnail-compare-tool builds (#11–#13): one page for one buyer instead of three tool pages in one PR, with the poll handoff reusing the existing",
-          "metric": "visit",
-          "acceptance": [
-            "/tools/etsy-listing-photo-test returns 200 with a unique <title>, a meta description and an <h1> naming the tool, and appears in /sitemap.xml",
-            "Adding 3 local images renders each one as a 1:1-cropped tile inside a mock Etsy search-results grid, next to the others, with no network request carrying the image until the user asks for a poll (Playwright network log)",
-            "Clicking 'Let strangers pick' opens the new-poll form with the 3 images as options A–C, and submitting it creates a poll whose page renders all three (Playwright, desktop and 390px phone)",
-            "Loading the page fires the visit beacon with path /tools/etsy-listing-photo-test, so its visitors count apart from the SEO-experiment pages",
+            "The poll page shows a 'Get votes from your newsletter' panel to the poll's creator only (same voter cookie or x-tiebreak-voter header). For a 3-option poll it offers two copy buttons: an HTML block (a <table> with inline styles, no <script>, no <style>, one <a href> per option wrapping that option's image or text, absolute URLs) and a Markdown/plain block (one image line plus one link line per option) for Substack and similar editors",
+            "Each option link has the form /polls/<id>?pick=<A|B|C|D>&src=newsletter. A GET of that URL records no vote: the vote count is unchanged after the GET, which keeps email link scanners and prefetchers from voting. The page opens with that option preselected and one 'Confirm vote' button, and confirming creates exactly one vote (Playwright, desktop and 390px phone)",
+            "A second confirm by the same voter returns 409 and the count doesn't change. A ?pick= link to a closed poll shows the result page, not a vote button",
+            "Landing on a ?src=newsletter link fires the visit beacon with the poll path and source 'newsletter', so these visits count apart from search and shared-link visits",
             "No file under mobile/ changes in the PR, and the web and mobile CI checks pass"
           ],
           "windowDays": 14,
           "size": "M",
           "payments": false,
-          "target": 20,
-          "attempts": [
-            "tiebreak-20261029-feature-etsy-listing-photo-test",
-            "tiebreak-20261030-feature-etsy-listing-photo-test",
-            "tiebreak-20261031-feature-etsy-listing-photo-test",
-            "tiebreak-20261022-feature-thumbnail-compare-tool"
-          ]
+          "target": 20
         },
         {
-          "id": "youtube-thumbnail-test",
-          "title": "Free YouTube thumbnail tester: 2–4 thumbnails in desktop and phone feed mocks, then a vote",
-          "why": "Creators already search for free pre-publish thumbnail testers with human votes (CollabPals' credit exchange, Touhfa Arena, which is limited to 2 thumbnails over 5 days), and the research shows they pay TubeBuddy for the same decision. tiebreak takes 2–4 options and closes at a vote target. It reuses the Etsy page's grid component, so it's a small second PR, measured on its own path.",
+          "id": "public-result-pages",
+          "title": "Opt-in public result pages for closed polls, indexed in the sitemap",
+          "why": "PickFu publishes closed cover polls as indexable result pages, and they rank for queries like 'which book cover' (pickfu.com/books/book-covers/…), so buyers do search the questions themselves. tiebreak can do the same with real polls only: a creator ticks 'publish the result', and the closed poll becomes a page titled with its question. This is programmatic pages from user polls, which makes it a ",
           "metric": "visit",
           "acceptance": [
-            "/tools/youtube-thumbnail-test returns 200 with a unique <title>, a meta description and an <h1> naming the tool, and appears in /sitemap.xml",
-            "Adding 2 local images renders each at 16:9 in a desktop home-grid tile and in a phone-feed tile at 390px width (4 preview tiles), entirely client-side",
-            "Clicking 'Let strangers pick' opens the new-poll form prefilled with the images as options, and submitting it creates a poll (Playwright, desktop and 390px phone)",
-            "Loading the page fires the visit beacon with path /tools/youtube-thumbnail-test",
+            "The create-poll form has a 'Publish the result when it closes' checkbox, off by default, and a private (paid) poll can't turn it on (the API returns 400 if both are set)",
+            "When an opted-in poll closes, /results/<slug> returns 200 with <title> and <h1> equal to the poll question, a meta description stating the winner and the vote count, every option with its vote split, and a 'Make your own tiebreak' link to the new-poll form",
+            "/results/<slug> for an open poll, an un-opted poll, or a poll hidden by 3 reports returns 404, and /sitemap.xml lists only opted-in, closed, unhidden polls",
+            "Loading /results/<slug> fires the visit beacon with path /results/<slug>",
             "No file under mobile/ changes in the PR, and the web and mobile CI checks pass"
           ],
-          "windowDays": 14,
-          "size": "S",
+          "windowDays": 28,
+          "size": "M",
           "payments": false,
-          "target": 10,
-          "attempts": [
-            "tiebreak-20261022-feature-thumbnail-compare-tool"
-          ]
+          "target": 10
         }
       ]
     }

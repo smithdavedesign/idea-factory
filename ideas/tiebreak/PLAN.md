@@ -1,58 +1,41 @@
-# Plan: tiebreak, week of 2026-10-26
+# Plan: tiebreak, week of 2026-11-02
 
-The bottleneck is visits: 0 this week and 7 ever, against the playbook's 50 a week before any conversion work. Last week's plan didn't fail as an idea; it never shipped. The thumbnail tool failed three builds and the share cards failed three more, every time on "web, web, mobile failed", even though they were web-only features. So this week re-plans the two visit features, split into small single-purpose PRs that leave `mobile/` alone: per-poll share cards first (the smallest, and a test of whether the pipeline can land anything), then one search-landing tool page per buyer. Each tool page is its own experiment. Search shows that creators already use free, pre-publish, human-vote thumbnail testers ([CollabPals](https://www.collabpals.com/thumbnail-tester), [Touhfa Arena](https://touhfa.art/arena/)), and that sellers and authors otherwise fall back to PickFu (from $15–$50 a poll) or Google Forms and newsletter polls ([Helium10](https://www.helium10.com/blog/pickfu-a-b-testing-tool/), [MobileRead](https://www.mobileread.com/forums/showthread.php?p=3974517)).
+The bottleneck is still visits. There were 0 this week and 0 the week before, against the playbook's bar of 50 a week before any conversion work. Last week's three items didn't fail as ideas. They never landed: the share cards (#15) and the multi-buyer thumbnail tool (#13) are reopened and waiting on CI that GitHub billing blocked, and the Etsy tester failed twice (#17, #18) in the middle of Claude usage-limit pauses. So this week doesn't re-plan those. It adds two different routes to visitors that don't depend on David posting: vote links a creator drops into their own newsletter, so every reader who votes is a visit, and indexable result pages for public polls. The first is the stronger bet, because authors already run cover votes in their newsletters with a deadline, and that is tiebreak's model ([Neve](https://neve.substack.com/p/help-me-choose-a-new-cover-for-delilahs), [Sara Foster](https://authorsarafoster.substack.com/p/readers-i-need-your-help), [Alexis Grant](https://alexisgrant.com/kindle-cover-vote/)). Today they do it with reply-to-vote or an off-platform poll that has no tally page.
 
 ## Items
 ```json
 [
   {
-    "id": "poll-share-cards-og",
-    "title": "Per-poll share card (og:image) showing the candidates",
-    "why": "Every route to voters in the record (launch kit, concierge plan) is someone pasting a poll link into a chat or forum, and today that link unfurls as plain text. Different from the two failed poll-share-cards builds (#15, #16): this one is only the image route and the meta tags. The 'make your own' loop and the closed-poll split are dropped, and nothing outside the web app's poll page and a new image route changes.",
-    "metric": "visit",
-    "target": 10,
-    "windowDays": 14,
-    "size": "S",
-    "payments": false,
-    "acceptance": [
-      "GET /polls/<id> (the poll page) HTML contains og:image and twitter:image meta tags, plus twitter:card=summary_large_image, pointing to a per-poll image route",
-      "The per-poll image route returns 200 with content-type image/png, and the PNG is 1200x630",
-      "For a 2-option image poll the PNG contains both option images (snapshot test). For a 4-option text poll with a 200-character question it renders without text overflowing the canvas (snapshot test)",
-      "An unknown poll id returns a 404 from the image route, and a private poll's image route returns a generic tiebreak card rather than its options",
-      "No file under mobile/ changes in the PR, and the web and mobile CI checks pass"
-    ]
-  },
-  {
-    "id": "etsy-listing-photo-test",
-    "title": "Free Etsy listing photo tester: 2–4 photos in a mock Etsy search grid, then 'let strangers pick'",
-    "why": "The paying buyer in REVENUE.md is an Etsy seller choosing a main photo, and search turns up no free Etsy-specific tool that compares candidates and collects votes, only PickFu (paid, Amazon-focused) and live split testers. Different from the three failed thumbnail-compare-tool builds (#11–#13): one page for one buyer instead of three tool pages in one PR, with the poll handoff reusing the existing create form and upload (PR #10) rather than new upload code.",
+    "id": "newsletter-vote-links",
+    "title": "Vote-from-your-newsletter: copyable email and Substack blocks with one link per option",
+    "why": "Authors already ask their own lists to pick a cover by a deadline (Neve's Substack, Sara Foster, Alexis Grant's 4,000-subscriber list, where most of her votes came from the newsletter), and sellers and creators have Instagram audiences or email lists. A block of option images, each linking to its own vote, turns every click from a reader into a tiebreak visit and every poll creator into a distribution channel. This is different from the share cards in #15: those make a pasted link unfurl, while this puts voteable options inside an email, where unfurls don't happen.",
     "metric": "visit",
     "target": 20,
     "windowDays": 14,
     "size": "M",
     "payments": false,
     "acceptance": [
-      "/tools/etsy-listing-photo-test returns 200 with a unique <title>, a meta description and an <h1> naming the tool, and appears in /sitemap.xml",
-      "Adding 3 local images renders each one as a 1:1-cropped tile inside a mock Etsy search-results grid, next to the others, with no network request carrying the image until the user asks for a poll (Playwright network log)",
-      "Clicking 'Let strangers pick' opens the new-poll form with the 3 images as options A–C, and submitting it creates a poll whose page renders all three (Playwright, desktop and 390px phone)",
-      "Loading the page fires the visit beacon with path /tools/etsy-listing-photo-test, so its visitors count apart from the SEO-experiment pages",
+      "The poll page shows a 'Get votes from your newsletter' panel to the poll's creator only (same voter cookie or x-tiebreak-voter header). For a 3-option poll it offers two copy buttons: an HTML block (a <table> with inline styles, no <script>, no <style>, one <a href> per option wrapping that option's image or text, absolute URLs) and a Markdown/plain block (one image line plus one link line per option) for Substack and similar editors",
+      "Each option link has the form /polls/<id>?pick=<A|B|C|D>&src=newsletter. A GET of that URL records no vote: the vote count is unchanged after the GET, which keeps email link scanners and prefetchers from voting. The page opens with that option preselected and one 'Confirm vote' button, and confirming creates exactly one vote (Playwright, desktop and 390px phone)",
+      "A second confirm by the same voter returns 409 and the count doesn't change. A ?pick= link to a closed poll shows the result page, not a vote button",
+      "Landing on a ?src=newsletter link fires the visit beacon with the poll path and source 'newsletter', so these visits count apart from search and shared-link visits",
       "No file under mobile/ changes in the PR, and the web and mobile CI checks pass"
     ]
   },
   {
-    "id": "youtube-thumbnail-test",
-    "title": "Free YouTube thumbnail tester: 2–4 thumbnails in desktop and phone feed mocks, then a vote",
-    "why": "Creators already search for free pre-publish thumbnail testers with human votes (CollabPals' credit exchange, Touhfa Arena, which is limited to 2 thumbnails over 5 days), and the research shows they pay TubeBuddy for the same decision. tiebreak takes 2–4 options and closes at a vote target. It reuses the Etsy page's grid component, so it's a small second PR, measured on its own path.",
+    "id": "public-result-pages",
+    "title": "Opt-in public result pages for closed polls, indexed in the sitemap",
+    "why": "PickFu publishes closed cover polls as indexable result pages, and they rank for queries like 'which book cover' (pickfu.com/books/book-covers/…), so buyers do search the questions themselves. tiebreak can do the same with real polls only: a creator ticks 'publish the result', and the closed poll becomes a page titled with its question. This is programmatic pages from user polls, which makes it a different change from the hand-written content pages in the running SEO experiment (tiebreak-20261014-seo), measured on its own /results/ path.",
     "metric": "visit",
     "target": 10,
-    "windowDays": 14,
-    "size": "S",
+    "windowDays": 28,
+    "size": "M",
     "payments": false,
     "acceptance": [
-      "/tools/youtube-thumbnail-test returns 200 with a unique <title>, a meta description and an <h1> naming the tool, and appears in /sitemap.xml",
-      "Adding 2 local images renders each at 16:9 in a desktop home-grid tile and in a phone-feed tile at 390px width (4 preview tiles), entirely client-side",
-      "Clicking 'Let strangers pick' opens the new-poll form prefilled with the images as options, and submitting it creates a poll (Playwright, desktop and 390px phone)",
-      "Loading the page fires the visit beacon with path /tools/youtube-thumbnail-test",
+      "The create-poll form has a 'Publish the result when it closes' checkbox, off by default, and a private (paid) poll can't turn it on (the API returns 400 if both are set)",
+      "When an opted-in poll closes, /results/<slug> returns 200 with <title> and <h1> equal to the poll question, a meta description stating the winner and the vote count, every option with its vote split, and a 'Make your own tiebreak' link to the new-poll form",
+      "/results/<slug> for an open poll, an un-opted poll, or a poll hidden by 3 reports returns 404, and /sitemap.xml lists only opted-in, closed, unhidden polls",
+      "Loading /results/<slug> fires the visit beacon with path /results/<slug>",
       "No file under mobile/ changes in the PR, and the web and mobile CI checks pass"
     ]
   }
@@ -60,14 +43,15 @@ The bottleneck is visits: 0 this week and 7 ever, against the playbook's 50 a we
 ```
 
 ## Notes
-- **Fix the build failures before spending another session on features.** Six feature attempts since 2026-10-20 failed. Five failed every check, including the mobile one, on web-only work (#11, #12, #13, #15, and #16 failing tests in the pipeline's run). One failed because Docker wasn't running. `state.json` also has `build.stopped: "M3: tests failing"` and `testsPassing: false` next to an acceptance verdict of "pass". That pattern looks like main itself is red (or the sandbox can't install or typecheck the workspace), not like six bad features. I couldn't open the repo or the CI logs from this session, so this is an inference. Someone should read `gh run view --log-failed` on #16 first. If main is red, a fix PR comes before item 1. Each item's "mobile/ untouched, checks pass" criterion is there to tell a broken feature apart from a broken pipeline.
-- **The posts are still the biggest lever, and they're David's.** growth.next is an owner post, and none of the launch kit (r/SideProject, r/EtsySellers, Indie Hackers, r/selfpublish, r/PartneredYoutube) has gone out. 0 visitors mostly means nobody has been told. These features give the posts better places to land, such as a tool page to link from Indie Hackers and a share card for every poll link, but they don't replace the posts.
-- **PR #10 (photo upload)** is recorded as a running experiment until 2026-11-02. Items 2 and 3 hand images to the poll form through it. If it isn't actually live on main, the handoff has to fall back to the form's existing image fields, and the builder should check that first.
+- **David, first: unblock CI.** No growth feature has merged since photo upload (#10, 2026-10-19). #13 and #15 sit reopened because GitHub Actions never ran (account billing block), and four attempts stopped on the Claude usage limit. Until Actions runs, every item here stalls in the same place. Fixing it lands two finished features (#13, #15) before anything new is built.
+- **Check the beacon before reading any result.** `funnel.all` shows 0 visits ever, but the instrumentation experiment counted 2 and the SEO experiment started from a baseline of 6. The site has also moved from tiebreak-phi.vercel.app to tiebreak.1426davejobs.workers.dev (a89ef45, "host-neutral beacons"), and the funnel was last read on 2026-10-27. Before calling any of these experiments, someone should load the workers.dev site and confirm that a visit reaches RepoHQ. LAUNCH-KIT.md and any posts link the old Vercel URL, so check that it still serves or redirects. Some of this 0 may be measurement, not demand.
+- **The posts are still the biggest lever, and they're David's.** growth.next is an owner post, and nothing from the launch kit has gone out. The newsletter item gives the r/selfpublish post a concrete reason to try tiebreak ("drop this block into your next newsletter").
+- **Not re-planned, and why:**
+  - Share cards (#15) and the multi-buyer thumbnail tool (#13): both are running experiments that only need CI.
+  - The Etsy listing photo tester (#17, #18) and the YouTube tester: #13 already covers Etsy, book cover and YouTube previews. Search also turns up free Etsy thumbnail-crop previewers ([Listadum](https://www.listadum.com/etsy-thumbnail-preview-tool), [Listing Thumbnail Tester](https://listing-thumbnail-tester.netlify.app)), which weakens the "nobody offers this" premise for an Etsy-only page. Retry it only if #13 is closed for its code.
 - **Left out:**
-  - A "PickFu alternative" compare page and more content pages: they're the same kind of change as the running SEO experiment (`tiebreak-20261014-seo`, ends 2026-11-11). Revisit once it reports.
-  - The "make your own tiebreak" voter loop and the closed-poll result split on share cards: cut so the share-card PR stays small. They're the natural next items once share cards land.
-  - A book-cover tool page: the third buyer, and the weakest search signal (authors mostly use PickFu, Google Forms or newsletters). Add it if the Etsy page draws visitors.
-  - A Discord bot for creators' own servers: it needs David to create a Discord app and its token, so it's too big for this week.
-  - The $5 checkout, pricing and the Pro page: the playbook says distribution comes first, and the Stripe step is still David's.
-  - Native-app work: the bottleneck is web search and shared links.
-- **David to decide:** whether the YouTube page is worth building before r/PartneredYoutube answers the launch kit's question ("is Test & Compare enough?"). If you'd rather not invest in the creator segment yet, drop item 3. The plan works with items 1 and 2 alone.
+  - An Instagram-story image (1080×1920, poll plus link): it reuses #15's image route, so build it after #15 merges.
+  - A Discord bot: it needs David to create an app and a token.
+  - Poll-closed notifications: they serve activation and retention, which isn't the bottleneck.
+  - The $5 checkout and the Pro page: payments is David's step, and the playbook puts distribution first.
+- **David to decide:** item 2 only pays off once real polls exist and the new workers.dev domain gets indexed, so it's a slow bet. If you'd rather keep the pipeline on one item at a time while CI is flaky, build item 1 alone.

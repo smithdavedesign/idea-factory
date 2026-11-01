@@ -1,12 +1,12 @@
 {
-  "stage": "repo",
+  "stage": "building",
   "review": {
     "verdict": "pass",
     "score": 4,
     "summary": "A fun summons-and-jury twist on AI-judge apps, but there is zero evidence anyone pays for a joke verdict and the flow is copyable in a weekend. If it's worth anything, it's a Court mode inside tiebreak, not its own product.",
     "at": "2026-10-13T08:00:55.104Z"
   },
-  "updatedAt": "2026-10-26T06:20:41.592Z",
+  "updatedAt": "2026-11-01T08:22:58.604Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -109,9 +109,21 @@
       "M4",
       "M5"
     ],
-    "status": "failed",
-    "at": "2026-10-26T06:20:16.171Z",
+    "status": "running",
+    "at": "2026-11-01T08:22:43.328Z",
     "manual": false,
-    "reason": "couldn't start the build sandbox: sandbox open: Docker is not running"
+    "reason": "couldn't start the build sandbox: sandbox open: Docker is not running",
+    "advice": {
+      "difficulty": 2,
+      "reason": "Involves multiple endpoints, state management, validation, and error handling across several files.",
+      "source": "model",
+      "model": "local-qwen3"
+    },
+    "progress": {
+      "step": 1,
+      "steps": 6,
+      "label": "M1 (1 of 5)",
+      "at": "2026-11-01T08:22:58.603Z"
+    }
   }
 }
