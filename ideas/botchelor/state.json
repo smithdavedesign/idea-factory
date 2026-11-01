@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-11-01T08:23:02.778Z",
+  "updatedAt": "2026-11-01T09:25:21.337Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -109,8 +109,8 @@
       "M4"
     ],
     "stopped": null,
-    "status": "running",
-    "prUrl": "https://github.com/smithdavedesign/botchelor/pull/859",
+    "status": "pr-open",
+    "prUrl": "https://github.com/smithdavedesign/botchelor/pull/1184",
     "testsPassing": false,
     "engine": "claude",
     "model": "claude-opus-5-5",
@@ -140,12 +140,8 @@
       "sha": "b17c45806c32d430375fe21be5e81722534dc2e4",
       "at": "2026-10-23T08:52:09.968Z"
     },
-    "progress": {
-      "step": 1,
-      "steps": 2,
-      "label": "GOLIVE",
-      "at": "2026-11-01T08:23:02.777Z"
-    }
+    "beacon": "funnel",
+    "held": "it changes payment code (app/agents/pricing/page.tsx), which only David merges"
   },
   "milestonesDone": [
     "M1",

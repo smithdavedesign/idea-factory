@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-11-01T08:21:40.108Z",
+  "updatedAt": "2026-11-01T09:25:21.337Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -497,6 +497,22 @@
         "reason": "its tests failed in the pipeline's run",
         "paused": true,
         "note": "hit the Claude usage limit (marked paused 2026-10-31, lib/usage-limit.js)"
+      },
+      {
+        "id": "tiebreak-20261101-feature-newsletter-vote-links",
+        "kind": "feature",
+        "executor": "build",
+        "hypothesis": "Vote-from-your-newsletter: copyable email and Substack blocks with one link per option: Authors already ask their own lists to pick a cover by a deadline (Neve's Substack, Sara Foster, Alexis Grant's 4,000-subscriber list, where most of her votes came from the newsletter), and sellers and creators have Instagram audiences or email lists. A block of option images, each linking to its own vote, turns every click from a reader into a tiebreak visit and every poll creator into a distribu",
+        "metric": "visit",
+        "baseline": 0,
+        "target": 20,
+        "windowDays": 14,
+        "planItem": "newsletter-vote-links",
+        "title": "Vote-from-your-newsletter: copyable email and Substack blocks with one link per option",
+        "payments": false,
+        "status": "proposed",
+        "createdAt": "2026-11-01T09:25:21.337Z",
+        "updatedAt": "2026-11-01T09:25:21.337Z"
       }
     ],
     "checkedAt": "2026-10-31T19:36:43.392Z",
@@ -518,7 +534,10 @@
           "windowDays": 14,
           "size": "M",
           "payments": false,
-          "target": 20
+          "target": 20,
+          "attempts": [
+            "tiebreak-20261101-feature-newsletter-vote-links"
+          ]
         },
         {
           "id": "public-result-pages",
