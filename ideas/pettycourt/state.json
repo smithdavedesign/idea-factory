@@ -6,7 +6,7 @@
     "summary": "A fun summons-and-jury twist on AI-judge apps, but there is zero evidence anyone pays for a joke verdict and the flow is copyable in a weekend. If it's worth anything, it's a Court mode inside tiebreak, not its own product.",
     "at": "2026-10-13T08:00:55.104Z"
   },
-  "updatedAt": "2026-11-01T11:13:26.397Z",
+  "updatedAt": "2026-11-01T11:44:21.802Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -103,7 +103,7 @@
     "updatedAt": "2026-10-13T12:42:50.438Z"
   },
   "build": {
-    "milestone": "MVP",
+    "milestone": "GOLIVE",
     "planned": [
       "M1",
       "M2",
@@ -112,18 +112,12 @@
       "M5"
     ],
     "status": "merged",
-    "at": "2026-11-01T08:22:43.328Z",
+    "at": "2026-11-01T11:13:38.477Z",
     "manual": false,
     "reason": "couldn't start the build sandbox: sandbox open: Docker is not running",
-    "milestones": [
-      "M1",
-      "M2",
-      "M3",
-      "M4",
-      "M5"
-    ],
+    "milestones": [],
     "stopped": null,
-    "prUrl": "https://github.com/smithdavedesign/pettycourt/pull/1",
+    "prUrl": "https://github.com/smithdavedesign/pettycourt/pull/2",
     "testsPassing": true,
     "engine": "claude",
     "model": "claude-opus-5-5",
@@ -135,8 +129,9 @@
       "source": "model",
       "model": "local-qwen3"
     },
+    "beacon": "funnel",
     "mergedBy": "agent",
-    "mergedAt": "2026-11-01T10:57:30.437Z"
+    "mergedAt": "2026-11-01T11:44:21.802Z"
   },
   "milestonesDone": [
     "M1",
@@ -144,5 +139,10 @@
     "M3",
     "M4",
     "M5"
-  ]
+  ],
+  "golive": {
+    "mergedAt": "2026-11-01T11:44:21.802Z",
+    "prUrl": "https://github.com/smithdavedesign/pettycourt/pull/2",
+    "beacon": "funnel"
+  }
 }
