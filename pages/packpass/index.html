@@ -29,7 +29,7 @@ button{padding:12px 18px;border:0;border-radius:8px;background:var(--ac);color:#
 <p class="note">Not built yet: this page checks whether people want it. One email when it launches, nothing else.</p>
 </main>
 <script>
-(function(){var U="https://repohq.vercel.app/api/ideas/signal",S="packpass";
+(function(){var U="https://idea-factory.1426davejobs.workers.dev/api/ideas/signal",S="packpass";
 function send(b){try{return fetch(U,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b),keepalive:true})}catch(e){}}
 send({slug:S,kind:'view',referrer:document.referrer||null});
 document.getElementById('f').addEventListener('submit',function(e){e.preventDefault();var f=e.target;
