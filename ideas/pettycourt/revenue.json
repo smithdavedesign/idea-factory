@@ -1,0 +1,58 @@
+{
+  "buyer": "The plaintiff: an 18-35 year old in a group chat of 3-10 friends, a couple or a roommate house, mid-dispute, paying on impulse from a personal card. Findable only through the places where people post petty disputes, not by email.",
+  "paymentMethod": "Stripe Checkout payment link ($3 one-time) with the case id passed as client_reference_id; success URL returns to the case. Hosted on a commercial-use free tier (Cloudflare or Netlify), not Vercel Hobby. Fake-door button first.",
+  "mvpScope": "File a case, send a summons link, defendant answers without an account, AI judge rules, shareable verdict card, jury votes, report and delete links. Free: ruling and card. Paid: jury, exhibits and one appeal.",
+  "firstTenUsers": "Run the first five cases in David's own group chats and with roommates or couples he knows, filing them himself to see if the defendant answers. For the other five, post in r/SideProject and Show HN with a filled-in example case and verdict card, and ask for volunteers to file one. Count paying users separately from users.",
+  "price": {
+    "amount": 3,
+    "currency": "USD",
+    "interval": "once",
+    "why": "Per-case impulse purchase. Competitors charge $0.99-$1.99 per pack, or $7.99-$9.99/month subscriptions that have no visible paying customers. A joke buys once, so a one-time $3 sits at the top of the impulse range. Net about $2.61 after Stripe fees. Evidence of willingness to pay is weak."
+  },
+  "mustHaveBeforeCharging": [
+    "checkout (Stripe payment link live in test mode, then live mode)",
+    "deploy on a host that allows commercial use",
+    "privacy policy and terms pages, 18+ only, entertainment-not-legal-advice line",
+    "report and delete-case links working",
+    "pre-ruling safety classifier declining abuse, health, money and minors",
+    "fake-door click rate of at least 2% of cases before the real link goes live",
+    "at least 10 real cases finished with a defendant answer"
+  ],
+  "launchChannels": [
+    {
+      "name": "r/SideProject",
+      "url": "https://www.reddit.com/r/SideProject/",
+      "why": "Accepts small launches and gives early feedback; useful to get the first cases, not paying customers."
+    },
+    {
+      "name": "r/InternetIsBeautiful",
+      "url": "https://www.reddit.com/r/InternetIsBeautiful/",
+      "why": "Shareable web toys; the verdict card is the hook. Check the rules on self-promotion first."
+    },
+    {
+      "name": "Product Hunt",
+      "url": "https://www.producthunt.com/",
+      "why": "The Docket launched here; the summons-and-jury twist can be posted as a comparison."
+    },
+    {
+      "name": "Show HN",
+      "url": "https://news.ycombinator.com/showhn.html",
+      "why": "A similar app got a Show HN thread. Critics will raise the 'loser quits' risk, which is useful signal."
+    },
+    {
+      "name": "David's own friend groups",
+      "url": "https://github.com/smithdavedesign/pettycourt",
+      "why": "The only way to get real defendants and jurors this week; the product is a link pasted into a group chat."
+    }
+  ],
+  "risks": [
+    "No evidence anyone pays for a joke verdict; competitors show tiny installs and no paying-customer counts",
+    "Free ChatGPT covers the base case, and the flow can be copied in a weekend",
+    "Defendant does not respond, which kills the loop",
+    "Losing parties quit or feel shamed by the jury",
+    "Moderation, harassment and minors burden for a near-zero-time owner",
+    "Vercel Hobby bars commercial use, so hosting must move before charging",
+    "A joke buys once; no retention"
+  ],
+  "killCriteria": "After 30 real cases: under 40% defendant response, or under 25% of cases with 2+ jury votes, or fewer than 1 case paying $3 within 30 days. Then stop, or fold into tiebreak as a Court mode."
+}
