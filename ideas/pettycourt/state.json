@@ -6,7 +6,7 @@
     "summary": "A fun summons-and-jury twist on AI-judge apps, but there is zero evidence anyone pays for a joke verdict and the flow is copyable in a weekend. If it's worth anything, it's a Court mode inside tiebreak, not its own product.",
     "at": "2026-10-13T08:00:55.104Z"
   },
-  "updatedAt": "2026-11-01T10:57:30.437Z",
+  "updatedAt": "2026-11-01T11:13:26.397Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -20,15 +20,15 @@
         "id": "plan",
         "owner": "agent",
         "label": "Road-to-revenue plan written",
-        "done": false,
-        "evidence": "written after M1 merges"
+        "done": true,
+        "evidence": "The plaintiff: an 18-35 year old in a group chat of 3-10 friends, a couple or a  · $3 once"
       },
       {
         "id": "mvp",
         "owner": "agent",
         "label": "MVP built: every roadmap milestone merged",
-        "done": false,
-        "evidence": "0/5 milestones merged"
+        "done": true,
+        "evidence": "5/5 milestones merged"
       },
       {
         "id": "deployed",
@@ -54,9 +54,9 @@
       {
         "id": "price",
         "owner": "david",
-        "label": "Price decided",
-        "done": false,
-        "evidence": ""
+        "label": "Price: $3 once (from the plan)",
+        "done": true,
+        "evidence": "Per-case impulse purchase. Competitors charge $0.99-$1.99 per pack, or $7.99-$9.99/month subscriptions that have no visi"
       },
       {
         "id": "payments",
@@ -88,13 +88,15 @@
       }
     ],
     "next": {
-      "id": "plan",
-      "label": "Road-to-revenue plan written",
+      "id": "deployed",
+      "label": "Live on a free tier",
       "owner": "agent"
     },
-    "done": 0,
+    "done": 3,
     "total": 10,
-    "updatedAt": "2026-10-13T08:16:46.084Z"
+    "buyer": "The plaintiff: an 18-35 year old in a group chat of 3-10 friends, a couple or a roommate house, mid-dispute, paying on impulse from a personal card. Findable only through the places where people post petty disputes, not by email.",
+    "price": "$3 once",
+    "updatedAt": "2026-11-01T11:13:26.397Z"
   },
   "revenue": {
     "mrr": 0,
