@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-11-01T09:25:21.337Z",
+  "updatedAt": "2026-11-01T10:11:25.918Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -111,7 +111,7 @@
       "M3"
     ],
     "status": "closed",
-    "at": "2026-10-31T07:01:33.049Z",
+    "at": "2026-11-01T09:26:08.023Z",
     "manual": false,
     "advice": {
       "difficulty": 2,
@@ -122,14 +122,14 @@
     "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets 4pm (UTC)",
     "milestones": [],
     "stopped": "M3: tests failing",
-    "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/18",
-    "testsPassing": false,
+    "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/20",
+    "testsPassing": true,
     "engine": "claude",
     "model": "claude-opus-5-5",
     "effort": "xhigh",
     "sandbox": "docker",
     "note": "M3 shipped in #1 (its exit-criteria tests pass on main); M4, the native app (David asked for iPhone + Android), merged as #2 on 2026-10-12; go-live as #3.",
-    "experiment": "tiebreak-20261031-feature-etsy-listing-photo-test",
+    "experiment": "tiebreak-20261101-feature-newsletter-vote-links",
     "kind": "feature",
     "beacon": "funnel",
     "acceptance": {
@@ -510,9 +510,12 @@
         "planItem": "newsletter-vote-links",
         "title": "Vote-from-your-newsletter: copyable email and Substack blocks with one link per option",
         "payments": false,
-        "status": "proposed",
+        "status": "abandoned",
         "createdAt": "2026-11-01T09:25:21.337Z",
-        "updatedAt": "2026-11-01T09:25:21.337Z"
+        "updatedAt": "2026-11-01T10:11:25.918Z",
+        "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/20",
+        "failed": true,
+        "reason": "Vercel failed"
       }
     ],
     "checkedAt": "2026-10-31T19:36:43.392Z",
