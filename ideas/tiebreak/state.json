@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-11-02T08:59:35.900Z",
+  "updatedAt": "2026-11-02T20:11:15.858Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -258,12 +258,13 @@
         "planItem": "photo-upload-options",
         "title": "Upload photos as poll options",
         "payments": false,
-        "status": "running",
+        "status": "measuring",
         "createdAt": "2026-10-19T19:04:11.441Z",
-        "updatedAt": "2026-10-19T20:04:49.461Z",
+        "updatedAt": "2026-11-02T20:11:15.858Z",
         "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/10",
         "startedAt": "2026-10-19T20:04:49.461Z",
-        "endsAt": "2026-11-02T20:04:49.461Z"
+        "endsAt": "2026-11-16T20:04:49.461Z",
+        "extensions": 1
       },
       {
         "id": "tiebreak-20261020-feature-thumbnail-compare-tool",
@@ -537,7 +538,7 @@
         "reason": "Vercel failed"
       }
     ],
-    "checkedAt": "2026-10-31T19:36:43.392Z",
+    "checkedAt": "2026-11-02T20:11:15.858Z",
     "plan": {
       "at": "2026-11-01T08:21:40.108Z",
       "items": [
