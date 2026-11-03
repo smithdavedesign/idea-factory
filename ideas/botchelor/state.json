@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-11-01T21:44:53.083Z",
+  "updatedAt": "2026-11-03T06:24:29.974Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -209,12 +209,24 @@
         "planItem": "ship-name-generator",
         "title": "Free OC ship name generator",
         "payments": false,
-        "status": "running",
+        "status": "decided",
         "createdAt": "2026-10-20T05:28:19.993Z",
-        "updatedAt": "2026-10-20T06:13:55.865Z",
+        "updatedAt": "2026-11-03T06:24:29.974Z",
         "prUrl": "https://github.com/smithdavedesign/botchelor/pull/410",
         "startedAt": "2026-10-20T06:13:55.865Z",
-        "endsAt": "2026-11-03T06:13:55.865Z"
+        "endsAt": "2026-11-03T06:13:55.865Z",
+        "decision": "iterate",
+        "decidedAt": "2026-11-03T06:24:29.974Z",
+        "result": {
+          "lift": false,
+          "value": 0,
+          "before": 0,
+          "sample": 0,
+          "ranWith": [
+            "feature",
+            "feature"
+          ]
+        }
       },
       {
         "id": "botchelor-20261020-feature-oc-chemistry-test",
@@ -393,7 +405,7 @@
         "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets 4pm (UTC)"
       }
     ],
-    "checkedAt": "2026-10-31T03:25:04.293Z",
+    "checkedAt": "2026-11-03T06:24:29.974Z",
     "plan": {
       "at": "2026-10-23T08:52:09.968Z",
       "items": [
