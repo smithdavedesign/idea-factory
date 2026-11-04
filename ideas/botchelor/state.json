@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-11-03T06:24:29.974Z",
+  "updatedAt": "2026-11-04T08:25:04.872Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -259,12 +259,24 @@
         "planItem": "episode-share-card",
         "title": "Episode share card: link unfurls as a prediction poll",
         "payments": false,
-        "status": "running",
+        "status": "decided",
         "createdAt": "2026-10-21T07:22:46.258Z",
-        "updatedAt": "2026-10-21T08:10:10.912Z",
+        "updatedAt": "2026-11-04T08:25:04.872Z",
         "prUrl": "https://github.com/smithdavedesign/botchelor/pull/521",
         "startedAt": "2026-10-21T08:10:10.912Z",
-        "endsAt": "2026-11-04T08:10:10.912Z"
+        "endsAt": "2026-11-04T08:10:10.912Z",
+        "decision": "iterate",
+        "decidedAt": "2026-11-04T08:25:04.872Z",
+        "result": {
+          "lift": false,
+          "value": 0,
+          "before": 0,
+          "sample": 0,
+          "ranWith": [
+            "feature",
+            "feature"
+          ]
+        }
       },
       {
         "id": "botchelor-20261022-feature-oc-chemistry-test",
@@ -405,7 +417,7 @@
         "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets 4pm (UTC)"
       }
     ],
-    "checkedAt": "2026-11-03T06:24:29.974Z",
+    "checkedAt": "2026-11-04T08:25:04.872Z",
     "plan": {
       "at": "2026-10-23T08:52:09.968Z",
       "items": [
