@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-11-03T08:57:37.442Z",
+  "updatedAt": "2026-11-04T08:09:53.086Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -555,6 +555,22 @@
         "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/22",
         "failed": true,
         "reason": "Vercel failed"
+      },
+      {
+        "id": "tiebreak-20261104-feature-public-result-pages",
+        "kind": "feature",
+        "executor": "build",
+        "hypothesis": "Opt-in public result pages for closed polls, indexed in the sitemap: PickFu publishes closed cover polls as indexable result pages, and they rank for queries like 'which book cover' (pickfu.com/books/book-covers/…), so buyers do search the questions themselves. tiebreak can do the same with real polls only: a creator ticks 'publish the result', and the closed poll becomes a page titled with its question. This is programmatic pages from user polls, which makes it a ",
+        "metric": "visit",
+        "baseline": 0,
+        "target": 10,
+        "windowDays": 28,
+        "planItem": "public-result-pages",
+        "title": "Opt-in public result pages for closed polls, indexed in the sitemap",
+        "payments": false,
+        "status": "proposed",
+        "createdAt": "2026-11-04T08:09:53.086Z",
+        "updatedAt": "2026-11-04T08:09:53.086Z"
       }
     ],
     "checkedAt": "2026-11-02T20:11:15.858Z",
@@ -598,7 +614,10 @@
           "windowDays": 28,
           "size": "M",
           "payments": false,
-          "target": 10
+          "target": 10,
+          "attempts": [
+            "tiebreak-20261104-feature-public-result-pages"
+          ]
         }
       ]
     }
