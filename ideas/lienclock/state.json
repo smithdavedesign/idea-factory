@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-10-31T09:05:56.811Z",
+  "updatedAt": "2026-11-06T18:32:15.255Z",
   "repo": "https://github.com/smithdavedesign/lienclock",
   "revenue": {
     "mrr": 0,
@@ -40,7 +40,7 @@
         "owner": "agent",
         "label": "Privacy policy and terms pages",
         "done": false,
-        "evidence": "privacy ✗ · terms ✗"
+        "evidence": "not checked yet"
       },
       {
         "id": "launchReady",
@@ -94,7 +94,7 @@
     "total": 10,
     "buyer": "Owner or office manager of a 2-25 person specialty subcontractor (drywall, electrical, concrete, roofing) or small materials supplier doing commercial work in 2+ of CA, TX, FL, WA, AZ, NV, with no billing suite such as Siteline",
     "price": "$29/month",
-    "updatedAt": "2026-10-31T09:05:56.811Z"
+    "updatedAt": "2026-11-06T18:32:15.255Z"
   },
   "build": {
     "milestone": "MVP",

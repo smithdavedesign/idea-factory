@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-11-06T17:00:40.325Z",
+  "updatedAt": "2026-11-06T18:32:15.255Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -46,8 +46,8 @@
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
-        "done": true,
-        "evidence": "privacy ✓ · terms ✓"
+        "done": false,
+        "evidence": "not checked yet"
       },
       {
         "id": "launchReady",
@@ -97,11 +97,11 @@
       "label": "Live on a free tier",
       "owner": "agent"
     },
-    "done": 4,
+    "done": 3,
     "total": 10,
     "buyer": "A solo Etsy seller (one-person shop) about to publish or change a main listing photo and unable to choose between 2-4 candidates; findable as the people posting 'which picture is best?' threads in the Etsy Community Etsy Success forum and r/EtsySellers. Secondary: indie authors choosing a cover and YouTubers choosing a thumbnail.",
     "price": "$5 once",
-    "updatedAt": "2026-11-06T17:00:40.325Z"
+    "updatedAt": "2026-11-06T18:32:15.255Z"
   },
   "build": {
     "milestone": "GROWTH",
