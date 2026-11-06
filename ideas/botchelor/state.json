@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-11-04T08:25:04.872Z",
+  "updatedAt": "2026-11-06T09:06:38.924Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -309,12 +309,24 @@
         "planItem": "oc-chemistry-test",
         "title": "OC chemistry test: will these two make it?",
         "payments": false,
-        "status": "running",
+        "status": "decided",
         "createdAt": "2026-10-23T07:29:58.305Z",
-        "updatedAt": "2026-10-23T08:52:09.968Z",
+        "updatedAt": "2026-11-06T09:06:38.924Z",
         "prUrl": "https://github.com/smithdavedesign/botchelor/pull/721",
         "startedAt": "2026-10-23T08:52:09.968Z",
-        "endsAt": "2026-11-06T08:52:09.968Z"
+        "endsAt": "2026-11-06T08:52:09.968Z",
+        "decision": "iterate",
+        "decidedAt": "2026-11-06T09:06:38.924Z",
+        "result": {
+          "lift": false,
+          "value": 0,
+          "before": 0,
+          "sample": 0,
+          "ranWith": [
+            "feature",
+            "feature"
+          ]
+        }
       },
       {
         "id": "botchelor-20261024-feature-daily-date",
@@ -417,7 +429,7 @@
         "reason": "You've hit your org's monthly spend limit · ask your admin to raise it at claude.ai/admin-settings/usage · your weekly limit resets 4pm (UTC)"
       }
     ],
-    "checkedAt": "2026-11-04T08:25:04.872Z",
+    "checkedAt": "2026-11-06T09:06:38.924Z",
     "plan": {
       "at": "2026-10-23T08:52:09.968Z",
       "items": [
