@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-11-06T18:32:15.255Z",
+  "updatedAt": "2026-11-07T00:34:35.498Z",
   "repo": "https://github.com/smithdavedesign/covercheck",
   "revenue": {
     "mrr": 0,
@@ -39,8 +39,8 @@
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
-        "done": false,
-        "evidence": "not checked yet"
+        "done": true,
+        "evidence": "privacy ✓ · terms ✓"
       },
       {
         "id": "launchReady",
@@ -90,11 +90,11 @@
       "label": "Live on a free tier",
       "owner": "agent"
     },
-    "done": 3,
+    "done": 4,
     "total": 10,
     "buyer": "Treasurer or president of a self-managed HOA/condo association with 5-15 recurring vendors; secondary: owner of a 1-3 person property-management firm with up to ~40 vendors",
     "price": "$15/month",
-    "updatedAt": "2026-11-06T18:32:15.255Z"
+    "updatedAt": "2026-11-07T00:34:35.498Z"
   },
   "build": {
     "milestone": "GOLIVE",

@@ -7,7 +7,7 @@
     "at": "2026-10-10T19:18:24.107Z",
     "notionAt": "2026-10-10T19:18:24.977Z"
   },
-  "updatedAt": "2026-11-06T18:32:15.255Z",
+  "updatedAt": "2026-11-07T00:34:35.498Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -71,8 +71,8 @@
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
-        "done": false,
-        "evidence": "not checked yet"
+        "done": true,
+        "evidence": "privacy ✓ · terms ✓"
       },
       {
         "id": "launchReady",
@@ -122,11 +122,11 @@
       "label": "Live on a free tier",
       "owner": "agent"
     },
-    "done": 3,
+    "done": 4,
     "total": 10,
     "buyer": "Solo developer or freelancer on a Claude Code Max plan ($100-$200/mo) who runs agents overnight across 2-5 repos and pays with a personal card; findable among people who built their own ~/.claude/projects JSONL parsers (issue #49095 commenters) and in r/ClaudeAI and r/ClaudeCode",
     "price": "$12 once",
-    "updatedAt": "2026-11-06T18:32:15.255Z"
+    "updatedAt": "2026-11-07T00:34:35.498Z"
   },
   "milestonesDone": [
     "M1",

@@ -6,7 +6,7 @@
     "summary": "Thin demand evidence (Etsy snippets, no volume data), a $2–$5 template floor, and no distribution channel for a one-time, deadline-driven consumer purchase. Photo hosting of real people adds a moderation burden for a low-ticket product.",
     "at": "2026-10-13T08:18:51.267Z"
   },
-  "updatedAt": "2026-11-06T18:32:15.255Z",
+  "updatedAt": "2026-11-07T00:34:35.498Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -42,7 +42,7 @@
         "owner": "agent",
         "label": "Privacy policy and terms pages",
         "done": false,
-        "evidence": "not checked yet"
+        "evidence": "privacy ✗ · terms ✗"
       },
       {
         "id": "launchReady",
@@ -96,7 +96,7 @@
     "total": 10,
     "buyer": "A person whose partner's birthday or anniversary is 1-7 days away, with no gift and no design skill; first found among long-distance partners (r/LongDistance) and last-minute askers in gift threads (r/GiftIdeas)",
     "price": "$9 once",
-    "updatedAt": "2026-11-06T18:32:15.255Z"
+    "updatedAt": "2026-11-07T00:34:35.498Z"
   },
   "revenue": {
     "mrr": 0,
