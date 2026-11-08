@@ -131,6 +131,7 @@ Module._load = function (request, parent, ...rest) {
       if (cmd === 'gh' && args[0] === 'api' && args[1] === 'user') return '7\towner\n';
       if (cmd === 'gh' && args[0] === 'api') return gh.files;
       if (cmd === 'gh' && args[0] === 'repo' && args[1] === 'edit') { gh.edits.push(args); return ''; }
+      if (cmd === 'gh' && args[0] === 'repo' && args[1] === 'view' && args.includes('nameWithOwner')) return gh.renamed || args[2];
       if (cmd === 'gh' && args[0] === 'repo' && args[1] === 'view') return JSON.stringify({ homepageUrl: gh.homepage || '' });
       if (cmd === 'vercel' && args[0] === 'ls') return vercelOut.ls;
       if (cmd === 'vercel' && args[0] === 'inspect') { if (!vercelOut.inspect) throw new Error('not ours'); return vercelOut.inspect; }
@@ -171,7 +172,7 @@ test.beforeEach(() => {
   fs.rmSync(path.join(DATA, 'ideas'), { recursive: true, force: true });
   // The daily steps ran today already, so the tick does only the every-tick steps.
   fs.writeFileSync(path.join(DATA, '.pipeline-state.json'), JSON.stringify({ lastDaily: new Date().toLocaleDateString('en-CA') }));
-  builds.length = 0; sent.length = 0; revenueRuns.length = 0; gh.prs = {}; gh.files = ''; gh.edits = []; gh.homepage = ''; vercelOut.ls = ''; vercelOut.inspect = '';
+  builds.length = 0; sent.length = 0; revenueRuns.length = 0; gh.prs = {}; gh.files = ''; gh.edits = []; gh.homepage = ''; gh.renamed = ''; vercelOut.ls = ''; vercelOut.inspect = '';
   globalThis.fetch = async () => ({ status: 404 });
   buildResult = { ok: true, milestone: 'M1', prUrl: 'https://github.com/o/pr-x/pull/1', testsPassing: true, engine: 'claude', model: 'claude-opus-5-5' };
   // These tests build new ideas in the weekly slot; the new-build hold (policy.build.startNew) has its own test.
@@ -282,6 +283,18 @@ test("a build the pipeline started itself isn't retried within a day of failing"
   idea('pr-x', failedAt(25));
   await tick();
   assert.deepEqual(builds.map((b) => b.slug), ['pr-x'], 'a day later it is tried again');
+});
+
+test('the rest of a started MVP is tried again a day after its build failed, as a first build is', async () => {
+  // lienclock: M1 merged, then its MVP build failed when Docker couldn't start (2026-10-26), and nothing queued it again.
+  const failedAt = (hours) => ({ stage: 'building', repo: 'https://github.com/o/pr-x', milestonesDone: ['M1'], build: { milestone: 'MVP', status: 'failed', at: new Date(Date.now() - hours * 3_600_000).toISOString(), reason: "couldn't start the build sandbox" } });
+  idea('pr-x', failedAt(1));
+  db = { requests: [], log: [] };
+  await tick();
+  assert.deepEqual(builds, [], 'failed an hour ago: it waits');
+  idea('pr-x', failedAt(25));
+  await tick();
+  assert.deepEqual(builds.map((b) => b.slug), ['pr-x'], 'a day later the MVP carries on');
 });
 
 test('a build whose process died is recorded as failed, and its request answered', async () => {
@@ -402,6 +415,21 @@ test('a go-live request builds the launch-ready changes; its merge is recorded, 
   const y = readState('pr-y');
   assert.equal(y.golive.prUrl, 'https://github.com/o/pr-y/pull/6');
   assert.deepEqual(y.milestonesDone, ['M1'], 'a go-live doesn\'t mark a roadmap milestone done');
+});
+
+test('a repo renamed on GitHub: the record takes the new name, and the Worker named after it counts as live', async () => {
+  // dawnlog's repo became overnight-receipts: its Worker answered under the new name while the check asked the old one.
+  idea('pr-x', { stage: 'building', repo: 'https://github.com/o/pr-x', milestonesDone: ['M1', 'M2'], golive: { mergedAt: 'x' }, build: { milestone: 'GOLIVE', status: 'merged' } });
+  fs.writeFileSync(path.join(DATA, 'ideas', 'pr-x', 'revenue.json'), '{}');
+  db = { requests: [], startsLast24h: 0, log: [], repos: [{ full_name: 'o/pr-x-now', mrr: 0, lifecycle_status: null, homepage: '', stripe_product_id: null }] };
+  gh.renamed = 'o/pr-x-now';
+  const worker = `https://pr-x-now.${policy.workersSubdomain}.workers.dev`;
+  globalThis.fetch = async (url) => ({ status: String(url).startsWith(worker) ? 200 : 404 });
+  const out = await tick();
+  const s = readState('pr-x');
+  assert.equal(s.repo, 'https://github.com/o/pr-x-now');
+  assert.ok(out.changes.includes('pr-x: repo renamed on GitHub: o/pr-x → o/pr-x-now'), out.changes.join('\n'));
+  assert.equal(s.launch.steps.find((x) => x.id === 'deployed').evidence, worker);
 });
 
 test("a homepage already set on GitHub is never replaced, even when RepoHQ's copy hasn't synced it", async () => {

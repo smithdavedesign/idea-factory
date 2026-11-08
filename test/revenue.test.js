@@ -71,6 +71,18 @@ test('build queues go to the idea closest to money; ties keep approval order', (
   assert.deepEqual(order, ['c', 'b', 'a', 'd']);
 });
 
+test("a renamed repo: GitHub's name now, or null when gh fails or answers something else", () => {
+  const calls = [];
+  const exec = (cmd, args) => { calls.push([cmd, ...args]); return 'smithdavedesign/overnight-receipts\n'; };
+  assert.equal(LF.currentRepo('smithdavedesign/dawnlog', { exec }), 'smithdavedesign/overnight-receipts');
+  assert.deepEqual(calls[0], ['gh', 'repo', 'view', 'smithdavedesign/dawnlog', '--json', 'nameWithOwner', '--jq', '.nameWithOwner']);
+  assert.equal(LF.currentRepo('smithdavedesign/gone', { exec: () => { throw new Error('Could not resolve to a Repository'); } }), null);
+  assert.equal(LF.currentRepo('smithdavedesign/x', { exec: () => '{"homepageUrl":""}' }), null, 'not a name: the record is left alone');
+  assert.equal(LF.currentRepo('smithdavedesign/x', { exec: () => '' }), null);
+  // Its Worker goes by the new name: the old one answers 404 (Cloudflare 1042).
+  assert.deepEqual(LF.urlCandidates('', 'overnight-receipts', { workersSubdomain: 'sub' })[0], 'https://overnight-receipts.sub.workers.dev');
+});
+
 test('live URL: the homepage, then <repo>.vercel.app; legal pages from the repo tree', async () => {
   assert.deepEqual(LF.urlCandidates('https://dawnlog.dev', 'DawnLog'), ['https://dawnlog.dev', 'https://dawnlog.vercel.app']);
   assert.deepEqual(LF.urlCandidates('', 'TieBreak', { workersSubdomain: 'sub' }), ['https://tiebreak.sub.workers.dev', 'https://tiebreak.vercel.app'], 'the Worker first: ours by its subdomain');

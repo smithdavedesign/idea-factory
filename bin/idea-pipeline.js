@@ -492,9 +492,20 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
     const state = P.readState(dir);
     if (!state.repo || state.stage === 'pass') continue;
     try {
-      const full = state.repo.replace('https://github.com/', '');
-      const row = repoRows.get(full.toLowerCase()) || null;
       const fresh = (c, hours) => c && now.getTime() - new Date(c.at).getTime() < hours * 3_600_000;
+      let full = state.repo.replace('https://github.com/', '');
+      // A repo renamed on GitHub (dawnlog's became overnight-receipts): GitHub follows the old name, but the
+      // product's Worker, RepoHQ's row and the revenue sync (5a) go by the new one, so the record takes it.
+      // Asked once a day; `state` is updated in place, so this tick's saves below keep the new name.
+      pstate.repoName = pstate.repoName || {};
+      if (!fresh(pstate.repoName[slug], 24)) pstate.repoName[slug] = { at: now.toISOString(), full: LF.currentRepo(full) };
+      const renamed = pstate.repoName[slug].full;
+      if (renamed && renamed.toLowerCase() !== full.toLowerCase()) {
+        state.repo = `https://github.com/${renamed}`;
+        save(slug, state, `repo renamed on GitHub: ${full} → ${renamed}`);
+        full = renamed;
+      }
+      const row = repoRows.get(full.toLowerCase()) || null;
       // The product's own production URL (its Vercel project in the owner's team), once it has deployed.
       pstate.prod = pstate.prod || {};
       // Vercel's production URL, or the product's Worker when that's the one answering (lib/golive.js pickProduction).
@@ -786,8 +797,10 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
     const fresh = idleStates();
     const nextOf = (slug, s) => nextMilestone(fs.existsSync(path.join(IDEAS, slug, 'ROADMAP.md')) ? fs.readFileSync(path.join(IDEAS, slug, 'ROADMAP.md'), 'utf8') : '', s.milestonesDone || []);
     const firstBuilds = P.newBuildsHeld(policy, fresh, now) ? [] : fresh.filter(([, s]) => buildable(s));
-    // A build paused at the usage limit goes again (it isn't merged, so its milestone is still next).
-    const queue = byRevenue([...firstBuilds, ...fresh.filter(([slug, s]) => s.stage === 'building' && ['merged', 'paused'].includes(s.build?.status) && nextOf(slug, s))])
+    // A build paused at the usage limit goes again (it isn't merged, so its milestone is still next). So does
+    // one that failed, once retryAfterHours has passed, as a first build does: lienclock's MVP build failed
+    // when Docker couldn't start (2026-10-26) and was never tried again.
+    const queue = byRevenue([...firstBuilds, ...fresh.filter(([slug, s]) => s.stage === 'building' && ['merged', 'paused', 'failed'].includes(s.build?.status) && nextOf(slug, s))])
       .filter(([, s]) => BS.retryDue(s, cc, now));
     for (const [slug, s] of queue) {
       if (capacityNow().automatic < 1) break;
