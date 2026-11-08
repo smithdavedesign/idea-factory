@@ -54,7 +54,7 @@ function claude(args, env) {
     for (const f of ['home-desktop.png', 'home-mobile.png']) fs.writeFileSync(path.join(ws, 'docs', 'screenshots', f), Buffer.from('89504e470d0a1a0a0000000d49484452' + f.length.toString(16).padStart(2, '0').repeat(56), 'hex'));
     fs.writeFileSync(path.join(ws, 'README.md'), '# demo\\n\\n## Screenshots\\n\\n![Home on a desktop](docs/screenshots/home-desktop.png)\\n![Home on a phone](./docs/screenshots/home-mobile.png)\\n\\n## Run it\\n\\n![not proof](docs/later.png)\\n');
   }
-  if (scenario === 'golive') { fs.writeFileSync(path.join(ws, 'LAUNCH-READY.md'), '# Launch-ready\\nLeft for David: STRIPE_PAYMENT_LINK.\\n'); fs.writeFileSync(path.join(ws, '.provision'), 'vercel project demo\\n'); }
+  if (scenario === 'golive') { fs.writeFileSync(path.join(ws, 'LAUNCH-READY.md'), '# Launch-ready\\nLeft for David: STRIPE_PAYMENT_LINK.\\n'); fs.writeFileSync(path.join(ws, '.provision'), 'request "Cloudflare Workers deploy for demo: npm ci && npm run cf:build, then provision cloudflare deploy demo <checkout>"\\n'); }
   else if (claudeCalls === 1) fs.writeFileSync(path.join(ws, '.provision'), 'neon db demo\\nneon db someone-else\\nrequest "Stripe test keys for demo: checkout"\\n');
   const out = [{ type: 'system', subtype: 'init', apiKeySource: 'none', model: 'claude-opus-5-5', mcp_servers: [], tools: ['Read'] },
     { type: 'result', is_error: false, result: 'tests passing: 1', num_turns: 3, duration_ms: 1000 }];
@@ -280,7 +280,7 @@ test('mvpMilestones: from where a single build would start, every remaining mile
   assert.equal(B.rangeText(['M1', 'M2', 'M3']), 'M1–M3');
 });
 
-test('go-live: one launch-readiness run in the sandbox, the broker gets the Vercel project, a "Go live" PR', async () => {
+test('go-live: one launch-readiness run in the sandbox, the Cloudflare deploy request goes to the broker, a "Go live" PR', async () => {
   setup('golive');
   const idea = path.join(DATA, 'ideas', 'demo');
   fs.writeFileSync(path.join(idea, 'state.json'), JSON.stringify({ stage: 'building', repo: 'https://github.com/o/demo', milestonesDone: ['M1'], build: { milestone: 'M1', status: 'merged' } }));
@@ -294,8 +294,8 @@ test('go-live: one launch-readiness run in the sandbox, the broker gets the Verc
   assert.equal(runs[0].golive, true, 'the go-live prompt, not a milestone prompt');
   assert.equal(runs[0].shots, true, 'go-live refreshes the screenshots');
   assert.match(host.prs[0], /Screenshot proof: ✅ 2 screenshots/);
-  assert.deepEqual(host.provision, [['vercel', 'project', 'demo']], 'the Vercel project comes from the broker, on the host');
-  assert.match(host.prs[0], /\*\*demo\*\*, made launch-ready \(SEO basics, privacy and terms, payment link, visit beacon, Vercel project\)/);
+  assert.deepEqual(host.provision, [['request', 'Cloudflare Workers deploy for demo: npm ci && npm run cf:build, then provision cloudflare deploy demo <checkout>']], 'the sandbox has no credentials: the deploy is asked of the broker, on the host');
+  assert.match(host.prs[0], /\*\*demo\*\*, made launch-ready \(SEO basics, privacy and terms, payment link, visit beacon, Cloudflare Worker\)/);
   assert.match(host.prs[0], /Left for David: STRIPE_PAYMENT_LINK/, 'LAUNCH-READY.md is in the PR');
   const subject = realExec('git', ['log', '-1', '--format=%s', 'go-live'], { cwd: REMOTE, encoding: 'utf8' }).trim();
   assert.equal(subject, 'Go live: demo (launch-ready) (tests passing)');
@@ -304,7 +304,7 @@ test('go-live: one launch-readiness run in the sandbox, the broker gets the Verc
   assert.deepEqual(state.build.milestones, [], 'nothing on the roadmap is marked done by a go-live');
   assert.equal(state.build.beacon, 'funnel', 'go-lives now install the funnel beacon');
   assert.deepEqual(state.milestonesDone, ['M1']);
-  const p = B.goLivePrompt('demo', { price: '$9/month', signalUrl: 'https://repohq.vercel.app/api/ideas/signal', provision: 'file' });
+  const p = B.goLivePrompt('demo', { price: '$9/month', signalUrl: 'https://idea-factory.1426davejobs.workers.dev/api/ideas/signal', provision: 'file' });
   assert.match(p, /JSON-LD \(SoftwareApplication, with an Offer for \$9\/month\)/);
   assert.match(p, /POST JSON \{"slug": "demo", "kind": "<kind>"/);
   for (const kind of ['visit', 'activate', 'checkout']) assert.match(p, new RegExp(`- "${kind}" `), `the beacon sends ${kind}`);
@@ -312,9 +312,25 @@ test('go-live: one launch-readiness run in the sandbox, the broker gets the Verc
   assert.match(p, /repohq:notrack/, "the owner's own browser can opt out");
   assert.match(p, /send only when NEXT_PUBLIC_DEPLOY_ENV, else Vercel's NEXT_PUBLIC_VERCEL_ENV, is "production"/, 'previews send nothing, on either host');
   assert.match(p, /The privacy page names the three events/);
-  assert.match(p, /STRIPE_PAYMENT_LINK env var .* hidden when the variable is unset/);
+  assert.match(p, /POST JSON[^\n]*to https:\/\/idea-factory\.1426davejobs\.workers\.dev\/api\/ideas\/signal/, 'the beacon goes to the Worker');
+  assert.match(p, /STRIPE_PAYMENT_LINK env var, hidden when the variable is unset\. Read it on the server at request time/, 'a Worker secret, not a NEXT_PUBLIC_ value frozen into the build');
+  assert.match(p, /provision stripe demo … --host cloudflare/);
   assert.match(p, /request "Stripe payment link for demo: \$9\/month, per REVENUE\.md"/);
+  // Hosting: Cloudflare Workers' free plan (the Vercel account is blocked).
+  assert.match(p, /5\. Hosting: Cloudflare Workers on the free plan, not Vercel/);
+  assert.match(p, /OpenNext adapter \(@opennextjs\/cloudflare/);
+  assert.match(p, /One wrangler\.jsonc with "name": "demo"[^\n]*no "build" section/);
+  assert.match(p, /a "cf:build" script[^\n]*NEXT_PUBLIC_DEPLOY_ENV=production/);
+  assert.match(p, /at most 3 MiB gzipped[^\n]*no database connection shared between requests/, 'the free plan\'s limits');
+  assert.match(p, /request "Cloudflare Workers deploy for demo: npm ci && npm run cf:build, then provision cloudflare deploy demo <checkout>/, 'a sandboxed go-live asks for the deploy');
+  assert.doesNotMatch(p, /vercel project/);
+  const direct = B.goLivePrompt('demo', { price: '$9/month', provision: 'direct' });
+  assert.match(direct, /Then deploy it: `npm run cf:build`, `[^`]*provision cloudflare deploy demo "\$PWD"`, and `[^`]*provision cloudflare secret demo <KEY>`/);
+  assert.match(direct, /provision cloudflare url demo` prints its address/);
+  assert.match(direct, /For the payment link, run `[^`]*provision request "Stripe payment link for demo/);
+  assert.doesNotMatch(direct, /vercel project|Cloudflare Workers deploy for demo/, 'host mode deploys itself');
   assert.match(B.goLivePrompt('demo', {}), /no plan with a price yet: skip payments/);
+  assert.doesNotMatch(B.goLivePrompt('demo', { provision: 'direct' }), /For the payment link/);
 });
 
 test('screenshot proof missing after the build: one reminder round, then the PR shows the screenshots, pinned to the commit', async () => {
