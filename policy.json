@@ -72,9 +72,9 @@
   },
   "growth": {
     "focus": [
-      "tiebreak",
       "botchelor"
     ],
+    "_focus": "tiebreak was the growth loop's pilot product (2026-10-12); David took it out of the pilot on 2026-11-08, so its daily missions stop. It stays live on its Worker.",
     "minVisitorsPerWeek": 50,
     "auto": true,
     "maxMissionsPerDay": 6,

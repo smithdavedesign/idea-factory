@@ -338,7 +338,9 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
       for (const { slug, url } of newPages) save(slug, { ...P.readState(path.join(IDEAS, slug)), page: { url, deployedAt: now.toISOString() }, validation: P.startValidation(now, policy) }, `landing page ${url}`);
       for (const { slug, url, newUrl } of moved) {
         const st = P.readState(path.join(IDEAS, slug));
-        save(slug, { ...st, page: { ...st.page, url, deployedAt: now.toISOString(), ...(newUrl ? { previousUrl: st.page.url } : {}) } }, newUrl ? `landing page moved to ${url}` : `landing page re-rendered for the new signal URL`);
+        // A new address means the old one was down (Vercel's 402 from 2026-10-31): the test restarts at the new one.
+        const validation = newUrl && st.validation ? P.restartAfterMove(st.validation, now, policy) : st.validation;
+        save(slug, { ...st, page: { ...st.page, url, deployedAt: now.toISOString(), ...(newUrl ? { previousUrl: st.page.url } : {}) }, ...(validation ? { validation } : {}) }, newUrl ? `landing page moved to ${url}; its demand test runs ${policy.validation.days} days from now` : `landing page re-rendered for the new signal URL`);
       }
       return newPages;
     } catch (e) { fail('deploy pages', e); return []; }
@@ -523,7 +525,9 @@ async function tick({ forceDaily = false, forceGrowth = false } = {}) {
           note(slug, misplaced(homepage) ? `homepage moved to ${prodUrl} (${homepage} is behind Vercel's login)` : `homepage set to ${prodUrl}`);
         } catch (e) { fail(`homepage ${slug}`, e); }
       }
-      if (!fresh(pstate.live[slug], 1)) pstate.live[slug] = { at: now.toISOString(), url: await LF.liveUrl([...new Set([...(prodUrl ? [prodUrl] : []), ...LF.urlCandidates(row?.homepage, full.split('/')[1], { workersSubdomain: policy.workersSubdomain })])], { owned: (u) => u === prodUrl || LF.ownedByTeam(u, policy.vercelScope) }) };
+      // RepoHQ's row can lack the homepage (a product off Vercel, like botchelor.com on DigitalOcean since
+      // 2026-10-30, has no production URL here to set it from): GitHub's homepage counts then.
+      if (!fresh(pstate.live[slug], 1)) pstate.live[slug] = { at: now.toISOString(), url: await LF.liveUrl([...new Set([...(prodUrl ? [prodUrl] : []), ...LF.urlCandidates(row?.homepage || ghHomepage(), full.split('/')[1], { workersSubdomain: policy.workersSubdomain })])], { owned: (u) => u === prodUrl || LF.ownedByTeam(u, policy.vercelScope) }) };
       pstate.audit = pstate.audit || {};
       const liveNow = pstate.live[slug].url;
       if (liveNow && (!fresh(pstate.audit[slug], 6) || pstate.audit[slug].url !== liveNow)) {

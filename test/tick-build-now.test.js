@@ -180,7 +180,7 @@ test.beforeEach(() => {
   policy.build.concurrency = { max: 3, reserveForRequests: 1, reserveMemoryMb: 2000, minFreeMemoryPct: 10, retryAfterHours: 24, hungAfterHours: 6 };
   process.env.IDEA_BUILD_PROBE = ROOMY;
   fs.rmSync(path.join(DATA, '.builds'), { recursive: true, force: true });
-  // No focus products unless a growth test names one (policy.growth.focus is tiebreak in the real policy).
+  // No focus products unless a growth test names one (policy.growth.focus is botchelor in the real policy).
   policy.growth.focus = [];
   policy.growth.auto = true;
   // Any time of day, and no weekly plans (a plan is a real Claude run): the plan has its own test.
@@ -539,7 +539,7 @@ test('a go-live PR on a live product is followed: its merge is recorded and the 
 });
 
 test('while new builds are held, an approved idea waits but a started MVP carries on', async () => {
-  policy.build.startNew = false; // growth.focus is tiebreak, which has no traction in this record
+  policy.build.startNew = false; // growth.focus is botchelor, which has no traction in this record
   idea('fresh', { stage: 'repo', repo: 'https://github.com/o/fresh', ownerApproved: true });
   idea('started', { stage: 'building', repo: 'https://github.com/o/started', milestonesDone: ['M1'], build: { milestone: 'M1', status: 'merged' } });
   fs.writeFileSync(path.join(DATA, 'ideas', 'started', 'revenue.json'), '{}');
