@@ -7,7 +7,7 @@
     "at": "2026-10-11T20:03:35.937Z",
     "notionAt": "2026-10-11T20:03:37.382Z"
   },
-  "updatedAt": "2026-11-07T09:14:01.219Z",
+  "updatedAt": "2026-11-08T08:09:21.507Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T20:19:11.963Z",
@@ -633,6 +633,22 @@
         "prUrl": "https://github.com/smithdavedesign/tiebreak/pull/27",
         "failed": true,
         "reason": "acceptance criteria not met: 3. The PR changes only the Vercel config (vercel.json or equivalent) and tests: no file under the web app's source or mobile/ changes, and the Workers deploy of main still returns 200 on /"
+      },
+      {
+        "id": "tiebreak-20261108-feature-vercel-redirect-to-workers",
+        "kind": "feature",
+        "executor": "build",
+        "hypothesis": "Turn the leftover Vercel deploy into a redirect to the live Workers site, and prove the beacon counts there: Six builds in a row (#20–#26) were abandoned on a failing Vercel check even when their tests passed, so no growth feature has merged since #10 (2026-10-19). Meanwhile tiebreak-phi.vercel.app, the URL in LAUNCH-KIT.md and any past posts, still points at a Vercel deploy and not the Workers site the beacon was moved to (a89ef45). A redirect-only Vercel config makes that check trivially green, sends e",
+        "metric": "visit",
+        "baseline": 0,
+        "target": 10,
+        "windowDays": 14,
+        "planItem": "vercel-redirect-to-workers",
+        "title": "Turn the leftover Vercel deploy into a redirect to the live Workers site, and prove the beacon counts there",
+        "payments": false,
+        "status": "proposed",
+        "createdAt": "2026-11-08T08:09:21.507Z",
+        "updatedAt": "2026-11-08T08:09:21.507Z"
       }
     ],
     "checkedAt": "2026-11-06T19:44:16.777Z",
@@ -656,7 +672,8 @@
           "payments": false,
           "target": 10,
           "attempts": [
-            "tiebreak-20261107-feature-vercel-redirect-to-workers"
+            "tiebreak-20261107-feature-vercel-redirect-to-workers",
+            "tiebreak-20261108-feature-vercel-redirect-to-workers"
           ]
         },
         {

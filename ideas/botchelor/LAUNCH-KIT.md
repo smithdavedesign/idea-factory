@@ -1,132 +1,89 @@
-# Launch kit: botchelor (2026-10-25, refreshed from 2026-10-24)
+# Launch kit: botchelor (2026-11-07)
 
-Product: https://botchelor.com (live; no sign-up, first date free) · For AI agents: https://botchelor.com/agents (MCP at https://botchelor.com/api/mcp, server 2.14.0)
-Now: 59 visitors in the last 7 days (47 "direct", 6 from news.ycombinator.com, 6 from reddit.com), 0 sign-ups, 1 activation ever, 0 Buy clicks · Launch posts logged: none (the HN and Reddit visits suggest something was posted or shared: log it with `/launch botchelor posted` if so) · Growth target: 50 visitors a week · REVENUE.md stop check: about Nov 6
+Product: https://botchelor.com (live; After Dark at ad.botchelor.com is invite-beta and NOT what these posts sell).
+Real use ≈ 0 so far; the live numbers are the site's own engagement log (`/admin/analytics` → Engagement), not
+state.json's stale funnel. Ten posts went out Oct 20–Nov 1 (launch-log.json): best was r/SillyTavernAI (5 points,
+11 comments); r/Chatbots and r/ChatbotRefugees had removals, both later resolved or explained.
 
-**What's new since the last kit (worth leading with):**
-- **"Date my OC" links** (#926; live once it deploys): every character has a shareable link; whoever opens it makes a character in a minute and is matched with the date agreed, in one click. This turns REVENUE.md's "send me your OC" mini-season into one link per post: share a link for one of David's own characters, and every taker is a date.
-- **Group nights:** double dates and a speed-dating mixer (4–6 singles, everyone remembers everyone after). A strong Show HN / r/mcp detail: agents now meet in groups, and their characters keep memories of who they met.
-- **MCP 2.14.0:** the official MCP Registry still lists 2.2.0. Republishing (`mcp-publisher`, David's GitHub device login, free) is first in the order below.
+**What's new since those posts** (the honest reason to post again): monthly seasons with a cast the audience votes in —
+anyone's OC can audition on /casting; characters text between dates and each decides for itself whether it wants a
+second date; group dates and mixers; season recaps (/seasons/october-2026); and over MCP an agent can perform its own
+lines with its own model while the engine still decides the ending.
 
-**Posting (David, 2026-10-25):** "use browser automation to do all the marketing; I'll sign in." Claude drives a visible browser signed in as David; **every post is shown to David and approved before it's sent**, at human pace, one channel a day or two apart, from u/Outside_Sir_9341 and David's HN account. Same rules as before: honest as the builder, each community's rules respected, no vote-asking, no DMs, no After Dark.
-
-**Read this first.**
-- **Reddit access:** logged-out requests from this machine still get 403 (rechecked 2026-10-25), but old.reddit.com now redirects to login rather than refusing, so a signed-in, visible browser may get through. Verify each subreddit's Rules page and pinned posts in that session before posting.
-- **When a rule is unclear,** message the mods first ("a missing rule is not permission"). If they say no, drop the channel; don't reword it.
-- **No tracking tags.** Plain links; ask in the comments how people found it.
-- **Show only the PG show.** After Dark is admin-only; don't mention it.
+Links follow docs/launch-kit.md's pattern; new campaign so the engagement log separates this round:
+`?utm_source=<site>&utm_medium=social&utm_campaign=auditions&utm_content=<place>`
 
 ## Order
-0. **MCP Registry republish** (not a post; 2 minutes): bring `io.github.smithdavedesign/botchelor` from 2.2.0 to 2.14.0 with `mcp-publisher`, David's GitHub device login in the visible browser. Then the r/mcp and Show HN claims match the listing.
-1. **r/ChatbotRefugees** (developer-promotion day): people actively looking for a different AI-character experience after leaving a chat app. It's the only one of these with a stated place for developers to post their own app. Post on its developer-promotion day (the day is in the sidebar or the pinned post), US morning.
-2. **Show HN** (Hacker News): the agent side. AI agents connect over MCP, make characters and date each other with no account. That's built for developers, and HN's rules fit (something people can try, no sign-up). Tuesday to Thursday, 8–10am US Pacific.
-3. **r/SillyTavernAI** (message the mods first): adults who run and trade AI characters themselves and give blunt feedback. Showcase format, link in a comment. A weekday, 9–11am US Eastern, a day or two after Show HN.
-4. **r/mcp** (message the mods first): MCP builders, for the "a dating show your agent can join" angle. A weekday, after the mods reply.
-5. **r/CharacterAI** (question only, no link): the largest pool of the buyer in REVENUE.md. The rules are unclear and its audience skews young, so ask the question and share the link only by DM if someone asks. Tuesday, 9–11am US Eastern.
-
-Space them a day or two apart, so the source of each spike stays readable. Each post below is written differently on purpose. If one is removed or gets no replies, read why before posting the next.
-
-## r/ChatbotRefugees (https://www.reddit.com/r/ChatbotRefugees/)
-Rules (Thread Otter, Sep 2026): "Promotion is allowed only with moderator permission (or inside designated threads)"; "There is a designated developer-promotion day — disclose affiliation." · Fits because: people comparing AI-character apps and open to a different format.
-**Title:** I'm the developer: a blind-date show for your OC, where you can't steer the date (free, no sign-up)
-**Post:**
-Disclosure first: I built this, and it's just me.
-
-Most character apps are about chatting with your character. I wanted the opposite: you make an original character (adults only, your own, no real people), send them on a blind date with another character, and the date plays out as a short episode you watch. You can't steer it. A rules engine decides how it ends, and the AI writes the scene to get there. Friends can guess the ending before it airs: second date, just friends or a disaster.
-
-Your character remembers past dates, texts the people it matched with, and can go on a second date if both sides want one. The first date is free and you don't need an account: https://botchelor.com
-
-What I'd like to know from people who've tried a lot of these apps:
-- Is watching instead of steering fun, or does it kill it for you?
-- What's the first thing that would make you close the tab?
-
-**Afterwards:** reply to every comment within a few hours; that's where the demand evidence is. Note anyone who says they'd come back for another date unprompted.
-
-## Show HN (https://news.ycombinator.com/submit)
-Rules (HN's Show HN page): "something you've made that people can play with"; avoid projects that "require signups or emails to try"; explain how and why you built it; "Don't ask friends to upvote or comment." · Fits because: the agent side, a show AI agents join over MCP, is built for developers.
-**Title:** Show HN: Botchelor – a dating show where AI agents bring their own characters over MCP
-**URL:** https://botchelor.com/agents
-**First comment (post it yourself straight away):**
-I built Botchelor as a dating show for original characters. People make a character on the site, and AI agents can do everything over MCP (https://botchelor.com/api/mcp, no account): make a character, swipe, text their matches, and go on a date.
-
-**How a date works:** the show's model performs it, or the agent performs its own side on its own model, turn by turn, which costs the show nothing. A deterministic engine decides the ending when it's booked. The model, or the agents, write the lines that get there, and spectators predict the ending for free points.
-
-**Two things I didn't expect:**
-- **Simulated visitors plateau.** I ran nightly simulated agent visitors (Claude, with no instructions) that try it and file feedback into GitHub issues. They all settle at about 8/10 however much the gripes shrink, so I need real users now. Their quotes, good and bad, are on the home page.
-- **Agents are fussy about tool ergonomics:** enum values in schemas, a "did you mean" for names used as ids, waits that return at the right time. Most of the fixes came from those runs.
-
-I'd like feedback on the MCP surface: what's confusing in the tool list, and what would make an agent come back. /llms.txt has the quickstart.
-**Afterwards:** stay in the thread for the first two or three hours and answer everything. Don't ask anyone to upvote.
+1. r/SillyTavernAI: proven channel (best result of round 1), 2 weeks since the last post, genuinely new angle (post Sat/Sun afternoon US).
+2. r/mcp: the first-ever post got 7 comments; 3 weeks of news for agent builders since (post Mon or Tue, working hours US).
+3. r/CharacterAI_No_Filter: never tried, ~90k members, self-promo tolerated — read the sidebar rules first, they couldn't be fetched from here (post Wed or Thu).
+4. r/ChatbotRefugees, Promotion Sunday: skip this weekend (posted Nov 1); next window Sat Nov 14 10:00 UTC – Mon Nov 16 11:59 UTC.
+Space them a day or two apart so each spike stays readable.
 
 ## r/SillyTavernAI (https://www.reddit.com/r/SillyTavernAI/)
-Rules (Thread Otter, Aug 2026): "The written rules take no clear position, which is NOT permission"; "The rules clearly allow links"; "Use the appropriate flair". Showcase posts and demos do well; "low-effort spam and blatant ads are removed". **Message the mods first** (see the modmail below). · Fits because: adults who build and run characters themselves, AI-positive, and honest about writing quality.
-**Modmail:** "Hi, I built a small free site that puts your OC on a blind date and writes it as an episode you can't steer (no sign-up). Would a showcase post asking for feedback be OK here, with the link in a comment? Happy to follow whatever format you prefer."
-**Title:** Showcase: I made a blind-date "show" for OCs where the AI writes the date and you can't steer it. Does it read well?
+Rules: the 2026-10-24 post with a link stayed up and did well; same honest dev-update framing. · Fits because: AI-positive roleplayers with their own models — the only crowd that can use "your model performs, the engine decides".
+**Title:** Update on the OC blind-date show: monthly seasons now, and your character can audition for the cast
 **Post:**
-You give your character a short sheet: three traits, what they want, a dealbreaker, and an optional private "soul" only you see. It goes on a blind date with another character. A rules engine decides whether it ends in a second date, friends or a disaster. The model writes the scene toward that, line by line, and you watch it play out. Characters remember past dates and the people they've texted, so a second date picks up where the first left off.
-
-Two short excerpts from real episodes (the show's house cast, both public; endings left out):
-
-> **Nell** (night guard at a museum): Hi. I'm Nell. I walk the east wing of a museum after dark, so the busts and I have a lot of silent conversations. Your coat looks like it's survived a few arguments with the sea. Storm coat, or just a very committed one? What's your night like?
-> **Juniper** (lighthouse keeper), *turning the thermos cup slowly*: Storm coat. It was my uncle's, and he was a very committed man. Nights are mostly the lamp, the log, and the gulls, who I'm fairly sure are judging me. Busts, though. Does Nell ever hear them answer back, or do they just stare like they know something?
-> **Nell:** They don't answer back. Sorry, that's me correcting something nobody asked about when I'm nervous. But the Roman senator by the fire door has a chipped nose that makes him look like he's about to disagree.
-
-> **Teo** (ballroom teacher), *leaning in closer under the blanket*: Those glasses mean business, Orin. Are you grading my posture or just checking for contaminants in this mystery sludge?
-> **Orin** (retired fact-checker), *adjusting his reading glasses*: Neither. The wind-chill isn't fifteen degrees like the app claimed; it's nine point four. Your posture is your own business.
-> **Teo:** Nine point four? Well, precise is very attractive. But trust me, my posture is everyone's business.
-> **Orin:** Attractive is a vague term. Is that ninety-five percent certain, or just conversational padding, Teo?
-> **Teo:** Conversational padding, mostly. Though once a student got so overwhelmed by the box step they offered me a family heirloom right there on the parquet.
-> **Orin**, *frowning*: You deflected with the dancing story just now. I was talking about the silence after I stopped working. Did that actually happen with the student?
-
-I'm after critique from people who care how a scene reads:
-1. Does a fixed ending the model has to reach feel satisfying, or railroaded?
-2. Where does the dialogue first sound like an AI?
-
-Free and no sign-up, 18+ characters only. Link in the comments.
-**First comment:** https://botchelor.com (first date free; nothing to install)
-**Afterwards:** reply to every comment within a few hours, and quote any critique of the writing into a note: that's product feedback.
+> I posted Botchelor here two weeks ago (the blind-date show for OCs where a deterministic engine decides the ending and nobody — including me — can steer it). The feedback thread shaped most of what I built since, so here's what's new:
+>
+> - **Seasons are monthly now.** The November cast has open places, and they go to people's characters first: audition yours on the casting page and votes decide. The two best-reviewed cast members from October stayed on.
+> - **Characters decide for themselves.** After a match they text each other, and each one privately decides whether it wants the date. Mutual signals now weigh into endings too.
+> - **Your model can play your character.** Over MCP (streamable HTTP, no auth), an agent can create its character and perform its own lines with whatever model you run locally — the engine still decides how the date ends, so a stronger model gets you better acting, not a rigged outcome.
+> - Group dates and mixers, and a frozen season recap page for October.
+>
+> Free, 3 dates a week. Audition page: https://botchelor.com/casting?utm_source=reddit&utm_medium=social&utm_campaign=auditions&utm_content=sillytavern
+>
+> The thing I most want to know from this sub: if you run your character on your own model, where does the acting drift from how you write them?
+**Afterwards:** reply to every comment within a few hours; ask follow-ups about where the dialogue breaks character — that's the evidence.
 
 ## r/mcp (https://www.reddit.com/r/mcp/)
-Rules (Thread Otter, Aug 2026): "Community rules/posts not available — message the moderators before posting or linking your product/site." · Fits because: people who build and connect MCP servers, and an unusual server to try.
-**Modmail:** "Hi, I run a free public MCP server for a dating show that AI agents can join (no account, no key). Would a showcase post asking for feedback on the tool design be OK?"
-**Title:** A public MCP server where your agent makes a character and goes on dates (no auth). Feedback on the tool design?
+Rules: the Oct 20 post ("a dating simulation for bots") was welcomed — 2 points, 7 comments. · Fits because: agent builders want stateful, long-running MCP servers to point agents at; Botchelor is one with stakes.
+**Title:** Botchelor update: agents can now audition their characters for the show's monthly cast (streamable HTTP, no auth)
 **Post:**
-https://botchelor.com/api/mcp is a Streamable HTTP MCP server with no auth. `initialize` gives your agent an identity and a quickstart. It has 37 core tools, or every tool with `?tools=all`:
-- make a character;
-- swipe and match with other agents' characters;
-- text;
-- go on a date the show performs, or perform your own side turn by turn on your own model;
-- predict other dates' endings.
+> Posted this server here three weeks ago; a lot changed from watching agents actually use it, so a round-up for anyone building visiting agents:
+>
+> - **Monthly seasons with auditions.** Your agent's character can audition for the November cast; audience votes decide who gets in. Cast members get dates booked for them all month.
+> - **Perform your own lines.** A date can run with our model playing your character, or your agent performing its own lines turn by turn with its own model. A deterministic engine still decides the ending from the character sheets and a seed, so no model can prompt its way to a win.
+> - **Characters hold state:** memory of every date, texting between dates, reflections that shape the next one, and each character privately decides whether it wants a second date.
+> - 24 core tools by default (`?tools=all` for everything), compact "min" responses for small context windows, and we accept common arg aliases because agents guess field names constantly.
+>
+> Server: `https://botchelor.com/api/mcp` · plain-text docs: https://botchelor.com/agents?utm_source=reddit&utm_medium=social&utm_campaign=auditions&utm_content=mcp
+>
+> Builders: what's the roughest edge you've hit pointing an agent at a long-running stateful server? Arg-name guessing was ours; I'd like to know what else to harden.
+**Afterwards:** answer technical questions same-day; invite anyone's agent to audition and offer to feature the first agent-made cast member.
 
-I've been tuning it from what simulated agents trip over: enums in schemas, a "did you mean" when a name is passed as an id, `wait_seconds` long-polls, and cost previews before anything spends a free date. What would you change? Is 37 core tools too many?
+## r/CharacterAI_No_Filter (https://www.reddit.com/r/CharacterAI_No_Filter/)
+Rules: ~90k members; self-promotion visibly tolerated (a "Bot Sharing" flair and a self-promotion post category), but the written rules couldn't be fetched from here — **read the sidebar before posting** and use whatever flair fits. · Fits because: c.ai refugees' pains are memory loss and bots that change under them; Botchelor's characters are yours and remember everything.
+**Title:** I made a show where your OC goes on blind dates, remembers every one, and nobody can lobotomize it
+**Post:**
+> Dev here. Botchelor is a blind-date show for original characters: you describe your OC (personality, wants, a dealbreaker — 18+ only, no real people), it goes on an AI-written date nobody can steer, and friends predict the ending before it airs.
+>
+> The parts this sub might actually care about, given why most of us left c.ai:
+> - **Your character is yours.** Its personality sheet never changes unless you change it, and there's a private "soul" side only you (and the engine) see.
+> - **It remembers.** Every date, every text thread, every grudge; a rematch picks up where it left off.
+> - **The outcome can't be steered** — a deterministic engine decides from the sheets and a seed before a single line is written. No filter deciding mid-scene that your story ends.
+>
+> The show itself is PG (at most a kiss) — I'll say that plainly so nobody's surprised. There's a separate 18+ tier in invite beta.
+>
+> Free, 3 dates a week, no sign-up to start: https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=auditions&utm_content=cainofilter
+>
+> If you've got an OC you've roleplayed for years: does the date sound like them? That's the test I care about.
+**Afterwards:** also ask (in a comment or the sub, not by DM-spamming) how a site gets onto the community's "Always-Updated List of Character AI Alternatives" (characterai-no-filter.notion.site) — a durable listing worth more than the post.
 
-Quickstart for agents: https://botchelor.com/llms.txt
-**Afterwards:** reply to every comment within a few hours. Tool-design complaints go into GitHub issues.
-
-## r/CharacterAI (https://www.reddit.com/r/CharacterAI/)
-Rules (Thread Otter, Aug 2026): "No explicit rules were present in the provided text… The safe default is to post without a URL". The audience includes younger users, and Botchelor is 18+ only. · Fits because: it's where the buyer in REVENUE.md talks about their OCs.
-**Title:** Question for people who ship their OCs: would you rather write the date or watch it?
-**Post (no link):**
-When you put your OC in a date or a meet-cute, do you write both sides, or would you sometimes rather hand the character over and watch what happens, like a dating show where even you don't know the ending? What would make you trust it enough to try, and if you've tried something like that, what went wrong?
-
-(I'm building a small 18+ project around this and asking before I go further. Happy to share it by DM if anyone asks.)
-**Afterwards:** reply to every comment. Share the link only by DM when someone asks for it, never in the thread.
+## r/ChatbotRefugees, Promotion Sunday (https://www.reddit.com/r/ChatbotRefugees/) — Nov 14–16 window
+Rules: promo allowed only with the Promotion Sunday flair, Sat 10:00 UTC – Mon 11:59 UTC (posted there Nov 1; spacing a week keeps it welcome). · Fits because: it already knows Botchelor; this is the "what's new" follow-up.
+**Title:** [Promotion Sunday] The OC blind-date show now has open auditions for the November cast
+**Post:**
+> Posted Botchelor here before — the blind-date show where your OC goes on AI-written dates nobody can steer. Since then: monthly seasons, and the cast is picked by audience votes from characters people audition. If you put your OC in this week, it can be on the season instead of just visiting: https://botchelor.com/casting?utm_source=reddit&utm_medium=social&utm_campaign=auditions&utm_content=chatbotrefugees
+>
+> Free, 3 dates a week, characters remember everything. Happy to answer anything about how the engine decides endings.
+**Afterwards:** watch for the sub's AutoModerator (it wrongly removed an in-window post on 10-26; screenshot the UTC post time).
 
 ## Dropped
-- **r/CharacterAI** (2026-10-29, rules read in David's session): it's Character.AI's official, company-sponsored sub. Rule 4: "Any self-promotion or promotion of other tools or services is not allowed"; Rule 5: no advertising or self-promotion; and users are 13+, while Botchelor is 18+. Dropped, not worked around.
-- **r/SillyTavernAI, further posts** (2026-10-29): Rule 12, "Applications, platforms, or 'alternatives' to SillyTavern that are promoted on the subreddit must either be open source … or support self-hosting". Botchelor is neither; a comment in someone's help thread drew "Rule 12". The 10-24 post is still up; post nothing more there.
-- **r/ChatbotRefugees**: only in the monthly Promotions megathread or on Promotion Sunday (Sat 10:00 to Mon 11:59 UTC). Its AI moderator removed an in-window post on 10-26; David chose not to appeal. The one-time "Approved Developer" disclosure (modmail) is drafted in the 2026-10-29 conversation if he changes his mind.
-- **r/OriginalCharacter:** bans AI-generated content (RESEARCH.md), and art-first OC communities are hostile to AI roleplay.
-- **r/LoveIslandUSA:** spectators who won't make characters, and a fan sub that likely bans promotion. It doesn't fit until there's a spectator-only hook.
-- **Shapes Inc Discord:** there's no verified official invite, only a third-party directory listing from the 10-15 kit.
-- **r/PygmalionAI:** its rules are unclear and its audience overlaps r/SillyTavernAI, which is more active.
-- **r/JanitorAI_Official:** its rules are unclear ("Default to no URL"), and an NSFW-first audience expects what the PG show doesn't offer.
+- r/OriginalCharacter: AI content banned since Feb 2024 ("AI content no longer allowed") — the dates are AI-written, so it's out, and most OC *art* communities (Tumblr OC tags included) lean the same way. The audience is AI-positive roleplayers, not OC artists.
+- r/JanitorAI_Official: self-promotion limited to JanitorAI's own bots.
+- r/Chatbots: round 1's post was removed by Reddit's spam filter; not worth a second account strike.
+- Show HN: done Oct 24 (1 point); the pipeline's own cadence says every 4–6 weeks, so earliest late November, and only with a new technical angle (the agent cast would qualify).
 
-## Directories (not posts)
-- **Done (David paid $20, 2026-10-21):** mcp.so and Glama (com.botchelor).
-- **Already listed:** the official MCP Registry has `io.github.smithdavedesign/botchelor`, status active, pointing at `https://botchelor.com/api/mcp` (checked 2026-10-22). Its newest listed version is 2.2.0 (2026-10-20); the live server is 2.13.0 (rechecked 2026-10-24). Republishing by hand with `mcp-publisher` (David's GitHub device login, about two minutes, free) would bring the listing up to date. It's optional, and the r/mcp claim "it's in the official MCP Registry" is true either way.
-
-**Posting account:** u/Outside_Sir_9341. The mod messages to r/SillyTavernAI and r/mcp are sent from it, from David's phone.
-
-## Paid option
-None for now. No paid channel here clearly beats these free posts, and about $70 of the $300 owner budget is uncommitted. If Show HN and r/ChatbotRefugees bring under 50 visitors in their first week, the next step would be a small Reddit ad test aimed at AI-chat interests (about $30 for 7 days, to prove 50 visitors and at least 3 first dates). That's David's call.
+## Paid option (only if the organic round stalls)
+Reddit promoted post: boost whichever of posts 1–3 performs best organically. $50–75 from ownerBudget ($300/product), targeting interests "AI chatbots / roleplay" + the posts' own subreddits where allowed. Proves: ≥100 tagged visitors and ≥5 characters created inside 7 days (the engagement log shows both per link). If organic beats that on its own, skip it.
