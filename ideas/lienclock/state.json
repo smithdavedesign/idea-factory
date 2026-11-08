@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-11-07T00:34:35.498Z",
+  "updatedAt": "2026-11-08T20:55:00.460Z",
   "repo": "https://github.com/smithdavedesign/lienclock",
   "revenue": {
     "mrr": 0,
@@ -102,8 +102,8 @@
       "M2",
       "M3"
     ],
-    "status": "failed",
-    "at": "2026-10-26T06:02:17.223Z",
+    "status": "running",
+    "at": "2026-11-08T20:38:48.210Z",
     "manual": false,
     "reason": "couldn't start the build sandbox: sandbox open: sandbox image build failed (repohq-factory-egress:b046ec052dd7): ERROR: Error response from daemon: Docker Desktop is unable to start",
     "milestones": [
@@ -118,9 +118,15 @@
     "sandbox": "docker",
     "advice": {
       "difficulty": 2,
-      "reason": "Involves multiple components, state logic, and testable exit criteria across different systems.",
+      "reason": "Involves implementing an ICS feed parser, handling email intake with proposed fields, and ensuring validation logic across multiple components.",
       "source": "model",
       "model": "local-qwen3"
+    },
+    "progress": {
+      "step": 2,
+      "steps": 3,
+      "label": "M3 (2 of 2)",
+      "at": "2026-11-08T20:55:00.454Z"
     }
   },
   "milestonesDone": [
