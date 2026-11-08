@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-11-08T21:58:07.451Z",
+  "updatedAt": "2026-11-08T23:44:11.098Z",
   "repo": "https://github.com/smithdavedesign/lienclock",
   "revenue": {
     "mrr": 0,
@@ -102,7 +102,7 @@
       "M2",
       "M3"
     ],
-    "status": "pr-open",
+    "status": "merged",
     "at": "2026-11-08T20:38:48.210Z",
     "manual": false,
     "reason": "couldn't start the build sandbox: sandbox open: sandbox image build failed (repohq-factory-egress:b046ec052dd7): ERROR: Error response from daemon: Docker Desktop is unable to start",
@@ -122,10 +122,13 @@
       "source": "model",
       "model": "local-qwen3"
     },
-    "held": "Vercel failed"
+    "held": "Vercel failed",
+    "mergedBy": "agent",
+    "mergedAt": "2026-11-08T23:44:11.098Z"
   },
   "milestonesDone": [
-    "M1"
+    "M1",
+    "M2"
   ],
   "funnel": {
     "at": "2026-10-27T06:27:05.571Z",
