@@ -66,7 +66,7 @@ const MAC_CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome
 const SYSTEM = 'You are building one milestone of a small product, tests first. Work only inside the current directory. ' +
   'Nobody will answer questions: decide from the PRD, roadmap and review, and write down what you decided. ' +
   'No paid services or domains: everything must run on free tiers or locally. Never push, never touch git history; the caller commits. ' +
-  'Infrastructure (a database, an API key) comes only from the credential broker, the way the task says: it writes secrets to the keychain and Vercel env and never shows them. ' +
+  'Infrastructure (a database, an API key) comes only from the credential broker, the way the task says: it writes secrets to the keychain and the host (Cloudflare Worker secrets, or Vercel env) and never shows them. ' +
   'Never read, print, write down or ask for a secret value; code reads them from environment variables, and tests never need real ones. ' +
   'Never write anything shaped like a credential (API keys, tokens, private keys, JWTs, connection strings with passwords) into any file, tests and examples included: ' +
   "when a test needs a fake one, build it at runtime from a prefix and a repeated filler, e.g. ['sk', 'ant', 'api03', 'A1b2C3d4'.repeat(6)].join('-'), so secret scanners don't flag the repo. " +
@@ -206,11 +206,16 @@ Your final message: one line — tests passing or not, and the number of tests.`
 
 /**
  * The go-live build (buildOne({golive})): make a built product ready for a public launch without
- * changing what it does (pure). `price` from the revenue plan, `signalUrl` RepoHQ's visit endpoint.
+ * changing what it does (pure). `price` from the revenue plan, `signalUrl` the visit endpoint (the
+ * idea-factory Worker's). Products go live on Cloudflare Workers' free plan: the Vercel account is
+ * blocked (every deployment answers 402 since 2026-10-31; tiebreak moved first, the rest on
+ * 2026-11-08). The sandbox has no credentials and the host never builds a product's code, so a sandboxed
+ * go-live asks for the deploy in `.provision`; a host-mode one deploys through the broker itself.
  */
 function goLivePrompt(slug, { price = '', signalUrl = '', gstackFile = null, provision = 'direct', ownerNote = '' } = {}) {
   const note = String(ownerNote || '').trim().slice(0, 1000);
-  const provisionLines = [`vercel project ${slug}`, ...(price ? [`request "Stripe payment link for ${slug}: ${price}, per REVENUE.md"`] : [])];
+  const deploy = `npm ci && npm run cf:build, then provision cloudflare deploy ${slug} <checkout>, and provision cloudflare secret ${slug} <KEY> for each value LAUNCH-READY.md lists`;
+  const provisionLines = [`request "Cloudflare Workers deploy for ${slug}: ${deploy}"`, ...(price ? [`request "Stripe payment link for ${slug}: ${price}, per REVENUE.md"`] : [])];
   return `You are in the repo for "${slug}", a built product. Make it ready for a public launch without changing what it does. Read README.md, PRD.md, BUILD.md and REVENUE.md (if present) first.${note ? `
 The owner asked for this with a note; follow it where it fits:
 ---
@@ -218,18 +223,23 @@ ${note}
 ---` : ''}
 1. Search and sharing: every public page gets a unique <title> and meta description, Open Graph and Twitter card tags with a 1200×630 share image, a canonical URL, and JSON-LD (SoftwareApplication${price ? `, with an Offer for ${price}` : ''}). Add robots.txt (allow indexing, point at the sitemap) and sitemap.xml listing the public pages. Use the framework's own conventions (e.g. Next.js metadata, opengraph-image, robots.ts, sitemap.ts). The share image is generated at build time or drawn with code; never copy an image from the web.
 2. A /privacy page and a /terms page, plain and honest: what the product collects (say "nothing" if that's true), cookies (none unless needed), the visit beacon below, and contact through the GitHub repo's issues. Terms: no warranty${price ? `, and the price and refund line from REVENUE.md` : ''}. Link both from the footer.
-3. Payment: ${price ? `a clear "Buy" button (or "Get Pro") linking to the URL in the STRIPE_PAYMENT_LINK env var (NEXT_PUBLIC_STRIPE_PAYMENT_LINK if it must reach the browser), hidden when the variable is unset.` : 'no plan with a price yet: skip payments.'} Never hard-code a payment link or key.
+3. Payment: ${price ? `a clear "Buy" button (or "Get Pro") linking to the URL in the STRIPE_PAYMENT_LINK env var, hidden when the variable is unset. Read it on the server at request time: on the Worker it's a secret (\`provision stripe ${slug} … --host cloudflare\` sets it with no rebuild), and a NEXT_PUBLIC_ copy would be frozen into the build.` : 'no plan with a price yet: skip payments.'} Never hard-code a payment link or key.
 4. Visit beacon, so RepoHQ counts real use: POST JSON {"slug": "${slug}", "kind": "<kind>", "referrer": <referrer>} to ${signalUrl || 'the RepoHQ signal URL'} (fire-and-forget, keepalive, no cookies) for three events:
    - "visit" on every public page, once per browser session (sessionStorage);
    - "activate" the first time someone uses the product's core action, once per browser (localStorage); name that action in LAUNCH-READY.md;
    - "checkout" when someone clicks Buy.
    The referrer is document.referrer only when it comes from another site (its origin differs from location.origin), else null, so share links never leave the page. Send nothing when navigator.webdriver is true (bots, screenshot runs), on anything but the production build (send only when NEXT_PUBLIC_DEPLOY_ENV, else Vercel's NEXT_PUBLIC_VERCEL_ENV, is "production"; the Cloudflare build script sets NEXT_PUBLIC_DEPLOY_ENV=production, so the product counts visitors on either host), or when localStorage "repohq:notrack" is set (the owner's browser). The privacy page names the three events.
-5. Deployment: ${provision === 'file' ? `you can't provision from here; write \`.provision\` at the repo root with these lines, and the pipeline runs them through the credential broker after the build:
-${provisionLines.map((l) => `  ${l}`).join('\n')}` : `run ${provisionLines.map((l) => `\`${PROVISION} ${l}\``).join(' and ')}.`}
+5. Hosting: Cloudflare Workers on the free plan, not Vercel (the Vercel account is blocked: every deployment answers 402). Keep the Vercel build working, and add:
+   - the Worker: for Next.js the OpenNext adapter (@opennextjs/cloudflare and wrangler as dev dependencies, open-next.config.ts); otherwise a Worker entry (a Hono app's app.fetch, say) and/or static assets. One wrangler.jsonc with "name": "${slug}", "workers_dev": true, the nodejs_compat flag if the code uses Node APIs, and no "build" section (the credential broker refuses one: it runs no repo commands);
+   - a "cf:build" script in package.json that builds it as production, with NEXT_PUBLIC_DEPLOY_ENV=production (e.g. "NEXT_PUBLIC_DEPLOY_ENV=production opennextjs-cloudflare build");
+   - the free plan's limits: at most 3 MiB gzipped (\`provision cloudflare deploy ${slug} <dir> --dry-run\` prints the size), a few milliseconds of CPU per request (draw share images at build time, never per request), no filesystem at runtime, and no database connection shared between requests (open one per request and close it, or use Neon's HTTP driver);
+   - settings from the Worker's env: secrets for keys and URLs with credentials (DATABASE_URL, GOOGLE_API_KEY, STRIPE_PAYMENT_LINK), wrangler.jsonc "vars" for the rest. List every one the app reads in LAUNCH-READY.md.
+   ${provision === 'file' ? `You can't deploy from here; write \`.provision\` at the repo root with these lines, and the pipeline runs them through the credential broker after the build:
+${provisionLines.map((l) => `  ${l}`).join('\n')}` : `Then deploy it: \`npm run cf:build\`, \`${PROVISION} cloudflare deploy ${slug} "$PWD"\`, and \`${PROVISION} cloudflare secret ${slug} <KEY>\` for each stored value it reads; \`${PROVISION} cloudflare url ${slug}\` prints its address (https://${slug}.<account>.workers.dev).${price ? ` For the payment link, run \`${PROVISION} ${provisionLines[1]}\`.` : ''}`}
 6. Keep \`npm test\` passing, and add tests for what you can: the pages render, robots.txt and the sitemap exist, and the Buy button is hidden without the env var.
 7. Screenshot proof of the launch-ready site (footer links and the Buy button included; give the screenshot run a placeholder STRIPE_PAYMENT_LINK such as https://example.com/pay):
 ${SCREENSHOT_STEPS}
-8. Write LAUNCH-READY.md: what you did, how to check it, and what's left for David (the Stripe payment link to paste into the Vercel env as STRIPE_PAYMENT_LINK; a custom domain if he wants one).${gstackFile ? `
+8. Write LAUNCH-READY.md: what you did, how to check it, the env values the Worker reads, and what's left for David (the Stripe payment link, which \`provision stripe ${slug} … --host cloudflare\` puts on the Worker as STRIPE_PAYMENT_LINK; a custom domain if he wants one).${gstackFile ? `
 9. Self-review your diff (\`git status\`, \`git diff\`) against gstack's pre-landing checklist in ${gstackFile} ("Review Categories", "Fix-First Heuristic"), and fix every CRITICAL finding.` : ''}
 Install scripts are disabled (npm_config_ignore_scripts); choose packages that work without them, and prefer none.
 Your final message: one line — tests passing or not, and what's left for David.`;
@@ -600,7 +610,7 @@ async function buildOne(slug, { push = true, milestone = 'M1', manual = false, n
       const { valueText } = require('../lib/growth');
       const exp = growth?.experiment;
       const body = [
-        `${golive ? `**${slug}**, made launch-ready (SEO basics, privacy and terms, payment link, visit beacon, Vercel project)` : growth ? `One growth change to **${slug}** (${growthLabel}), from the growth loop` : mvp ? `The MVP for **${slug}** (${planned.join(', ')} in one run)` : `${milestone} for **${slug}**`}, built by the idea pipeline${golive || growth ? '' : ', tests first'}. Engine: ${engine}. Built in ${ws.kind === 'docker' ? 'the factory\'s Docker sandbox' : 'host mode (on the Mac)'}.`, '',
+        `${golive ? `**${slug}**, made launch-ready (SEO basics, privacy and terms, payment link, visit beacon, Cloudflare Worker)` : growth ? `One growth change to **${slug}** (${growthLabel}), from the growth loop` : mvp ? `The MVP for **${slug}** (${planned.join(', ')} in one run)` : `${milestone} for **${slug}**`}, built by the idea pipeline${golive || growth ? '' : ', tests first'}. Engine: ${engine}. Built in ${ws.kind === 'docker' ? 'the factory\'s Docker sandbox' : 'host mode (on the Mac)'}.`, '',
         ...(acceptance ? [`**Acceptance** (checked by a separate review run${acceptance.fixRound ? ', after one fix round' : ''}): ${acceptance.verdict === 'pass' ? '✅ every criterion met' : `❌ ${acceptance.unmet.length} unmet`}`,
           ...growth.item.acceptance.map((a) => `- ${acceptance.unmet.some((u) => u.criterion === a) ? '❌' : '✅'} ${a}`),
           ...acceptance.unmet.filter((u) => u.why).map((u) => `  - unmet: ${u.criterion}: ${u.why}`), ''] : []),
