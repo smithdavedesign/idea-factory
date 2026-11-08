@@ -14,15 +14,15 @@
     "decision": "extend",
     "reason": "only 0 visitors (need 50 to judge): extended 14 days — share the launch post"
   },
-  "updatedAt": "2026-10-27T06:27:05.571Z",
+  "updatedAt": "2026-11-08T23:01:10.612Z",
   "page": {
     "url": "https://idea-pages-livid.vercel.app/packpass/",
     "deployedAt": "2026-10-12T16:33:05.029Z"
   },
   "signals": {
-    "views": 0,
-    "uniqueVisitors": 0,
+    "views": 1,
+    "uniqueVisitors": 1,
     "signups": 0,
-    "updatedAt": "2026-10-27T06:27:05.571Z"
+    "updatedAt": "2026-11-08T23:01:10.612Z"
   }
 }

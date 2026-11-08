@@ -2,7 +2,7 @@
 
 Page: https://idea-factory.1426davejobs.workers.dev/packpass/ · Decision: not before the page answers there, then 14 days from the move (see below) · Now: 0/50 visitors, 0 signups
 
-**Post nothing until the page answers at that address.** On 2026-11-08 it still returned 404 (checked about 10:00 and 10:45 Pacific): the pipeline's page deploy is waiting for your approval, one line: `echo idea-factory >> ~/.config/provision/allow` (asked on Slack at 09:54 Pacific). The same Worker receives every product's visit beacon, so until it's up no product's visitors are counted. The address in state.json (https://idea-pages-livid.vercel.app/packpass/) is dead (Vercel has answered 402 since 2026-10-31), so every post below uses the new one. Open it in a browser to check it loads, then post #1. Don't sign up yourself: your email would count as a signup.
+**The page answers since 2026-11-08 22:05 UTC.** You added the allow line, the Worker is deployed, and its visit counting works (a test view from the page landed and was deleted). The pipeline records the new address and restarts the 14-day test at its next daily run, about 17:30 UTC on Mon 9 Nov. **Post #1 after that:** Mon 9 Nov, 12:30–4 PM US Eastern, so every visit falls inside the new window. The old address in state.json (https://idea-pages-livid.vercel.app/packpass/) is dead until then. Don't sign up yourself: your email would count as a signup.
 
 **You post, by hand, from your own accounts. Nothing here has been posted.**
 
