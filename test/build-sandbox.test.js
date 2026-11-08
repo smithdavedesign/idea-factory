@@ -321,6 +321,7 @@ test('go-live: one launch-readiness run in the sandbox, the Cloudflare deploy re
   assert.match(p, /OpenNext adapter \(@opennextjs\/cloudflare/);
   assert.match(p, /One wrangler\.jsonc with "name": "demo"[^\n]*no "build" section/);
   assert.match(p, /a "cf:build" script[^\n]*NEXT_PUBLIC_DEPLOY_ENV=production/);
+  assert.match(p, /a "cf:build" script[^\n]*opennextjs-cloudflare populateCache local[^\n]*plain `wrangler deploy`/, 'the broker deploys with a plain wrangler deploy, so the build fills the static-assets cache');
   assert.match(p, /at most 3 MiB gzipped[^\n]*no database connection shared between requests/, 'the free plan\'s limits');
   assert.match(p, /request "Cloudflare Workers deploy for demo: npm ci && npm run cf:build, then provision cloudflare deploy demo <checkout>/, 'a sandboxed go-live asks for the deploy');
   assert.doesNotMatch(p, /vercel project/);
