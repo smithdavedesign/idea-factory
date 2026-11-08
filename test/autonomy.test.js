@@ -86,10 +86,31 @@ test('a check the account blocked holds the PR instead of failing it', () => {
   const d = A.mergeDecision({ pr: open({ statusCheckRollup: [vercelBlocked, jobBlocked, green] }), build: { testsPassing: true }, now });
   assert.equal(d.action, 'wait');
   assert.equal(d.blocked, true);
-  assert.match(d.reason, /Vercel, web couldn't run: the GitHub or Vercel account is blocked/);
+  // The blocked Vercel check is ignored (David, 2026-11-08); the GitHub job that never ran still holds the PR.
+  assert.match(d.reason, /^web couldn't run: the GitHub or Vercel account is blocked/);
   // A real failure next to a blocked one still fails, naming only the real one.
   const f = A.mergeDecision({ pr: open({ statusCheckRollup: [vercelBlocked, jobFailed] }), build: { testsPassing: true }, now });
   assert.deepEqual([f.action, f.reason], ['fail', 'mobile failed']);
   assert.equal(A.ACCOUNT_BLOCK.test('The job was not started because recent account payments have failed or your spending limit needs to be increased.'), true);
   assert.equal(A.accountBlocked({ state: 'FAILURE', description: 'Deployment has failed' }), false, 'an ordinary failed deploy is the code');
+});
+
+// gh's real rollup for a blocked Vercel account: no description, only the link (lienclock #2, 2026-11-08).
+test('a Vercel check failed only by the blocked account is ignored: the PR merges on its other checks', () => {
+  const now = new Date('2026-11-08T23:00:00Z');
+  const vercel = { __typename: 'StatusContext', context: 'Vercel', startedAt: '2026-11-08T21:46:27Z', state: 'FAILURE', targetUrl: 'https://vercel.com/knowledge/why-is-my-account-deployment-blocked' };
+  const gitguardian = { __typename: 'CheckRun', name: 'GitGuardian Security Checks', status: 'COMPLETED', conclusion: 'SUCCESS', workflowName: '' };
+  const pr = (rollup) => open({ statusCheckRollup: rollup, createdAt: '2026-11-08T21:46:27Z' });
+  assert.equal(A.vercelAccountBlocked(vercel), true);
+  const d = A.mergeDecision({ pr: pr([vercel, gitguardian]), build: { testsPassing: true }, now });
+  assert.deepEqual([d.action, d.reason], ['merge', '1 check green, tests passing']);
+  // Any other red check still fails the PR, and so does a Vercel check that failed for another reason.
+  const failedTests = { __typename: 'CheckRun', name: 'test', status: 'COMPLETED', conclusion: 'FAILURE' };
+  assert.equal(A.mergeDecision({ pr: pr([vercel, failedTests]), build: { testsPassing: true }, now }).action, 'fail');
+  const vercelBuildFailed = { __typename: 'StatusContext', context: 'Vercel', state: 'FAILURE', targetUrl: 'https://vercel.com/team/proj/abc123' };
+  assert.equal(A.vercelAccountBlocked(vercelBuildFailed), false);
+  assert.deepEqual(A.mergeDecision({ pr: pr([vercelBuildFailed, gitguardian]), build: { testsPassing: true }, now }).action, 'fail');
+  // A blocked check that isn't Vercel's is not ignored.
+  const otherBlocked = { __typename: 'StatusContext', context: 'netlify', state: 'FAILURE', description: 'Account is blocked.' };
+  assert.equal(A.vercelAccountBlocked(otherBlocked), false);
 });
