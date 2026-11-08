@@ -110,7 +110,8 @@ test('new builds wait until a focus product has traction (policy.build.startNew 
   assert.equal(P.newBuildsHeld({ build: {} }, []), false, 'without the setting nothing is held');
   // David's call on 2026-10-12: distribution before more MVPs; on 2026-10-31 first builds may start at night.
   assert.equal(policy.build.startNew, 'night', 'held in the day, first builds at night');
-  assert.ok(policy.growth.focus.includes('tiebreak'));
+  // David took tiebreak out of the growth loop's pilot on 2026-11-08: botchelor is the one focus product.
+  assert.deepEqual(policy.growth.focus, ['botchelor']);
 });
 
 test('state records round-trip and reject unknown stages', () => {
@@ -266,4 +267,25 @@ test('RepoHQ Ideas page: a new idea goes into the research queue, and is marked 
   assert.deepEqual(notes, ['queued seed-new', 'researched seed-old → leakwatch']);
   assert.match(writes.find((w) => w.values.includes('too short')).text, /status = 'failed'/);
   assert.deepEqual(writes.find((w) => /status = 'researched'/.test(w.text)).values, ['leakwatch', 3]);
+});
+
+test('decision: a page not yet on the current pages host is never judged (2026-11-08, packpass on the dead Vercel host)', () => {
+  const p = { ...policy, pagesBaseUrl: 'https://idea-factory.example.workers.dev' };
+  const stale = { ...state({ extensions: 1 }), page: { url: 'https://idea-pages-livid.vercel.app/packpass/' } };
+  const d = P.decideValidation(stale, { uniqueVisitors: 0, signups: 0 }, p, now);
+  assert.equal(d.decision, 'wait');
+  assert.match(d.reason, /hasn't moved/);
+  const moved = { ...state({ extensions: 1 }), page: { url: 'https://idea-factory.example.workers.dev/packpass/' } };
+  assert.equal(P.decideValidation(moved, { uniqueVisitors: 0, signups: 0 }, p, now).decision, 'pass', 'once it answers on the new host, the usual rules apply');
+  // A strong signal still builds, wherever the page is.
+  assert.equal(P.decideValidation(stale, { uniqueVisitors: 80, signups: 12 }, p, now).decision, 'build');
+});
+
+test('restartAfterMove: a full window from the move, never shorter, no extension used', () => {
+  const p = { ...policy, validation: { ...policy.validation, days: 14 } };
+  const v = P.restartAfterMove({ startedAt: '2026-10-12T00:00:00Z', decideAfter: '2026-11-10T06:00:00Z', extensions: 1 }, now, p);
+  assert.equal(v.decideAfter, '2026-11-10T06:00:00.000Z', 'a later deadline is kept: 14 days from 10-20 is earlier');
+  assert.equal(v.extensions, 1);
+  const later = new Date('2026-11-08T12:00:00Z');
+  assert.equal(P.restartAfterMove({ decideAfter: '2026-11-10T06:00:00Z', extensions: 1 }, later, p).decideAfter, '2026-11-22T12:00:00.000Z');
 });
