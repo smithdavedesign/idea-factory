@@ -1,27 +1,46 @@
-# Launch kit: botchelor (2026-11-07)
+# Launch kit: botchelor (2026-11-08, round 2 refreshed)
 
 Product: https://botchelor.com (live; After Dark at ad.botchelor.com is invite-beta and NOT what these posts sell).
 Real use ≈ 0 so far; the live numbers are the site's own engagement log (`/admin/analytics` → Engagement), not
-state.json's stale funnel. Ten posts went out Oct 20–Nov 1 (launch-log.json): best was r/SillyTavernAI (5 points,
-11 comments); r/Chatbots and r/ChatbotRefugees had removals, both later resolved or explained.
+state.json's funnel (RepoHQ shows 0 for every product until the idea-factory signal Worker is deployed). Ten posts went
+out Oct 20–Nov 1 (launch-log.json): best was r/SillyTavernAI (5 points, 11 comments); r/Chatbots and r/ChatbotRefugees
+had removals, both later resolved or explained. Nothing from round 2 has been posted yet.
 
-**What's new since those posts** (the honest reason to post again): monthly seasons with a cast the audience votes in —
-anyone's OC can audition on /casting; characters text between dates and each decides for itself whether it wants a
-second date; group dates and mixers; season recaps (/seasons/october-2026); and over MCP an agent can perform its own
-lines with its own model while the engine still decides the ending.
+**What's new since those posts** (the honest reason to post again):
+- **Sunday's reveal** (live 2026-11-08, #1368). Every weekend the audience votes, from Saturday 19:00 to Sunday 19:00
+  UTC, on whose secret comes out. The winner's next secret is revealed, and they go on a live date with the cast member
+  they've dated most, who has heard it. The characters still decide how it ends. **The first vote opens Sat 14 Nov,
+  19:00 UTC**, inside r/ChatbotRefugees' Promotion Sunday window, so that's the post built around it.
+- **The season pool:** every right call, dare and backing adds up to one season score, and the board is revealed at
+  the finale.
+- Monthly seasons with a cast the audience votes in: anyone's OC can audition on /casting.
+- Characters text between dates, and each decides for itself whether it wants a second date. Also new: group dates,
+  mixers and season recaps (/seasons/october-2026).
+- Over MCP, an agent can perform its own lines with its own model while the engine still decides the ending.
 
 Links follow docs/launch-kit.md's pattern; new campaign so the engagement log separates this round:
 `?utm_source=<site>&utm_medium=social&utm_campaign=auditions&utm_content=<place>`
 
+**Before each post:** read the sub's current rules in the signed-in browser. Reddit blocks logged-out reads from this
+Mac, and on 2026-11-08 the rules couldn't be fetched from here at all.
+
 ## Order
-1. r/SillyTavernAI: proven channel (best result of round 1), 2 weeks since the last post, genuinely new angle (post Sat/Sun afternoon US).
-2. r/mcp: the first-ever post got 7 comments; 3 weeks of news for agent builders since (post Mon or Tue, working hours US).
-3. r/CharacterAI_No_Filter: never tried, ~90k members, self-promo tolerated — read the sidebar rules first, they couldn't be fetched from here (post Wed or Thu).
-4. r/ChatbotRefugees, Promotion Sunday: skip this weekend (posted Nov 1); next window Sat Nov 14 10:00 UTC – Mon Nov 16 11:59 UTC.
+1. r/mcp: the first-ever post got 7 comments, and there are 3 weeks of news for agent builders since. Post Mon 9 or
+   Tue 10 Nov, US working hours.
+2. r/CharacterAI_No_Filter: never tried, ~90k members, self-promo tolerated. Read the sidebar rules first. Post Wed 11
+   or Thu 12 Nov.
+3. r/ChatbotRefugees, Promotion Sunday: Sat 14 Nov after 19:00 UTC, while the first Sunday reveal vote is open. The
+   window is Sat 14 Nov 10:00 UTC to Mon 16 Nov 11:59 UTC.
+4. r/SillyTavernAI: only if its rules allow it. On 2026-10-31 they required a promoted platform to be open source or
+   self-hostable, and Botchelor is neither. If that rule still stands, drop it.
+
 Space them a day or two apart so each spike stays readable.
 
 ## r/SillyTavernAI (https://www.reddit.com/r/SillyTavernAI/)
-Rules: the 2026-10-24 post with a link stayed up and did well; same honest dev-update framing. · Fits because: AI-positive roleplayers with their own models — the only crowd that can use "your model performs, the engine decides".
+Rules: **check first.** On 2026-10-31 the sub required promoted platforms to be open source or self-hostable, which rules
+this post out unless that changed. The 2026-10-24 post with a link stayed up and did well, before that rule. · Fits
+because: AI-positive roleplayers with their own models, the only crowd that can use "your model performs, the engine
+decides".
 **Title:** Update on the OC blind-date show: monthly seasons now, and your character can audition for the cast
 **Post:**
 > I posted Botchelor here two weeks ago (the blind-date show for OCs where a deterministic engine decides the ending and nobody — including me — can steer it). The feedback thread shaped most of what I built since, so here's what's new:
@@ -70,14 +89,28 @@ Rules: ~90k members; self-promotion visibly tolerated (a "Bot Sharing" flair and
 > If you've got an OC you've roleplayed for years: does the date sound like them? That's the test I care about.
 **Afterwards:** also ask (in a comment or the sub, not by DM-spamming) how a site gets onto the community's "Always-Updated List of Character AI Alternatives" (characterai-no-filter.notion.site) — a durable listing worth more than the post.
 
-## r/ChatbotRefugees, Promotion Sunday (https://www.reddit.com/r/ChatbotRefugees/) — Nov 14–16 window
-Rules: promo allowed only with the Promotion Sunday flair, Sat 10:00 UTC – Mon 11:59 UTC (posted there Nov 1; spacing a week keeps it welcome). · Fits because: it already knows Botchelor; this is the "what's new" follow-up.
-**Title:** [Promotion Sunday] The OC blind-date show now has open auditions for the November cast
+## r/ChatbotRefugees, Promotion Sunday (https://www.reddit.com/r/ChatbotRefugees/), Sat 14 Nov after 19:00 UTC
+Rules: promo allowed only with the Promotion Sunday flair, Sat 10:00 UTC to Mon 11:59 UTC (posted there Nov 1, so a
+fortnight's gap keeps it welcome). · Fits because: it already knows Botchelor, and the first Sunday reveal gives it a
+live reason to come and look: the vote is open while the post is up. Post after 19:00 UTC Saturday, when the vote opens
+(before that, /watch shows a countdown, which still works but is weaker).
+**Title:** [Promotion Sunday] The OC blind-date show's first audience vote: whose secret comes out on Sunday
 **Post:**
-> Posted Botchelor here before — the blind-date show where your OC goes on AI-written dates nobody can steer. Since then: monthly seasons, and the cast is picked by audience votes from characters people audition. If you put your OC in this week, it can be on the season instead of just visiting: https://botchelor.com/casting?utm_source=reddit&utm_medium=social&utm_campaign=auditions&utm_content=chatbotrefugees
+> Posted Botchelor here before: the blind-date show where your OC goes on AI-written dates nobody can steer, not even me.
+>
+> New this weekend is the first Sunday reveal. Until Sunday 19:00 UTC, everyone votes on which cast member's secret
+> comes out. The winner's secret is revealed, and they go on a live date with the person they've dated most, who has
+> just heard it. The engine still decides how that date ends; the vote only decides who's in the hot seat. One vote
+> each, no sign-up: https://botchelor.com/watch?utm_source=reddit&utm_medium=social&utm_campaign=auditions&utm_content=chatbotrefugees
+>
+> Also new: every right call adds up to one season score, revealed at the finale, and auditions are open if you'd
+> rather your OC was in the cast than watching it.
 >
 > Free, 3 dates a week, characters remember everything. Happy to answer anything about how the engine decides endings.
-**Afterwards:** watch for the sub's AutoModerator (it wrongly removed an in-window post on 10-26; screenshot the UTC post time).
+**Afterwards:**
+- Watch for the sub's AutoModerator. It wrongly removed an in-window post on 10-26, so screenshot the UTC post time.
+- On Sunday after 19:20 UTC, reply in the thread with the result and a link to the date. That's an honest follow-up,
+  not a bump.
 
 ## Dropped
 - r/OriginalCharacter: AI content banned since Feb 2024 ("AI content no longer allowed") — the dates are AI-written, so it's out, and most OC *art* communities (Tumblr OC tags included) lean the same way. The audience is AI-positive roleplayers, not OC artists.
