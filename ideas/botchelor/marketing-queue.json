@@ -1,0 +1,42 @@
+{
+  "nextId": 1,
+  "paused": false,
+  "items": [],
+  "seen": {
+    "inbox": [
+      "t1_19se1l0ilu29w",
+      "t1_19rztjoh4vqw0",
+      "t1_19rztjkqad2w1",
+      "t1_19ry5fmycxhlu",
+      "t1_19ro4an8dsflw",
+      "t1_19ro4aiuzor9e",
+      "t1_19ro09yw1tbic",
+      "t1_19rnje4w976sh",
+      "t1_19rnixbav5vs5",
+      "t1_19rm7zi91z9mt",
+      "t1_19rm4e2cfork1",
+      "t1_19rlhfxsxmao4",
+      "t1_19rlcullqp44g",
+      "t1_19rlc4ns2qhwg",
+      "t1_19rlc3e0ggl5u",
+      "t1_19rlc39e0h5pg",
+      "t1_19rkzc0x3zrus",
+      "t1_19riaazpfzmbl",
+      "t1_phtiolq",
+      "t1_luco27f",
+      "t1_lub0kii",
+      "t1_luaaelu",
+      "t1_lua5x01",
+      "t1_lu9iarc",
+      "t1_lu9fwhb"
+    ]
+  },
+  "last": {
+    "watch": "2026-11-09T21:19:23.859Z",
+    "listings": {
+      "awesome-remote-mcp": "OPEN",
+      "lobehub": "http 404"
+    },
+    "listingsAt": "2026-11-09T21:19:25.073Z"
+  }
+}
