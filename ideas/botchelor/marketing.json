@@ -114,7 +114,7 @@
       "from": "2026-11-16",
       "cooldownDays": 7,
       "flair": "self advertising",
-      "angle": "Rule 13 format is mandatory: pros, cons, support link (no Discord yet: say so, give support@botchelor.com), proxy support (no reverse proxies; bring your own key from OpenRouter, DeepSeek, Gemini, OpenAI, Anthropic or Groq). Self-ads at most once every 7 days."
+      "angle": "Rule 13 format is mandatory: pros, cons, support link (our Discord https://discord.gg/8VDdRF9YU and support@botchelor.com), proxy support (no reverse proxies; bring your own key from OpenRouter, DeepSeek, Gemini, OpenAI, Anthropic or Groq). Self-ads at most once every 7 days."
     },
     {
       "id": "mcp",
@@ -174,29 +174,39 @@
     {
       "id": "bluesky",
       "kind": "bluesky",
-      "status": "needs-account",
+      "status": "active",
       "cooldownDays": 1,
-      "note": "Needs a Bluesky account and an app password in the keychain: vault/botchelor/BLUESKY_HANDLE and vault/botchelor/BLUESKY_APP_PASSWORD.",
-      "angle": "One short post a day: a best line from a date that aired, with its link. Disclose that the characters and dates are AI.",
-      "logName": "Bluesky"
+      "angle": "One short post a day as @botchelor.bsky.social: a best line or moment from a date that aired on botchelor.com this week (fetch https://botchelor.com/watch to find one; quote it exactly and name both characters), then the link. Say the characters and dates are AI. No hashtags beyond one or two.",
+      "logName": "Bluesky",
+      "from": "2026-11-10"
     },
     {
       "id": "discord",
       "kind": "discord",
-      "status": "needs-account",
+      "status": "active",
       "cooldownDays": 7,
-      "note": "Needs a Botchelor Discord server and an #announcements webhook URL in the keychain: vault/botchelor/DISCORD_ANNOUNCE_WEBHOOK. Also gives subreddits like r/JanitorAI_Refuges the support link they ask for.",
-      "angle": "Weekly announcement: the season so far, Sunday's reveal, what's new.",
-      "logName": "Discord (#announcements)"
+      "angle": "Weekly announcement in our own server's #announcements: the first one welcomes people and says what the server is for (feedback, bug reports, sharing your characters' dates); later ones cover the season so far, Sunday's reveal, and what changed. Discord Markdown; no @everyone.",
+      "logName": "Discord (#announcements)",
+      "from": "2026-11-10"
     },
     {
       "id": "x",
       "kind": "x",
-      "status": "needs-account",
+      "status": "active",
       "cooldownDays": 1,
-      "note": "Needs an X account signed in to the automated browser. X's API costs money, so posting goes through the browser.",
-      "angle": "Same as Bluesky.",
-      "logName": "X"
+      "angle": "One short post a day as @botchelorLLC, different from the day's Bluesky post: a best line or moment from a date that aired on botchelor.com (fetch https://botchelor.com/watch), then the link. Say the characters and dates are AI. At most two hashtags.",
+      "logName": "X",
+      "from": "2026-11-10"
     }
-  ]
+  ],
+  "x": {
+    "handle": "botchelorLLC"
+  },
+  "bluesky": {
+    "handle": "botchelor.bsky.social"
+  },
+  "discord": {
+    "invite": "https://discord.gg/8VDdRF9YU",
+    "server": "1569479419003932723"
+  }
 }

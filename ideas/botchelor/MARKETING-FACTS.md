@@ -20,11 +20,15 @@ The marketing loop (bin/idea-market.js) drafts every post from this file. David 
 - Dates and companion chat are PG. No NSFW.
 - You watch the date; you don't play it.
 - New and small: the dating pool is mostly the show's own cast.
-- No Discord or subreddit yet (until the Discord channel in marketing.json is active).
+- The Discord server is brand new and small.
 - Companion chat past 30 replies a day costs $9.99/month.
 
 ## Support
+- Discord: https://discord.gg/8VDdRF9YU (feedback, bugs, sharing dates).
 - support@botchelor.com, or a reply to the post.
+
+## Our accounts
+- Reddit u/Outside_Sir_9341 · X @botchelorLLC · Bluesky @botchelor.bsky.social · TikTok @botchelorcom · Discord https://discord.gg/8VDdRF9YU
 
 ## Voice
 - First person, as the one developer who built it. Plain words, short sentences, no hype, no emoji in Reddit posts.

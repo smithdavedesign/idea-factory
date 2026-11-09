@@ -152,6 +152,7 @@ async function publish(ctx, item, reddit) {
   else if (item.kind === 'reddit-thread') { await reddit.ensure(); res = await reddit.comment({ parent: item.thread.name, text: item.body }); }
   else if (item.kind === 'bluesky') res = await io.blueskyPost(item.body);
   else if (item.kind === 'discord') res = await io.discordPost(item.body);
+  else if (item.kind === 'x') res = await io.xPost(item.body, ctx.cfg.x?.handle);
   else throw new Error(`I can't post ${item.kind} myself yet; post it and reply mk done ${item.id}`);
   item.status = 'posted';
   item.postedAt = new Date().toISOString();
