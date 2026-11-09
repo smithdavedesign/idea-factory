@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-11-09T00:31:22.108Z",
+  "updatedAt": "2026-11-09T00:46:37.611Z",
   "repo": "https://github.com/smithdavedesign/lienclock",
   "revenue": {
     "mrr": 0,
@@ -25,8 +25,8 @@
         "id": "mvp",
         "owner": "agent",
         "label": "MVP built: every roadmap milestone merged",
-        "done": false,
-        "evidence": "2/3 milestones merged"
+        "done": true,
+        "evidence": "3/3 milestones merged"
       },
       {
         "id": "deployed",
@@ -86,15 +86,15 @@
       }
     ],
     "next": {
-      "id": "mvp",
-      "label": "MVP built: every roadmap milestone merged",
+      "id": "deployed",
+      "label": "Live on a free tier",
       "owner": "agent"
     },
-    "done": 2,
+    "done": 3,
     "total": 10,
     "buyer": "Owner or office manager of a 2-25 person specialty subcontractor (drywall, electrical, concrete, roofing) or small materials supplier doing commercial work in 2+ of CA, TX, FL, WA, AZ, NV, with no billing suite such as Siteline",
     "price": "$29/month",
-    "updatedAt": "2026-11-09T00:31:22.108Z"
+    "updatedAt": "2026-11-09T00:46:37.611Z"
   },
   "build": {
     "milestone": "MVP",
