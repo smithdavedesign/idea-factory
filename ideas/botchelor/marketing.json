@@ -1,0 +1,202 @@
+{
+  "_why": "The marketing loop's calendar for botchelor (bin/idea-market.js, lib/market.js; David 2026-11-09: \"create an automation to run the social media and marketing\"). Each morning it drafts the channels that are due, sends each draft to David on WhatsApp and Slack, and posts only what he approves with \"mk post <id>\". Channels: kind reddit (a post), reddit-thread (a comment in the sub's pinned thread whose title matches `match`), bluesky, discord (our own server's webhook), video (a TikTok/Reels/Shorts kit David uploads), x (browser, once the account exists). status: active, waiting (blocked on someone: see note), needs-account, off. cooldownDays: the least time between our posts there (the community's own rule when it has one). from: the first day it may go out. window: UTC days (0 = Sunday) and hours it may post. maxPosts: lifetime cap (indiehackers allows one per product).",
+  "slug": "botchelor",
+  "site": "https://botchelor.com/",
+  "reddit": {
+    "account": "Outside_Sir_9341"
+  },
+  "utm": {
+    "campaign": "season1",
+    "medium": "social"
+  },
+  "perDay": {
+    "reddit": 1,
+    "reddit-thread": 2,
+    "bluesky": 1,
+    "discord": 1,
+    "video": 1,
+    "x": 1
+  },
+  "draftAfterHour": 8,
+  "timezone": "America/Los_Angeles",
+  "model": "sonnet",
+  "effort": "medium",
+  "watch": [
+    {
+      "id": "awesome-remote-mcp",
+      "label": "awesome-remote-mcp-servers PR #4221",
+      "kind": "gh-pr",
+      "repo": "punkpeye/awesome-remote-mcp-servers",
+      "number": 4221
+    },
+    {
+      "id": "lobehub",
+      "label": "LobeHub listing",
+      "kind": "url",
+      "url": "https://lobehub.com/mcp/botchelor"
+    }
+  ],
+  "channels": [
+    {
+      "id": "indiehackers",
+      "kind": "reddit",
+      "sub": "indiehackers",
+      "status": "active",
+      "from": "2026-11-10",
+      "cooldownDays": 3650,
+      "maxPosts": 1,
+      "flair": "Self Promotion",
+      "angle": "Honest builder story asking for feedback: a deterministic engine decides how dates end and AI only writes the lines; real use is near zero so far; the four numbers being watched (landed, created a character, watched a date end, came back). One self-promotion post per product."
+    },
+    {
+      "id": "mcpservers",
+      "kind": "reddit",
+      "sub": "MCPservers",
+      "status": "active",
+      "from": "2026-11-11",
+      "cooldownDays": 30,
+      "angle": "MCP server showcase: agents create a character, swipe, text and go on dates nobody steers, and can audition for the monthly cast. Link the endpoint and the /agents page. Flair required."
+    },
+    {
+      "id": "modelcontextprotocol",
+      "kind": "reddit",
+      "sub": "modelcontextprotocol",
+      "status": "active",
+      "from": "2026-11-12",
+      "cooldownDays": 30,
+      "angle": "Same MCP angle as r/MCPservers but a different post (never the same text on two subs); lead with one technical detail, e.g. the 24 core tools and unlisted-but-callable ones."
+    },
+    {
+      "id": "characterairunaways",
+      "kind": "reddit-thread",
+      "sub": "CharacterAIrunaways",
+      "status": "active",
+      "from": "2026-11-12",
+      "cooldownDays": 30,
+      "angle": "A short comment in the alternatives megathread: what Botchelor is, honest pros and cons, free first date.",
+      "match": "best character ai alternatives|megathread"
+    },
+    {
+      "id": "ai_agents_weekly",
+      "kind": "reddit-thread",
+      "sub": "AI_Agents",
+      "status": "active",
+      "from": "2026-11-12",
+      "cooldownDays": 7,
+      "angle": "A comment in the weekly project thread: agents can join Botchelor over MCP and date each other; mention one new thing each week.",
+      "match": "weekly thread: project display"
+    },
+    {
+      "id": "chatbotrefugees_sunday",
+      "kind": "reddit",
+      "sub": "ChatbotRefugees",
+      "status": "active",
+      "from": "2026-11-14",
+      "cooldownDays": 6,
+      "flair": "Promotion Sunday",
+      "window": {
+        "days": [
+          6,
+          0,
+          1
+        ],
+        "fromUtc": "Sat 10:00",
+        "toUtc": "Mon 11:59",
+        "preferUtcHour": 19
+      },
+      "angle": "Promotion Sunday post. Their AI automod enforces the Sat 10:00 to Mon 11:59 UTC window. Best result so far (9 points): short, disclosure first, one question at the end. Tie it to this week's Sunday reveal vote."
+    },
+    {
+      "id": "janitorai_refuges",
+      "kind": "reddit",
+      "sub": "JanitorAI_Refuges",
+      "status": "active",
+      "from": "2026-11-16",
+      "cooldownDays": 7,
+      "flair": "self advertising",
+      "angle": "Rule 13 format is mandatory: pros, cons, support link (no Discord yet: say so, give support@botchelor.com), proxy support (no reverse proxies; bring your own key from OpenRouter, DeepSeek, Gemini, OpenAI, Anthropic or Groq). Self-ads at most once every 7 days."
+    },
+    {
+      "id": "mcp",
+      "kind": "reddit",
+      "sub": "mcp",
+      "status": "active",
+      "from": "2026-11-22",
+      "cooldownDays": 14,
+      "flair": "showcase",
+      "angle": "Update post: what changed for agents since the last r/mcp post. Technical, short."
+    },
+    {
+      "id": "aicompanions",
+      "kind": "reddit",
+      "sub": "AICompanions",
+      "status": "active",
+      "from": "2026-11-13",
+      "cooldownDays": 30,
+      "angle": "Companions angle, not the show: 1-on-1 chat with characters who remember, scenes at venues, 30 free replies a day. No NSFW."
+    },
+    {
+      "id": "aichapp",
+      "kind": "reddit",
+      "sub": "aichapp",
+      "status": "active",
+      "from": "2026-11-17",
+      "cooldownDays": 14,
+      "flair": "App Promotion",
+      "angle": "App promotion with the App Promotion flair; a different angle from the 3 Nov post."
+    },
+    {
+      "id": "sideproject",
+      "kind": "reddit",
+      "sub": "SideProject",
+      "status": "active",
+      "from": "2026-11-30",
+      "cooldownDays": 30,
+      "angle": "Builder story with one concrete lesson learned."
+    },
+    {
+      "id": "characterai_nofilter",
+      "kind": "reddit",
+      "sub": "CharacterAI_No_Filter",
+      "status": "waiting",
+      "flair": "Discussion",
+      "note": "Rule 4: no advertising without mod approval. Modmail sent 2026-11-08; set active when they say yes."
+    },
+    {
+      "id": "video",
+      "kind": "video",
+      "status": "active",
+      "from": "2026-11-10",
+      "cooldownDays": 1,
+      "note": "A TikTok/Reels/Shorts kit from the day's clip (scripts/clips/post-kit.mjs in ~/.botchelor-crowd/repo), sent to David's WhatsApp with the caption. He uploads it as @botchelorcom with TikTok's AI-generated label on, then replies mk done <id>. Never After Dark.",
+      "logName": "TikTok/Reels/Shorts (@botchelorcom)"
+    },
+    {
+      "id": "bluesky",
+      "kind": "bluesky",
+      "status": "needs-account",
+      "cooldownDays": 1,
+      "note": "Needs a Bluesky account and an app password in the keychain: vault/botchelor/BLUESKY_HANDLE and vault/botchelor/BLUESKY_APP_PASSWORD.",
+      "angle": "One short post a day: a best line from a date that aired, with its link. Disclose that the characters and dates are AI.",
+      "logName": "Bluesky"
+    },
+    {
+      "id": "discord",
+      "kind": "discord",
+      "status": "needs-account",
+      "cooldownDays": 7,
+      "note": "Needs a Botchelor Discord server and an #announcements webhook URL in the keychain: vault/botchelor/DISCORD_ANNOUNCE_WEBHOOK. Also gives subreddits like r/JanitorAI_Refuges the support link they ask for.",
+      "angle": "Weekly announcement: the season so far, Sunday's reveal, what's new.",
+      "logName": "Discord (#announcements)"
+    },
+    {
+      "id": "x",
+      "kind": "x",
+      "status": "needs-account",
+      "cooldownDays": 1,
+      "note": "Needs an X account signed in to the automated browser. X's API costs money, so posting goes through the browser.",
+      "angle": "Same as Bluesky.",
+      "logName": "X"
+    }
+  ]
+}
