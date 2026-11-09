@@ -1,0 +1,29 @@
+{
+  "title": "evalpad — workspace for homeschool portfolio evaluators",
+  "repoName": "evalpad",
+  "oneLiner": "For independent homeschool evaluators in portfolio-review states, it collects each family's work samples through a link and turns them into a sorted portfolio, a draft narrative and a state-format certification letter to edit and sign.",
+  "overlaps": "none in David's portfolio; nearest outside is HomeschoolFox (parent-side planner that also generates evaluator letters)",
+  "tags": [
+    "serious",
+    "business",
+    "saas",
+    "reach:outbound",
+    "education",
+    "homeschool",
+    "ai"
+  ],
+  "effort": "Medium",
+  "confidence": "Low",
+  "sources": [
+    "https://education.pa.gov/K-12/Home%20Education%20and%20Private%20Tutoring/HomeEdPrivateTutoringGuide/HomeEdEvaluators/Pages/default.aspx",
+    "https://homeschoolfox.com/blog/homeschool-portfolio-reviews-vs-standardized-tests-what-each-state-accepts",
+    "https://homeschoolfox.com/vs/scholaric",
+    "https://www.capterra.com/p/10043338/Easy-Homeschool-Reporter/",
+    "https://homeschool-1lf.pages.dev/blog/florida-homeschool-portfolio-templates-vs-evaluator",
+    "https://homeschoolpicks.com/how-to-homeschool/homeschool-assessment-guide/",
+    "https://ourjourneywestward.com/wrapping-up-homeschool-year/",
+    "https://homeschoolgiveaways.com/?p=125094"
+  ],
+  "slug": "evalpad",
+  "recordedAt": "2026-11-09T17:02:48.034Z"
+}
