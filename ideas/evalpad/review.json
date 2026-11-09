@@ -1,0 +1,66 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "A real, legally mandated job (annual homeschool portfolio evaluation), but the research found zero first-hand evidence that evaluators want software or lose meaningful time to this. The buyer pool is small, reachable only by outbound outreach, and the data is children's work.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 2,
+      "evidence": "RESEARCH.md says outright: no first-hand evaluator complaints and no hours-per-family figures. Parent-side portfolio pain (ourjourneywestward.com, homeschoolgiveaways.com) is real but the parent is not the buyer. Nobody has asked for this, paid, or been upset by its absence."
+    },
+    "statusQuo": {
+      "score": 4,
+      "evidence": "Evaluators likely use Google Docs, email and templates at $0 (RESEARCH.md competitor table). Fees of $30-$150 per child (homeschoolfox.com, soft vendor figures) show the job is paid, but the workaround costs little. Parents already pay HomeschoolFox $12/mo and it already generates evaluator letters."
+    },
+    "specificity": {
+      "score": 4,
+      "evidence": "The buyer is a precise role (certified-teacher evaluator in PA/FL, 20+ families, listed in CHAP/FPEA directories), more specific than most ideas. But no named person, no heard consequence, and nothing at stake: it is side income, so a $19/mo tool is a hard sell."
+    },
+    "wedge": {
+      "score": 5,
+      "evidence": "Narrowest wedge is the PA/FL certification letter plus sorted portfolio PDF from pasted details. Buildable in a weekend, but a letter template filler is copyable from a Google Doc, so willingness to pay for the wedge is doubtful. The real value (draft narrative, intake link) sits in M2-M3."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "Generic LLMs let any evaluator draft narratives themselves; HomeschoolFox can add an evaluator view cheaply. The pool of paid evaluators per state is hundreds to low thousands and could shift with law changes."
+    }
+  },
+  "premises": [
+    "Evaluators spend meaningful time per family on assembling and writing, enough to pay for software. Not supported: no hours measured, no evaluator voices found.",
+    "Evaluators, not parents, are the right buyer. Plausible, but they are small independent operators on $30-$150 fees.",
+    "AI-drafted narratives are acceptable to evaluators and districts. Unverified; the evaluator attests and signs.",
+    "HomeschoolFox won't close the gap. Weak: it already makes evaluator letters and owns the family relationship.",
+    "Evaluators are reachable via CHAP/FPEA directories. Plausible but one-by-one outbound work, against near-zero overhead."
+  ],
+  "alternatives": [
+    "Minimal (S): a free static PA/FL certification-letter generator plus portfolio index PDF, posted in evaluator and homeschool support groups, to see whether anyone uses it.",
+    "Lateral (S): sell parent-side or partner with HomeschoolFox/support groups, avoiding an outbound sales motion.",
+    "Ideal (M-L): full evaluator workspace with upload links, inbox, AI drafts and retention jobs (the PRD). Child-data liability; premature before demand is proven.",
+    "No overlapping repo of David's to extend."
+  ],
+  "wedge": "A PA/FL certification letter and sorted-portfolio index generator for a single evaluator, tested by getting 5 evaluators to run it on a real family.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js on Vercel Hobby, pure functions buildPortfolio and renderCertification, Vitest; $0. Proving test: renderCertification('PA', ...) contains child, district, school year and the appropriate-education sentence, and FL omits PA wording. Passing proves the code works, not that anyone wants it."
+  },
+  "risks": [
+    "No evidence of evaluator demand; the case is inferred.",
+    "Small, seasonal buyer pool (spring/early summer).",
+    "HomeschoolFox or a plain ChatGPT workflow substitutes cheaply.",
+    "Children's work samples: privacy and deletion obligations, and a trust barrier for an unknown solo vendor.",
+    "AI-drafted narrative liability; evaluators sign.",
+    "Outbound-only acquisition conflicts with near-zero overhead."
+  ],
+  "killCriteria": "Drop if, after contacting 15 evaluators, fewer than 3 say they spend over 30 minutes per family on writing and assembly, or fewer than 5 agree to try it on a real family, or no one converts to a $19/mo trial.",
+  "landing": {
+    "headline": "",
+    "subhead": "",
+    "bullets": [],
+    "cta": "",
+    "audience": ""
+  },
+  "launch": {
+    "channels": [],
+    "post": ""
+  }
+}
