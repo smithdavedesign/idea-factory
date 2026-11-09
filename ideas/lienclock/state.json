@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-11-08T23:44:11.098Z",
+  "updatedAt": "2026-11-09T00:14:41.185Z",
   "repo": "https://github.com/smithdavedesign/lienclock",
   "revenue": {
     "mrr": 0,
@@ -99,11 +99,10 @@
   "build": {
     "milestone": "MVP",
     "planned": [
-      "M2",
       "M3"
     ],
-    "status": "merged",
-    "at": "2026-11-08T20:38:48.210Z",
+    "status": "running",
+    "at": "2026-11-08T23:44:52.528Z",
     "manual": false,
     "reason": "couldn't start the build sandbox: sandbox open: sandbox image build failed (repohq-factory-egress:b046ec052dd7): ERROR: Error response from daemon: Docker Desktop is unable to start",
     "milestones": [
@@ -118,13 +117,16 @@
     "sandbox": "docker",
     "advice": {
       "difficulty": 2,
-      "reason": "Involves implementing an ICS feed parser, handling email intake with proposed fields, and ensuring validation logic across multiple components.",
+      "reason": "involves handling a rules change with changelog and email notifications, requiring logic across multiple components.",
       "source": "model",
       "model": "local-qwen3"
     },
-    "held": "Vercel failed",
-    "mergedBy": "agent",
-    "mergedAt": "2026-11-08T23:44:11.098Z"
+    "progress": {
+      "step": 2,
+      "steps": 2,
+      "label": "checking the work: secret scan, screenshots, the PR",
+      "at": "2026-11-09T00:14:40.982Z"
+    }
   },
   "milestonesDone": [
     "M1",

@@ -6,7 +6,7 @@
     "summary": "A fun summons-and-jury twist on AI-judge apps, but there is zero evidence anyone pays for a joke verdict and the flow is copyable in a weekend. If it's worth anything, it's a Court mode inside tiebreak, not its own product.",
     "at": "2026-10-13T08:00:55.104Z"
   },
-  "updatedAt": "2026-11-07T00:34:35.498Z",
+  "updatedAt": "2026-11-09T00:15:08.339Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -34,22 +34,22 @@
         "id": "deployed",
         "owner": "agent",
         "label": "Live on a free tier",
-        "done": false,
-        "evidence": "no live URL answered yet (Vercel project via the credential broker)"
+        "done": true,
+        "evidence": "https://pettycourt.1426davejobs.workers.dev"
       },
       {
         "id": "legal",
         "owner": "agent",
         "label": "Privacy policy and terms pages",
-        "done": false,
-        "evidence": "privacy ✗ · terms ✗"
+        "done": true,
+        "evidence": "live on the site"
       },
       {
         "id": "launchReady",
         "owner": "agent",
         "label": "Launch-ready: SEO basics, share image, sitemap, privacy and terms live",
-        "done": false,
-        "evidence": "checked once it's live (the go-live build adds what's missing)"
+        "done": true,
+        "evidence": "9/9 launch checks"
       },
       {
         "id": "price",
@@ -88,15 +88,15 @@
       }
     ],
     "next": {
-      "id": "deployed",
-      "label": "Live on a free tier",
-      "owner": "agent"
+      "id": "payments",
+      "label": "Stripe product created and mapped to the repo in RepoHQ",
+      "owner": "david"
     },
-    "done": 3,
+    "done": 6,
     "total": 10,
     "buyer": "The plaintiff: an 18-35 year old in a group chat of 3-10 friends, a couple or a roommate house, mid-dispute, paying on impulse from a personal card. Findable only through the places where people post petty disputes, not by email.",
     "price": "$3 once",
-    "updatedAt": "2026-11-07T00:34:35.498Z"
+    "updatedAt": "2026-11-09T00:15:08.339Z"
   },
   "revenue": {
     "mrr": 0,
