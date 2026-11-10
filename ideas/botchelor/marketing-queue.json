@@ -1,5 +1,5 @@
 {
-  "nextId": 6,
+  "nextId": 7,
   "paused": false,
   "items": [
     {
@@ -131,6 +131,40 @@
       "postedAt": "2026-11-10T19:13:43.590Z",
       "postUrl": "https://www.reddit.com/r/indiehackers/comments/1xrxkjr/is_lurking_for_months_before_posting_actually/19sftixsyx59d/",
       "thing": "t1_19sftixsyx59d"
+    },
+    {
+      "id": 6,
+      "status": "posted",
+      "createdAt": "2026-11-10T20:01:13.097Z",
+      "channel": "help-mcp",
+      "kind": "reddit-help",
+      "sub": "mcp",
+      "title": "",
+      "body": "I can't point to lead gen either, my numbers are still near zero, so treat this as a small sample. What I can say is that building the server was the easy part and getting found was the work. Listing it in the official MCP Registry, mcp.so, Glama and mcpservers.org is where people who browse for servers could actually see it. I'd put a UTM tag on the link in each listing and use first-party analytics, so you can tell which listing sent someone. Otherwise all you see is a pile of direct visits. Server-side logs of tool calls tell you more about real use than page views do, as the other commenter said.",
+      "why": "Only post where real experience (registry listings, UTM and first-party tracking, honest near-zero traffic) adds something the one existing comment didn't; the other posts need OAuth, proxy or image-tool experience David doesn't have.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1xspdur",
+        "title": "Created a MCP/Plugin - increase in traffic/lead gen?",
+        "author": "UnccRooms",
+        "permalink": "https://www.reddit.com/r/mcp/comments/1xspdur/created_a_mcpplugin_increase_in_trafficlead_gen/",
+        "excerpt": "Hey Hey Reddit Fam - I wanted to see if anyone has created a MCP or Plugins for the LLMs and if it generated more traffic/lead gen for their business?  Chrome Extension?  Genuinely designed to be helpful for users....Any insight or experience would be appreciated.  Thinking of creating one but not really sure yet.  Thanks Fam!",
+        "selftext": "Hey Hey Reddit Fam - I wanted to see if anyone has created a MCP or Plugins for the LLMs and if it generated more traffic/lead gen for their business?  Chrome Extension?  Genuinely designed to be helpful for users....Any insight or experience would be appreciated.  Thinking of creating one but not really sure yet.  Thanks Fam!",
+        "top": [
+          {
+            "author": "benjzammit01",
+            "body": "I build Ask Your Audience and we have an MCP connector, but I can’t point to measured traffic or lead lift. I’d track connection, first successful use and repeat use separately from site visits, then ask whether it solved a real job. An agent can complete a task without sending anyone to your website, so traffic alone may miss the useful part.",
+            "score": 2
+          }
+        ]
+      },
+      "hash": "8edbc3d41dd8c544",
+      "approvedAt": "2026-11-10T20:01:13.098Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-10T20:01:14.007Z",
+      "postUrl": "https://www.reddit.com/r/mcp/comments/1xspdur/created_a_mcpplugin_increase_in_trafficlead_gen/19sfvn7xcsf2d/",
+      "thing": "t1_19sfvn7xcsf2d"
     }
   ],
   "seen": {
