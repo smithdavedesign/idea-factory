@@ -1,5 +1,5 @@
 {
-  "nextId": 5,
+  "nextId": 6,
   "paused": false,
   "items": [
     {
@@ -77,6 +77,60 @@
       "postedAt": "2026-11-10T18:56:34.979Z",
       "postUrl": "https://www.reddit.com/r/indiehackers/comments/1xsvcu3/i_built_a_blinddate_show_for_original_characters/",
       "thing": "t3_1xsvcu3"
+    },
+    {
+      "id": 5,
+      "status": "posted",
+      "createdAt": "2026-11-10T19:08:03.890Z",
+      "channel": "help-indiehackers",
+      "kind": "reddit-help",
+      "sub": "indiehackers",
+      "title": "",
+      "body": "What I'd check before posting is how the sub handles removals, because that's where I got caught out. Read the rules and the pinned posts for a flair requirement, a weekly thread for anything promotional, and an account-age or karma gate. Automod will remove a post for missing one of those, and it often does it silently. I've had posts removed that way, and the removal told me nothing about whether the community would have cared.\n\nThe other quick signal is whether mods reply in removal threads or modmail. A sub where they explain what went wrong is far easier to try than one where posts just vanish. I'd do that check first, then post one useful answer like you describe.",
+      "why": "Adds the practical gap the comments skip: checking automod, flair and karma gates and how mods handle removals, from David's real experience of posts removed by automod, with no product mention or link.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1xrxkjr",
+        "title": "Is lurking for months before posting actually worth it?",
+        "author": "Competitive_Tune_590",
+        "permalink": "https://www.reddit.com/r/indiehackers/comments/1xrxkjr/is_lurking_for_months_before_posting_actually/",
+        "excerpt": "The standard advice in every founder community is the same. Pick a subreddit, lurk for a long time, build up karma, then start posting. It sounds careful, but it skips the one thing you need to find out.\n\nReading tells you what the room talks about. It does not tell you whether the room will respond to you, and that is the only thing you actually need to know. You find that out by answering a question you have real experience with, with no mention of what you sell, and watching whether anyone re",
+        "selftext": "The standard advice in every founder community is the same. Pick a subreddit, lurk for a long time, build up karma, then start posting. It sounds careful, but it skips the one thing you need to find out.\n\nReading tells you what the room talks about. It does not tell you whether the room will respond to you, and that is the only thing you actually need to know. You find that out by answering a question you have real experience with, with no mention of what you sell, and watching whether anyone replies.\n\nThe karma part is real. Some subs gate posting behind account age and karma, and getting removed on your first attempt is a bad start. But karma is easy to earn honestly. Answer questions in threads about things you actually know, in subs unrelated to your product. Nobody checks whether your comment history is on topic.\n\nWhat I would tell someone starting now: skip the long lurk. Read for a few days to learn the tone, then find one thread where you can be useful and write the answer you would give a friend. If it lands, you have your channel. If it does not, you learned that early instead of late.\n\nHow do you decide a subreddit is worth your time before you have posted in it?",
+        "top": [
+          {
+            "author": "mentiondesk",
+            "body": "I look for active discussions, how often questions get answered, and if helpful answers actually get upvoted. If it seems like people genuinely engage, it's worth a shot. Tools like ParseStream can save time by tracking where your areas of expertise are being talked about so you can jump in right when it matters.",
+            "score": 3
+          },
+          {
+            "author": "Educational-View8524",
+            "body": "Before posting I check how old the top posts are and whether the comments under them come from the same five names. If the front page is mostly last week's threads with replies from different people, it's alive. If it's three-month-old posts with 200 upvotes and nobody new in the comments, it's a museum. A sub can look busy and still never answer a stranger. That takes about ten minutes, and it's the only lurking I'd bother with.",
+            "score": 3
+          },
+          {
+            "author": "mequelkramer",
+            "body": "I'd add one thing: lurking teaches you the tone, but it doesn't teach you what the room actually rewards, because you only see the posts that survived. The fastest way I've found to test a sub is to answer one question where I genuinely know the answer, with no agenda, and watch whether anyone engages. If the thread goes quiet, that tells you something too — either the topic doesn't land there or the timing was off — and you learn that in a day instead of a month.\n\nThe other signal I look for before investing time is whether regulars actually reply to each other, not just post and leave. A sub where people answer follow-ups is worth far more than a bigger one where every post is a monologue.",
+            "score": 2
+          },
+          {
+            "author": "Puzzleheaded_War8622",
+            "body": "Karma farmed in r/aww and r/AskReddit is exactly what makes your profile look like a throwaway the moment you post in r/SaaS. Mods do open the profile, that's half the job.",
+            "score": 1
+          },
+          {
+            "author": "Dexi1310",
+            "body": "I think a short lurk is useful, but mainly to learn what gets removed and what the sub's rules are, not to build up months of karma. Answering one question you genuinely know the answer to is a much faster test of whether the room responds. The slow part for most people is the fear of posting, not the actual posting.",
+            "score": 1
+          }
+        ]
+      },
+      "hash": "389d3d9a3994a523",
+      "sentAt": "2026-11-10T19:08:46.590Z",
+      "approvedAt": "2026-11-10T19:13:40.773Z",
+      "postedAt": "2026-11-10T19:13:43.590Z",
+      "postUrl": "https://www.reddit.com/r/indiehackers/comments/1xrxkjr/is_lurking_for_months_before_posting_actually/19sftixsyx59d/",
+      "thing": "t1_19sftixsyx59d"
     }
   ],
   "seen": {
