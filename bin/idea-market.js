@@ -198,7 +198,12 @@ async function publish(ctx, item, reddit) {
   if (item.replyTo) { await reddit.ensure(); res = await reddit.comment({ parent: item.replyTo.name, text: item.body }); }
   else if (item.kind === 'reddit') { await reddit.ensure(); res = await reddit.submit({ sub: ch.sub, title: item.title, text: item.body, flair: item.flair }); }
   else if (item.kind === 'reddit-thread') { await reddit.ensure(); res = await reddit.comment({ parent: item.thread.name, text: item.body }); }
-  else if (item.kind === 'reddit-help') { await reddit.ensure(); res = await reddit.comment({ parent: item.helpOn.name, text: item.body }); }
+  else if (item.kind === 'reddit-help') {
+    await reddit.ensure();
+    res = await reddit.comment({ parent: item.helpOn.name, text: item.body });
+    // Reddit's reply often has no permalink for a comment: build it from the post's.
+    if (!res.url && res.name) res.url = `${item.helpOn.permalink.replace(/\/?$/, '/')}${String(res.name).replace(/^t1_/, '')}/`;
+  }
   else if (item.kind === 'bluesky') res = await io.blueskyPost(item.body);
   else if (item.kind === 'discord') res = await io.discordPost(item.body);
   else if (item.kind === 'x') res = await io.xPost(item.body, ctx.cfg.x?.handle);
