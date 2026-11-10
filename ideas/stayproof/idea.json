@@ -1,0 +1,32 @@
+{
+  "title": "stayproof — cleaner-photo evidence and claim packets for Airbnb hosts",
+  "repoName": "stayproof",
+  "oneLiner": "For co-hosts and small managers with 3–15 listings, it sends cleaners a no-install photo link per turnover and turns it into a dated before/after claim packet, so AirCover denials for missing evidence stop costing them money.",
+  "overlaps": "none close in the portfolio (permitly, a passed short-term-rental permit tracker, shares the buyer but not the problem; Open-Travel is a trip planner)",
+  "tags": [
+    "serious",
+    "business",
+    "saas",
+    "reach:community",
+    "str",
+    "evidence"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://www.scrippsnews.com/us-news/airbnb-initially-denies-claim-after-guests-left-almost-8-000-in-stolen-property-and-damages",
+    "https://strspecialist.com/win-your-aircover-claim-proof-deadlines",
+    "https://strspecialist.com/community/thread/guest-damaged-furniture-didnt-report-now-what",
+    "https://www.hostfully.com/blog/airbnb-damage-policy/",
+    "https://www.capterra.com/p/166734/Turno/",
+    "https://www.traverselegal.com/blog/aircover-denied-host-legal-options/",
+    "https://www.ktvu.com/news/airbnb-under-fire-as-hosts-share-concerns-over-aircover-promises",
+    "https://community.withairbnb.com/t5/Support-with-your-bookings/AirCover-What-s-the-point/m-p/2070909",
+    "https://www.redawning.com/vacation-rentals/pm/post/airbnb-aircover-claims-property-managers",
+    "https://www.timemark.com/blog/how-airbnb-handles-cleaning-disputes",
+    "https://strspecialist.com/reviews/turno-cleaning-marketplace-review",
+    "https://safely.com/articles/airbnb-guest-damages/"
+  ],
+  "slug": "stayproof",
+  "recordedAt": "2026-11-10T17:02:01.842Z"
+}
