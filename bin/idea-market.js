@@ -127,7 +127,7 @@ async function draftHelp(ctx, ch, reddit) {
   await reddit.ensure();
   const rules = await reddit.rules(ch.sub);
   const offered = new Set(ctx.queue.items.filter((i) => i.helpOn?.name).map((i) => i.helpOn.name));
-  const picks = M.pickHelpPosts(await reddit.newPosts(ch.sub), { me: ctx.cfg.reddit?.account, skip: offered, max: 5 });
+  const picks = M.pickHelpPosts(await reddit.newPosts(ch.sub), { me: ctx.cfg.reddit?.account, skip: offered, max: 5, ...(ch.maxAgeHours ? { maxAgeHours: ch.maxAgeHours } : {}), ...(ch.maxComments ? { maxComments: ch.maxComments } : {}) });
   if (!picks.length) {
     emit({ component: 'market', event: `draft ${ch.id}`, status: 'ok', subject: { idea: ctx.cfg.slug }, message: `${ch.id}: no fresh question to answer in r/${ch.sub}` });
     return null;
