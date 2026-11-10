@@ -1,7 +1,53 @@
 {
-  "nextId": 1,
+  "nextId": 4,
   "paused": false,
-  "items": [],
+  "items": [
+    {
+      "id": 1,
+      "status": "sent",
+      "createdAt": "2026-11-10T16:57:46.310Z",
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "sub": null,
+      "title": "",
+      "body": "Juniper Vale to Nell Abiodun, Regency stargazing:\n\"Your curtsy went to waste out here, but the cardigan is very nearly scandalous.\"\nBoth characters and the date are AI. Free to watch:\nhttps://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "why": "Quotes Juniper Vale's opening line to Nell Abiodun from the episode the watch page lists as 'Just aired'. I checked the wording on the episode and replay pages. Neither page shows an air date, so the post says nothing about 'this week'. It discloses that the characters and the date are AI. The post ",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "hash": "e802fa9c676c4d03",
+      "sentAt": "2026-11-10T16:58:19.216Z"
+    },
+    {
+      "id": 2,
+      "status": "sent",
+      "createdAt": "2026-11-10T16:58:26.914Z",
+      "channel": "discord",
+      "kind": "discord",
+      "sub": null,
+      "title": "",
+      "body": "**Welcome to the Botchelor server**\n\nDisclosure: I built this. One-person project, built with AI coding tools (Claude Code).\n\nBotchelor is a blind-date show for original characters. You describe your OC (adults only, your own, no real people), they match with someone, and the date plays out as an episode you watch. You don't steer it. A rules engine picks the ending, and the AI writes the lines on the way there.\n\n**What this server is for**\n- **Feedback:** what's fun, what's confusing, what you'd change\n- **Bug reports:** tell me what broke and what you were doing\n- **Sharing dates:** post your characters' dates, the good, the awkward and the disasters\n\n**Honest notes**\n- This server is brand new and small.\n- Dates and companion chat are PG. No NSFW.\n- The dating pool is mostly the show's own cast for now.\n\n**This season**\nEach month has a cast and a board. On Sundays there's a reveal, and I'll post it here. Later announcements will cover the season so far and what changed.\n\nFirst date is free, no account needed: https://botchelor.com/?utm_source=discord&utm_medium=social&utm_campaign=season1&utm_content=discord\n\nWhat's the first thing you'd want your character's date to do differently?",
+      "why": "First weekly announcement: builder disclosure, what the server is for, real cons, and one question to start conversation.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=discord&utm_medium=social&utm_campaign=season1&utm_content=discord",
+      "hash": "e63f40c1c3cbb275",
+      "sentAt": "2026-11-10T16:58:59.397Z"
+    },
+    {
+      "id": 3,
+      "status": "sent",
+      "createdAt": "2026-11-10T16:59:23.487Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "“Sorry, I rehearsed a curtsy, and it was far better in the ballroom.” Nell, stargazing in Regency garb. Nell, her date Juniper and the script are all AI.\nWatch a date: https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x #AI #OC",
+      "why": "Opens on a real line from Nell × Juniper, 'Stargazing In Regency Garb' (the Just aired episode on /watch), states plainly that the characters and script are AI, then the tagged link.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "hash": "6e7b41bd8a2e50ae",
+      "sentAt": "2026-11-10T16:59:52.384Z"
+    }
+  ],
   "seen": {
     "inbox": [
       "t1_19se1l0ilu29w",
@@ -37,6 +83,8 @@
       "awesome-remote-mcp": "OPEN",
       "lobehub": "http 404"
     },
-    "listingsAt": "2026-11-09T21:19:25.073Z"
+    "listingsAt": "2026-11-09T21:19:25.073Z",
+    "warned:draft indiehackers:2026-11-10": true,
+    "warned:watch:2026-11-10": true
   }
 }
