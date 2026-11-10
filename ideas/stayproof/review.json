@@ -1,0 +1,66 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "Real pain (AirCover denials for missing stay-tied photos), but demand evidence is all secondary blogs and forum threads, and it needs hosts to adopt before a loss and cleaners to comply. Turno already has photo checklists, and the portfolio already holds several unvalidated 'evidence packet' ideas, so this is not worth a demand-test slot.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "No one has paid or asked for a claim packet. RESEARCH.md says so itself: 'No source I found shows hosts paying specifically for a claim packet. Unproven.' Evidence is news stories (Scripps, KTVU), forum threads and vendor blogs, i.e. interest in the pain, not behaviour. Evidence that would change this: 3+ hosts who lost a claim and say they would have paid $9 for a packet, or paying for Turno photo checklists specifically to win claims."
+    },
+    "statusQuo": {
+      "score": 5,
+      "evidence": "Hosts rely on cleaner texts, own phone photos, Turno checklists (~$8-10/property/mo) and free guides (Hostfully, strspecialist). That is a real workaround and shows some willingness to pay for photo discipline, but Turno already covers the photo part for hosts who use it, and phone cameras timestamp for free. The incremental value is the packet and the server timestamp, whose weight with Airbnb is unknown (open question in PRD)."
+    },
+    "specificity": {
+      "score": 4,
+      "evidence": "Target is a category: co-host or small manager with 3-15 listings. The painful moment (cleaner texts 'burn on the couch', nothing dated from before the stay) is vivid, but there is no named person or direct quote. Claims worth filing are infrequent, so the pain per host is occasional and large, not weekly."
+    },
+    "wedge": {
+      "score": 5,
+      "evidence": "Wedge is a no-install cleaner photo link per booking plus a PDF packet; a weekend M1 is plausible. But the value only shows after a damage event, so a free-tier waitlist tests interest, not willingness to pay. Cold start: the host must set up, and cleaners must comply every turnover."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "Hosts' evidence burden may grow as AirCover tightens (Hostfully claims stricter rules in April 2026), but Airbnb, Turno or a PMS could ship a cleaner-photo and claim export natively, and Airbnb can set its own accepted-evidence format. Platform-dependent niche, no clear moat."
+    }
+  },
+  "premises": [
+    "Hosts lose AirCover claims mainly because photos cannot be tied to the stay. Partly supported (Scripps, strspecialist thread); other causes include policy limits, wear-and-tear rulings and late filing.",
+    "Independent server-side timestamps make Airbnb more likely to pay. Unsupported: the PRD lists it as an open question.",
+    "Hosts will adopt a prevention tool before a loss. Unsupported; pain arrives after the event, which makes it an insurance-style sale.",
+    "Cleaners will take required photos through a link each turnover. Unproven; compliance is the real product risk.",
+    "$6/listing/mo or $9/packet is acceptable. Self-proposed, not researched."
+  ],
+  "alternatives": [
+    "Minimal: a free claim-packet checklist/template (PDF or doc) posted to host communities to see who asks for the tool. Effort S, risk low, tests demand with no build.",
+    "Ideal: the full cleaner-link, hash and packet product from the roadmap. Effort M, risk medium-high; relies on compliance and on Airbnb accepting the evidence.",
+    "Lateral: reuse a shared evidence-packet engine from proofpack, ownshot or listvault if one of them validates. No David repo solves this directly; permitly (same buyer) was passed for weak demand."
+  ],
+  "wedge": "A $9 one-off claim packet built from photos the host already has (upload before/after photos plus booking dates, get a timestamped PDF and the deadline countdown), sold at the point of a damage event, with no cleaner flow or iCal in M1.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js on Vercel/Cloudflare, Supabase or Neon free, R2/Supabase storage, pdf-lib, node-ical; host pastes the cleaner link into their own text thread (no SMS cost). One test that proves M1: POST a photo to a valid token returns 201 and the stored SHA-256 equals the hash of the uploaded bytes; the packet for a 3-room stay has 3 before/after pairs. Technical feasibility is fine; the open problem is demand, not build."
+  },
+  "risks": [
+    "No demand evidence beyond blogs and forums; nobody seen paying for a packet.",
+    "Adoption must precede loss; hosts buy tools after getting burned, so the funnel is small and episodic.",
+    "Cleaner compliance sits outside the host's control.",
+    "Turno or a PMS (Hospitable, Hostaway) can add a claim export cheaply.",
+    "Airbnb deadlines and evidence rules come from conflicting secondary sources; wrong numbers shown to a host would hurt trust.",
+    "Same buyer segment as passed permitly; the pipeline already has several evidence-packet ideas awaiting validation.",
+    "Photos of a guest's stay are sensitive; storing them carries privacy obligations."
+  ],
+  "killCriteria": "Drop if, after interviewing 10 hosts who lost or disputed a claim, fewer than 3 say they would have paid for this, or if Airbnb's own documentation or a host who won a claim shows plain cleaner photos are already enough and third-party timestamps carry no weight.",
+  "landing": {
+    "headline": "",
+    "subhead": "",
+    "bullets": [],
+    "cta": "",
+    "audience": ""
+  },
+  "launch": {
+    "channels": [],
+    "post": ""
+  }
+}
