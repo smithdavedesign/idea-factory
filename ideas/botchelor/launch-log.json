@@ -40,7 +40,7 @@
       "url": "https://www.reddit.com/r/ChatbotRefugees/",
       "postUrl": "https://www.reddit.com/r/ChatbotRefugees/comments/1xfpchy/im_the_developer_a_blinddate_show_for_your_oc/",
       "postedAt": "2026-10-26T06:36:34+00:00",
-      "note": "Repost with the 'Promotion Sunday' flair, as the moderator invited after the 10-24 removal; inside the Sat 10:00\u2013Mon 11:59 UTC window. Posted by Claude via David's signed-in browser, text approved by David. AutoModerator: 'LLM Disclosure Not Verified' (optional verification). UPDATE 2026-10-29: removed by the sub's AI AutoModerator as 'outside the window' although posted 06:35 UTC Monday (inside it); David chose not to modmail."
+      "note": "Repost with the 'Promotion Sunday' flair, as the moderator invited after the 10-24 removal; inside the Sat 10:00–Mon 11:59 UTC window. Posted by Claude via David's signed-in browser, text approved by David. AutoModerator: 'LLM Disclosure Not Verified' (optional verification). UPDATE 2026-10-29: removed by the sub's AI AutoModerator as 'outside the window' although posted 06:35 UTC Monday (inside it); David chose not to modmail."
     },
     {
       "channel": "r/ChatbotRefugees (October Promotions megathread)",
@@ -89,7 +89,7 @@
       "url": "https://www.tiktok.com/@botchelorcom",
       "postUrl": "https://www.tiktok.com/@botchelorcom/video/7706232731197377822",
       "postedAt": "2026-11-09T18:20:00.000Z",
-      "note": "vote-link clip (Kaede \u00d7 Malachar, 56 s, AI-generated label on, caption exactly as approved incl. botchelor.com/vote?s=tiktok and 8 hashtags). Reposted: the first try (video 7706231855019855135) saved a garbled caption and was removed."
+      "note": "vote-link clip (Kaede × Malachar, 56 s, AI-generated label on, caption exactly as approved incl. botchelor.com/vote?s=tiktok and 8 hashtags). Reposted: the first try (video 7706231855019855135) saved a garbled caption and was removed."
     },
     {
       "channel": "r/JanitorAI_Refuges",
@@ -97,6 +97,35 @@
       "postUrl": "https://www.reddit.com/r/JanitorAI_Refuges/comments/1xs0xkz/im_the_dev_a_blinddate_show_for_your_oc_plus_1on1/",
       "postedAt": "2026-11-09T18:00:06+00:00",
       "note": "David-approved text, self advertising flair; rule 13 format (pros, cons, support link, proxy support). Link tagged utm_content=janitorai_refuges. Sub allows one self-ad per 7 days, so next earliest 2026-11-16. Posted via his signed-in browser."
+    },
+    {
+      "channel": "Bluesky",
+      "url": null,
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3mzy4ekgaoh2i",
+      "postedAt": "2026-11-10T18:52:37.331Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #1 on his phone; link tagged utm_content=bluesky."
+    },
+    {
+      "channel": "Discord (#announcements)",
+      "url": null,
+      "postUrl": null,
+      "postedAt": "2026-11-10T18:53:29.410Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #2 on his phone; link tagged utm_content=discord."
+    },
+    {
+      "channel": "X",
+      "url": null,
+      "postUrl": "https://x.com/botchelorLLC",
+      "postedAt": "2026-11-10T18:54:58.128Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #3 on his phone; link tagged utm_content=x."
+    },
+    {
+      "channel": "r/indiehackers",
+      "url": "https://www.reddit.com/r/indiehackers/",
+      "postUrl": "https://www.reddit.com/r/indiehackers/comments/1xsvcu3/i_built_a_blinddate_show_for_original_characters/",
+      "postedAt": "2026-11-10T18:56:34.979Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #4 on his phone; flair \"Self Promotion\"; link tagged utm_content=indiehackers. Removed by r/indiehackers moderators within minutes (no reason sent; likely the automatic filter). 2026-11-10",
+      "status": "removed"
     }
   ]
 }

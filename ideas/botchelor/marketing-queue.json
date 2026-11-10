@@ -4,7 +4,7 @@
   "items": [
     {
       "id": 1,
-      "status": "sent",
+      "status": "posted",
       "createdAt": "2026-11-10T16:57:46.310Z",
       "channel": "bluesky",
       "kind": "bluesky",
@@ -15,11 +15,15 @@
       "flair": null,
       "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
       "hash": "e802fa9c676c4d03",
-      "sentAt": "2026-11-10T16:58:19.216Z"
+      "sentAt": "2026-11-10T16:58:19.216Z",
+      "approvedAt": "2026-11-10T18:52:36.423Z",
+      "postedAt": "2026-11-10T18:52:37.331Z",
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3mzy4ekgaoh2i",
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3mzy4ekgaoh2i"
     },
     {
       "id": 2,
-      "status": "sent",
+      "status": "posted",
       "createdAt": "2026-11-10T16:58:26.914Z",
       "channel": "discord",
       "kind": "discord",
@@ -30,11 +34,15 @@
       "flair": null,
       "link": "https://botchelor.com/?utm_source=discord&utm_medium=social&utm_campaign=season1&utm_content=discord",
       "hash": "e63f40c1c3cbb275",
-      "sentAt": "2026-11-10T16:58:59.397Z"
+      "sentAt": "2026-11-10T16:58:59.397Z",
+      "approvedAt": "2026-11-10T18:53:28.779Z",
+      "postedAt": "2026-11-10T18:53:29.410Z",
+      "postUrl": null,
+      "thing": "1569787096581939260"
     },
     {
       "id": 3,
-      "status": "sent",
+      "status": "posted",
       "createdAt": "2026-11-10T16:59:23.487Z",
       "channel": "x",
       "kind": "x",
@@ -45,11 +53,15 @@
       "flair": null,
       "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
       "hash": "6e7b41bd8a2e50ae",
-      "sentAt": "2026-11-10T16:59:52.384Z"
+      "sentAt": "2026-11-10T16:59:52.384Z",
+      "approvedAt": "2026-11-10T18:54:30.172Z",
+      "postedAt": "2026-11-10T18:54:58.128Z",
+      "postUrl": "https://x.com/botchelorLLC",
+      "thing": null
     },
     {
       "id": 4,
-      "status": "sent",
+      "status": "posted",
       "createdAt": "2026-11-10T17:44:58.175Z",
       "channel": "indiehackers",
       "kind": "reddit",
@@ -60,7 +72,11 @@
       "flair": "Self Promotion",
       "link": "https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=indiehackers",
       "hash": "2366616215bfa7ee",
-      "sentAt": "2026-11-10T17:45:27.676Z"
+      "sentAt": "2026-11-10T17:45:27.676Z",
+      "approvedAt": "2026-11-10T18:56:31.028Z",
+      "postedAt": "2026-11-10T18:56:34.979Z",
+      "postUrl": "https://www.reddit.com/r/indiehackers/comments/1xsvcu3/i_built_a_blinddate_show_for_original_characters/",
+      "thing": "t3_1xsvcu3"
     }
   ],
   "seen": {
