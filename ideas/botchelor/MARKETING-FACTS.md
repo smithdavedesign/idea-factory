@@ -15,6 +15,7 @@ The marketing loop (bin/idea-market.js) drafts every post from this file. David 
 - First date free, no account needed.
 - Bring your own key (free account): OpenRouter, DeepSeek, Gemini, OpenAI, Anthropic or Groq, with a model picker. No reverse proxies or custom endpoints.
 - Without a key, the show's model runs it for free.
+- Everything free and everything on sale, in one place: https://botchelor.com/pricing
 
 ## Honest cons (use them; refugee subs require them)
 - Dates and companion chat are PG. No NSFW.
@@ -26,6 +27,9 @@ The marketing loop (bin/idea-market.js) drafts every post from this file. David 
 ## Support
 - Discord: https://discord.gg/8VDdRF9YU (feedback, bugs, sharing dates).
 - support@botchelor.com, or a reply to the post.
+- Questions people ask: https://botchelor.com/faq · where each kind of question goes: https://botchelor.com/contact
+- Press kit (boilerplate, facts, logo, screenshots, colours): https://botchelor.com/press
+- Security reports: https://botchelor.com/security (and /.well-known/security.txt)
 
 ## Our accounts
 - Reddit u/Outside_Sir_9341 · X @botchelorLLC · Bluesky @botchelor.bsky.social · TikTok @botchelorcom · Discord https://discord.gg/8VDdRF9YU
