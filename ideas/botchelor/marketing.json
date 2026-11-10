@@ -15,7 +15,8 @@
     "bluesky": 1,
     "discord": 1,
     "video": 1,
-    "x": 1
+    "x": 1,
+    "reddit-help": 2
   },
   "draftAfterHour": 8,
   "timezone": "America/Los_Angeles",
@@ -37,6 +38,33 @@
     }
   ],
   "channels": [
+    {
+      "id": "help-indiehackers",
+      "kind": "reddit-help",
+      "sub": "indiehackers",
+      "status": "active",
+      "from": "2026-11-10",
+      "cooldownDays": 1,
+      "note": "Answers to build/launch questions; r/indiehackers needs 10 karma in the sub before a post stays up (removed 2026-11-10)."
+    },
+    {
+      "id": "help-mcp",
+      "kind": "reddit-help",
+      "sub": "mcp",
+      "status": "active",
+      "from": "2026-11-10",
+      "cooldownDays": 1,
+      "note": "Answers on building and listing remote MCP servers; our showcase post is due 2026-11-22."
+    },
+    {
+      "id": "help-sideproject",
+      "kind": "reddit-help",
+      "sub": "SideProject",
+      "status": "active",
+      "from": "2026-11-10",
+      "cooldownDays": 1,
+      "note": "Answers on solo building with AI tools; our post is due 2026-11-30."
+    },
     {
       "id": "indiehackers",
       "kind": "reddit",

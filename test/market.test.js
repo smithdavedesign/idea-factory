@@ -167,7 +167,7 @@ test('botchelor\'s calendar is valid', () => {
   for (const ch of real.channels) {
     assert.ok(!seen.has(ch.id), `duplicate channel ${ch.id}`);
     seen.add(ch.id);
-    assert.ok(['reddit', 'reddit-thread', 'bluesky', 'discord', 'video', 'x'].includes(ch.kind), ch.id);
+    assert.ok(['reddit', 'reddit-thread', 'reddit-help', 'bluesky', 'discord', 'video', 'x'].includes(ch.kind), ch.id);
     assert.ok(['active', 'waiting', 'needs-account', 'off'].includes(ch.status), ch.id);
     if (ch.kind.startsWith('reddit')) assert.ok(ch.sub, `${ch.id} needs a sub`);
     if (ch.kind === 'reddit-thread') assert.doesNotThrow(() => new RegExp(ch.match), ch.id), assert.ok(ch.match, `${ch.id} needs a match`);
@@ -175,4 +175,34 @@ test('botchelor\'s calendar is valid', () => {
   }
   assert.ok(real.reddit?.account);
   assert.ok(fs.existsSync(path.join(__dirname, '..', 'ideas', 'botchelor', 'MARKETING-FACTS.md')));
+});
+
+test('pickHelpPosts keeps fresh, open self posts by others, fewest comments first', () => {
+  const now = Date.parse('2026-11-10T20:00:00Z');
+  const base = { self: true, author: 'someone', comments: 3, ts: now - 2 * 3_600_000 };
+  const things = [
+    { ...base, name: 't3_a', comments: 9 },
+    { ...base, name: 't3_b', comments: 1 },
+    { ...base, name: 't3_link', self: false },
+    { ...base, name: 't3_pinned', stickied: true },
+    { ...base, name: 't3_ours', author: 'Outside_Sir_9341' },
+    { ...base, name: 't3_new', ts: now - 5 * 60_000 },
+    { ...base, name: 't3_old', ts: now - 30 * 3_600_000 },
+    { ...base, name: 't3_busy', comments: 80 },
+    { ...base, name: 't3_done' },
+  ];
+  const got = M.pickHelpPosts(things, { now, me: 'outside_sir_9341', skip: new Set(['t3_done']) }).map((t) => t.name);
+  assert.deepStrictEqual(got, ['t3_b', 't3_a']);
+});
+
+test('a help answer may not carry a link or name the product', () => {
+  const ok = { kind: 'reddit-help', body: 'Ship the boring version first; I lost a week on caching nobody needed.', helpOn: { name: 't3_x' } };
+  assert.deepStrictEqual(M.checkDraft(ok), []);
+  assert.ok(M.checkDraft({ ...ok, body: 'See https://example.com for how' }).some((e) => /no links/.test(e)));
+  assert.ok(M.checkDraft({ ...ok, body: 'I hit this building Botchelor.' }).some((e) => /product/.test(e)));
+  assert.ok(M.checkDraft({ ...ok, helpOn: null }).some((e) => /needs the post/.test(e)));
+});
+
+test('extractDraft keeps the chosen post id', () => {
+  assert.strictEqual(M.extractDraft('{"post":"t3_q","title":"","body":"Answer."}').post, 't3_q');
 });
