@@ -187,7 +187,7 @@ test('pickHelpPosts keeps fresh, open self posts by others, fewest comments firs
     { ...base, name: 't3_pinned', stickied: true },
     { ...base, name: 't3_ours', author: 'Outside_Sir_9341' },
     { ...base, name: 't3_new', ts: now - 5 * 60_000 },
-    { ...base, name: 't3_old', ts: now - 30 * 3_600_000 },
+    { ...base, name: 't3_old', ts: now - 60 * 3_600_000 },
     { ...base, name: 't3_busy', comments: 80 },
     { ...base, name: 't3_done' },
   ];
