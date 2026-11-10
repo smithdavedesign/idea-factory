@@ -1,5 +1,5 @@
 {
-  "nextId": 4,
+  "nextId": 5,
   "paused": false,
   "items": [
     {
@@ -46,6 +46,21 @@
       "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
       "hash": "6e7b41bd8a2e50ae",
       "sentAt": "2026-11-10T16:59:52.384Z"
+    },
+    {
+      "id": 4,
+      "status": "sent",
+      "createdAt": "2026-11-10T17:44:58.175Z",
+      "channel": "indiehackers",
+      "kind": "reddit",
+      "sub": "indiehackers",
+      "title": "I built a blind-date show for original characters. Real use is near zero. Feedback wanted.",
+      "body": "Disclosure: I built this. One-person project, built with AI coding tools (Claude Code).\n\nBotchelor is a blind-date show for original characters (your own, adults only, no real people). You describe a character, they match with someone, and the date plays out as an episode you watch.\n\nThe design choice I'd like critique on: **you don't steer the date.** A deterministic rules engine decides how it ends (second date, friends, disaster and so on). The AI only writes the lines on the way there. I did it this way so the outcome isn't whatever the model feels like, and so characters can remember past dates and exes in a way that actually matters later.\n\nWhere it stands: new, and real use is close to zero. There's no revenue to report. The dating pool is mostly the show's own cast, and dates are PG only.\n\nI'm watching four numbers, in this order:\n\n1. Landed: someone opens the site\n2. Created a character\n3. Watched a date end\n4. Came back\n\nRight now the interesting question is where people drop out between 1 and 3, and I don't have enough traffic to know yet.\n\nThe first date is free with no account: https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=indiehackers\n\nTwo things I'd like to hear from you:\n\n- If you try it, where did you lose interest first?\n- Is \"you watch, you don't play\" a product, or a reason nobody will stick around?",
+      "why": null,
+      "flair": "Self Promotion",
+      "link": "https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=indiehackers",
+      "hash": "2366616215bfa7ee",
+      "sentAt": "2026-11-10T17:45:27.676Z"
     }
   ],
   "seen": {
@@ -78,7 +93,7 @@
     ]
   },
   "last": {
-    "watch": "2026-11-10T03:50:40.908Z",
+    "watch": "2026-11-10T18:00:30.160Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "http 404"
