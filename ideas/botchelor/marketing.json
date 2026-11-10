@@ -22,6 +22,7 @@
   "timezone": "America/Los_Angeles",
   "model": "sonnet",
   "effort": "medium",
+  "autoPost": true,
   "watch": [
     {
       "id": "awesome-remote-mcp",

@@ -88,7 +88,8 @@ function draftPrompt(ctx, ch, { rules = [], thread, previous, change, reply, hel
   } else if (reply) {
     parts.push(`Draft a reply from the developer (u/${ctx.cfg.reddit?.account || 'the developer'}) to this Reddit comment in r/${reply.sub}, on the thread "${reply.linkTitle}":`,
       `"""${reply.body.slice(0, 2000)}"""`,
-      'Answer what they actually said, briefly (1 to 4 sentences), friendly and specific. No link unless they asked for one. If they found a bug or limit, thank them and say plainly what you will do or that it is how it works. Title: "".');
+      'Answer what they actually said, briefly (1 to 4 sentences), friendly and specific. No link unless they asked for one. If they found a bug or limit, thank them and say plainly what you will do or that it is how it works. Title: "".',
+      'This reply may be posted without David reading it first. If the comment is from a moderator, hostile or accusing, about money, legal, safety or someone\'s personal situation, or anything you are not sure how David would answer, don\'t draft: return {"title":"","body":"","why":"blocked: needs David: <one line why>"}.');
   } else {
     const where = ch.kind === 'reddit' ? `a new post in r/${ch.sub}` : ch.kind === 'reddit-thread' ? `a comment in r/${ch.sub}'s thread "${thread?.title}" (${thread?.permalink})` : `a ${ch.kind} post`;
     parts.push(`Draft ${where}. Channel id: ${ch.id}.`, `Angle: ${ch.angle || '(choose the angle that fits this community best)'}`);
@@ -182,6 +183,16 @@ function sendDraft(ctx, item, ch) {
     return item;
   }
   item.hash = M.draftHash(item);
+  // David 2026-11-10: "you have permission to just act on my behalf in all these socials". With autoPost on, a draft
+  // that passed its checks is approved here and posted by postApproved; David hears about it afterwards, with the text.
+  if (ctx.cfg.autoPost && item.kind !== 'video') {
+    item.status = 'approved';
+    item.approvedAt = new Date().toISOString();
+    item.approvedBy = 'auto';
+    saveQueue(ctx);
+    emit({ component: 'market', event: 'draft', status: 'ok', subject: { idea: ctx.cfg.slug, channel: item.channel }, message: `#${item.id} ${item.channel}: approved automatically (autoPost)` });
+    return item;
+  }
   const r = io.tell(M.draftMessage(item, ch), { media: item.media ? [item.media] : [] });
   item.status = r.sent.length ? 'sent' : 'drafted';
   item.sentAt = new Date().toISOString();
@@ -239,7 +250,10 @@ async function postApproved(ctx, reddit, now = new Date()) {
     if (ch && !item.replyTo && !M.mayPostNow(ch, now)) continue;
     try {
       const res = await publish(ctx, item, reddit);
-      io.tell(`✅ Botchelor #${item.id} is up on ${item.sub ? `r/${item.sub}` : item.channel}: ${res.url || '(posted)'}`, { only: item.approvedOn });
+      const where = item.sub ? `r/${item.sub}` : item.channel;
+      io.tell(item.approvedBy === 'auto'
+        ? `✅ Posted for you · #${item.id} · ${item.helpOn ? `answer in ${where} to "${item.helpOn.title}"` : item.replyTo ? `reply in ${where} to u/${item.replyTo.author}` : where}\n${res.url || ''}\n———\n${item.title ? item.title + '\n\n' : ''}${item.body.slice(0, 1200)}`
+        : `✅ Botchelor #${item.id} is up on ${where}: ${res.url || '(posted)'}`, { only: item.approvedOn });
     } catch (e) {
       item.status = 'failed';
       item.error = String(e.message || e);
@@ -272,7 +286,8 @@ async function watchInbox(ctx, reddit) {
       const item = M.addItem(ctx.queue, { channel: `reply:${n.sub}`, kind: 'reddit', sub: n.sub, title: '', body: d.body, replyTo: { name: n.parent, author: n.author, body: n.body, context: `https://www.reddit.com${n.context}` } });
       sendDraft(ctx, item, null);
     } catch (e) {
-      io.tell(`💬 u/${n.author} replied in r/${n.sub}: "${n.body.slice(0, 600)}"\nhttps://www.reddit.com${n.context}\n(I couldn't draft an answer: ${String(e.message || e).slice(0, 200)})`);
+      const why = String(e.message || e);
+      io.tell(`💬 u/${n.author} replied in r/${n.sub}: "${n.body.slice(0, 600)}"\nhttps://www.reddit.com${n.context}\n${/needs David/i.test(why) ? `I left this one for you: ${why.replace(/^.*needs David:?\s*/i, '').slice(0, 200)}` : `(I couldn't draft an answer: ${why.slice(0, 200)})`}`);
     }
   }
   ctx.queue.seen.inbox = ctx.queue.seen.inbox.slice(-300);
@@ -449,6 +464,7 @@ async function tick(slug, now = new Date()) {
   }
 
   if (now - Date.parse(ctx.queue.last.watch || '1970-01-01') > WATCH_EVERY_MS) await step('watch', () => watchInbox(ctx, reddit));
+  if (ctx.cfg.autoPost) await step('post', () => postApproved(ctx, reddit, now));
   if (now - Date.parse(ctx.queue.last.listingsAt || '1970-01-01') > 24 * 3_600_000) await step('listings', () => watchListings(ctx));
   if (M.localWeekday(now, tz) === 5 && M.localHour(now, tz) >= 9 && ctx.queue.last.report !== M.weekOf(now)) await step('report', () => weeklyReport(ctx, now));
 }
@@ -470,7 +486,10 @@ async function main() {
       const ch = channelOf(ctx, a);
       if (!ch) throw new Error(`no channel ${a} in marketing.json`);
       const reddit = new io.Reddit({ account: ctx.cfg.reddit?.account });
-      return ch.kind === 'video' ? videoKit(ctx, ch) : draftChannel(ctx, ch, reddit);
+      if (ch.kind === 'video') return videoKit(ctx, ch);
+      await draftChannel(ctx, ch, reddit);
+      if (ctx.cfg.autoPost) await postApproved(ctx, reddit);
+      return 'done';
     }
     throw new Error('usage: idea-market.js tick|drain|list [slug] · draft <channel> [slug]');
   });
