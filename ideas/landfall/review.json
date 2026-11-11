@@ -1,0 +1,75 @@
+{
+  "verdict": "pass",
+  "score": 5,
+  "summary": "Real, dated pain from Etsy's July 2026 DDP rule, but no evidence anyone pays a third party when Etsy's free estimator exists and may soon add bulk apply. Etsy-seller tools keep failing on willingness to pay and this one adds liability for wrong duty estimates.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "Problem well sourced (valueaddedresource.net, alura.io) and sellers are pausing US sales, but RESEARCH.md found no paid tool, no price and no one asking to pay; prices are the researcher's own proposal."
+    },
+    "statusQuo": {
+      "score": 5,
+      "evidence": "Free Etsy/Zonos estimator one listing at a time with no variations, or spreadsheets, or padding shipping. Rule is four months old so many sellers have already adapted; Etsy may ship bulk apply."
+    },
+    "specificity": {
+      "score": 4,
+      "evidence": "Target is a category (non-US handmade sellers with 20-300 variation listings); no named person or heard consequence, and unknown whether they would pay rather than raise prices."
+    },
+    "wedge": {
+      "score": 6,
+      "evidence": "CSV in, CSV out, no API or login, weekend build; but value depends on HS code and rate accuracy the seller cannot verify, and pure margin arithmetic is a spreadsheet."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "One-time re-price that erodes as Etsy and Zonos improve native tooling; rate alerts would help but are a larger, different product."
+    }
+  },
+  "premises": [
+    "Non-US sellers have a recurring painful re-pricing task: supported but shrinking after the first months.",
+    "A third party will be paid for what Etsy gives free: unsupported.",
+    "A solo-built estimate with LLM HS guesses is trustworthy enough to price from: weak.",
+    "Etsy will not add bulk or variation support soon: unsupported.",
+    "Sellers have unit cost and weight data at hand: unverified."
+  ],
+  "alternatives": [
+    "Minimal: free single-page calculator plus Sheets template posted in seller communities, email capture for bulk CSV.",
+    "Ideal: ongoing duty-rate and margin monitor across marketplaces with alerts (large, high risk).",
+    "Extend: bundle with the packpass audience (same non-US Etsy seller segment) rather than a standalone product."
+  ],
+  "wedge": "A free no-upload calculator (cost, duty, DDP fee, Etsy fees to US price), with a one-time $19-29 bulk CSV only if people ask.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js on Vercel Hobby, pure priceVariation() with Vitest, static rates.json, papaparse. Proving test: cost 20, duty 10%, DDP 15, fees, 30% target margin returns 30.00% within 0.01. Ongoing cost is hand-maintaining rates.json."
+  },
+  "risks": [
+    "Etsy or Zonos ships bulk/variation-aware estimator",
+    "Wrong HS code or duty rate costs the seller money; liability",
+    "Sellers stop US sales instead of buying a tool",
+    "Etsy exports lack cost and weight, adding input friction",
+    "Unproven willingness to pay, same weakness as earlier Etsy-seller ideas"
+  ],
+  "killCriteria": "Etsy or Zonos ships bulk/variation apply; under 5% of 200 qualified visitors start an upload; under 10 reach pay or pre-pay $19 in two weeks; sellers say they have already re-priced.",
+  "landing": {
+    "headline": "Re-price every Etsy variation for US duty in one upload",
+    "subhead": "Upload your listings CSV and get a US price per variation that keeps your margin after duty, DDP fees and Etsy fees.",
+    "bullets": [
+      "Per-variation prices, not one listing at a time",
+      "Margin-safe after duty, DDP fee and Etsy fees",
+      "Flags listings not worth shipping to the US",
+      "CSV export to paste back into Etsy"
+    ],
+    "cta": "Join the waitlist",
+    "audience": "Non-US Etsy sellers with 20-300 listings who sell to the US"
+  },
+  "launch": {
+    "channels": [
+      {
+        "name": "r/EtsySellers",
+        "url": "https://www.reddit.com/r/EtsySellers/",
+        "why": "Active seller community discussing DDP"
+      }
+    ],
+    "post": "Non-US Etsy sellers: how are you re-pricing variations for the DDP rule? Etsy's estimator does one listing at a time. I'm testing a bulk tool: {url}. Would you pay for it, and what would you need to trust the numbers?"
+  }
+}
