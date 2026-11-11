@@ -58,6 +58,7 @@ He doesn't have experience with fundraising, hiring, running a team, paid ads at
 - No vote-asking, no DMs, no fake accounts, no pretending to be a user.
 - No claims about traction, users or revenue that aren't true. Real use is still small; say so if asked.
 - No real people as characters, no minors.
+- No "date my OC" links (botchelor.com/date/<code>): they only work for a visitor who already has a character. Chud's link (2026-10-29) brought 3 visitors and all 3 left within 6 seconds (2026-11-11 bounce review). To point people at a date, name a house character: https://botchelor.com/create?meet=house-juniper (any house id on this month's cast at botchelor.com/cast; a first character's first date is with them and plays at once). Never name Chud in a post.
 
 ## Posts David approved (examples of the voice)
 

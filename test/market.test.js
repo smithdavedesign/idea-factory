@@ -107,6 +107,10 @@ test('draft checks: link kept exactly, no After Dark, no vote-asking, lengths', 
   assert.match(M.checkDraft({ ...ok, body: 'hi https://botchelor.com/' }).join(), /link/);
   assert.match(M.checkDraft({ ...ok, body: `${link} and After Dark` }).join(), /after/);
   assert.match(M.checkDraft({ ...ok, body: `${link} please upvote` }).join(), /upvote/);
+  // A creator's date link (only works with a character of your own) and Chud by name: never in a post.
+  assert.match(M.checkDraft({ ...ok, body: `${link} or date Chud at https://botchelor.com/date/dfc77e4eb130` }).join(), /date/);
+  assert.match(M.checkDraft({ ...ok, body: `${link} Chud says hi` }).join(), /chud/);
+  assert.deepEqual(M.checkDraft({ ...ok, body: `${link} https://botchelor.com/create?meet=house-juniper` }), []);
   assert.match(M.checkDraft({ ...ok, title: '' }).join(), /title/);
   assert.match(M.checkDraft({ ...ok, title: 'x'.repeat(301) }).join(), /title longer/);
   assert.match(M.checkDraft({ kind: 'bluesky', body: `${'x'.repeat(290)} ${link}`, link }).join(), /longer than 300/);
