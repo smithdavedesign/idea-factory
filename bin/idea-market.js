@@ -330,7 +330,8 @@ async function watchListings(ctx) {
 
 /** Today's short-video kit, from the daily clip, once a day after the clip job has run. */
 async function videoKit(ctx, ch) {
-  const done = new Set(ctx.queue.items.filter((i) => i.kind === 'video' && i.episode).map((i) => i.episode));
+  // Dates already queued, plus any date that already has a kit folder (hand-made kits never reach the queue).
+  const done = new Set([...ctx.queue.items.filter((i) => i.kind === 'video' && i.episode).map((i) => i.episode), ...io.madeKitEpisodes()]);
   const clip = io.newestClip(done);
   if (!clip) return null;
   const kit = io.buildVideoKit(clip.episode);
