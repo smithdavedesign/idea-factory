@@ -1,5 +1,5 @@
 {
-  "nextId": 10,
+  "nextId": 12,
   "paused": false,
   "items": [
     {
@@ -226,6 +226,40 @@
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-11-kaede-hoshimura-malachar-vey",
       "hash": "f3c5959df53aacc2",
       "sentAt": "2026-11-11T02:08:11.538Z"
+    },
+    {
+      "id": 10,
+      "status": "posted",
+      "createdAt": "2026-11-11T16:29:47.510Z",
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "sub": null,
+      "title": "",
+      "body": "Vectron Maxwell to Kieran Mercy: \"Your coat is doing a fine impression of a shipwreck, and your compass keeps swinging toward my jacket pocket.\"\nAI characters, AI-written date.\nhttps://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky #AI",
+      "why": "Quotes an exact line from the date the watch page marks 'Just aired' (S2 Night 10, Vectron Maxwell × Kieran Mercy). The page shows no air dates, so 'this week' is inferred from that label. The post says plainly that the characters and the date are AI.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "hash": "1763acfab8656475",
+      "approvedAt": "2026-11-11T16:29:47.517Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-11T16:31:31.841Z",
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n22ex6kd5s2g",
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n22ex6kd5s2g"
+    },
+    {
+      "id": 11,
+      "status": "failed",
+      "createdAt": "2026-11-11T16:30:21.536Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "Kieran Mercy to Vectron Maxwell (Season 2, Night 10), about the compass he keeps hauling around:\n\n\"It's pointing at the thing you keep meaning to set down.\"\n\nBoth characters are AI, and so are the lines. Watch the date: https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x #AIdating",
+      "why": "Quotes Kieran's closing line from the latest aired date (Season 2, Night 10, as shown on /watch). Says the characters and dialogue are AI. It's a new moment rather than a repeat of the earlier X post, and it uses one hashtag.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "hash": "a7af5378300128ec",
+      "error": "draft failed its checks: body longer than 280 characters"
     }
   ],
   "seen": {
@@ -268,6 +302,9 @@
     "listingsAt": "2026-11-10T21:34:10.855Z",
     "warned:draft indiehackers:2026-11-10": true,
     "warned:watch:2026-11-10": true,
-    "warned:watch:2026-11-11": true
+    "warned:watch:2026-11-11": true,
+    "warned:draft help-indiehackers:2026-11-11": true,
+    "warned:draft help-sideproject:2026-11-11": true,
+    "warned:draft mcpservers:2026-11-11": true
   }
 }

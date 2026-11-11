@@ -126,6 +126,13 @@
       "postedAt": "2026-11-10T18:56:34.979Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #4 on his phone; flair \"Self Promotion\"; link tagged utm_content=indiehackers. Removed by r/indiehackers moderators within minutes (no reason sent; likely the automatic filter). 2026-11-10",
       "status": "removed"
+    },
+    {
+      "channel": "Bluesky",
+      "url": null,
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n22ex6kd5s2g",
+      "postedAt": "2026-11-11T16:31:31.841Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #10 on his phone; link tagged utm_content=bluesky."
     }
   ]
 }
