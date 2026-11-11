@@ -141,6 +141,13 @@
       "postedAt": "2026-11-11T18:43:00.000Z",
       "episode": "7a5e974f-803c-4d10-89ce-f56a37683991",
       "note": "vote-link clip (Mitsuki × Takeru laundromat, 61 s, AI-generated label on, caption incl. botchelor.com/vote?s=tiktok and 8 hashtags). Kit made 2026-11-09, posted instead of the repeat kit #9 (skipped). Filled by Claude via Chrome Apple Events JS; David uploaded the file and clicked Post."
+    },
+    {
+      "channel": "YouTube Shorts",
+      "url": null,
+      "postUrl": "https://www.youtube.com/shorts/YaGFdaM4VyY",
+      "postedAt": "2026-11-11T21:51:46.124Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #15 on his phone; link tagged utm_content=youtube_shorts."
     }
   ]
 }

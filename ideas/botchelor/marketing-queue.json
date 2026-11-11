@@ -1,5 +1,5 @@
 {
-  "nextId": 15,
+  "nextId": 16,
   "paused": false,
   "items": [
     {
@@ -330,6 +330,24 @@
       "approvedAt": "2026-11-11T18:15:37.677Z",
       "approvedBy": "auto",
       "error": "Reddit fetch budget (15) used up for this run"
+    },
+    {
+      "id": 15,
+      "status": "posted",
+      "createdAt": "2026-11-11T21:51:43.403Z",
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "title": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay. #Shorts",
+      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? 👀\n\nVote what happens on tomorrow's date: botchelor.com/vote?s=youtube\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-11-kaede-hoshimura-malachar-vey/post.mp4",
+      "episode": "4c6e9916-37e3-4bdf-9fba-239935193122",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-11-kaede-hoshimura-malachar-vey",
+      "hash": "3f0f3bf706937f9b",
+      "approvedAt": "2026-11-11T21:51:43.404Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-11T21:51:46.124Z",
+      "postUrl": "https://www.youtube.com/shorts/YaGFdaM4VyY",
+      "thing": "YaGFdaM4VyY"
     }
   ],
   "seen": {
@@ -370,7 +388,7 @@
       "awesome-remote-mcp": "OPEN",
       "lobehub": "http 404"
     },
-    "listingsAt": "2026-11-10T21:34:10.855Z",
+    "listingsAt": "2026-11-11T22:03:57.601Z",
     "warned:draft indiehackers:2026-11-10": true,
     "warned:watch:2026-11-10": true,
     "warned:watch:2026-11-11": true,

@@ -237,7 +237,7 @@
       "kind": "youtube",
       "follows": "video",
       "source": "youtube",
-      "status": "needs-account",
+      "status": "active",
       "tags": [
         "botchelor",
         "ai characters",
@@ -246,7 +246,8 @@
         "ai"
       ],
       "logName": "YouTube Shorts",
-      "note": "Each day's video kit uploaded as a public Short by the loop (bin/idea-market.js → io.youtubeUpload), with YouTube's altered/synthetic-content flag on. Setup: David creates the channel; a Google Cloud Desktop OAuth client (YouTube Data API v3, consent screen In production) in the keychain as vault/botchelor/YOUTUBE_CLIENT_ID + _CLIENT_SECRET; node bin/youtube-auth.js stores the refresh token; then status active and `node bin/idea-market.js draft youtube_shorts` posts the newest kit. If YouTube locks uploads to private, file the free API audit form (the error says so)."
+      "note": "Each day's video kit uploaded as a public Short by the loop (bin/idea-market.js → io.youtubeUpload), with YouTube's altered/synthetic-content flag on. Setup: David creates the channel; a Google Cloud Desktop OAuth client (YouTube Data API v3, consent screen In production) in the keychain as vault/botchelor/YOUTUBE_CLIENT_ID + _CLIENT_SECRET; node bin/youtube-auth.js stores the refresh token; then status active and `node bin/idea-market.js draft youtube_shorts` posts the newest kit. If YouTube locks uploads to private, file the free API audit form (the error says so). Live 2026-11-11: channel Botchelor @Botchelor (UCo921Gz8WCepbzAwCIScn8A, a Brand Account under David's Google account); OAuth client in Google Cloud project botchelor-marketing (In production).",
+      "from": "2026-11-11"
     },
     {
       "id": "instagram_reels",
