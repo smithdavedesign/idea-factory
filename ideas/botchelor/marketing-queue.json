@@ -215,7 +215,7 @@
     },
     {
       "id": 9,
-      "status": "sent",
+      "status": "skipped",
       "createdAt": "2026-11-11T02:07:06.330Z",
       "channel": "video",
       "kind": "video",
@@ -225,7 +225,8 @@
       "episode": "4c6e9916-37e3-4bdf-9fba-239935193122",
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-11-kaede-hoshimura-malachar-vey",
       "hash": "f3c5959df53aacc2",
-      "sentAt": "2026-11-11T02:08:11.538Z"
+      "sentAt": "2026-11-11T02:08:11.538Z",
+      "note": "same date as the 2026-11-09 TikTok post; skipped for the unposted Mitsuki × Takeru kit (David 2026-11-11)"
     },
     {
       "id": 10,
@@ -312,7 +313,7 @@
     },
     {
       "id": 14,
-      "status": "approved",
+      "status": "failed",
       "createdAt": "2026-11-11T18:15:37.677Z",
       "channel": "reply:mcp",
       "kind": "reddit",
@@ -327,7 +328,8 @@
       },
       "hash": "c216f4c2f6535280",
       "approvedAt": "2026-11-11T18:15:37.677Z",
-      "approvedBy": "auto"
+      "approvedBy": "auto",
+      "error": "Reddit fetch budget (15) used up for this run"
     }
   ],
   "seen": {
