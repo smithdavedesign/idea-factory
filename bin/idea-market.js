@@ -99,6 +99,7 @@ function draftPrompt(ctx, ch, { rules = [], thread, previous, change, reply, hel
     parts.push(`Include this exact link once, unchanged: ${M.utmLink(ctx.cfg, ch)}`);
     if (ch.kind === 'bluesky' || ch.kind === 'x') parts.push(`At most ${ch.kind === 'x' ? 280 : 300} characters including the link. Title: "".`);
     if (ch.kind === 'reddit-thread' || ch.kind === 'discord') parts.push('Title: "" (a comment or announcement has none).');
+    if (ch.kind === 'hn') parts.push('Hacker News is plain text: no Markdown, no emoji, no hype words. The title starts "Show HN: " and stays under 80 characters. Put the link as the body\'s first line (David pastes it into HN\'s URL field) and then the text, which HN shows as the first comment.');
   }
   if (previous) parts.push(`David asked for changes to this draft:\nTitle: ${previous.title}\n---\n${previous.body}\n---\nHis words: "${change}". Make exactly those changes and keep the rest.`);
   parts.push(help
@@ -185,7 +186,7 @@ function sendDraft(ctx, item, ch) {
   item.hash = M.draftHash(item);
   // David 2026-11-10: "you have permission to just act on my behalf in all these socials". With autoPost on, a draft
   // that passed its checks is approved here and posted by postApproved; David hears about it afterwards, with the text.
-  if (ctx.cfg.autoPost && item.kind !== 'video') {
+  if (ctx.cfg.autoPost && M.autoPostable(item.kind)) {
     item.status = 'approved';
     item.approvedAt = new Date().toISOString();
     item.approvedBy = 'auto';
@@ -218,6 +219,8 @@ async function publish(ctx, item, reddit) {
   else if (item.kind === 'bluesky') res = await io.blueskyPost(item.body);
   else if (item.kind === 'discord') res = await io.discordPost(item.body);
   else if (item.kind === 'x') res = await io.xPost(item.body, ctx.cfg.x?.handle);
+  else if (item.kind === 'youtube') res = await io.youtubeUpload({ video: item.media, title: item.title, description: item.body, tags: ch.tags || [] });
+  else if (item.kind === 'instagram') res = await io.instagramReel({ video: item.media, caption: item.body });
   else throw new Error(`I can't post ${item.kind} myself yet; post it and reply mk done ${item.id}`);
   item.status = 'posted';
   item.postedAt = new Date().toISOString();
@@ -336,7 +339,24 @@ async function videoKit(ctx, ch) {
   if (!clip) return null;
   const kit = io.buildVideoKit(clip.episode);
   const item = M.addItem(ctx.queue, { channel: ch.id, kind: 'video', title: '', body: kit.caption, media: kit.video, episode: clip.episode, kitDir: kit.dir });
-  return sendDraft(ctx, item, ch);
+  sendDraft(ctx, item, ch);
+  followKit(ctx, { ...kit, episode: clip.episode }, ch.id);
+  return item;
+}
+
+/**
+ * The same kit for the channels that follow the video channel (YouTube Shorts, Instagram Reels): one item each,
+ * re-tagged for its source, and posted by the loop itself (autoPost). An episode goes to each channel once.
+ */
+function followKit(ctx, kit, of = 'video', only) {
+  const out = [];
+  for (const f of M.followers(ctx.cfg, of)) {
+    if (only && f.id !== only) continue;
+    if (ctx.queue.items.some((i) => i.channel === f.id && i.episode && i.episode === kit.episode && i.status !== 'skipped')) continue;
+    const { title, body } = M.kitPost(kit.caption, f.source || f.id, f.kind);
+    out.push(sendDraft(ctx, M.addItem(ctx.queue, { channel: f.id, kind: f.kind, title, body, media: kit.video, episode: kit.episode, kitDir: kit.dir }), f));
+  }
+  return out;
 }
 
 async function weeklyReport(ctx, now = new Date()) {
@@ -488,7 +508,13 @@ async function main() {
       if (!ch) throw new Error(`no channel ${a} in marketing.json`);
       const reddit = new io.Reddit({ account: ctx.cfg.reddit?.account });
       if (ch.kind === 'video') return videoKit(ctx, ch);
-      await draftChannel(ctx, ch, reddit);
+      if (ch.follows) {
+        // The newest kit, for one follower channel (its first upload, or a retry after setup).
+        const kit = io.latestKit();
+        if (!kit) throw new Error('no video kit yet');
+        const made = followKit(ctx, kit, ch.follows, ch.id);
+        if (!made.length) console.log(`${ch.id} already has the newest kit (${kit.dir})`);
+      } else await draftChannel(ctx, ch, reddit);
       if (ctx.cfg.autoPost) await postApproved(ctx, reddit);
       return 'done';
     }
