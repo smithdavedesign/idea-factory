@@ -1,5 +1,5 @@
 {
-  "_why": "The marketing loop's calendar for botchelor (bin/idea-market.js, lib/market.js; David 2026-11-09: \"create an automation to run the social media and marketing\"). Each morning it drafts the channels that are due, sends each draft to David on WhatsApp and Slack, and posts only what he approves with \"mk post <id>\". Channels: kind reddit (a post), reddit-thread (a comment in the sub's pinned thread whose title matches `match`), bluesky, discord (our own server's webhook), video (a TikTok/Reels/Shorts kit David uploads), x (browser, once the account exists). status: active, waiting (blocked on someone: see note), needs-account, off. cooldownDays: the least time between our posts there (the community's own rule when it has one). from: the first day it may go out. window: UTC days (0 = Sunday) and hours it may post. maxPosts: lifetime cap (indiehackers allows one per product).",
+  "_why": "The marketing loop's calendar for botchelor (bin/idea-market.js, lib/market.js; David 2026-11-09: \"create an automation to run the social media and marketing\"). Each morning it drafts the channels that are due, sends each draft to David on WhatsApp and Slack, and posts only what he approves with \"mk post <id>\". Channels: kind reddit (a post), reddit-thread (a comment in the sub's pinned thread whose title matches `match`), bluesky, discord (our own server's webhook), video (a TikTok/Reels/Shorts kit David uploads), x (browser), youtube and instagram (uploaded by the loop itself: they `follows` the video channel, so each day's kit goes out there too, re-tagged ?s=<source>), and kinds David posts by hand (hn, producthunt, card): drafted and sent to him even with autoPost on. Strategy and order: LAUNCH-KIT.md, \"Distribution plan\". status: active, waiting (blocked on someone: see note), needs-account, off. cooldownDays: the least time between our posts there (the community's own rule when it has one). from: the first day it may go out. window: UTC days (0 = Sunday) and hours it may post. maxPosts: lifetime cap (indiehackers allows one per product).",
   "slug": "botchelor",
   "site": "https://botchelor.com/",
   "reddit": {
@@ -16,7 +16,12 @@
     "discord": 1,
     "video": 1,
     "x": 1,
-    "reddit-help": 2
+    "reddit-help": 2,
+    "youtube": 1,
+    "instagram": 1,
+    "hn": 1,
+    "producthunt": 1,
+    "card": 2
   },
   "draftAfterHour": 8,
   "timezone": "America/Los_Angeles",
@@ -226,6 +231,76 @@
       "angle": "One short post a day as @botchelorLLC, different from the day's Bluesky post: a best line or moment from a date that aired on botchelor.com (fetch https://botchelor.com/watch), then the link. Say the characters and dates are AI. At most two hashtags.",
       "logName": "X",
       "from": "2026-11-10"
+    },
+    {
+      "id": "youtube_shorts",
+      "kind": "youtube",
+      "follows": "video",
+      "source": "youtube",
+      "status": "needs-account",
+      "tags": [
+        "botchelor",
+        "ai characters",
+        "blind date",
+        "dating show",
+        "ai"
+      ],
+      "logName": "YouTube Shorts",
+      "note": "Each day's video kit uploaded as a public Short by the loop (bin/idea-market.js → io.youtubeUpload), with YouTube's altered/synthetic-content flag on. Setup: David creates the channel; a Google Cloud Desktop OAuth client (YouTube Data API v3, consent screen In production) in the keychain as vault/botchelor/YOUTUBE_CLIENT_ID + _CLIENT_SECRET; node bin/youtube-auth.js stores the refresh token; then status active and `node bin/idea-market.js draft youtube_shorts` posts the newest kit. If YouTube locks uploads to private, file the free API audit form (the error says so)."
+    },
+    {
+      "id": "instagram_reels",
+      "kind": "instagram",
+      "follows": "video",
+      "source": "instagram",
+      "status": "needs-account",
+      "logName": "Instagram Reels",
+      "note": "Each day's kit as a Reel (io.instagramReel, Instagram API with Instagram Login: a professional account, no Facebook Page). Setup: David makes @botchelor (or similar) a Creator/Business account; a Meta developer app (Development mode is fine for our own account) gives a long-lived token → vault/botchelor/INSTAGRAM_TOKEN. Turn on Instagram's AI label in the app once (the API has no field for it); share_to_feed is on."
+    },
+    {
+      "id": "facebook_reels",
+      "kind": "facebook",
+      "status": "off",
+      "logName": "Facebook Reels",
+      "note": "Not built. Instagram can cross-post Reels to a linked Facebook Page from its own settings, which covers this without a second upload."
+    },
+    {
+      "id": "threads",
+      "kind": "threads",
+      "status": "off",
+      "logName": "Threads",
+      "note": "Not built. Same Meta login as Instagram; worth a daily text post like Bluesky's only if Instagram finds an audience."
+    },
+    {
+      "id": "chub_cards",
+      "kind": "card",
+      "status": "needs-account",
+      "logName": "Chub (character cards)",
+      "note": "House cast as character cards on Chub (chub.ai), each linking back to the character's dates. Check the site's rules on links first; one account, posted by hand or by me in David's signed-in Chrome; never After Dark characters. Next: JanitorAI-style libraries only where self-links are allowed."
+    },
+    {
+      "id": "sunday_stream",
+      "kind": "stream",
+      "status": "waiting",
+      "logName": "Sunday reveal stream (YouTube Live + Twitch)",
+      "note": "One 1–2 hour test on a Sunday reveal night: the theater plays the week's dates, chat votes, votes go into /watch's vote. Needs the YouTube channel and a small server (~$12–24/mo, David's call from ownerBudget); this Mac can't spare the memory. Go 24/7 only if people watch."
+    },
+    {
+      "id": "show_hn",
+      "kind": "hn",
+      "status": "active",
+      "from": "2026-11-25",
+      "cooldownDays": 35,
+      "logName": "Show HN",
+      "angle": "Show HN for agent builders: send your agent on a blind date over MCP; the agent cast (characters made by agents, auditioning for the monthly cast) and the deterministic ending engine are the technical news since the Oct 24 post. Title starts \"Show HN: \", under 80 characters; body plain text, first person, what it is, how it works, what's hard, no marketing words. David posts it himself from his HN account, weekday 8–10am PT.",
+      "note": "Oct 24 Show HN got 1 point. HN frowns on automated or coordinated posting, so this is drafted for David and never auto-posted."
+    },
+    {
+      "id": "producthunt",
+      "kind": "producthunt",
+      "status": "waiting",
+      "logName": "Product Hunt",
+      "note": "One launch, when the YouTube/Reels clips give a gallery to show. David's account posts it (hunters must be real people); a 12:01am PT Tuesday–Thursday launch. Draft the tagline, description, first comment and gallery from the kit when David picks a date."
     }
   ],
   "x": {

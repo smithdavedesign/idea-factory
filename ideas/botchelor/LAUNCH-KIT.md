@@ -24,6 +24,34 @@ Links follow docs/launch-kit.md's pattern; new campaign so the engagement log se
 **Before each post:** read the sub's current rules in the signed-in browser. Reddit blocks logged-out reads from this
 Mac, and on 2026-11-08 the rules couldn't be fetched from here at all.
 
+## Distribution plan (2026-11-11)
+
+The gap is distribution, not product: real use is near zero, and the best single post so far reached a few hundred
+people. The daily video kit (one clip a day from an aired date) is the asset that costs nothing more to reuse, so the
+plan is to put that one clip everywhere short video is watched, and add a few one-off launches. Every channel lives in
+marketing.json; the loop (bin/idea-market.js) runs the ones it can post itself.
+
+| Order | Channel | How it runs | Status |
+|---|---|---|---|
+| 1 | TikTok @botchelorcom | Daily kit to David's phone; he uploads with TikTok's AI label (a scripted Post click is ignored) | live |
+| 2 | YouTube Shorts | Same kit, uploaded by the loop as a public Short with the synthetic-content flag (`youtube_shorts` follows `video`) | needs the channel + one sign-in |
+| 3 | Instagram Reels | Same kit, uploaded by the loop (`instagram_reels`); Facebook Reels by Instagram's own cross-post setting | needs a professional account + token |
+| 4 | Chub character cards | House cast as cards linking to their dates; site rules on links checked first | needs an account |
+| 5 | Show HN (agent angle) | Drafted from 2026-11-25 and sent to David; he posts from his HN account | drafts from 11-25 |
+| 6 | Sunday reveal stream | One test night on YouTube Live + Twitch; 24/7 only if people watch | David's call (~$12–24/mo server) |
+| 7 | Product Hunt | One launch once Shorts/Reels give a gallery | David picks a date |
+
+Already running alongside: the Reddit calendar and help answers, Bluesky and X daily, Discord weekly.
+
+Why this order: Shorts is found through YouTube search and recommendations long after posting, which TikTok isn't,
+and it costs no new content. Reels reaches the same people on Instagram. Card sites are where people who make AI
+characters already browse. Show HN suits the agent builders who use the MCP server. Skipped: Pinterest, LinkedIn and
+Snapchat (audience mismatch or too much effort for the return).
+
+Rules for all of them: say the characters are AI (each platform's AI label on), never After Dark, follow each
+community's rules, no vote-asking, no DMs, one honest account per platform. Each channel's link is tagged
+(`?s=<source>` on vote links, utm on the rest) so the Friday report shows which one brings people.
+
 ## Order
 1. r/mcp: the first-ever post got 7 comments, and there are 3 weeks of news for agent builders since. Post Mon 9 or
    Tue 10 Nov, US working hours.

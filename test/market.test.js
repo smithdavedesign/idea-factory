@@ -167,7 +167,9 @@ test('botchelor\'s calendar is valid', () => {
   for (const ch of real.channels) {
     assert.ok(!seen.has(ch.id), `duplicate channel ${ch.id}`);
     seen.add(ch.id);
-    assert.ok(['reddit', 'reddit-thread', 'reddit-help', 'bluesky', 'discord', 'video', 'x'].includes(ch.kind), ch.id);
+    // Kinds the loop posts (M.AUTO_KINDS), the TikTok kit, and the ones David posts by hand or that aren't built yet.
+    assert.ok([...M.AUTO_KINDS, 'video', 'hn', 'producthunt', 'card', 'stream', 'facebook', 'threads'].includes(ch.kind), ch.id);
+    if (ch.follows) assert.ok(real.channels.some((o) => o.id === ch.follows), `${ch.id} follows a channel that doesn't exist`);
     assert.ok(['active', 'waiting', 'needs-account', 'off'].includes(ch.status), ch.id);
     if (ch.kind.startsWith('reddit')) assert.ok(ch.sub, `${ch.id} needs a sub`);
     if (ch.kind === 'reddit-thread') assert.doesNotThrow(() => new RegExp(ch.match), ch.id), assert.ok(ch.match, `${ch.id} needs a match`);
@@ -205,4 +207,49 @@ test('a help answer may not carry a link or name the product', () => {
 
 test('extractDraft keeps the chosen post id', () => {
   assert.strictEqual(M.extractDraft('{"post":"t3_q","title":"","body":"Answer."}').post, 't3_q');
+});
+
+// ─── 2026-11-11: channels that follow the video kit, and kinds David posts by hand ─────────────────────────
+test('follower channels ride on the video kit, never drafted on their own', () => {
+  const c = { ...cfg, perDay: { ...cfg.perDay, youtube: 1 }, channels: [
+    { id: 'video', kind: 'video', status: 'active', cooldownDays: 1, logName: 'TikTok' },
+    { id: 'yt', kind: 'youtube', follows: 'video', status: 'active' },
+    { id: 'ig', kind: 'instagram', follows: 'video', status: 'needs-account' },
+    { id: 'late', kind: 'instagram', follows: 'video', status: 'active', from: '2026-12-01' },
+  ] };
+  const now = at('2026-11-12T20:00:00Z');
+  assert.deepEqual(M.dueChannels(c, { launchLog: { posts: [] }, queue: M.emptyQueue(), now }).map((x) => x.id), ['video']);
+  assert.deepEqual(M.followers(c, 'video', now).map((x) => x.id), ['yt']);
+});
+
+test('only kinds the loop can post are auto-approved', () => {
+  for (const k of ['reddit', 'bluesky', 'x', 'discord', 'youtube', 'instagram']) assert.equal(M.autoPostable(k), true, k);
+  for (const k of ['video', 'hn', 'producthunt', 'card', 'stream']) assert.equal(M.autoPostable(k), false, k);
+  const msg = M.draftMessage({ id: 7, channel: 'show_hn', kind: 'hn', title: 'Show HN: x', body: 'b' }, { id: 'show_hn', kind: 'hn' });
+  assert.match(msg, /yours to post \(hn\)/);
+  assert.match(msg, /mk done 7/);
+});
+
+test('kitPost re-tags the vote link and makes a Shorts title', () => {
+  const cap = 'Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nVote: botchelor.com/vote?s=tiktok\n#botchelor';
+  const yt = M.kitPost(cap, 'youtube', 'youtube');
+  assert.equal(yt.title, 'Kaede and Malachar meet for the first time, on a night ferry crossing the bay. #Shorts');
+  assert.match(yt.body, /vote\?s=youtube/);
+  assert.doesNotMatch(yt.body, /s=tiktok/);
+  assert.deepEqual(M.checkDraft({ kind: 'youtube', ...yt }), []);
+  const long = M.kitPost('word '.repeat(40).trim(), 'youtube', 'youtube');
+  assert.ok(long.title.length <= 100, long.title);
+  assert.ok(long.title.endsWith('…'));
+  const ig = M.kitPost(cap, 'instagram', 'instagram');
+  assert.equal(ig.title, '');
+  assert.match(ig.body, /s=instagram/);
+});
+
+test('the botchelor calendar parses and its new channels are wired', () => {
+  const real = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'ideas', 'botchelor', 'marketing.json'), 'utf8'));
+  const byId = Object.fromEntries(real.channels.map((c) => [c.id, c]));
+  assert.equal(byId.youtube_shorts.follows, 'video');
+  assert.equal(byId.instagram_reels.follows, 'video');
+  assert.equal(M.autoPostable(byId.show_hn.kind), false);
+  for (const c of real.channels) assert.ok(['active', 'waiting', 'needs-account', 'off'].includes(c.status), c.id);
 });
