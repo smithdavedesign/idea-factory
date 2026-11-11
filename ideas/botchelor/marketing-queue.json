@@ -1,5 +1,5 @@
 {
-  "nextId": 8,
+  "nextId": 10,
   "paused": false,
   "items": [
     {
@@ -190,6 +190,42 @@
       "postedAt": "2026-11-10T21:03:40.203Z",
       "postUrl": null,
       "thing": "t1_19sfyfh4k5u0x"
+    },
+    {
+      "id": 8,
+      "status": "posted",
+      "createdAt": "2026-11-11T00:04:23.740Z",
+      "channel": "reply:mcp",
+      "kind": "reddit",
+      "sub": "mcp",
+      "title": "",
+      "body": "Disclosure: I'm the dev of Botchelor, a one-person project with an MCP server. Nice work shipping that over a weekend, and a bot crawler log is a smart way to see who's actually reading. I'm in the same spot: real use is still small. I got listed in the official MCP Registry, mcp.so and Glama, and I use UTM links and first-party analytics to see where visitors come from. I can't tell you any of it moves LLM citations. Are your crawler logs showing any citation bots yet, or mostly training crawlers?",
+      "replyTo": {
+        "name": "t1_19sfyomonw5l1",
+        "author": "UnccRooms",
+        "body": "So here is my Chrome Extension - [https://chromewebstore.google.com/detail/fldpbjeaalcgffbakpmjemcmccchpgek?utm\\_source=item-share-cb](https://chromewebstore.google.com/detail/fldpbjeaalcgffbakpmjemcmccchpgek?utm_source=item-share-cb)    \nI am a real estate investor and made an extension to help pull detailed info for the address. It's in Mecklenburg, Cty - Charlotte, NC.  Did it over the weekend.  MCPs as well.  So no time really for any traffic - heard it was good for SEO/backlinks and ways to help have the LLMs cite you - but no real guarantee and I can't source a correlation.  LLM Visibility and Citations is still the wild west.  I do have a bot crawler linked to my web server to see when a bot crawls my site, which ones, and why (training, citation, etc).  Doing what I can - as a property manager.  So we will see - you? ",
+        "context": "https://www.reddit.com/r/mcp/comments/1xspdur/created_a_mcpplugin_increase_in_trafficlead_gen/19sfyomonw5l1/?context=3"
+      },
+      "hash": "1525919763f4fbf0",
+      "approvedAt": "2026-11-11T00:04:23.743Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-11T00:04:24.584Z",
+      "postUrl": null,
+      "thing": "t1_19sg6hor6bn0i"
+    },
+    {
+      "id": 9,
+      "status": "sent",
+      "createdAt": "2026-11-11T02:07:06.330Z",
+      "channel": "video",
+      "kind": "video",
+      "title": "",
+      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? 👀\n\nVote what happens on tomorrow's date: botchelor.com/vote?s=tiktok\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-11-kaede-hoshimura-malachar-vey/post.mp4",
+      "episode": "4c6e9916-37e3-4bdf-9fba-239935193122",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-11-kaede-hoshimura-malachar-vey",
+      "hash": "f3c5959df53aacc2",
+      "sentAt": "2026-11-11T02:08:11.538Z"
     }
   ],
   "seen": {
@@ -219,11 +255,12 @@
       "t1_lua5x01",
       "t1_lu9iarc",
       "t1_lu9fwhb",
-      "t1_19sfvsxx1lged"
+      "t1_19sfvsxx1lged",
+      "t1_19sfyomonw5l1"
     ]
   },
   "last": {
-    "watch": "2026-11-10T21:03:39.317Z",
+    "watch": "2026-11-11T00:04:23.745Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "http 404"
