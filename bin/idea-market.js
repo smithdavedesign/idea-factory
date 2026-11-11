@@ -169,7 +169,11 @@ async function draftChannel(ctx, ch, reddit) {
       if (!thread) throw new Error(`no open pinned thread in r/${ch.sub} matching /${ch.match}/`);
     }
   }
-  const d = await writeDraft(ctx, ch, { rules, thread });
+  let d = await writeDraft(ctx, ch, { rules, thread });
+  // A draft over the channel's length limit gets one rewrite now, instead of failing and losing the day's slot
+  // (2026-11-11: X's draft was over 280 characters and nothing went out on X that day).
+  const over = M.checkDraft({ kind: ch.kind, title: d.title, body: d.body }).find((e) => /longer than/.test(e));
+  if (over) d = await writeDraft(ctx, ch, { rules, thread, previous: d, change: `It is too long: ${over}. Cut it to fit, keeping the link exactly as it is.` });
   const item = M.addItem(ctx.queue, { channel: ch.id, kind: ch.kind, sub: ch.sub || null, title: d.title, body: d.body, why: d.why || null, flair: ch.flair || null, link: M.utmLink(ctx.cfg, ch), ...(thread ? { thread } : {}) });
   return sendDraft(ctx, item, ch);
 }
@@ -475,7 +479,7 @@ async function tick(slug, now = new Date()) {
   saveQueue(ctx);
 
   if (!ctx.queue.paused && M.localHour(now, tz) >= (ctx.cfg.draftAfterHour ?? 8) && M.localHour(now, tz) < 21) {
-    for (const ch of M.dueChannels(ctx.cfg, { launchLog: ctx.launchLog, queue: ctx.queue, now })) {
+    for (const ch of M.draftOrder(M.dueChannels(ctx.cfg, { launchLog: ctx.launchLog, queue: ctx.queue, now }))) {
       if (ch.kind === 'video') {
         if (M.localHour(now, tz) >= 18) await step('video', () => videoKit(ctx, ch));
         continue;

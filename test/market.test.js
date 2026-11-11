@@ -253,3 +253,8 @@ test('the botchelor calendar parses and its new channels are wired', () => {
   assert.equal(M.autoPostable(byId.show_hn.kind), false);
   for (const c of real.channels) assert.ok(['active', 'waiting', 'needs-account', 'off'].includes(c.status), c.id);
 });
+
+test('posts draft before help answers, so help answers cannot spend the Reddit budget first', () => {
+  const chs = [{ id: 'h1', kind: 'reddit-help' }, { id: 'p1', kind: 'reddit' }, { id: 'h2', kind: 'reddit-help' }, { id: 'b', kind: 'bluesky' }, { id: 't', kind: 'reddit-thread' }];
+  assert.deepEqual(M.draftOrder(chs).map((c) => c.id), ['p1', 'b', 't', 'h1', 'h2']);
+});
