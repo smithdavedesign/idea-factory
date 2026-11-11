@@ -1,0 +1,33 @@
+{
+  "title": "landfall — bulk US re-pricing for non-US Etsy sellers under the DDP rule",
+  "repoName": "landfall",
+  "oneLiner": "For non-US Etsy sellers who must now ship to the US duty-paid, it turns their listings export into a margin-safe US price per variation, which Etsy's one-listing-at-a-time estimator does not.",
+  "overlaps": "packpass (EU packaging plan for the same non-US Etsy seller segment, different problem, a recorded idea not a repo); no existing repo covers tariffs or pricing",
+  "tags": [
+    "serious",
+    "business",
+    "one-time",
+    "reach:community",
+    "ecommerce",
+    "compliance"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://www.valueaddedresource.net/etsy-requires-ddp-shipping-us-tariffs/",
+    "https://www.valueaddedresource.net/etsy-tests-us-tariff-calculator/",
+    "https://www.alura.io/news/us-orders-ddp-required",
+    "https://www.etsy.com/seller-handbook/article/1355662653395",
+    "https://beancount.io/blog/2026/09/02/etsy-ddp-mandate-landed-cost-bookkeeping-non-us-sellers-guide",
+    "https://fortune.com/2025/08/29/etsy-ebay-shein-de-minimis-tariff-exemption-ends-adding-charges/",
+    "https://www.404media.co/2-000-shipping-international-sellers-charge-absurd-prices-to-avoid-dealing-with-american-tariffs/",
+    "https://community.etsy.com/t5/Technical-Issues/Navigating-US-Tariffs-as-an-International-Seller-A-Workaround/td-p/149044160",
+    "https://novadata.io/resources/news/etsy-ddp-tariff-prepay-non-us-sellers-june-2026",
+    "https://app.craftybase.com/blog/how-will-tariffs-affect-etsy",
+    "https://zonos.com/docs/global-ecommerce/marketplace-dashboard-lite",
+    "https://zonos.com/landing-page/etsy",
+    "https://hts.usitc.gov"
+  ],
+  "slug": "landfall",
+  "recordedAt": "2026-11-11T17:02:22.079Z"
+}
