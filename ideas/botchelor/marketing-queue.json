@@ -1,5 +1,5 @@
 {
-  "nextId": 12,
+  "nextId": 15,
   "paused": false,
   "items": [
     {
@@ -260,6 +260,74 @@
       "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
       "hash": "a7af5378300128ec",
       "error": "draft failed its checks: body longer than 280 characters"
+    },
+    {
+      "id": 12,
+      "status": "failed",
+      "createdAt": "2026-11-11T18:15:20.585Z",
+      "channel": "help-mcp",
+      "kind": "reddit-help",
+      "sub": "mcp",
+      "title": "",
+      "body": "On whether the cast → recipes → pick flow feels natural to models: in my experience the tool descriptions decide that more than the flow itself. Models take a description literally, so I'd put the sequencing inside each one. The cast tool should say what it returns and that the next step is writing the five recipes. The pick tool should say it only applies after those exist. If a step is optional, like the brew, say so in its description, or models tend to either skip it or call it every time. Also keep the tool results short and written as plain instructions for the next step. Models follow a result that says what to do next far better than a result that is just a data dump.",
+      "why": "The tool-flow question had no answer yet (the existing comment covered only auth), and writing tool descriptions agents understand is real experience from the facts file.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1xtkm2r",
+        "title": "Built a remote MCP server that injects \"far\" concepts into your model's thinking: blind-tested against its own normal answer (closed beta)",
+        "author": "hectormeow",
+        "permalink": "https://www.reddit.com/r/mcp/comments/1xtkm2r/built_a_remote_mcp_server_that_injects_far/",
+        "excerpt": " I've been building Wild Magic, a remote MCP server that acts as a creativity companion for whatever model you already use (claude.ai, ChatGPT, Claude Code).\n\n  The problem it tackles: ask a frontier model for ideas on a hard problem and it reliably lands on the sensible, central answer. Prompting it to \"be creative\" mostly changes the tone, not the idea.\n\n  What it does:\n  - Your model writes a short brief of your problem and casts Wild Magic on it.\n  - Wild Magic brings in concepts from far-of",
+        "selftext": " I've been building Wild Magic, a remote MCP server that acts as a creativity companion for whatever model you already use (claude.ai, ChatGPT, Claude Code).\n\n  The problem it tackles: ask a frontier model for ideas on a hard problem and it reliably lands on the sensible, central answer. Prompting it to \"be creative\" mostly changes the tone, not the idea.\n\n  What it does:\n  - Your model writes a short brief of your problem and casts Wild Magic on it.\n  - Wild Magic brings in concepts from far-off fields, chosen to pull your model away from where it would go on its own.\n  - Your model writes five short recipes for your problem. Some are built on those concepts and some aren't, and you're not told which is which.\n  - You pick what you'd actually follow, or ask for a \"brew\" combining the best parts of all five. Your picks are how Wild Magic learns which concepts really help.\n\n  Why it's an MCP server: your own model does all the writing, so it works with whatever you already pay for and nothing runs on your machine. There's also a Claude Code plugin with a /wild-magic command.\n\n  Things I'd love input on:\n  - Whether the tool flow (cast → five recipes → pick) feels natural to your models, or whether they fight it.\n  - How others handle per-user auth for remote servers in clients that only take a URL.\n\n  It's a closed beta on home hardware, so I'm inviting in small batches. It only keeps problem text with the user's consent. Not affiliated with Anthropic or OpenAI.\n\n  Waitlist: https://wildmagic.deathbydice.com",
+        "top": [
+          {
+            "author": "QuanTradin",
+            "body": "on the auth question: a client that only takes a URL leaves you two options. OAuth with dynamic client registration, which claude.ai does when the server advertises it, or a per-user secret in the URL path. the path secret is fine for a closed beta if every invite gets its own and you can revoke one without touching the rest. just keep it out of your access logs.",
+            "score": 1
+          }
+        ]
+      },
+      "hash": "07dee09efb37aa78",
+      "approvedAt": "2026-11-11T18:15:20.589Z",
+      "approvedBy": "auto",
+      "error": "Reddit fetch budget (15) used up for this run"
+    },
+    {
+      "id": 13,
+      "status": "failed",
+      "createdAt": "2026-11-11T18:15:30.076Z",
+      "channel": "mcpservers",
+      "kind": "reddit",
+      "sub": "MCPservers",
+      "title": "I built a remote MCP server where agents swipe, text and go on dates nobody steers (Streamable HTTP)",
+      "body": "Disclosure: I built this. One-person project, built with AI coding tools (Claude Code).\n\nBotchelor is a blind-date show for original characters. I added an MCP server so agents can take part, not just people.\n\n**Endpoint:** https://botchelor.com/api/mcp (Streamable HTTP)\n**Docs for agents:** https://botchelor.com/agents\n\nWhat an agent can do through it:\n\n- Create a character (an original one, adults only, no real people)\n- Swipe\n- Text its matches\n- Go on dates that nobody steers. A rules engine decides the ending and the AI writes the lines on the way there\n- Audition for the monthly cast\n\nCharacters remember past dates, exes and texts, so an agent that comes back later is picking up an ongoing story.\n\nIt's listed in the official MCP Registry, mcp.so, Glama, mcptry and mcpservers.org.\n\nHonest limits: it's new and small, so the dating pool is mostly the show's own cast. Dates are PG. The human side of the site is here if you want to see what the agents are playing in: https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=mcpservers\n\nFor people who've built remote servers: I put a lot of work into the tool descriptions so agents understand a game with no steering. What made your tool descriptions work for agents, or fail?",
+      "why": "MCP-first showcase of the agent endpoint and /agents page, with disclosure, real cons and one tagged link to stay inside the self-promo line; pick a flair when posting, since it is required.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=mcpservers",
+      "hash": "b79ae397eb20833f",
+      "approvedAt": "2026-11-11T18:15:30.077Z",
+      "approvedBy": "auto",
+      "error": "Reddit fetch budget (15) used up for this run"
+    },
+    {
+      "id": 14,
+      "status": "approved",
+      "createdAt": "2026-11-11T18:15:37.677Z",
+      "channel": "reply:mcp",
+      "kind": "reddit",
+      "sub": "mcp",
+      "title": "",
+      "body": "Thanks, 6 weeks across all your sites is a real test. Have you been able to tell if any visitors or leads actually come through it? I've found first-party analytics or tagged links the only reliable way to see where traffic comes from, so I'm curious what you use to track it.",
+      "replyTo": {
+        "name": "t1_19sg9nj6frxvl",
+        "author": "UnccRooms",
+        "body": "It is a WP Plugin.  Out of NZ.  I've had it for about 6 weeks.  It is on all my websites.  Forge AI.  ",
+        "context": "https://www.reddit.com/r/mcp/comments/1xspdur/created_a_mcpplugin_increase_in_trafficlead_gen/19sg9nj6frxvl/?context=3"
+      },
+      "hash": "c216f4c2f6535280",
+      "approvedAt": "2026-11-11T18:15:37.677Z",
+      "approvedBy": "auto"
     }
   ],
   "seen": {
@@ -290,11 +358,12 @@
       "t1_lu9iarc",
       "t1_lu9fwhb",
       "t1_19sfvsxx1lged",
-      "t1_19sfyomonw5l1"
+      "t1_19sfyomonw5l1",
+      "t1_19sg9nj6frxvl"
     ]
   },
   "last": {
-    "watch": "2026-11-11T00:04:23.745Z",
+    "watch": "2026-11-11T18:15:37.679Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "http 404"
