@@ -1,5 +1,5 @@
 {
-  "nextId": 20,
+  "nextId": 21,
   "paused": false,
   "items": [
     {
@@ -416,6 +416,22 @@
       "postedAt": "2026-11-12T02:40:33.166Z",
       "postUrl": "https://www.instagram.com/reel/DfoANPfga4F/",
       "thing": "18102285998398594"
+    },
+    {
+      "id": 20,
+      "status": "approved",
+      "createdAt": "2026-11-12T16:27:11.546Z",
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "sub": null,
+      "title": "",
+      "body": "Just aired on Botchelor: Ambrose Fenn × Cass Vega.\n\nCass Vega: \"Stray cats? I name my houseplants after detectives, not felons.\"\n\nBoth characters and the date are AI. I built the show.\n\nhttps://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "why": "The newest aired date on /watch, with an exact Cass Vega quote, both characters named, an AI disclosure and the tagged link. It's new because the earlier posts didn't use this episode. I couldn't confirm the air date, since /watch shows none, so it says \"just aired\" rather than \"this week\".",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "hash": "5c193c1eda999287",
+      "approvedAt": "2026-11-12T16:27:11.551Z",
+      "approvedBy": "auto"
     }
   ],
   "seen": {
@@ -465,6 +481,9 @@
     "warned:draft mcpservers:2026-11-11": true,
     "warned:draft help-mcp:2026-11-11": true,
     "warned:video:2026-11-11": true,
-    "warned:watch:2026-11-12": true
+    "warned:watch:2026-11-12": true,
+    "warned:draft mcpservers:2026-11-12": true,
+    "warned:draft characterairunaways:2026-11-12": true,
+    "warned:draft ai_agents_weekly:2026-11-12": true
   }
 }
