@@ -262,3 +262,13 @@ test('posts draft before help answers, so help answers cannot spend the Reddit b
   const chs = [{ id: 'h1', kind: 'reddit-help' }, { id: 'p1', kind: 'reddit' }, { id: 'h2', kind: 'reddit-help' }, { id: 'b', kind: 'bluesky' }, { id: 't', kind: 'reddit-thread' }];
   assert.deepEqual(M.draftOrder(chs).map((c) => c.id), ['p1', 'b', 't', 'h1', 'h2']);
 });
+
+test('stepRecovered: a tick step logs ok once when it works again, and once when nothing is known yet', () => {
+  const h = {};
+  assert.equal(M.stepRecovered(h, 'watch', true), true);
+  assert.equal(M.stepRecovered(h, 'watch', true), false);
+  assert.equal(M.stepRecovered(h, 'watch', false), false);
+  assert.equal(h.watch, 'fail');
+  assert.equal(M.stepRecovered(h, 'watch', true), true);
+  assert.deepEqual(h, { watch: 'ok' });
+});

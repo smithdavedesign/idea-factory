@@ -462,17 +462,28 @@ async function tick(slug, now = new Date()) {
   const ctx = load(slug);
   const reddit = new io.Reddit({ account: ctx.cfg.reddit?.account });
   const tz = ctx.cfg.timezone || 'UTC';
-  const step = async (name, fn) => {
-    try { await fn(); } catch (e) {
+  // A step that works again logs an ok under its own name, so the system log stops showing it as failing.
+  // Not post: postApproved logs every item itself and catches its own failures.
+  const step = async (name, fn, { logsItself = false } = {}) => {
+    const health = (ctx.queue.last.health ||= {});
+    try {
+      await fn();
+      if (!logsItself && M.stepRecovered(health, name, true)) {
+        saveQueue(ctx);
+        emit({ component: 'market', event: name, status: 'ok', subject: { idea: slug }, message: `${name}: working` });
+      }
+    } catch (e) {
       const msg = String(e.message || e).slice(0, 400);
       emit({ component: 'market', event: name, status: 'fail', subject: { idea: slug }, message: `${name}: ${msg}` });
+      M.stepRecovered(health, name, false);
+      saveQueue(ctx);
       // Tell David about a broken browser or Reddit sign-in once a day, not every half hour.
       const key = `warned:${name}:${M.localDay(now, tz)}`;
       if (!ctx.queue.last[key]) { ctx.queue.last[key] = true; saveQueue(ctx); io.tell(`⚠️ Marketing (${name}): ${msg}`); }
     }
   };
 
-  await step('post', () => postApproved(ctx, reddit, now));
+  await step('post', () => postApproved(ctx, reddit, now), { logsItself: true });
 
   // Drafts nobody answered for 3 days expire, so their channel can come due again.
   for (const it of ctx.queue.items) if (['sent', 'drafted'].includes(it.status) && now - Date.parse(it.sentAt || it.createdAt) > EXPIRE_AFTER_MS) it.status = 'expired';
@@ -489,7 +500,7 @@ async function tick(slug, now = new Date()) {
   }
 
   if (now - Date.parse(ctx.queue.last.watch || '1970-01-01') > WATCH_EVERY_MS) await step('watch', () => watchInbox(ctx, reddit));
-  if (ctx.cfg.autoPost) await step('post', () => postApproved(ctx, reddit, now));
+  if (ctx.cfg.autoPost) await step('post', () => postApproved(ctx, reddit, now), { logsItself: true });
   if (now - Date.parse(ctx.queue.last.listingsAt || '1970-01-01') > 24 * 3_600_000) await step('listings', () => watchListings(ctx));
   if (M.localWeekday(now, tz) === 5 && M.localHour(now, tz) >= 9 && ctx.queue.last.report !== M.weekOf(now)) await step('report', () => weeklyReport(ctx, now));
 }
