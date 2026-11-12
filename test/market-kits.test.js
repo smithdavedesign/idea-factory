@@ -24,3 +24,19 @@ test('madeKitEpisodes + newestClip skip dates that already have a kit', () => {
   delete process.env.CLIPS_DIR;
   delete require.cache[require.resolve('../lib/market-io')];
 });
+
+test('s3Sign: a presigned GET for the media bucket is deterministic and carries the SigV4 query', () => {
+  const io = require('../lib/market-io.js');
+  const cfg = { endpoint: 'https://store.example', bucket: 'botchelor-media', region: 'us-east-1' };
+  const args = { method: 'GET', key: 'marketing/reels/a b.mp4', cfg, keyId: 'AKID', secretKey: 'SECRET', presignSeconds: 3600, now: new Date('2026-11-11T20:00:00Z') };
+  const a = io.s3Sign(args).url;
+  const u = new URL(a);
+  assert.equal(u.pathname, '/botchelor-media/marketing/reels/a%20b.mp4');
+  assert.equal(u.searchParams.get('X-Amz-Credential'), 'AKID/20261111/us-east-1/s3/aws4_request');
+  assert.equal(u.searchParams.get('X-Amz-Expires'), '3600');
+  assert.match(u.searchParams.get('X-Amz-Signature'), /^[0-9a-f]{64}$/);
+  assert.equal(io.s3Sign(args).url, a);
+  assert.notEqual(io.s3Sign({ ...args, secretKey: 'OTHER' }).url, a);
+  const put = io.s3Sign({ ...args, method: 'PUT', presignSeconds: 0, payloadHash: 'abc' });
+  assert.match(put.headers.authorization, /^AWS4-HMAC-SHA256 Credential=AKID\/20261111\/us-east-1\/s3\/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date, Signature=[0-9a-f]{64}$/);
+});
