@@ -272,3 +272,11 @@ test('stepRecovered: a tick step logs ok once when it works again, and once when
   assert.equal(M.stepRecovered(h, 'watch', true), true);
   assert.deepEqual(h, { watch: 'ok' });
 });
+
+test('postRetryLater: only a spent Reddit fetch budget waits for the next run', () => {
+  assert.equal(M.postRetryLater(new Error('Reddit fetch budget (15) used up for this run')), true);
+  assert.equal(M.postRetryLater('Reddit fetch budget (3) used up for this run'), true);
+  assert.equal(M.postRetryLater(new Error('the text changed after David saw it; resend it first')), false);
+  assert.equal(M.postRetryLater(new Error('SUBREDDIT_NOTALLOWED')), false);
+  assert.equal(M.postRetryLater(undefined), false);
+});
