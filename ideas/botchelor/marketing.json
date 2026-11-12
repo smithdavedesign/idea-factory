@@ -254,9 +254,10 @@
       "kind": "instagram",
       "follows": "video",
       "source": "instagram",
-      "status": "needs-account",
+      "status": "active",
       "logName": "Instagram Reels",
-      "note": "Each day's kit as a Reel (io.instagramReel, Instagram API with Instagram Login: a professional account, no Facebook Page). Setup: David makes @botchelor (or similar) a Creator/Business account; a Meta developer app (Development mode is fine for our own account) gives a long-lived token → vault/botchelor/INSTAGRAM_TOKEN. Turn on Instagram's AI label in the app once (the API has no field for it); share_to_feed is on."
+      "note": "Each day's kit as a Reel (io.instagramReel). LIVE 2026-11-11: @botchelor (IG user 17841464970954936) in the Botchelor business portfolio (1599859378877687, not smithdavedesign's), Meta app \"Botchelor marketing\" 2226376481650794 with Unified login (Facebook Login for Business config 1638703558035470): a system-user token that never expires in vault/botchelor/INSTAGRAM_TOKEN, the id in INSTAGRAM_USER_ID, app secret in INSTAGRAM_APP_SECRET. The caption carries the AI disclosure; the API has no field for Instagram's own AI label. share_to_feed is on.",
+      "from": "2026-11-11"
     },
     {
       "id": "facebook_reels",
