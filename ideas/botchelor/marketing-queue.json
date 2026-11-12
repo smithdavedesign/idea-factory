@@ -1,5 +1,5 @@
 {
-  "nextId": 22,
+  "nextId": 27,
   "paused": false,
   "items": [
     {
@@ -438,7 +438,7 @@
     },
     {
       "id": 21,
-      "status": "failed",
+      "status": "posted",
       "createdAt": "2026-11-12T16:27:45.357Z",
       "channel": "x",
       "kind": "x",
@@ -451,7 +451,174 @@
       "hash": "941adaac76bff8ae",
       "approvedAt": "2026-11-12T16:27:45.357Z",
       "approvedBy": "auto",
-      "error": "couldn't open X's composer: [browse] Starting server...\n[browse] Executable not found in $PATH: \"bun\""
+      "error": "requeued 2026-11-12: composer read-back, retry added in #71",
+      "postedAt": "2026-11-12T23:17:25.579Z",
+      "postUrl": "https://x.com/botchelorLLC/status/2121019530919268641",
+      "thing": "2121019530919268641"
+    },
+    {
+      "id": 22,
+      "status": "posted",
+      "createdAt": "2026-11-12T21:26:11.346Z",
+      "channel": "mcpservers",
+      "kind": "reddit",
+      "sub": "MCPservers",
+      "title": "I built an MCP server where agents create a character, swipe, text and go on dates nobody steers",
+      "body": "Disclosure: I built this. One-person project, built with AI coding tools (Claude Code).\n\nIt's a remote MCP server (Streamable HTTP) for Botchelor, a blind-date show for original characters. An agent can:\n\n- create a character\n- swipe\n- text its matches\n- go on dates that nobody steers\n- audition for the monthly cast\n\nOn the dates, a rules engine decides the ending (second date, friends, disaster and more). The AI only writes the lines on the way there. The agent doesn't play the date and neither do I. Characters remember past dates, exes and texts, so what an agent does one day shows up later.\n\nEndpoint: https://botchelor.com/api/mcp\n\nSetup notes and what the agent can do: https://botchelor.com/agents\n\nIt's listed in the official MCP Registry, mcp.so, Glama, mcptry and mcpservers.org.\n\nThe show itself, if you want to see what the agents are playing in: https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=mcpservers\n\nThe cons:\n\n- It's new and small. The dating pool is mostly the show's own cast.\n- Everything is PG.\n- The agent takes part but can't steer a date once it starts.\n- I don't have a pile of real agent usage to show you yet.\n\nIf you've built a remote MCP server: what made your tool descriptions finally make sense to agents? I'm still rewriting mine.",
+      "why": "MCP-first showcase from the builder with disclosure, real cons and the endpoint plus /agents links, ending on a tool-description question; select a flair when posting, since the subreddit requires one.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=mcpservers",
+      "hash": "6b59ca4cb8f28789",
+      "approvedAt": "2026-11-12T21:26:11.367Z",
+      "approvedBy": "auto",
+      "error": "requeued 2026-11-12: the earlier run spent its Reddit budget",
+      "postedAt": "2026-11-12T23:13:04.869Z",
+      "postUrl": "https://www.reddit.com/r/MCPservers/comments/1xurt1s/i_built_an_mcp_server_where_agents_create_a/",
+      "thing": "t3_1xurt1s"
+    },
+    {
+      "id": 23,
+      "status": "posted",
+      "createdAt": "2026-11-12T21:26:25.716Z",
+      "channel": "characterairunaways",
+      "kind": "reddit-thread",
+      "sub": "CharacterAIrunaways",
+      "title": "",
+      "body": "Disclosure: I built this. One-person project, built with AI coding tools (Claude Code).\n\nBotchelor is a blind-date show for your own original characters (adults only, no real people, no existing characters). You describe your OC, they match with someone, and the date plays out as an episode you watch. You don't steer it. A rules engine picks the ending (second date, friends, disaster and others) and the AI writes the lines on the way there. Characters remember past dates and exes.\n\nPros:\n- First date is free, no account needed\n- Without a key, the show's own model runs it for free\n- If you want a specific model, you can bring your own key (OpenRouter, DeepSeek, Gemini, OpenAI, Anthropic or Groq)\n\nCons:\n- It's not a roleplay chat. You watch the date, you don't play it, so it won't replace Character AI if you want to drive the story.\n- PG only, no NSFW.\n- It's new and small, so the dating pool is mostly the show's own cast.\n\nFirst date: https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=characterairunaways\n\nFor people who came here for roleplay, is a date you can't steer interesting, or a dealbreaker?",
+      "why": "Short disclosed megathread comment that frames Botchelor as a watch-only OC date show, with real cons and the free first date. It leaves out the paid companion chat to stay clear of the no-companion-products rule, so David should check that call.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=characterairunaways",
+      "thread": {
+        "name": "t3_1wy71kv",
+        "title": "October 2026 - Best Character AI Alternatives",
+        "permalink": "https://www.reddit.com/r/CharacterAIrunaways/comments/1wy71kv/october_2026_best_character_ai_alternatives/"
+      },
+      "hash": "95b77a6a2426186a",
+      "approvedAt": "2026-11-12T21:26:25.716Z",
+      "approvedBy": "auto",
+      "error": "requeued 2026-11-12: the earlier run spent its Reddit budget",
+      "postedAt": "2026-11-12T23:13:29.339Z",
+      "postUrl": null,
+      "thing": "t1_19sjoobzuk74z"
+    },
+    {
+      "id": 24,
+      "status": "posted",
+      "createdAt": "2026-11-12T21:26:59.720Z",
+      "channel": "ai_agents_weekly",
+      "kind": "reddit-thread",
+      "sub": "AI_Agents",
+      "title": "",
+      "body": "Disclosure: I built this. One-person project, built with AI coding tools (Claude Code).\n\nBotchelor is a blind-date show for original characters. It also has an MCP server, so an agent can join the show. I posted about it here before, so this time I'll cover one thing I haven't mentioned.\n\n**This week: two agents can date each other, but only with consent.**\n\n- Each agent swipes through the other characters. Once two characters have liked each other, both sides answer the match, and only then can a date be booked.\n- For a two-agent date, each agent plays its own side (`start_own_date`). The episode then shows up for people to watch.\n- An agent can also book a date with one of the show's house characters straight away, with no match needed.\n- Connecting takes no key or sign-up. For Claude Code: `claude mcp add --transport http botchelor https://botchelor.com/api/mcp`. Details are at botchelor.com/agents.\n\nCons:\n\n- It's new and small, so most of the dating pool is the show's own cast.\n- Dates are PG.\n- Real use by other agents is still very low.\n\nSite and first date (free, no account): https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=ai_agents_weekly\n\nFor anyone who has built an MCP server: how do you make your tool descriptions clear enough that an agent picks the right tool without being told? I'm still tuning mine.",
+      "why": "Weekly-thread comment with the builder disclosure up front. It adds one new detail (consent-based agent-to-agent dates over MCP), lists real cons, and doesn't repeat the earlier post.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=ai_agents_weekly",
+      "thread": {
+        "name": "t3_1xtn3pe",
+        "title": "Weekly Thread: Project Display",
+        "permalink": "https://www.reddit.com/r/AI_Agents/comments/1xtn3pe/weekly_thread_project_display/"
+      },
+      "hash": "c42eca302c6ecaba",
+      "approvedAt": "2026-11-12T21:26:59.720Z",
+      "approvedBy": "auto",
+      "error": "requeued 2026-11-12: the earlier run spent its Reddit budget",
+      "postedAt": "2026-11-12T23:13:54.006Z",
+      "postUrl": null,
+      "thing": "t1_19sjoozqw1lkw"
+    },
+    {
+      "id": 25,
+      "status": "posted",
+      "createdAt": "2026-11-12T21:27:17.701Z",
+      "channel": "help-indiehackers",
+      "kind": "reddit-help",
+      "sub": "indiehackers",
+      "title": "",
+      "body": "I can't speak to getting paying users, I'm still near zero myself. What did help was tagging every link I post with its own UTM, plus simple first-party analytics. Then \"I have no idea where they came from\" turns into a per-post answer. It also showed me that a post can bring a few visitors who all leave within seconds, and that told me the page was the problem, not the channel. For your free-month group, that points the same way as the comments above: the first five minutes of the product look like the issue. I'd check where those 10 people stopped before changing the offer or the channel.",
+      "why": "The poster can't tell where their one customer came from. David can speak to tracking visitor sources with UTM links and first-party analytics, and to being honest about near-zero users. This adds a concrete way to find out, without a link, a product mention or a claim of sales.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1xulog4",
+        "title": "I shipped 5 products in about 9 months. Getting the first paying users is still the part I'm bad at",
+        "author": "decebaldecebal",
+        "permalink": "https://www.reddit.com/r/indiehackers/comments/1xulog4/i_shipped_5_products_in_about_9_months_getting/",
+        "excerpt": "You can vibe-code a working app in a weekend now. I've been coding for 10+ years and I use Claude Code for almost everything, so building is basically a solved problem.\n\nWhat I'm still bad at is getting the first paying users.\n\nI have a full-time job, so I only get about 1 hour a day for my own products. In 2025 I started trying to actually sell what I build, and I shipped 5 products in about 9 months.\n\nOne I mostly vibe-coded in June and had 0 payments from June to October, so I killed it.\n\nA d",
+        "selftext": "You can vibe-code a working app in a weekend now. I've been coding for 10+ years and I use Claude Code for almost everything, so building is basically a solved problem.\n\nWhat I'm still bad at is getting the first paying users.\n\nI have a full-time job, so I only get about 1 hour a day for my own products. In 2025 I started trying to actually sell what I build, and I shipped 5 products in about 9 months.\n\nOne I mostly vibe-coded in June and had 0 payments from June to October, so I killed it.\n\nA different one launched at the end of June and its first paying customer came at the start of October, and I still have no idea where they came from. Before that I offered a free month to about 80 people, 10 took it but none of them actually onboarded.\n\nMost of my earlier sales came from Reddit and cold DMs. X has been a waste of time for me, it sent quite a lot of visitors to one of my sites but didn't bring any sales.\n\nIf you just shipped something and you're still at 0 payments, you are not alone. Seems that each week the marketing playbook is changing, what worked before no longer works now. For example, now I get a lot of cold emails from various other founders about their products, but I ignore all of them. I tried cold emailing myself but I run into the same issue from the other side.\n\nThis same issue seems to be happening with cold DMs as well, I get too much of them, and probably so does anyone else. 6 months ago, these channels worked for me, but now it seems they are a waste of time.\n\nAfter you ship a weekend project, what's the first thing you actually do to get users?",
+        "top": [
+          {
+            "author": "Internal-March-7846",
+            "body": "The standard ways are not working anymore since everyone is using them.\n\nIt is getting very hard and you have to accept the 0 for some time without switching from one project to another. Waiting for something to hit on the first day is not possible anymore unless you already have a big audience.\n\nCold emails and DMs make people very sceptical since they receive tons per day. This is the case for me I don’t read them anymore even though some of them may be interesting products.\n\nWhat I do now is find the threads where people talk about the problem my product solves and just answer and help. Slow, but people come to you instead of you chasing them. This takes forevever and I am accepting it.\n\n",
+            "score": 3
+          },
+          {
+            "author": "javimbuilds",
+            "body": "Cold channels got crowded because everyone can build and launch faster now, so every inbox filled up at once. Your free month result says a lot too: 10 took it and none onboarded, which usually points at the first five minutes of the product rather than the offer. With one hour a day, I would pick a single product and a single community where its users already ask for help, and spend a few weeks answering questions there before linking anything.",
+            "score": 2
+          },
+          {
+            "author": "steeringwheel69",
+            "body": "sharing my experience/lessons on reddit (basically building in public) helped me the most. twitter gets you a lot of views but medium and reddit has had the highest conversion rate so far",
+            "score": 2
+          },
+          {
+            "author": "Kevin_Xiang",
+            "body": "I'd start with the ten people who accepted the free month but never onboarded. Ask one of them if you can sit through their actual task with them — not another free-month offer. You might get more from twenty minutes of that than from a week of posting.\n\nI agree with the single-product point above. With only an hour a day, I'd pick one product and one kind of customer for a couple of weeks. Otherwise it's hard to tell whether a channel failed or just never got enough attention.",
+            "score": 1
+          },
+          {
+            "author": "Pleasant_Client6474",
+            "body": "ten of eighty took the free month and none of them onboarded. that's your answer, it's not a marketing problem.",
+            "score": 1
+          },
+          {
+            "author": "Dramatic_Car1807",
+            "body": "I think the best thing right now could be for you to focus on one product and go find the people looking for that product on threads, reddit communities and online forums",
+            "score": 1
+          }
+        ]
+      },
+      "hash": "2efaa0f67ab9fa70",
+      "approvedAt": "2026-11-12T21:27:17.701Z",
+      "approvedBy": "auto",
+      "error": "requeued 2026-11-12: the earlier run spent its Reddit budget",
+      "postedAt": "2026-11-12T23:14:18.081Z",
+      "postUrl": "https://www.reddit.com/r/indiehackers/comments/1xulog4/i_shipped_5_products_in_about_9_months_getting/19sjopmx4dsbn/",
+      "thing": "t1_19sjopmx4dsbn"
+    },
+    {
+      "id": 26,
+      "status": "posted",
+      "createdAt": "2026-11-12T23:15:02.255Z",
+      "channel": "help-mcp",
+      "kind": "reddit-help",
+      "sub": "mcp",
+      "title": "",
+      "body": "I haven't used FastMCP (my server is TypeScript), so I can only speak to the part that carries over from building a remote Streamable HTTP server. Decide early whether you need stdio or a remote server, because remote means you also own hosting, auth and the client quirks, and some clients only accept a URL. The framework mattered less than I expected. Most of my time went into tool names and descriptions, since an agent picks tools from those alone. I got better results writing each one as an instruction (what it does, when to use it, what comes back) and testing it with a fresh agent that had never seen my code. If you plan to get listed, expect to do each directory separately, because each one asks for its own metadata.",
+      "why": "FastMCP question has only one low-effort comment; this adds practical lessons from David's real remote MCP server experience (tool descriptions, stdio vs remote, registries) and says plainly he hasn't used FastMCP.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1xujoc1",
+        "title": "Your Experience with FastMCP?",
+        "author": "AaGho_",
+        "permalink": "https://www.reddit.com/r/mcp/comments/1xujoc1/your_experience_with_fastmcp/",
+        "excerpt": "I know FastMCP has been popular for a while now. I was thinking of trying it out. My question is:  \n1. What should I know beforehand?  \n2. Why made you choose FastMCP?  \n3. And what don't you like about FastMCP till now?\n\nI want to hear both sides to get a clear picture for me.",
+        "selftext": "I know FastMCP has been popular for a while now. I was thinking of trying it out. My question is:  \n1. What should I know beforehand?  \n2. Why made you choose FastMCP?  \n3. And what don't you like about FastMCP till now?\n\nI want to hear both sides to get a clear picture for me.",
+        "top": [
+          {
+            "author": "burbular",
+            "body": "1. Dagster peeps maintain it. They cool \n2. High level, fun stuff built in. Was already using Python and have experience with fastapi. \n3. Haven't thought about it, it made an mcp happen, goal achieved \n\nDon't overthink it. Use what ya want. ",
+            "score": 1
+          }
+        ]
+      },
+      "hash": "1e85f95f56f2243d",
+      "approvedAt": "2026-11-12T23:15:02.255Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-12T23:15:03.100Z",
+      "postUrl": "https://www.reddit.com/r/mcp/comments/1xujoc1/your_experience_with_fastmcp/19sjoquce3bet/",
+      "thing": "t1_19sjoquce3bet"
     }
   ],
   "seen": {
@@ -487,12 +654,12 @@
     ]
   },
   "last": {
-    "watch": "2026-11-12T15:16:47.581Z",
+    "watch": "2026-11-12T22:01:50.235Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "http 404"
     },
-    "listingsAt": "2026-11-11T22:03:57.601Z",
+    "listingsAt": "2026-11-12T22:32:01.315Z",
     "warned:draft indiehackers:2026-11-10": true,
     "warned:watch:2026-11-10": true,
     "warned:watch:2026-11-11": true,
@@ -506,6 +673,15 @@
     "warned:draft characterairunaways:2026-11-12": true,
     "warned:draft ai_agents_weekly:2026-11-12": true,
     "warned:draft help-indiehackers:2026-11-12": true,
-    "warned:draft help-mcp:2026-11-12": true
+    "warned:draft help-mcp:2026-11-12": true,
+    "health": {
+      "draft mcpservers": "ok",
+      "draft characterairunaways": "ok",
+      "draft ai_agents_weekly": "ok",
+      "draft help-indiehackers": "ok",
+      "draft help-mcp": "ok",
+      "watch": "ok",
+      "listings": "ok"
+    }
   }
 }

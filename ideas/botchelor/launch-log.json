@@ -176,6 +176,34 @@
       "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n24vbzqizn2o",
       "postedAt": "2026-11-12T16:29:15.217Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #20 on his phone; link tagged utm_content=bluesky."
+    },
+    {
+      "channel": "r/MCPservers",
+      "url": "https://www.reddit.com/r/MCPservers/",
+      "postUrl": "https://www.reddit.com/r/MCPservers/comments/1xurt1s/i_built_an_mcp_server_where_agents_create_a/",
+      "postedAt": "2026-11-12T23:13:04.869Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #22 on his phone; link tagged utm_content=mcpservers."
+    },
+    {
+      "channel": "r/CharacterAIrunaways (October 2026 - Best Character AI Alternatives)",
+      "url": "https://www.reddit.com/r/CharacterAIrunaways/",
+      "postUrl": null,
+      "postedAt": "2026-11-12T23:13:29.339Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #23 on his phone; link tagged utm_content=characterairunaways."
+    },
+    {
+      "channel": "r/AI_Agents (Weekly Thread: Project Display)",
+      "url": "https://www.reddit.com/r/AI_Agents/",
+      "postUrl": null,
+      "postedAt": "2026-11-12T23:13:54.006Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #24 on his phone; link tagged utm_content=ai_agents_weekly."
+    },
+    {
+      "channel": "X",
+      "url": null,
+      "postUrl": "https://x.com/botchelorLLC/status/2121019530919268641",
+      "postedAt": "2026-11-12T23:17:25.579Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #21 on his phone; link tagged utm_content=x."
     }
   ]
 }
