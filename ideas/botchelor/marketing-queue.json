@@ -1,5 +1,5 @@
 {
-  "nextId": 21,
+  "nextId": 22,
   "paused": false,
   "items": [
     {
@@ -419,7 +419,7 @@
     },
     {
       "id": 20,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-12T16:27:11.546Z",
       "channel": "bluesky",
       "kind": "bluesky",
@@ -431,7 +431,27 @@
       "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
       "hash": "5c193c1eda999287",
       "approvedAt": "2026-11-12T16:27:11.551Z",
-      "approvedBy": "auto"
+      "approvedBy": "auto",
+      "postedAt": "2026-11-12T16:29:15.217Z",
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n24vbzqizn2o",
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n24vbzqizn2o"
+    },
+    {
+      "id": 21,
+      "status": "failed",
+      "createdAt": "2026-11-12T16:27:45.357Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "\"Stray cats? I name my houseplants after detectives, not felons. Though Columbo does look like a stray.\" - Cass Vega, S2 Night 12. Characters and dates are AI. I built the show. https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x #AI #OC",
+      "why": "Same Cass Vega quote and disclosure as before; cut the Ambrose Fenn aside and shortened Season 2 to S2, so it's about 274 characters with the link unchanged.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "hash": "941adaac76bff8ae",
+      "approvedAt": "2026-11-12T16:27:45.357Z",
+      "approvedBy": "auto",
+      "error": "couldn't open X's composer: [browse] Starting server...\n[browse] Executable not found in $PATH: \"bun\""
     }
   ],
   "seen": {
@@ -484,6 +504,8 @@
     "warned:watch:2026-11-12": true,
     "warned:draft mcpservers:2026-11-12": true,
     "warned:draft characterairunaways:2026-11-12": true,
-    "warned:draft ai_agents_weekly:2026-11-12": true
+    "warned:draft ai_agents_weekly:2026-11-12": true,
+    "warned:draft help-indiehackers:2026-11-12": true,
+    "warned:draft help-mcp:2026-11-12": true
   }
 }
