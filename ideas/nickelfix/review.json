@@ -1,0 +1,58 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "Real pain at the rejection moment, but demand is forum anecdote and Fiverr listings with no sales data, and a free chatbot does the same job. A niche, one-off $9 sale with ongoing rule maintenance isn't worth building first.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 4,
+      "evidence": "Five 2026 chromium-extensions threads and DevRel's acknowledgement of review delays show pain, not payment. Fiverr gigs are seller-advertised with no sales counts; RESEARCH.md admits willingness to pay is inferred."
+    },
+    "statusQuo": {
+      "score": 5,
+      "evidence": "Guessing, the Google Group, or Fiverr at ~$10/hr to $50 a gig is a real priced workaround. But pasting the email and manifest into a free chatbot, plus free scanners (CWS Submission Copilot, ExtGuard, open-source skill), is the strongest unmentioned competitor."
+    },
+    "specificity": {
+      "score": 3,
+      "evidence": "Target is a category (solo devs, studios, agencies). Agencies are named the primary payer with zero agency evidence; the people found are forum posters who expect free tools."
+    },
+    "wedge": {
+      "score": 5,
+      "evidence": "Manifest-plus-email diagnosis is a weekend build, but many cited rejections are wrong flags or policy ambiguity that static analysis can't see, and the valuable part (appeal and justification drafts) is what an LLM chat does free."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "Policy churn means maintaining a rule list for a one-off $9 product, and better general LLMs make the diagnosis cheaper to get for free. Nothing in the plan accumulates a corpus of real cases."
+    }
+  },
+  "premises": [
+    "Rejected developers will pay for a diagnosis despite free chatbots and scanners: unsupported, no sales data.",
+    "Static analysis of the manifest or zip finds the cause often enough to justify $9: unsupported, the PRD lists it as open.",
+    "Agencies are the payers: no agency evidence found.",
+    "Rejection emails are too vague to self-diagnose: partly supported, but the forum sample is selected.",
+    "Search-intent traffic on violation-code queries can feed it: plausible, volume unmeasured."
+  ],
+  "alternatives": [
+    "Minimal: static SEO pages per violation code (causes, fixes, appeal templates) with no app, to test search demand at $0.",
+    "Concierge: offer manual $9 diagnoses in the chromium-extensions threads before writing code.",
+    "Ideal: full M1-M3 diagnose, drafts and Stripe paywall (more effort, rule-maintenance burden).",
+    "Extend an existing repo: none relevant in David's portfolio."
+  ],
+  "wedge": "Per-violation-code SEO pages plus a paste box with a free diagnosis and a 'send me your case, $9' button; no zip scan, LLM or Stripe until someone pays.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js with a TypeScript rule engine over a pasted manifest, no paid APIs. One test: a manifest with tabs/history/cookies plus a 'Use of Permissions' email flags all three and links the permissions policy. This proves the code, not demand."
+  },
+  "risks": [
+    "Free chatbots substitute for the whole product",
+    "Small niche, one-off purchase, no repeat revenue",
+    "Static checks miss most real causes, so reports feel generic",
+    "Over-promising approval, and policy staleness costing maintenance",
+    "Developers reluctant to upload source and expecting free tools"
+  ],
+  "killCriteria": "Drop if 50+ targeted visitors yield fewer than 5 signups or runs; no one pays $9 for a manual diagnosis within 4 weeks; a manifest scan finds the confirmed cause in fewer than 4 of 10 real public rejection threads; or a free chatbot prompt matches the diagnosis on those threads.",
+  "launch": {
+    "channels": [],
+    "post": ""
+  }
+}
