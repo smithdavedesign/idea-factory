@@ -1,0 +1,39 @@
+{
+  "title": "nickelfix — what to fix after a Chrome Web Store rejection",
+  "repoName": "nickelfix",
+  "oneLiner": "For Chrome extension developers and agencies whose submission just got a vague Web Store rejection, it turns the rejection email plus the manifest/zip into a ranked fix list, permission justifications and an appeal draft for about $9 instead of a Fiverr fix.",
+  "overlaps": "none (closest: pre-submission scanners CWS Submission Copilot and ExtGuard, not in the portfolio; nearest repo is the dev-tool idea dawnlog)",
+  "tags": [
+    "serious",
+    "developers",
+    "one-time",
+    "reach:search",
+    "chrome-extensions"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://developer.chrome.com/docs/webstore/review-process",
+    "https://groups.google.com/a/chromium.org/g/chromium-extensions/c/QVrNR320T3o",
+    "https://groups.google.com/a/chromium.org/g/chromium-extensions/c/VJ6DcpEn51Y",
+    "https://www.fiverr.com/sserpolar/fix-your-rejected-chrome-extension",
+    "https://chromewebstore.google.com/detail/cws-submission-copilot/bipgdjideeiobpfcnpdilolhnolefacg",
+    "https://peerlist.io/gk_9753/project/extguard",
+    "https://hackernoon.com/google-rejected-my-chrome-extension-3-times",
+    "https://groups.google.com/a/chromium.org/g/chromium-extensions/c/-CR1xuqUQ_o",
+    "https://groups.google.com/a/chromium.org/g/chromium-extensions/c/lGT0HRLg3Z0",
+    "https://groups.google.com/a/chromium.org/g/chromium-extensions/c/nx3eqhOq150",
+    "https://groups.google.com/a/chromium.org/g/chromium-extensions/c/SGJNOGKvi7k",
+    "https://extensionbooster.net/blog/chrome-web-store-extension-review-time-2026-how-long-guide/",
+    "https://dev.to/ktg0215/how-to-avoid-chrome-web-store-red-nickel-rejection-what-i-found-after-auditing-18-extensions-gbg",
+    "https://fiverr.com/iftakhar901/fix-manifest-v3-chrome-extension-rejection",
+    "https://www.fiverr.com/dev_shehzad/fix-and-publish-chrome-extension-manifest-v3-api-and-permission-errors",
+    "https://extensionauditor.com/",
+    "https://apify.com/nexgendata/chrome-extension-security-analyzer",
+    "https://skills.sh/quangpl/browser-extension-skills/extension-review",
+    "https://developer.chrome.com/docs/webstore/program-policies/best-practices",
+    "https://www.stefanvd.net/blog/?p=2224"
+  ],
+  "slug": "nickelfix",
+  "recordedAt": "2026-11-12T17:02:40.949Z"
+}
