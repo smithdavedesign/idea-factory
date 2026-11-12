@@ -148,6 +148,13 @@
       "postUrl": "https://www.youtube.com/shorts/YaGFdaM4VyY",
       "postedAt": "2026-11-11T21:51:46.124Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #15 on his phone; link tagged utm_content=youtube_shorts."
+    },
+    {
+      "channel": "Instagram Reels",
+      "url": "https://www.instagram.com/botchelor/",
+      "postUrl": "https://www.instagram.com/reel/DfnzWsZALx1/",
+      "postedAt": "2026-11-12T00:49:32.857Z",
+      "note": "First Reel (Kaede × Malachar night ferry, kit rebuilt with the new vote line). Posted by Claude via a media-bucket link after the direct upload failed (idea-factory #68); caption tagged ?s=instagram, AI disclosure in the caption."
     }
   ]
 }
