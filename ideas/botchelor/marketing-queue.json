@@ -1,5 +1,5 @@
 {
-  "nextId": 17,
+  "nextId": 20,
   "paused": false,
   "items": [
     {
@@ -366,6 +366,53 @@
       "postedAt": "2026-11-12T00:49:32.857Z",
       "postUrl": "https://www.instagram.com/reel/DfnzWsZALx1/",
       "thing": "18017636561984789"
+    },
+    {
+      "id": 17,
+      "status": "sent",
+      "createdAt": "2026-11-12T02:36:41.435Z",
+      "channel": "video",
+      "kind": "video",
+      "title": "",
+      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=tiktok\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey/post.mp4",
+      "episode": "5eacfaba-c66a-44a1-90d1-bdbdd857794b",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey",
+      "hash": "15aae85b10154dd5",
+      "sentAt": "2026-11-12T02:37:51.450Z"
+    },
+    {
+      "id": 18,
+      "status": "posted",
+      "createdAt": "2026-11-12T02:37:51.456Z",
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "title": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay. #Shorts",
+      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=youtube\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey/post.mp4",
+      "episode": "5eacfaba-c66a-44a1-90d1-bdbdd857794b",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey",
+      "hash": "5a0618d0bb8fb2ca",
+      "approvedAt": "2026-11-12T02:37:51.456Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-12T02:37:55.491Z",
+      "postUrl": "https://www.youtube.com/shorts/fD_5ntu5QNg",
+      "thing": "fD_5ntu5QNg"
+    },
+    {
+      "id": 19,
+      "status": "approved",
+      "createdAt": "2026-11-12T02:37:51.457Z",
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "title": "",
+      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=instagram\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey/post.mp4",
+      "episode": "5eacfaba-c66a-44a1-90d1-bdbdd857794b",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey",
+      "hash": "49db40e5d792e115",
+      "approvedAt": "2026-11-12T02:37:51.457Z",
+      "approvedBy": "auto"
     }
   ],
   "seen": {
