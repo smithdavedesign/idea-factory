@@ -162,6 +162,13 @@
       "postUrl": "https://www.youtube.com/shorts/fD_5ntu5QNg",
       "postedAt": "2026-11-12T02:37:55.491Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #18 on his phone; link tagged utm_content=youtube_shorts."
+    },
+    {
+      "channel": "Instagram Reels",
+      "url": null,
+      "postUrl": "https://www.instagram.com/reel/DfoANPfga4F/",
+      "postedAt": "2026-11-12T02:40:33.166Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #19 on his phone; link tagged utm_content=instagram_reels."
     }
   ]
 }

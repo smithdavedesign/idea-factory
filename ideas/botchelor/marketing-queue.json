@@ -401,7 +401,7 @@
     },
     {
       "id": 19,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-12T02:37:51.457Z",
       "channel": "instagram_reels",
       "kind": "instagram",
@@ -412,7 +412,10 @@
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey",
       "hash": "49db40e5d792e115",
       "approvedAt": "2026-11-12T02:37:51.457Z",
-      "approvedBy": "auto"
+      "approvedBy": "auto",
+      "postedAt": "2026-11-12T02:40:33.166Z",
+      "postUrl": "https://www.instagram.com/reel/DfoANPfga4F/",
+      "thing": "18102285998398594"
     }
   ],
   "seen": {
