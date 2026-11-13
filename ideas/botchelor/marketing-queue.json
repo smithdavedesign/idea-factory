@@ -1,5 +1,5 @@
 {
-  "nextId": 28,
+  "nextId": 31,
   "paused": false,
   "items": [
     {
@@ -646,6 +646,72 @@
       "postedAt": "2026-11-13T13:23:47.253Z",
       "postUrl": null,
       "thing": "t1_19skqlnuoie8w"
+    },
+    {
+      "id": 28,
+      "status": "posted",
+      "createdAt": "2026-11-13T16:25:07.420Z",
+      "channel": "modelcontextprotocol",
+      "kind": "reddit",
+      "sub": "modelcontextprotocol",
+      "title": "I built a remote MCP server where the default tool list is 37 of 63 tools (the rest work by name)",
+      "body": "Disclosure: I built this. One-person project, built with AI coding tools (Claude Code).\n\nThe design choice I'd like feedback on: the server lists 37 core tools by default, which is enough to play the whole show. The other 26 are unlisted but callable by name. `?tools=all` lists all 63. The point is to keep the agent's context light. Anything an agent needs on a normal run is in the short list. Rarer things like double dates, roleplay proposals and memory edits sit behind the name.\n\nWhat the server is for: botchelor.com is a blind-date show for original characters. Through MCP, an agent creates an adult original character, swipes, texts, and goes on dates nobody steers. A rules engine picks the ending and the model writes the lines on the way there. Agents can also perform a date themselves, one line per step, instead of handing it to the show's model.\n\nDetails:\n\n- Streamable HTTP at `https://botchelor.com/api/mcp`, JSON-RPC 2.0.\n- No key and no sign-up. Identity is anonymous, and you keep the `agent_id` your first write returns to keep your characters.\n- Claude Code: `claude mcp add --transport http botchelor https://botchelor.com/api/mcp`\n- Stdio-only clients can use `npx -y mcp-remote` with the same URL.\n- It's listed in the official MCP Registry, mcp.so, Glama, mcptry and mcpservers.org.\n\nCons:\n\n- Everyone gets 3 free dates a week, and agents share a small daily pool. It is capped because I pay for the model.\n- It's PG only.\n- It's new and small. The pool of characters to date is mostly the show's own cast, and real use is low.\n- Unlisted tools are a tradeoff. A client that only trusts the listed tools never finds them, and I haven't tested how every client handles that.\n\nDocs: https://botchelor.com/agents\n\nTry it: https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=modelcontextprotocol\n\nFor those of you with bigger servers: do you trim the default tool list, or list everything and let the client filter?",
+      "why": "Technical lead on the default-vs-unlisted tool split (corrected to the real 37 core / 63 total from botchelor.com/agents, not 24), distinct text from r/MCPservers, ending on a tool-list design question.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=modelcontextprotocol",
+      "hash": "55d2a3e38f2e565b",
+      "approvedAt": "2026-11-13T16:25:07.423Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-13T16:25:57.441Z",
+      "postUrl": "https://www.reddit.com/r/modelcontextprotocol/comments/1xvcbqg/i_built_a_remote_mcp_server_where_the_default/",
+      "thing": "t3_1xvcbqg"
+    },
+    {
+      "id": 29,
+      "status": "posted",
+      "createdAt": "2026-11-13T16:25:37.348Z",
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "sub": null,
+      "title": "",
+      "body": "Nell Abiodun to Zoë Marlowe: \"Twenty minutes is a serious lecture for a coffee order.\"\n\nFrom \"Coffee At Four\", Season 2, Night 13. The characters and the dialogue are AI.\n\nhttps://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "why": "Quotes Nell's line from the newest aired date, Coffee At Four (S2 Night 13), names both characters, and says it's AI. It's a different date from the earlier posts.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "hash": "c6cb79357e9a3efc",
+      "approvedAt": "2026-11-13T16:25:37.348Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-13T16:26:27.704Z",
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n27flxfti52y",
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n27flxfti52y"
+    },
+    {
+      "id": 30,
+      "status": "posted",
+      "createdAt": "2026-11-13T16:25:55.776Z",
+      "channel": "help-sideproject",
+      "kind": "reddit-help",
+      "sub": "SideProject",
+      "title": "",
+      "body": "A sign-in before anything happens will cost you most of the friends who get a room code. From bounce data I've looked at on invite-style links, a cold visitor who doesn't already know the thing often leaves within a few seconds, and a login wall gives them an easy reason to go. The usual fix is to let a guest join the room and paint as a guest, then ask for an account only when they want to save or unlock something. Add first-party analytics on the invite landing page (room opened, first stroke, sign-in shown, sign-in completed) and tag the invite links with UTM params. That way you can see where people drop instead of guessing. Four free pictures sounds fine to me. The sign-in step is the bigger risk.",
+      "why": "The sign-in question is one where David's experience with shared-link bounces and first-party analytics adds something concrete, and it has no useful comments yet; the answer doesn't mention his product.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1xvapka",
+        "title": "Just launched: a paint by numbers you play with friends in the browser. Is a sign-in before the first picture a deal breaker?",
+        "author": "DutyOnly4308",
+        "permalink": "https://www.reddit.com/r/SideProject/comments/1xvapka/just_launched_a_paint_by_numbers_you_play_with/",
+        "excerpt": "I'm the solo dev of Numochi (https://numochi.net). It's paint by numbers with cute illustrations, but made to play with someone: 2 to 4 people paint the same picture live with voice chat, or race each other on the same picture for 5 minutes, or each get only part of the colours so you have to finish together. There's also a daily picture with a leaderboard and a mystery picture you have to guess while painting. Phone and desktop, nothing to install, English and French.\n\nHow it's priced right now",
+        "selftext": "I'm the solo dev of Numochi (https://numochi.net). It's paint by numbers with cute illustrations, but made to play with someone: 2 to 4 people paint the same picture live with voice chat, or race each other on the same picture for 5 minutes, or each get only part of the colours so you have to finish together. There's also a daily picture with a leaderboard and a mystery picture you have to guess while painting. Phone and desktop, nothing to install, English and French.\n\nHow it's priced right now:\n\n- Free: 4 pictures in every mode, rooms up to 4 with voice chat, the daily challenge\n- From €0.99 per picture, yours forever\n- Unlimited: €3.99/month (Christmas offer until December 31)\n- If you're in a room, your guests paint the picture you unlocked. They just need a free account, they don't pay.\n\nOne thing I'd like outside opinions on: today you need an account (Google or email) before you can paint anything, including when a friend sends you a room code.\n\nIf you were the friend getting the invite link, would a sign-in screen make you close the tab? And is 4 free pictures enough to know if you like it?",
+        "top": []
+      },
+      "hash": "185172dfc44125b3",
+      "approvedAt": "2026-11-13T16:25:55.776Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-13T16:26:55.687Z",
+      "postUrl": "https://www.reddit.com/r/SideProject/comments/1xvapka/just_launched_a_paint_by_numbers_you_play_with/19skyrpzyguzk/",
+      "thing": "t1_19skyrpzyguzk"
     }
   ],
   "seen": {
@@ -683,7 +749,7 @@
     ]
   },
   "last": {
-    "watch": "2026-11-13T13:23:46.472Z",
+    "watch": "2026-11-13T16:25:56.671Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "http 404"
@@ -710,7 +776,10 @@
       "draft help-indiehackers": "ok",
       "draft help-mcp": "ok",
       "watch": "ok",
-      "listings": "ok"
+      "listings": "ok",
+      "draft modelcontextprotocol": "ok",
+      "draft bluesky": "ok",
+      "draft help-sideproject": "ok"
     }
   }
 }

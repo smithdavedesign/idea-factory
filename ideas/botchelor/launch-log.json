@@ -204,6 +204,20 @@
       "postUrl": "https://x.com/botchelorLLC/status/2121019530919268641",
       "postedAt": "2026-11-12T23:17:25.579Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #21 on his phone; link tagged utm_content=x."
+    },
+    {
+      "channel": "r/modelcontextprotocol",
+      "url": "https://www.reddit.com/r/modelcontextprotocol/",
+      "postUrl": "https://www.reddit.com/r/modelcontextprotocol/comments/1xvcbqg/i_built_a_remote_mcp_server_where_the_default/",
+      "postedAt": "2026-11-13T16:25:57.441Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #28 on his phone; link tagged utm_content=modelcontextprotocol."
+    },
+    {
+      "channel": "Bluesky",
+      "url": null,
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n27flxfti52y",
+      "postedAt": "2026-11-13T16:26:27.704Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #29 on his phone; link tagged utm_content=bluesky."
     }
   ]
 }
