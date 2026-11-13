@@ -474,7 +474,8 @@
       "error": "requeued 2026-11-12: the earlier run spent its Reddit budget",
       "postedAt": "2026-11-12T23:13:04.869Z",
       "postUrl": "https://www.reddit.com/r/MCPservers/comments/1xurt1s/i_built_an_mcp_server_where_agents_create_a/",
-      "thing": "t3_1xurt1s"
+      "thing": "t3_1xurt1s",
+      "removedSeen": "not found"
     },
     {
       "id": 23,
@@ -499,7 +500,8 @@
       "error": "requeued 2026-11-12: the earlier run spent its Reddit budget",
       "postedAt": "2026-11-12T23:13:29.339Z",
       "postUrl": null,
-      "thing": "t1_19sjoobzuk74z"
+      "thing": "t1_19sjoobzuk74z",
+      "removedSeen": "not found"
     },
     {
       "id": 24,
@@ -524,7 +526,8 @@
       "error": "requeued 2026-11-12: the earlier run spent its Reddit budget",
       "postedAt": "2026-11-12T23:13:54.006Z",
       "postUrl": null,
-      "thing": "t1_19sjoozqw1lkw"
+      "thing": "t1_19sjoozqw1lkw",
+      "removedSeen": "not found"
     },
     {
       "id": 25,
@@ -584,7 +587,8 @@
       "error": "requeued 2026-11-12: the earlier run spent its Reddit budget",
       "postedAt": "2026-11-12T23:14:18.081Z",
       "postUrl": "https://www.reddit.com/r/indiehackers/comments/1xulog4/i_shipped_5_products_in_about_9_months_getting/19sjopmx4dsbn/",
-      "thing": "t1_19sjopmx4dsbn"
+      "thing": "t1_19sjopmx4dsbn",
+      "removedSeen": "not found"
     },
     {
       "id": 26,
@@ -618,7 +622,8 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-12T23:15:03.100Z",
       "postUrl": "https://www.reddit.com/r/mcp/comments/1xujoc1/your_experience_with_fastmcp/19sjoquce3bet/",
-      "thing": "t1_19sjoquce3bet"
+      "thing": "t1_19sjoquce3bet",
+      "removedSeen": "not found"
     }
   ],
   "seen": {
@@ -650,11 +655,12 @@
       "t1_lu9fwhb",
       "t1_19sfvsxx1lged",
       "t1_19sfyomonw5l1",
-      "t1_19sg9nj6frxvl"
+      "t1_19sg9nj6frxvl",
+      "t1_19sjonoj1ekdg"
     ]
   },
   "last": {
-    "watch": "2026-11-12T22:01:50.235Z",
+    "watch": "2026-11-13T01:23:09.494Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "http 404"
