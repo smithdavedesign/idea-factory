@@ -1,5 +1,5 @@
 {
-  "nextId": 27,
+  "nextId": 28,
   "paused": false,
   "items": [
     {
@@ -624,6 +624,28 @@
       "postUrl": "https://www.reddit.com/r/mcp/comments/1xujoc1/your_experience_with_fastmcp/19sjoquce3bet/",
       "thing": "t1_19sjoquce3bet",
       "removedSeen": "not found"
+    },
+    {
+      "id": 27,
+      "status": "posted",
+      "createdAt": "2026-11-13T13:23:46.469Z",
+      "channel": "reply:indiehackers",
+      "kind": "reddit",
+      "sub": "indiehackers",
+      "title": "",
+      "body": "I just add UTM parameters to the link in each post: `utm_source=reddit`, `utm_medium=post`, and a different `utm_campaign` for every post or subreddit. Then I check my own analytics to see which post sent which visitors. It's a plain link with a tag on the end, so there's no tool involved. The one thing to watch is using the same tag on two posts, because then you can't tell them apart.",
+      "replyTo": {
+        "name": "t1_19sk3165d75ia",
+        "author": "OffHotTopic",
+        "body": "How do you do the posts with UTM?",
+        "context": "https://www.reddit.com/r/indiehackers/comments/1xulog4/i_shipped_5_products_in_about_9_months_getting/19sk3165d75ia/?context=3"
+      },
+      "hash": "24c86407909a54da",
+      "approvedAt": "2026-11-13T13:23:46.471Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-13T13:23:47.253Z",
+      "postUrl": null,
+      "thing": "t1_19skqlnuoie8w"
     }
   ],
   "seen": {
@@ -656,11 +678,12 @@
       "t1_19sfvsxx1lged",
       "t1_19sfyomonw5l1",
       "t1_19sg9nj6frxvl",
-      "t1_19sjonoj1ekdg"
+      "t1_19sjonoj1ekdg",
+      "t1_19sk3165d75ia"
     ]
   },
   "last": {
-    "watch": "2026-11-13T10:23:32.744Z",
+    "watch": "2026-11-13T13:23:46.472Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "http 404"
