@@ -6,5 +6,10 @@
     "summary": "Real, dated pain with paid workarounds, but buyers pay for testers (which this refuses to supply), the tester-nudging core is replaceable by a group chat, and the whole market hangs on one Google policy. If anything, test only the rejection-fix/answer-drafter wedge, not the tracker.",
     "at": "2026-11-13T17:36:20.727Z"
   },
-  "updatedAt": "2026-11-13T17:36:20.727Z"
+  "updatedAt": "2026-11-13T20:22:55.565Z",
+  "ownerDecision": {
+    "decision": "pass",
+    "at": "2026-11-13T20:22:55.565Z",
+    "source": "repohq"
+  }
 }

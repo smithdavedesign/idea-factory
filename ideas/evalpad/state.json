@@ -6,5 +6,10 @@
     "summary": "A real, legally mandated job (annual homeschool portfolio evaluation), but the research found zero first-hand evidence that evaluators want software or lose meaningful time to this. The buyer pool is small, reachable only by outbound outreach, and the data is children's work.",
     "at": "2026-11-09T17:43:44.676Z"
   },
-  "updatedAt": "2026-11-09T17:43:44.676Z"
+  "updatedAt": "2026-11-13T20:22:55.565Z",
+  "ownerDecision": {
+    "decision": "pass",
+    "at": "2026-11-13T20:22:55.565Z",
+    "source": "repohq"
+  }
 }
