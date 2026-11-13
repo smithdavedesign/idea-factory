@@ -6,7 +6,7 @@
     "summary": "Etsy shows people pay $9–$45 for pet wanted posters and cards, but review counts are not sales and ChatGPT does the pet-persona trick free. There is no channel, no named buyer, and the Oct–Dec window would be mostly gone after a test plus a build.",
     "at": "2026-10-13T08:37:03.455Z"
   },
-  "updatedAt": "2026-11-13T20:22:55.565Z",
+  "updatedAt": "2026-11-13T20:54:32.305Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -110,14 +110,14 @@
     ],
     "stopped": null,
     "status": "merged",
-    "prUrl": "https://github.com/smithdavedesign/alterpaw/pull/4",
+    "prUrl": "https://github.com/smithdavedesign/alterpaw/pull/9",
     "testsPassing": true,
     "engine": "claude",
     "model": "claude-opus-5-5",
     "effort": "xhigh",
-    "manual": false,
+    "manual": true,
     "sandbox": "docker",
-    "at": "2026-10-14T01:52:57.763Z",
+    "at": "2026-11-13T20:23:48.767Z",
     "advice": {
       "difficulty": 2,
       "reason": "involves handling gift flow logic, email triggers, and print order validation with multiple exit criteria.",
@@ -133,7 +133,7 @@
     "reason": "sandbox patch: git add failed: Error response from daemon: container d16d4415c2362fc29cffda562cca173a199fd640d33425268ddb3b0143432d71 is not running",
     "beacon": "funnel",
     "mergedBy": "agent",
-    "mergedAt": "2026-10-14T02:23:03.466Z"
+    "mergedAt": "2026-11-13T20:54:32.305Z"
   },
   "milestonesDone": [
     "M1",
@@ -142,8 +142,8 @@
     "M4"
   ],
   "golive": {
-    "mergedAt": "2026-10-14T02:23:03.466Z",
-    "prUrl": "https://github.com/smithdavedesign/alterpaw/pull/4",
+    "mergedAt": "2026-11-13T20:54:32.305Z",
+    "prUrl": "https://github.com/smithdavedesign/alterpaw/pull/9",
     "beacon": "funnel"
   },
   "funnel": {

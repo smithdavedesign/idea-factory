@@ -1,5 +1,5 @@
 {
-  "nextId": 31,
+  "nextId": 32,
   "paused": false,
   "items": [
     {
@@ -713,6 +713,23 @@
       "postedAt": "2026-11-13T16:26:55.687Z",
       "postUrl": "https://www.reddit.com/r/SideProject/comments/1xvapka/just_launched_a_paint_by_numbers_you_play_with/19skyrpzyguzk/",
       "thing": "t1_19skyrpzyguzk"
+    },
+    {
+      "id": 31,
+      "status": "failed",
+      "createdAt": "2026-11-13T20:31:52.034Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "Disclosure: I built this. The characters and dates are AI. Barnaby Thorne, on what's in his pockets: \"a spare mainspring I keep meaning to lose.\" S2, Night 13: https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x #AIcharacters",
+      "why": "Cut the draft to about 260 characters by dropping 'free to watch' (the watch page doesn't confirm it). The Barnaby Thorne quote and 'S2 · Night 13' match botchelor.com/watch, and the link is unchanged.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "hash": "96a0dc132bd03f48",
+      "approvedAt": "2026-11-13T20:31:52.035Z",
+      "approvedBy": "auto",
+      "error": "the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use"
     }
   ],
   "seen": {
@@ -774,15 +791,17 @@
       "draft mcpservers": "ok",
       "draft characterairunaways": "ok",
       "draft ai_agents_weekly": "ok",
-      "draft help-indiehackers": "ok",
+      "draft help-indiehackers": "fail",
       "draft help-mcp": "ok",
       "watch": "ok",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
       "draft help-sideproject": "ok",
-      "report": "ok"
+      "report": "ok",
+      "draft x": "ok"
     },
-    "report": "2026-11-09"
+    "report": "2026-11-09",
+    "warned:draft help-indiehackers:2026-11-13": true
   }
 }
