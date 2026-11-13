@@ -780,7 +780,9 @@
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
-      "draft help-sideproject": "ok"
-    }
+      "draft help-sideproject": "ok",
+      "report": "ok"
+    },
+    "report": "2026-11-09"
   }
 }

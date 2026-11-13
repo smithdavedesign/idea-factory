@@ -1,0 +1,65 @@
+{
+  "verdict": "pass",
+  "score": 5,
+  "summary": "Real, dated pain with paid workarounds, but buyers pay for testers (which this refuses to supply), the tester-nudging core is replaceable by a group chat, and the whole market hangs on one Google policy. If anything, test only the rejection-fix/answer-drafter wedge, not the tracker.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 5,
+      "evidence": "Pain documented (Google Play Help, dev.to, IndieHackers), paid tester services exist (Testers Community $25, Fiverr gigs with unknown prices). No evidence anyone pays for a self-serve own-tester reminder kit; buyers pay for testers."
+    },
+    "statusQuo": {
+      "score": 5,
+      "evidence": "Spreadsheet plus WhatsApp nudges, swap groups, free TestPulse SDK or paid testers. Manual cost is low; the costly part is rejection, which the tool cannot prevent since Google judges in-app engagement."
+    },
+    "specificity": {
+      "score": 5,
+      "evidence": "Clear segment (solo dev, personal account after 2023-11-13, mid-test or rejected) but no named person; one-use transient cohort."
+    },
+    "wedge": {
+      "score": 6,
+      "evidence": "Real wedge is the answer drafter plus rejection-fix list, not the tracker. Shippable in a day with templates."
+    },
+    "futureFit": {
+      "score": 3,
+      "evidence": "Market is one Google policy that can change or be automated first-party; cohort shrinks over time."
+    }
+  },
+  "premises": [
+    "Developers will pay for a tool rather than chase testers themselves: weakly supported",
+    "A self-reported check-in log helps approval: unsupported, Google reviews in-app engagement",
+    "The pain persists long enough to build on: policy-dependent",
+    "Search and community reach is achievable: plausible but Testers Community already ranks",
+    "The kit can stay clear of fake or incentivised testing: yes if it only prompts real people"
+  ],
+  "alternatives": [
+    "Minimal: rejection-reason to fix-list plus answer-drafter page, no testers or email",
+    "Ideal: full tracker, drafter and rejection mode as in the PRD",
+    "Lateral: free checklist/guide as lead gen, $19 only for the drafter",
+    "Extend an existing repo: reuse the nickelfix rejection-to-fix-list-and-appeal pattern"
+  ],
+  "wedge": "Paste Google's rejection reason, get a ranked fix list and draft production-access answers; no tester tracking.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js on Vercel Hobby, Turso/Supabase free, Resend free. Test: onTrack with 15 testers and 3 missing returns 12 with no warning; 4 missing returns 11 with warning. A working M1 does not prove demand."
+  },
+  "risks": [
+    "Single Google policy dependency",
+    "Self-reported check-ins say nothing about real engagement and invite fake check-ins",
+    "Free alternatives cap price and the purchase is one-use",
+    "Incentivised-testing policy ambiguity and no approval guarantee",
+    "Incumbents already own the search query"
+  ],
+  "killCriteria": "Drop if a two-week test with 100+ qualified visitors yields under 5 emails or no one would pay $19, if community threads show buyers want testers supplied rather than a tool, or if Google changes or removes the rule.",
+  "landing": {
+    "headline": "",
+    "subhead": "",
+    "bullets": [],
+    "cta": "",
+    "audience": ""
+  },
+  "launch": {
+    "channels": [],
+    "post": ""
+  }
+}
