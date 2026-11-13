@@ -772,7 +772,7 @@
       "awesome-remote-mcp": "OPEN",
       "lobehub": "http 404"
     },
-    "listingsAt": "2026-11-12T22:32:01.315Z",
+    "listingsAt": "2026-11-13T22:35:36.255Z",
     "warned:draft indiehackers:2026-11-10": true,
     "warned:watch:2026-11-10": true,
     "warned:watch:2026-11-11": true,
@@ -793,7 +793,7 @@
       "draft ai_agents_weekly": "ok",
       "draft help-indiehackers": "fail",
       "draft help-mcp": "ok",
-      "watch": "ok",
+      "watch": "fail",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
@@ -802,6 +802,7 @@
       "draft x": "ok"
     },
     "report": "2026-11-09",
-    "warned:draft help-indiehackers:2026-11-13": true
+    "warned:draft help-indiehackers:2026-11-13": true,
+    "warned:watch:2026-11-13": true
   }
 }
