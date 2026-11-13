@@ -1,0 +1,29 @@
+{
+  "title": "playclear — keep your Google Play 14-day closed test alive",
+  "repoName": "playclear",
+  "oneLiner": "For solo Android developers stuck behind Google Play's 12-testers-for-14-days rule, it keeps their own testers checking in daily, flags when the count drops below 12, and drafts the production-access answers from the logged evidence for $19 instead of buying testers.",
+  "overlaps": "none (closest: nickelfix, a passed Chrome Web Store rejection helper; no existing repo covers Play Console)",
+  "tags": [
+    "serious",
+    "developers",
+    "one-time",
+    "reach:community",
+    "android",
+    "google-play"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://support.google.com/googleplay/android-developer/answer/14151465?hl=en",
+    "https://testerscommunity.com/blog/google-play-production-access-rejected",
+    "https://dev.to/chakshusoft/i-wasted-6-weeks-on-google-plays-closed-testing-heres-what-finally-worked-41h8",
+    "https://www.indiehackers.com/post/google-play-production-access-rejected-why-fixes-1efcef20e8",
+    "https://levelup.gitconnected.com/the-12-tester-tax-google-plays-closed-testing-rule-is-quietly-killing-solo-devs-2cea83c2e338",
+    "https://discuss.ai.google.dev/t/my-app-uses-gemini-api-and-google-play-is-blocking-production-access-backend-work-invisible-to-their-review-system/166915",
+    "https://fiverr.com/zero_log/provide-12-closed-testers-and-guarantee-play-store-release",
+    "https://fiverr.com/webinsiders/fix-google-play-closed-testing-rejection-and-production-access",
+    "https://www.goodbarber.com/help/goodbarber-takes-care-gbtc-publication-service-r80/publish-your-android-app-with-a-google-play-personal-account-gbtc-service-a429/"
+  ],
+  "slug": "playclear",
+  "recordedAt": "2026-11-13T17:03:29.355Z"
+}
