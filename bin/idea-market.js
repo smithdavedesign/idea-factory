@@ -262,12 +262,15 @@ async function postApproved(ctx, reddit, now = new Date()) {
         ? `✅ Posted for you · #${item.id} · ${item.helpOn ? `answer in ${where} to "${item.helpOn.title}"` : item.replyTo ? `reply in ${where} to u/${item.replyTo.author}` : where}\n${res.url || ''}\n———\n${item.title ? item.title + '\n\n' : ''}${item.body.slice(0, 1200)}`
         : `✅ Botchelor #${item.id} is up on ${where}: ${res.url || '(posted)'}`, { only: item.approvedOn });
     } catch (e) {
-      if (M.postRetryLater(e)) {
-        // The run's Reddit budget is spent: keep it approved for the next tick, and stop trying in this one.
+      const wait = M.postRetryLater(e, { item, now });
+      if (wait) {
+        // About this run, not the post: keep it approved for the next tick. A spent Reddit budget ends this run's
+        // posting; a browser that won't start skips only what needs it (Bluesky, Shorts and Reels still go out).
         item.error = `waiting for the next run: ${String(e.message || e)}`;
         saveQueue(ctx);
-        emit({ component: 'market', event: 'post', status: 'ok', subject: { idea: ctx.cfg.slug, channel: item.channel }, message: `#${item.id} ${item.channel}: Reddit budget used up, posting next run` });
-        break;
+        emit({ component: 'market', event: 'post', status: wait === 'budget' ? 'ok' : 'info', subject: { idea: ctx.cfg.slug, channel: item.channel }, message: `#${item.id} ${item.channel}: ${wait === 'budget' ? 'Reddit budget used up' : 'the browser is unavailable'}, posting next run` });
+        if (wait === 'budget') break;
+        continue;
       }
       item.status = 'failed';
       item.error = String(e.message || e);

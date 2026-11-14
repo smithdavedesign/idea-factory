@@ -273,10 +273,42 @@ test('stepRecovered: a tick step logs ok once when it works again, and once when
   assert.deepEqual(h, { watch: 'ok' });
 });
 
-test('postRetryLater: only a spent Reddit fetch budget waits for the next run', () => {
-  assert.equal(M.postRetryLater(new Error('Reddit fetch budget (15) used up for this run')), true);
-  assert.equal(M.postRetryLater('Reddit fetch budget (3) used up for this run'), true);
+test('postRetryLater: a spent Reddit budget, or a browser that won\'t start (8 h after approval), waits for the next run', () => {
+  assert.equal(M.postRetryLater(new Error('Reddit fetch budget (15) used up for this run')), 'budget');
+  assert.equal(M.postRetryLater('Reddit fetch budget (3) used up for this run'), 'budget');
   assert.equal(M.postRetryLater(new Error('the text changed after David saw it; resend it first')), false);
   assert.equal(M.postRetryLater(new Error('SUBREDDIT_NOTALLOWED')), false);
   assert.equal(M.postRetryLater(undefined), false);
+  // 2026-11-14: another session's headed browse held port 34567; #33 x was failed 3 s after its approval.
+  const busy = new Error('the automated browser won\'t start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use');
+  const item = { approvedAt: '2026-11-14T16:21:27.215Z' };
+  assert.equal(M.postRetryLater(busy, { item, now: at('2026-11-14T16:24:50Z') }), 'browser');
+  assert.equal(M.postRetryLater(busy, { item, now: at('2026-11-14T23:00:00Z') }), 'browser');
+  assert.equal(M.postRetryLater(busy, { item, now: at('2026-11-15T01:00:00Z') }), false, 'after 8 h the post has missed its day');
+  assert.equal(M.postRetryLater(busy, { item: {}, now: at('2026-11-14T16:24:50Z') }), false, 'no approval time: never wait forever');
+  assert.equal(M.postRetryLater(busy), false);
+  assert.equal(M.postRetryLater(new Error('X\'s composer didn\'t take the text exactly (tried twice); nothing was posted'), { item, now: at('2026-11-14T16:24:50Z') }), false);
+});
+
+// ─── 2026-11-14: the daily clip is daily ───────────────────────────────────────────────────────────────────
+test('the video kit is due once a local day, whatever David answered to the earlier one', () => {
+  const c = { ...cfg, timezone: 'America/Los_Angeles' };
+  const q = M.emptyQueue();
+  // 11 Nov 18:36 PT: the kit for the 12th goes to David, who says nothing for 38 h.
+  const kit = M.addItem(q, { channel: 'video', kind: 'video', body: 'x', episode: 'e1' }, at('2026-11-12T02:36:00Z'));
+  kit.status = 'sent';
+  assert.ok(!ids(M.dueChannels(c, { launchLog: { posts: [] }, queue: q, now: at('2026-11-12T02:40:00Z') })).includes('video'), 'one kit a day');
+  assert.ok(ids(M.dueChannels(c, { launchLog: { posts: [] }, queue: q, now: at('2026-11-13T02:30:00Z') })).includes('video'), '12 Nov evening: the open kit does not hold the day\'s clip back');
+  // 13 Nov 08:39 PT: mk done. The hour he logged it is no cooldown on the 13th's clip.
+  kit.status = 'posted'; kit.postedAt = '2026-11-13T16:39:09Z';
+  const launchLog = { posts: [{ channel: 'TikTok', postedAt: '2026-11-13T16:39:09Z' }] };
+  assert.ok(ids(M.dueChannels(c, { launchLog, queue: q, now: at('2026-11-14T02:30:00Z') })).includes('video'), '13 Nov evening');
+  // A kit cut today holds the rest of the day.
+  M.addItem(q, { channel: 'video', kind: 'video', body: 'y', episode: 'e2' }, at('2026-11-14T02:31:00Z')).status = 'sent';
+  assert.ok(!ids(M.dueChannels(c, { launchLog, queue: q, now: at('2026-11-14T04:30:00Z') })).includes('video'));
+  // Every other channel keeps the open-draft rule and its cooldown.
+  const q2 = M.emptyQueue();
+  M.addItem(q2, { channel: 'agents', kind: 'reddit-thread', body: 'x' }, at('2026-11-09T16:00:00Z')).status = 'sent';
+  assert.ok(!ids(M.dueChannels(c, { launchLog: { posts: [] }, queue: q2, now: at('2026-11-09T17:00:00Z') })).includes('agents'));
+  assert.ok(!ids(M.dueChannels(c, { launchLog: { posts: [{ channel: 'r/JanitorAI_Refuges', postedAt: '2026-11-09T18:00:06Z' }] }, queue: M.emptyQueue(), now: at('2026-11-10T17:00:00Z') })).includes('jai'));
 });
