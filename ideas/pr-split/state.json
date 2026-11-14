@@ -7,7 +7,7 @@
     "at": "2026-10-10T19:04:52.289Z",
     "notionAt": "2026-10-10T19:06:17.271Z"
   },
-  "updatedAt": "2026-11-08T22:13:57.540Z",
+  "updatedAt": "2026-11-14T01:02:43.646Z",
   "ownerDecision": {
     "decision": "build",
     "at": "2026-10-11T19:43:35.618Z",
@@ -136,7 +136,7 @@
     "M3"
   ],
   "funnel": {
-    "at": "2026-11-08T22:13:57.540Z",
+    "at": "2026-11-14T01:02:43.646Z",
     "d7": {
       "visit": 0,
       "signup": 0,
@@ -144,7 +144,7 @@
       "checkout": 0
     },
     "prev7": {
-      "visit": 5,
+      "visit": 4,
       "signup": 0,
       "activate": 0,
       "checkout": 0
