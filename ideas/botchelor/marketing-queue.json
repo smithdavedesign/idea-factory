@@ -1,5 +1,5 @@
 {
-  "nextId": 32,
+  "nextId": 34,
   "paused": false,
   "items": [
     {
@@ -730,6 +730,42 @@
       "approvedAt": "2026-11-13T20:31:52.035Z",
       "approvedBy": "auto",
       "error": "the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use"
+    },
+    {
+      "id": 32,
+      "status": "posted",
+      "createdAt": "2026-11-14T16:20:57.944Z",
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "sub": null,
+      "title": "",
+      "body": "Newest Botchelor date: Philomena Drax to Zbigniew Hartleap:\n\n\"Everyone drifts. I once matched four hundred single gloves and not one of them wanted to be the pair.\"\n\nCharacters and dates are AI.\n\nhttps://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "why": "Same quoted line from the latest date, trimmed to fit 300 characters (about 296 by my count) with the AI disclosure and exact link kept.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "hash": "8001b06a62213122",
+      "approvedAt": "2026-11-14T16:20:57.958Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-14T16:23:57.435Z",
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2bvwflsbl2u",
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2bvwflsbl2u"
+    },
+    {
+      "id": 33,
+      "status": "failed",
+      "createdAt": "2026-11-14T16:21:27.180Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "Disclosure: I built this; the characters and dates are AI.\nPhilomena Drax, on a blind date: \"I once matched four hundred single gloves and not one of them wanted to be the pair.\"\nhttps://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "why": "A real line from Season 2 Night 13 on botchelor.com/watch (Zbigniew Hartleap × Philomena Drax), with the AI disclosure first and the link last. Under 280 characters, no hashtags.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "hash": "8436adfcf1313019",
+      "approvedAt": "2026-11-14T16:21:27.215Z",
+      "approvedBy": "auto",
+      "error": "the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use"
     }
   ],
   "seen": {
@@ -792,18 +828,22 @@
       "draft characterairunaways": "ok",
       "draft ai_agents_weekly": "ok",
       "draft help-indiehackers": "fail",
-      "draft help-mcp": "ok",
+      "draft help-mcp": "fail",
       "watch": "fail",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
       "draft help-sideproject": "ok",
       "report": "ok",
-      "draft x": "ok"
+      "draft x": "ok",
+      "draft chatbotrefugees_sunday": "fail"
     },
     "report": "2026-11-09",
     "warned:draft help-indiehackers:2026-11-13": true,
     "warned:watch:2026-11-13": true,
-    "warned:watch:2026-11-14": true
+    "warned:watch:2026-11-14": true,
+    "warned:draft chatbotrefugees_sunday:2026-11-14": true,
+    "warned:draft help-indiehackers:2026-11-14": true,
+    "warned:draft help-mcp:2026-11-14": true
   }
 }

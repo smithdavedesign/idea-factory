@@ -225,6 +225,13 @@
       "postUrl": null,
       "postedAt": "2026-11-13T16:39:09.140Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #17 on his phone; link tagged utm_content=video."
+    },
+    {
+      "channel": "Bluesky",
+      "url": null,
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2bvwflsbl2u",
+      "postedAt": "2026-11-14T16:23:57.435Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #32 on his phone; link tagged utm_content=bluesky."
     }
   ]
 }
