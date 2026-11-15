@@ -1,5 +1,5 @@
 {
-  "nextId": 44,
+  "nextId": 45,
   "paused": false,
   "items": [
     {
@@ -836,7 +836,8 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-15T17:21:02.921Z",
       "postUrl": "https://www.reddit.com/r/ChatbotRefugees/comments/1xx143w/im_the_dev_sunday_is_the_reveal_on_my_oc/",
-      "thing": "t3_1xx143w"
+      "thing": "t3_1xx143w",
+      "removedSeen": "not found"
     },
     {
       "id": 38,
@@ -895,7 +896,8 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-15T17:21:58.806Z",
       "postUrl": "https://www.reddit.com/r/indiehackers/comments/1xwd8go/i_built_a_local_tool_to_flag_when_an_ai_rewrite/19soloj1uk86b/",
-      "thing": "t1_19soloj1uk86b"
+      "thing": "t1_19soloj1uk86b",
+      "removedSeen": "not found"
     },
     {
       "id": 39,
@@ -923,7 +925,8 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-15T17:22:58.528Z",
       "postUrl": "https://www.reddit.com/r/mcp/comments/1xw4ta3/i_run_a_landscaping_company_and_built_a_portfolio/19solq4krw5r5/",
-      "thing": "t1_19solq4krw5r5"
+      "thing": "t1_19solq4krw5r5",
+      "removedSeen": "not found"
     },
     {
       "id": 40,
@@ -984,7 +987,8 @@
       "error": "waiting for the next run: Reddit fetch budget (15) used up for this run",
       "postedAt": "2026-11-15T17:30:42.532Z",
       "postUrl": "https://www.reddit.com/r/AICompanions/comments/1xx1d0s/im_the_dev_1on1_chat_with_characters_who_remember/",
-      "thing": "t3_1xx1d0s"
+      "thing": "t3_1xx1d0s",
+      "removedSeen": "not found"
     },
     {
       "id": 43,
@@ -1012,7 +1016,30 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-15T17:31:31.761Z",
       "postUrl": "https://www.reddit.com/r/SideProject/comments/1xwzvpg/a_year_building_a_calm_new_tab_from_nepal_free/19som3uxnpkap/",
-      "thing": "t1_19som3uxnpkap"
+      "thing": "t1_19som3uxnpkap",
+      "removedSeen": "not found"
+    },
+    {
+      "id": 44,
+      "status": "posted",
+      "createdAt": "2026-11-15T20:52:08.330Z",
+      "channel": "reply:indiehackers",
+      "kind": "reddit",
+      "sub": "indiehackers",
+      "title": "",
+      "body": "Thanks, that's useful. The chaff is the part I'd expect to be hard, since a keyword match tells you someone mentioned a topic, not that they want what you built. Did tightening the filters cut it down, or does it still take a manual pass every time? I'm leaning toward a short list of subreddits and reading the threads myself rather than trusting keywords alone.",
+      "replyTo": {
+        "name": "t1_19son0bpv2nxg",
+        "author": "Crunchygranolabro",
+        "body": "Keywords and certain sub reddits. Still a fair bit of chaff to sort through. Or maybe tighten up keywords/filters. Honestly I had my “marketing” thread in Claude set it up. ",
+        "context": "https://www.reddit.com/r/indiehackers/comments/1xulog4/i_shipped_5_products_in_about_9_months_getting/19son0bpv2nxg/?context=3"
+      },
+      "hash": "ece912b94913c17f",
+      "approvedAt": "2026-11-15T20:52:08.332Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-15T20:57:46.390Z",
+      "postUrl": null,
+      "thing": "t1_19sovb0xvj99e"
     }
   ],
   "seen": {
@@ -1049,11 +1076,14 @@
       "t1_19sk3165d75ia",
       "t1_19snixinha8x1",
       "t1_19slctp315a04",
-      "t1_19soln1cymnhc"
+      "t1_19soln1cymnhc",
+      "t1_19son0bpv2nxg",
+      "t1_19somcik4xog0",
+      "t1_19somaqzkp8pv"
     ]
   },
   "last": {
-    "watch": "2026-11-15T17:25:24.139Z",
+    "watch": "2026-11-15T20:57:45.459Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
