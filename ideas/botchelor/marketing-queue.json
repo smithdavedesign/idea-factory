@@ -802,7 +802,7 @@
     },
     {
       "id": 36,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-15T02:18:20.789Z",
       "channel": "instagram_reels",
       "kind": "instagram",
@@ -813,7 +813,10 @@
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-15-rudiger-pennyfold-ottoline-brackwater",
       "hash": "56f8bbb7ad51068b",
       "approvedAt": "2026-11-15T02:18:20.790Z",
-      "approvedBy": "auto"
+      "approvedBy": "auto",
+      "postedAt": "2026-11-15T02:26:22.428Z",
+      "postUrl": "https://www.instagram.com/reel/DfvtAWsiK5V/",
+      "thing": "18123103324943301"
     }
   ],
   "seen": {
