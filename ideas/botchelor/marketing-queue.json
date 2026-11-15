@@ -1,5 +1,5 @@
 {
-  "nextId": 37,
+  "nextId": 41,
   "paused": false,
   "items": [
     {
@@ -752,7 +752,7 @@
     },
     {
       "id": 33,
-      "status": "failed",
+      "status": "posted",
       "createdAt": "2026-11-14T16:21:27.180Z",
       "channel": "x",
       "kind": "x",
@@ -765,7 +765,9 @@
       "hash": "8436adfcf1313019",
       "approvedAt": "2026-11-14T16:21:27.215Z",
       "approvedBy": "auto",
-      "error": "the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use"
+      "postedAt": "2026-11-15T03:32:24.302Z",
+      "postUrl": "https://x.com/botchelorLLC",
+      "thing": null
     },
     {
       "id": 34,
@@ -817,6 +819,123 @@
       "postedAt": "2026-11-15T02:26:22.428Z",
       "postUrl": "https://www.instagram.com/reel/DfvtAWsiK5V/",
       "thing": "18123103324943301"
+    },
+    {
+      "id": 37,
+      "status": "approved",
+      "createdAt": "2026-11-15T03:35:21.659Z",
+      "channel": "chatbotrefugees_sunday",
+      "kind": "reddit",
+      "sub": "ChatbotRefugees",
+      "title": "I'm the dev: Sunday is the reveal on my OC blind-date show (free first date, no sign-up)",
+      "body": "Disclosure: I built this. One-person project, built with AI coding tools (Claude Code).\n\nBotchelor is a blind-date show for your OC (adults only, your own, no real people). You describe them, they match with someone, and the date plays out as an episode you watch. You can't steer it: a rules engine picks the ending, and the AI writes the lines on the way there.\n\nWhat's new since my last posts: each month is a season with a cast, and every Sunday there's a reveal. Visitors can also weigh in on situations on the site.\n\nThe cons: dates and chat are PG, you watch rather than play, and it's new and small, so the dating pool is mostly the show's own cast.\n\nFirst date free, no account: https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=chatbotrefugees_sunday\n\nIf your OC went on a blind date, what's the one situation you'd want to see them in?",
+      "why": "Promotion Sunday post: short, disclosure first, real cons, mentions the Sunday reveal as what's new, no vote-asking, one question at the end.",
+      "flair": "Promotion Sunday",
+      "link": "https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=chatbotrefugees_sunday",
+      "hash": "af439a451c054a00",
+      "approvedAt": "2026-11-15T03:35:21.660Z",
+      "approvedBy": "auto",
+      "error": "waiting for the next run: Reddit fetch budget (15) used up for this run"
+    },
+    {
+      "id": 38,
+      "status": "approved",
+      "createdAt": "2026-11-15T03:35:38.987Z",
+      "channel": "help-indiehackers",
+      "kind": "reddit-help",
+      "sub": "indiehackers",
+      "title": "",
+      "body": "I use AI tools to write code, and the same drift shows up there: a \"cleanup\" quietly loosens a limit or drops a guard condition. Rereading the diff caught less than I expected, because the new version reads fine on its own. What worked better was pinning the exact values in tests, so a changed limit fails loudly instead of looking plausible.\n\nYour \"phrases that must stay exact\" field is that idea, and I'd make it the main feature rather than an option. Pull out every number, modal verb (may, up to, will), and conditional marker (unless, subject to) from the original automatically, and make each one either survive or be explicitly acknowledged. A checklist you have to tick is harder to click past than a list of heuristic warnings.",
+      "why": "The reviewing-AI-edits and tests-before-merging experience maps onto this post. The answer adds a different angle than the existing comments: pin exact values like tests and auto-extract them, instead of relying on fuzzy flags.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1xwd8go",
+        "title": "I built a local tool to flag when an AI rewrite changes numbers, limits or promises",
+        "author": "ufodia",
+        "permalink": "https://www.reddit.com/r/indiehackers/comments/1xwd8go/i_built_a_local_tool_to_flag_when_an_ai_rewrite/",
+        "excerpt": "“Make this sound more professional” can change more than the tone.\n\nOriginal: “We may deliver up to 500 units.”\n\nRewrite: “We will deliver at least 500 units.”\n\nThe number stayed the same, but both the commitment and the limit changed.\n\nI made **Fact Fuse** to help review this kind of drift. Paste the original and rewrite, optionally add phrases that must stay exact, and inspect the evidence beside each finding. It compares quantities, dates and links, and uses heuristics to flag possible change",
+        "selftext": "“Make this sound more professional” can change more than the tone.\n\nOriginal: “We may deliver up to 500 units.”\n\nRewrite: “We will deliver at least 500 units.”\n\nThe number stayed the same, but both the commitment and the limit changed.\n\nI made **Fact Fuse** to help review this kind of drift. Paste the original and rewrite, optionally add phrases that must stay exact, and inspect the evidence beside each finding. It compares quantities, dates and links, and uses heuristics to flag possible changes in negation, thresholds, commitments and sentence coverage. You can mark findings reviewed and export a report.\n\nIt runs locally in the browser without an account or API key. The core is TypeScript, and the repository also includes a CLI. The tool is free and open source.\n\nThe limitation: this is a rule-based review aid. It can flag harmless paraphrases and miss meaning changes. A clean report does not prove that two drafts say the same thing.\n\nDevelopment and this post used AI assistance.\n\n[Try the included example](https://fact-fuse.vercel.app/) · [MIT source and documentation](https://github.com/ufodia/fact-fuse)\n\nWhich small rewrite would you most want it to catch: a changed unit, a dropped condition or a stronger promise?",
+        "top": [
+          {
+            "author": "Total-Reasonable",
+            "body": "Of your three, I'd most want the dropped condition caught, because it's the hardest one to see. A changed unit or a stronger promise shows up as a token that differs. A dropped \"unless\", \"provided that\" or \"subject to\" clause leaves nothing behind to diff. You could cheaply flag any conditional marker in the original that has no counterpart in the rewrite, and show the whole clause it governed as the evidence.",
+            "score": 1
+          },
+          {
+            "author": "Weak_Gold_3435",
+            "body": "Quantities, dates and links are the bits a plain diff already puts side by side. The modal and threshold changes are the actual problem, and that's exactly the part you describe as heuristics that flag harmless paraphrases. So which findings am I supposed to trust?",
+            "score": 1
+          },
+          {
+            "author": "UmpirePlenty5359",
+            "body": "You admit it flags harmless paraphrases but there's no number attached. On a few hundred real rewrites, how often does it fire on a paraphrase that changes nothing? If it's often, people click past every finding and the report is decoration.",
+            "score": 1
+          },
+          {
+            "author": "quietmacbuilder",
+            "body": "Stronger promise, easily. “Make this more professional” seems to be LLM for “make this more confident,” and the hedges go first. “May,” “up to,” “approximately,” “we aim to” all quietly become “will.” A dropped unit is just embarrassing. A promise you never made is how you end up in a call with a lawyer.",
+            "score": 1
+          },
+          {
+            "author": "New_Presentation1933",
+            "body": "the example is doing a lot of work here and its the part i dont buy. nobody writes \"we may deliver up to 500 units\" in a real email, they write \"should be around 500 if the stock lands\" and then your heuristics have no number with a unit to grab onto and no threshold to compare, so the exact drift you're worried about sails right through. you built the tool for the sentence you invented, which is the cleanest possible version of the problem.\n\n  \nand the question at the end, changed unit / dropped condition / stronger promise, thats a poll. you already know which one hurts, its the promise one, you opened the post with it. i'd rather know what it does with \"delivery by friday if the supplier ",
+            "score": 1
+          },
+          {
+            "author": "Vivid_Scarcity_2021",
+            "body": "your example gets caught by reading the sentence out loud once. may to will is not a subtle drift.",
+            "score": 1
+          }
+        ]
+      },
+      "hash": "2e0e5e3921ba08a8",
+      "approvedAt": "2026-11-15T03:35:38.987Z",
+      "approvedBy": "auto"
+    },
+    {
+      "id": 39,
+      "status": "approved",
+      "createdAt": "2026-11-15T03:35:56.471Z",
+      "channel": "help-mcp",
+      "kind": "reddit-help",
+      "sub": "mcp",
+      "title": "",
+      "body": "The thing that mattered most for me with a public remote MCP server was the tool descriptions, since they're all an agent has to go on. I write each one as plain instructions: what it returns, what it needs as input, and what it won't do. For your negative cases, I'd put the \"no buy/sell advice, grades and metrics only\" line in the description of each tool, not just in your test prompts. That way the agent reads the limit before it calls the tool, and doesn't find out from a refusal.\n\nIf you want to get listed, the official MCP Registry, Glama and mcp.so all need an endpoint that answers a cold `initialize` and `tools/list` without credentials. Your no-auth setup already fits that. I'd also keep your per-day cap, because a public endpoint with no login will get hammered by crawlers and directory scanners as well as real users.",
+      "why": "Only post where David's experience (a public remote MCP server, tool descriptions, registry listing, daily caps) answers the author's direct question and no comment exists yet.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1xw4ta3",
+        "title": "I run a landscaping company and built a portfolio checkup web app with Lovable. This week I made it callable by AI assistants: a public MCP server, no auth for the free tools.",
+        "author": "InsidersBets",
+        "permalink": "https://www.reddit.com/r/mcp/comments/1xw4ta3/i_run_a_landscaping_company_and_built_a_portfolio/",
+        "excerpt": "Endpoint: https://portfoliooptimizerpro.com/mcp (streamable HTTP)\n\nTools, all read-only:  \n• grade\\_portfolio: A+ to F grade, 0–100 score, factor sub-scores, top findings  \n• fund\\_fee\\_cost: weighted expense ratio and fee cost over 10 and 30 years  \n• check\\_overlap: known index overlap between funds  \n• explain\\_grading: the factors, caps and thresholds behind a grade\n\nThings I didn't expect:  \n• Data licensing matters. My market data license covers derived results, not raw prices, so the tool",
+        "selftext": "Endpoint: https://portfoliooptimizerpro.com/mcp (streamable HTTP)\n\nTools, all read-only:  \n• grade\\_portfolio: A+ to F grade, 0–100 score, factor sub-scores, top findings  \n• fund\\_fee\\_cost: weighted expense ratio and fee cost over 10 and 30 years  \n• check\\_overlap: known index overlap between funds  \n• explain\\_grading: the factors, caps and thresholds behind a grade\n\nThings I didn't expect:  \n• Data licensing matters. My market data license covers derived results, not raw prices, so the tools return grades and metrics only, never price history.  \n• Rate limits from day one. No login means anyone can call it, so there are per-network and daily caps.  \n• Every result links back to a full breakdown page. That's the only way an agent call ever turns into a visitor, so it had to be there from the start.  \n• Writing negative test prompts (\"which stock should I buy tomorrow?\") was as important as the positive ones. The tools should decline anything that sounds like advice.\n\nTry it in Claude: Settings → Connectors → Add custom connector, paste the URL. Then ask: \"Grade my portfolio: 60% VTI, 30% VXUS, 10% BND.\"\n\nSetup page: https://portfoliooptimizerpro.com/ai\n\nFeedback on the tool design very welcome, especially from anyone who's shipped a public MCP server. What did you wish you'd done differently?",
+        "top": []
+      },
+      "hash": "7b392db817cc1bc0",
+      "approvedAt": "2026-11-15T03:35:56.475Z",
+      "approvedBy": "auto"
+    },
+    {
+      "id": 40,
+      "status": "approved",
+      "createdAt": "2026-11-15T03:36:06.482Z",
+      "channel": "reply:indiehackers",
+      "kind": "reddit",
+      "sub": "indiehackers",
+      "title": "",
+      "body": "That tracks with what I've seen. UTM links are the only reason I know which of my posts brought anyone at all, and most brought almost nobody. I haven't tried Inoreader for finding threads. Do you set it up with keyword feeds for subreddits, or something broader?",
+      "replyTo": {
+        "name": "t1_19snixinha8x1",
+        "author": "Crunchygranolabro",
+        "body": "As someone flailing along the utm plus inoreader to troll for pertinent conversations has been my only halfway useful thing. ",
+        "context": "https://www.reddit.com/r/indiehackers/comments/1xulog4/i_shipped_5_products_in_about_9_months_getting/19snixinha8x1/?context=3"
+      },
+      "hash": "9a700b0bb647ff48",
+      "approvedAt": "2026-11-15T03:36:06.483Z",
+      "approvedBy": "auto"
     }
   ],
   "seen": {
@@ -850,11 +969,13 @@
       "t1_19sfyomonw5l1",
       "t1_19sg9nj6frxvl",
       "t1_19sjonoj1ekdg",
-      "t1_19sk3165d75ia"
+      "t1_19sk3165d75ia",
+      "t1_19snixinha8x1",
+      "t1_19slctp315a04"
     ]
   },
   "last": {
-    "watch": "2026-11-13T19:30:53.687Z",
+    "watch": "2026-11-15T03:38:10.783Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -878,16 +999,16 @@
       "draft mcpservers": "ok",
       "draft characterairunaways": "ok",
       "draft ai_agents_weekly": "ok",
-      "draft help-indiehackers": "fail",
-      "draft help-mcp": "fail",
-      "watch": "fail",
+      "draft help-indiehackers": "ok",
+      "draft help-mcp": "ok",
+      "watch": "ok",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
       "draft help-sideproject": "ok",
       "report": "ok",
       "draft x": "ok",
-      "draft chatbotrefugees_sunday": "fail",
+      "draft chatbotrefugees_sunday": "ok",
       "video": "ok"
     },
     "report": "2026-11-09",
