@@ -1,0 +1,58 @@
+{
+  "verdict": "pass",
+  "score": 5,
+  "summary": "A real, dated Amazon rule change with visible certificate-rejection pain, but no one has been found asking for or paying for a standalone checker, and the broker who sells the policy is the default fix. $19 one-time with a short window and a thin recurring hook falls below the bar.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 4,
+      "evidence": "Problem is documented (Amazon notice 4,800 views/52 replies; forum threads of repeated rejections) but RESEARCH.md admits no one is asking for or charging for a standalone checker; the forum rejections are 2-3 years old."
+    },
+    "statusQuo": {
+      "score": 5,
+      "evidence": "Sellers email the broker (Assureful, Next, Marsh) who bundles certificate help into the policy, or read Amazon's criteria page and forum. Cost is days of delay, not dollars."
+    },
+    "specificity": {
+      "score": 5,
+      "evidence": "Clear buyer: solo/2-person seller with an enhanced-safety listing holding a broker certificate and facing a deactivation deadline. No named person; the group size is unknown because the 11-category list is not public in full."
+    },
+    "wedge": {
+      "score": 6,
+      "evidence": "Upload, free pass/fail, $19 for the broker fix email is shippable in days. The paid piece is easy to replicate by hand, so the real narrowest test is a free checklist page with email capture."
+    },
+    "futureFit": {
+      "score": 3,
+      "evidence": "Brokers will standardise compliant certificates, Amazon may reword the criteria, and the need recurs once a year at most; the renewal reminder is a weak hook."
+    }
+  },
+  "premises": [
+    "Sellers are rejected for wording errors a checker could catch: supported by forum threads.",
+    "Sellers will pay a third party instead of asking their broker: not supported by any evidence.",
+    "The rule list can be maintained without Seller Central access: only nine of about 13 criteria are publicly confirmed.",
+    "Enough small sellers can be reached in communities that restrict self-promotion: plausible but unproven.",
+    "A free model can extract ACORD 25 fields at 90%+ accuracy: plausible for text PDFs, unverified."
+  ],
+  "alternatives": [
+    "Minimal: free static checklist page with the nine public criteria, broker email template and email capture (S effort).",
+    "Extend David's covercheck repo with an Amazon ruleset so one extraction engine serves two buyers (M effort); the better long-term home.",
+    "Ideal: standalone checker with consultant packs, OCR and renewal reminders (L effort); builds the platform before any demand signal.",
+    "Lateral: free checker that refers failing sellers to a specialist broker for a commission (excluded in v1, and moves into insurance sales)."
+  ],
+  "wedge": "A single free page that checks pasted certificate text against the nine publicly confirmed criteria and produces a copy-paste broker fix email, with an email box for updates.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js on Vercel/Cloudflare free, Neon free, pdf text extraction plus a free-model extraction call, deterministic TypeScript rules, Vitest with one worker. Stripe and Resend are deferred to M2/M3. The one test that proves M1: a certificate listing Amazon only as certificate holder returns fail on additional insured, and the fully compliant fixture returns zero fails. Concern: free-model extraction accuracy on real PDFs."
+  },
+  "risks": [
+    "Willingness to pay for the check alone is unproven; the broker is the default fix.",
+    "Short window: the reported 45-day deadline lands mid-December, before a test and build would finish.",
+    "Rule drift and four unconfirmed criteria behind Seller Central sign-in.",
+    "Reach: seller forums and groups restrict self-promotion.",
+    "A false pass is only a prediction, with insurance and legal-advice liability.",
+    "Low revenue ceiling ($19 once; about $950 at 50 paid checks).",
+    "Overlap with covercheck and other compliance-checker ideas in the portfolio."
+  ],
+  "killCriteria": "In a 14-day test: fewer than 50 visitors or fewer than 5 real uploads or signups; no seller reports being rejected on a broker-issued certificate; or Amazon softens the rule or brokers' default certificates already pass.",
+  "landing": null,
+  "launch": null
+}

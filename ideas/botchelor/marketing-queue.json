@@ -968,7 +968,7 @@
     },
     {
       "id": 42,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-15T17:25:03.436Z",
       "channel": "aicompanions",
       "kind": "reddit",
@@ -981,11 +981,14 @@
       "hash": "fe185987057d2394",
       "approvedAt": "2026-11-15T17:25:03.436Z",
       "approvedBy": "auto",
-      "error": "waiting for the next run: Reddit fetch budget (15) used up for this run"
+      "error": "waiting for the next run: Reddit fetch budget (15) used up for this run",
+      "postedAt": "2026-11-15T17:30:42.532Z",
+      "postUrl": "https://www.reddit.com/r/AICompanions/comments/1xx1d0s/im_the_dev_1on1_chat_with_characters_who_remember/",
+      "thing": "t3_1xx1d0s"
     },
     {
       "id": 43,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-15T17:25:23.245Z",
       "channel": "help-sideproject",
       "kind": "reddit-help",
@@ -1006,7 +1009,10 @@
       },
       "hash": "5d53fd01613cf7df",
       "approvedAt": "2026-11-15T17:25:23.246Z",
-      "approvedBy": "auto"
+      "approvedBy": "auto",
+      "postedAt": "2026-11-15T17:31:31.761Z",
+      "postUrl": "https://www.reddit.com/r/SideProject/comments/1xwzvpg/a_year_building_a_calm_new_tab_from_nepal_free/19som3uxnpkap/",
+      "thing": "t1_19som3uxnpkap"
     }
   ],
   "seen": {
