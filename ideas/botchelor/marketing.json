@@ -21,7 +21,8 @@
     "instagram": 1,
     "hn": 1,
     "producthunt": 1,
-    "card": 2
+    "card": 2,
+    "threads": 1
   },
   "draftAfterHour": 8,
   "timezone": "America/Los_Angeles",
@@ -269,16 +270,19 @@
     {
       "id": "threads",
       "kind": "threads",
-      "status": "off",
+      "status": "active",
       "logName": "Threads",
-      "note": "Not built. Same Meta login as Instagram; worth a daily text post like Bluesky's only if Instagram finds an audience. 2026-11-15: account live (@botchelor via Instagram login, bio+photo), first post by hand. Not in the loop yet: needs a poster (browser composer accepts a synthetic paste; scripted Post click works)."
+      "note": "2026-11-15: account live (@botchelor via Instagram login, bio+photo), first post by hand; in the loop from 2026-11-16 (io.threadsPost: synthetic paste into the Lexical composer, read-back must match, scripted Post click). Needs the loop's own browser signed in to Threads once.",
+      "cooldownDays": 1,
+      "from": "2026-11-16",
+      "angle": "One short post a day as @botchelor on Threads, different from the day's X and Bluesky posts: a best line or moment from a date that aired on botchelor.com (fetch https://botchelor.com/watch; quote it exactly and name both characters), one line of context, then the link. Say the characters and dates are AI. No hashtags, or one topic tag at most."
     },
     {
       "id": "chub_cards",
       "kind": "card",
-      "status": "done",
+      "status": "off",
       "logName": "Chub (character cards)",
-      "note": "House cast as character cards on Chub (chub.ai), each linking back to the character's dates. Check the site's rules on links first; one account, posted by hand or by me in David's signed-in Chrome; never After Dark characters. Next: JanitorAI-style libraries only where self-links are allowed. 2026-11-15: account @botchelor (David signed in), 5 PG house cards posted by Claude via the creator form (Tavern PNG import fills fields and tags; do not re-add tags, clicking a selected tag removes it). Next: add more house cast only if Chub sends visitors (utm_source=chub)."
+      "note": "House cast as character cards on Chub (chub.ai), each linking back to the character's dates. Check the site's rules on links first; one account, posted by hand or by me in David's signed-in Chrome; never After Dark characters. Next: JanitorAI-style libraries only where self-links are allowed. 2026-11-15 DONE (status off = nothing more to post): account @botchelor (David signed in), 5 PG house cards posted by Claude via the creator form (Tavern PNG import fills fields and tags; do not re-add tags, clicking a selected tag removes it). Next: add more house cast only if Chub sends visitors (utm_source=chub)."
     },
     {
       "id": "sunday_stream",
@@ -314,5 +318,8 @@
   "discord": {
     "invite": "https://discord.gg/8VDdRF9YU",
     "server": "1569479419003932723"
+  },
+  "threads": {
+    "handle": "botchelor"
   }
 }
