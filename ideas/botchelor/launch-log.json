@@ -40,7 +40,7 @@
       "url": "https://www.reddit.com/r/ChatbotRefugees/",
       "postUrl": "https://www.reddit.com/r/ChatbotRefugees/comments/1xfpchy/im_the_developer_a_blinddate_show_for_your_oc/",
       "postedAt": "2026-10-26T06:36:34+00:00",
-      "note": "Repost with the 'Promotion Sunday' flair, as the moderator invited after the 10-24 removal; inside the Sat 10:00–Mon 11:59 UTC window. Posted by Claude via David's signed-in browser, text approved by David. AutoModerator: 'LLM Disclosure Not Verified' (optional verification). UPDATE 2026-10-29: removed by the sub's AI AutoModerator as 'outside the window' although posted 06:35 UTC Monday (inside it); David chose not to modmail."
+      "note": "Repost with the 'Promotion Sunday' flair, as the moderator invited after the 10-24 removal; inside the Sat 10:00\u2013Mon 11:59 UTC window. Posted by Claude via David's signed-in browser, text approved by David. AutoModerator: 'LLM Disclosure Not Verified' (optional verification). UPDATE 2026-10-29: removed by the sub's AI AutoModerator as 'outside the window' although posted 06:35 UTC Monday (inside it); David chose not to modmail."
     },
     {
       "channel": "r/ChatbotRefugees (October Promotions megathread)",
@@ -89,7 +89,7 @@
       "url": "https://www.tiktok.com/@botchelorcom",
       "postUrl": "https://www.tiktok.com/@botchelorcom/video/7706232731197377822",
       "postedAt": "2026-11-09T18:20:00.000Z",
-      "note": "vote-link clip (Kaede × Malachar, 56 s, AI-generated label on, caption exactly as approved incl. botchelor.com/vote?s=tiktok and 8 hashtags). Reposted: the first try (video 7706231855019855135) saved a garbled caption and was removed."
+      "note": "vote-link clip (Kaede \u00d7 Malachar, 56 s, AI-generated label on, caption exactly as approved incl. botchelor.com/vote?s=tiktok and 8 hashtags). Reposted: the first try (video 7706231855019855135) saved a garbled caption and was removed."
     },
     {
       "channel": "r/JanitorAI_Refuges",
@@ -140,7 +140,7 @@
       "postUrl": "https://www.tiktok.com/@botchelorcom/video/7706986449412951326",
       "postedAt": "2026-11-11T18:43:00.000Z",
       "episode": "7a5e974f-803c-4d10-89ce-f56a37683991",
-      "note": "vote-link clip (Mitsuki × Takeru laundromat, 61 s, AI-generated label on, caption incl. botchelor.com/vote?s=tiktok and 8 hashtags). Kit made 2026-11-09, posted instead of the repeat kit #9 (skipped). Filled by Claude via Chrome Apple Events JS; David uploaded the file and clicked Post."
+      "note": "vote-link clip (Mitsuki \u00d7 Takeru laundromat, 61 s, AI-generated label on, caption incl. botchelor.com/vote?s=tiktok and 8 hashtags). Kit made 2026-11-09, posted instead of the repeat kit #9 (skipped). Filled by Claude via Chrome Apple Events JS; David uploaded the file and clicked Post."
     },
     {
       "channel": "YouTube Shorts",
@@ -154,7 +154,7 @@
       "url": "https://www.instagram.com/botchelor/",
       "postUrl": "https://www.instagram.com/reel/DfnzWsZALx1/",
       "postedAt": "2026-11-12T00:49:32.857Z",
-      "note": "First Reel (Kaede × Malachar night ferry, kit rebuilt with the new vote line). Posted by Claude via a media-bucket link after the direct upload failed (idea-factory #68); caption tagged ?s=instagram, AI disclosure in the caption."
+      "note": "First Reel (Kaede \u00d7 Malachar night ferry, kit rebuilt with the new vote line). Posted by Claude via a media-bucket link after the direct upload failed (idea-factory #68); caption tagged ?s=instagram, AI disclosure in the caption."
     },
     {
       "channel": "YouTube Shorts",
@@ -274,6 +274,20 @@
       "postUrl": "https://www.reddit.com/r/AICompanions/comments/1xx1d0s/im_the_dev_1on1_chat_with_characters_who_remember/",
       "postedAt": "2026-11-15T17:30:42.532Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #42 on his phone; link tagged utm_content=aicompanions."
+    },
+    {
+      "postedAt": "2026-11-15T19:05:00+00:00",
+      "channel": "Chub character cards (@botchelor)",
+      "url": "https://chub.ai/users/botchelor",
+      "campaign": "cards",
+      "note": "5 house cast cards, public SFW, creator notes link to each character page (utm_source=chub, utm_campaign=cards): juniper-vale-20aa6996c5ad, rafe-calloway-ce368321b4e4, dex-okafor-e65d6dd5ef9f, nell-abiodun-c7b7f264d811, marisol-pine-2b15a17c4ff3"
+    },
+    {
+      "postedAt": "2026-11-15T19:40:00+00:00",
+      "channel": "Threads @botchelor",
+      "url": "https://www.threads.com/@botchelor",
+      "postUrl": "https://www.threads.com/@botchelor/post/DfxgWZjGTGa",
+      "note": "First Threads post (Claude, in David's signed-in Chrome; Threads profile made from Instagram @botchelor, bio + photo set). utm_content=threads."
     }
   ]
 }
