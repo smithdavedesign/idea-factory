@@ -97,7 +97,7 @@ function draftPrompt(ctx, ch, { rules = [], thread, previous, change, reply, hel
     if (rules.length) parts.push(`The community's current rules (follow every one; if a rule forbids this post, return {"title":"","body":"","why":"blocked: <rule>"}):\n${rules.join('\n')}`);
     if (recent.length) parts.push(`Our earlier posts there (don't repeat them; say what's new):\n${recent.join('\n')}`);
     parts.push(`Include this exact link once, unchanged: ${M.utmLink(ctx.cfg, ch)}`);
-    if (ch.kind === 'bluesky' || ch.kind === 'x') parts.push(`At most ${ch.kind === 'x' ? 280 : 300} characters including the link. Title: "".`);
+    if (ch.kind === 'bluesky' || ch.kind === 'x' || ch.kind === 'threads') parts.push(`At most ${{ x: 280, bluesky: 300, threads: 500 }[ch.kind]} characters including the link. Title: "".`);
     if (ch.kind === 'reddit-thread' || ch.kind === 'discord') parts.push('Title: "" (a comment or announcement has none).');
     if (ch.kind === 'hn') parts.push('Hacker News is plain text: no Markdown, no emoji, no hype words. The title starts "Show HN: " and stays under 80 characters. Put the link as the body\'s first line (David pastes it into HN\'s URL field) and then the text, which HN shows as the first comment.');
   }
@@ -223,6 +223,7 @@ async function publish(ctx, item, reddit) {
   else if (item.kind === 'bluesky') res = await io.blueskyPost(item.body);
   else if (item.kind === 'discord') res = await io.discordPost(item.body);
   else if (item.kind === 'x') res = await io.xPost(item.body, ctx.cfg.x?.handle);
+  else if (item.kind === 'threads') res = await io.threadsPost(item.body, ctx.cfg.threads?.handle);
   else if (item.kind === 'youtube') res = await io.youtubeUpload({ video: item.media, title: item.title, description: item.body, tags: ch.tags || [] });
   else if (item.kind === 'instagram') res = await io.instagramReel({ video: item.media, caption: item.body });
   else throw new Error(`I can't post ${item.kind} myself yet; post it and reply mk done ${item.id}`);

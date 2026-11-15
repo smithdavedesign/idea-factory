@@ -227,7 +227,7 @@ test('follower channels ride on the video kit, never drafted on their own', () =
 });
 
 test('only kinds the loop can post are auto-approved', () => {
-  for (const k of ['reddit', 'bluesky', 'x', 'discord', 'youtube', 'instagram']) assert.equal(M.autoPostable(k), true, k);
+  for (const k of ['reddit', 'bluesky', 'x', 'threads', 'discord', 'youtube', 'instagram']) assert.equal(M.autoPostable(k), true, k);
   for (const k of ['video', 'hn', 'producthunt', 'card', 'stream']) assert.equal(M.autoPostable(k), false, k);
   const msg = M.draftMessage({ id: 7, channel: 'show_hn', kind: 'hn', title: 'Show HN: x', body: 'b' }, { id: 'show_hn', kind: 'hn' });
   assert.match(msg, /yours to post \(hn\)/);
