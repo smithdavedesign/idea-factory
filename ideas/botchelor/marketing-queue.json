@@ -1,5 +1,5 @@
 {
-  "nextId": 34,
+  "nextId": 37,
   "paused": false,
   "items": [
     {
@@ -766,6 +766,54 @@
       "approvedAt": "2026-11-14T16:21:27.215Z",
       "approvedBy": "auto",
       "error": "the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use"
+    },
+    {
+      "id": 34,
+      "status": "drafted",
+      "createdAt": "2026-11-15T02:15:42.819Z",
+      "channel": "video",
+      "kind": "video",
+      "title": "",
+      "body": "Rudiger and Ottoline meet for the first time, on a silent disco where everyone is on the wrong channel.\n\nWould you have said yes to Ottoline? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=tiktok\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-15-rudiger-pennyfold-ottoline-brackwater/post.mp4",
+      "episode": "12200cd2-6c6a-4920-9d26-022ef794bb89",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-15-rudiger-pennyfold-ottoline-brackwater",
+      "hash": "56e9132a82bb8f07",
+      "sentAt": "2026-11-15T02:18:20.642Z",
+      "error": "couldn't reach David: whatsapp: whatsapp\", \"transcribe\"\n\nInspect: openclaw config validate\nAudit, status, health, logs, and doctor commands still run with invalid config.\nRun \"openclaw doctor --fix\" to repair the config, then retry.; slack: whatsapp\", \"transcribe\"\n\nInspect: openclaw config validate\nAudit, status, health, logs, and doctor commands still run with invalid config.\nRun \"openclaw doctor --fix\" to repair the config, then retry."
+    },
+    {
+      "id": 35,
+      "status": "posted",
+      "createdAt": "2026-11-15T02:18:20.788Z",
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "title": "Rudiger and Ottoline meet for the first time, on a silent disco where everyone is on the wrong…",
+      "body": "Rudiger and Ottoline meet for the first time, on a silent disco where everyone is on the wrong channel.\n\nWould you have said yes to Ottoline? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=youtube\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-15-rudiger-pennyfold-ottoline-brackwater/post.mp4",
+      "episode": "12200cd2-6c6a-4920-9d26-022ef794bb89",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-15-rudiger-pennyfold-ottoline-brackwater",
+      "hash": "a1fda4c6574b3927",
+      "approvedAt": "2026-11-15T02:18:20.789Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-15T02:18:50.561Z",
+      "postUrl": "https://www.youtube.com/shorts/Hlre08VkQag",
+      "thing": "Hlre08VkQag"
+    },
+    {
+      "id": 36,
+      "status": "approved",
+      "createdAt": "2026-11-15T02:18:20.789Z",
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "title": "",
+      "body": "Rudiger and Ottoline meet for the first time, on a silent disco where everyone is on the wrong channel.\n\nWould you have said yes to Ottoline? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=instagram\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-15-rudiger-pennyfold-ottoline-brackwater/post.mp4",
+      "episode": "12200cd2-6c6a-4920-9d26-022ef794bb89",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-15-rudiger-pennyfold-ottoline-brackwater",
+      "hash": "56f8bbb7ad51068b",
+      "approvedAt": "2026-11-15T02:18:20.790Z",
+      "approvedBy": "auto"
     }
   ],
   "seen": {
@@ -836,7 +884,8 @@
       "draft help-sideproject": "ok",
       "report": "ok",
       "draft x": "ok",
-      "draft chatbotrefugees_sunday": "fail"
+      "draft chatbotrefugees_sunday": "fail",
+      "video": "ok"
     },
     "report": "2026-11-09",
     "warned:draft help-indiehackers:2026-11-13": true,
