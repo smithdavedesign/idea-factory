@@ -48,8 +48,8 @@
       "kind": "x",
       "sub": null,
       "title": "",
-      "body": "“Sorry, I rehearsed a curtsy, and it was far better in the ballroom.” Nell, stargazing in Regency garb. Nell, her date Juniper and the script are all AI.\nWatch a date: https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x #AI #OC",
-      "why": "Opens on a real line from Nell × Juniper, 'Stargazing In Regency Garb' (the Just aired episode on /watch), states plainly that the characters and script are AI, then the tagged link.",
+      "body": "\u201cSorry, I rehearsed a curtsy, and it was far better in the ballroom.\u201d Nell, stargazing in Regency garb. Nell, her date Juniper and the script are all AI.\nWatch a date: https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x #AI #OC",
+      "why": "Opens on a real line from Nell \u00d7 Juniper, 'Stargazing In Regency Garb' (the Just aired episode on /watch), states plainly that the characters and script are AI, then the tagged link.",
       "flair": null,
       "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
       "hash": "6e7b41bd8a2e50ae",
@@ -111,7 +111,7 @@
           },
           {
             "author": "mequelkramer",
-            "body": "I'd add one thing: lurking teaches you the tone, but it doesn't teach you what the room actually rewards, because you only see the posts that survived. The fastest way I've found to test a sub is to answer one question where I genuinely know the answer, with no agenda, and watch whether anyone engages. If the thread goes quiet, that tells you something too — either the topic doesn't land there or the timing was off — and you learn that in a day instead of a month.\n\nThe other signal I look for before investing time is whether regulars actually reply to each other, not just post and leave. A sub where people answer follow-ups is worth far more than a bigger one where every post is a monologue.",
+            "body": "I'd add one thing: lurking teaches you the tone, but it doesn't teach you what the room actually rewards, because you only see the posts that survived. The fastest way I've found to test a sub is to answer one question where I genuinely know the answer, with no agenda, and watch whether anyone engages. If the thread goes quiet, that tells you something too \u2014 either the topic doesn't land there or the timing was off \u2014 and you learn that in a day instead of a month.\n\nThe other signal I look for before investing time is whether regulars actually reply to each other, not just post and leave. A sub where people answer follow-ups is worth far more than a bigger one where every post is a monologue.",
             "score": 2
           },
           {
@@ -156,7 +156,7 @@
         "top": [
           {
             "author": "benjzammit01",
-            "body": "I build Ask Your Audience and we have an MCP connector, but I can’t point to measured traffic or lead lift. I’d track connection, first successful use and repeat use separately from site visits, then ask whether it solved a real job. An agent can complete a task without sending anyone to your website, so traffic alone may miss the useful part.",
+            "body": "I build Ask Your Audience and we have an MCP connector, but I can\u2019t point to measured traffic or lead lift. I\u2019d track connection, first successful use and repeat use separately from site visits, then ask whether it solved a real job. An agent can complete a task without sending anyone to your website, so traffic alone may miss the useful part.",
             "score": 2
           }
         ]
@@ -220,13 +220,13 @@
       "channel": "video",
       "kind": "video",
       "title": "",
-      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? 👀\n\nVote what happens on tomorrow's date: botchelor.com/vote?s=tiktok\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? \ud83d\udc40\n\nVote what happens on tomorrow's date: botchelor.com/vote?s=tiktok\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
       "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-11-kaede-hoshimura-malachar-vey/post.mp4",
       "episode": "4c6e9916-37e3-4bdf-9fba-239935193122",
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-11-kaede-hoshimura-malachar-vey",
       "hash": "f3c5959df53aacc2",
       "sentAt": "2026-11-11T02:08:11.538Z",
-      "note": "same date as the 2026-11-09 TikTok post; skipped for the unposted Mitsuki × Takeru kit (David 2026-11-11)"
+      "note": "same date as the 2026-11-09 TikTok post; skipped for the unposted Mitsuki \u00d7 Takeru kit (David 2026-11-11)"
     },
     {
       "id": 10,
@@ -237,7 +237,7 @@
       "sub": null,
       "title": "",
       "body": "Vectron Maxwell to Kieran Mercy: \"Your coat is doing a fine impression of a shipwreck, and your compass keeps swinging toward my jacket pocket.\"\nAI characters, AI-written date.\nhttps://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky #AI",
-      "why": "Quotes an exact line from the date the watch page marks 'Just aired' (S2 Night 10, Vectron Maxwell × Kieran Mercy). The page shows no air dates, so 'this week' is inferred from that label. The post says plainly that the characters and the date are AI.",
+      "why": "Quotes an exact line from the date the watch page marks 'Just aired' (S2 Night 10, Vectron Maxwell \u00d7 Kieran Mercy). The page shows no air dates, so 'this week' is inferred from that label. The post says plainly that the characters and the date are AI.",
       "flair": null,
       "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
       "hash": "1763acfab8656475",
@@ -270,7 +270,7 @@
       "kind": "reddit-help",
       "sub": "mcp",
       "title": "",
-      "body": "On whether the cast → recipes → pick flow feels natural to models: in my experience the tool descriptions decide that more than the flow itself. Models take a description literally, so I'd put the sequencing inside each one. The cast tool should say what it returns and that the next step is writing the five recipes. The pick tool should say it only applies after those exist. If a step is optional, like the brew, say so in its description, or models tend to either skip it or call it every time. Also keep the tool results short and written as plain instructions for the next step. Models follow a result that says what to do next far better than a result that is just a data dump.",
+      "body": "On whether the cast \u2192 recipes \u2192 pick flow feels natural to models: in my experience the tool descriptions decide that more than the flow itself. Models take a description literally, so I'd put the sequencing inside each one. The cast tool should say what it returns and that the next step is writing the five recipes. The pick tool should say it only applies after those exist. If a step is optional, like the brew, say so in its description, or models tend to either skip it or call it every time. Also keep the tool results short and written as plain instructions for the next step. Models follow a result that says what to do next far better than a result that is just a data dump.",
       "why": "The tool-flow question had no answer yet (the existing comment covered only auth), and writing tool descriptions agents understand is real experience from the facts file.",
       "flair": null,
       "link": null,
@@ -280,7 +280,7 @@
         "author": "hectormeow",
         "permalink": "https://www.reddit.com/r/mcp/comments/1xtkm2r/built_a_remote_mcp_server_that_injects_far/",
         "excerpt": " I've been building Wild Magic, a remote MCP server that acts as a creativity companion for whatever model you already use (claude.ai, ChatGPT, Claude Code).\n\n  The problem it tackles: ask a frontier model for ideas on a hard problem and it reliably lands on the sensible, central answer. Prompting it to \"be creative\" mostly changes the tone, not the idea.\n\n  What it does:\n  - Your model writes a short brief of your problem and casts Wild Magic on it.\n  - Wild Magic brings in concepts from far-of",
-        "selftext": " I've been building Wild Magic, a remote MCP server that acts as a creativity companion for whatever model you already use (claude.ai, ChatGPT, Claude Code).\n\n  The problem it tackles: ask a frontier model for ideas on a hard problem and it reliably lands on the sensible, central answer. Prompting it to \"be creative\" mostly changes the tone, not the idea.\n\n  What it does:\n  - Your model writes a short brief of your problem and casts Wild Magic on it.\n  - Wild Magic brings in concepts from far-off fields, chosen to pull your model away from where it would go on its own.\n  - Your model writes five short recipes for your problem. Some are built on those concepts and some aren't, and you're not told which is which.\n  - You pick what you'd actually follow, or ask for a \"brew\" combining the best parts of all five. Your picks are how Wild Magic learns which concepts really help.\n\n  Why it's an MCP server: your own model does all the writing, so it works with whatever you already pay for and nothing runs on your machine. There's also a Claude Code plugin with a /wild-magic command.\n\n  Things I'd love input on:\n  - Whether the tool flow (cast → five recipes → pick) feels natural to your models, or whether they fight it.\n  - How others handle per-user auth for remote servers in clients that only take a URL.\n\n  It's a closed beta on home hardware, so I'm inviting in small batches. It only keeps problem text with the user's consent. Not affiliated with Anthropic or OpenAI.\n\n  Waitlist: https://wildmagic.deathbydice.com",
+        "selftext": " I've been building Wild Magic, a remote MCP server that acts as a creativity companion for whatever model you already use (claude.ai, ChatGPT, Claude Code).\n\n  The problem it tackles: ask a frontier model for ideas on a hard problem and it reliably lands on the sensible, central answer. Prompting it to \"be creative\" mostly changes the tone, not the idea.\n\n  What it does:\n  - Your model writes a short brief of your problem and casts Wild Magic on it.\n  - Wild Magic brings in concepts from far-off fields, chosen to pull your model away from where it would go on its own.\n  - Your model writes five short recipes for your problem. Some are built on those concepts and some aren't, and you're not told which is which.\n  - You pick what you'd actually follow, or ask for a \"brew\" combining the best parts of all five. Your picks are how Wild Magic learns which concepts really help.\n\n  Why it's an MCP server: your own model does all the writing, so it works with whatever you already pay for and nothing runs on your machine. There's also a Claude Code plugin with a /wild-magic command.\n\n  Things I'd love input on:\n  - Whether the tool flow (cast \u2192 five recipes \u2192 pick) feels natural to your models, or whether they fight it.\n  - How others handle per-user auth for remote servers in clients that only take a URL.\n\n  It's a closed beta on home hardware, so I'm inviting in small batches. It only keeps problem text with the user's consent. Not affiliated with Anthropic or OpenAI.\n\n  Waitlist: https://wildmagic.deathbydice.com",
         "top": [
           {
             "author": "QuanTradin",
@@ -338,7 +338,7 @@
       "channel": "youtube_shorts",
       "kind": "youtube",
       "title": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay. #Shorts",
-      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? 👀\n\nVote what happens on tomorrow's date: botchelor.com/vote?s=youtube\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? \ud83d\udc40\n\nVote what happens on tomorrow's date: botchelor.com/vote?s=youtube\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
       "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-11-kaede-hoshimura-malachar-vey/post.mp4",
       "episode": "4c6e9916-37e3-4bdf-9fba-239935193122",
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-11-kaede-hoshimura-malachar-vey",
@@ -356,7 +356,7 @@
       "channel": "instagram_reels",
       "kind": "instagram",
       "title": "",
-      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=instagram\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? \ud83d\udc40\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=instagram\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
       "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey/post.mp4",
       "episode": "4c6e9916-37e3-4bdf-9fba-239935193122",
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey",
@@ -374,7 +374,7 @@
       "channel": "video",
       "kind": "video",
       "title": "",
-      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=tiktok\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? \ud83d\udc40\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=tiktok\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
       "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey/post.mp4",
       "episode": "5eacfaba-c66a-44a1-90d1-bdbdd857794b",
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey",
@@ -389,7 +389,7 @@
       "channel": "youtube_shorts",
       "kind": "youtube",
       "title": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay. #Shorts",
-      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=youtube\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? \ud83d\udc40\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=youtube\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
       "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey/post.mp4",
       "episode": "5eacfaba-c66a-44a1-90d1-bdbdd857794b",
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey",
@@ -407,7 +407,7 @@
       "channel": "instagram_reels",
       "kind": "instagram",
       "title": "",
-      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=instagram\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "body": "Kaede and Malachar meet for the first time, on a night ferry crossing the bay.\n\nWould you have said yes to Malachar? \ud83d\udc40\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=instagram\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
       "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey/post.mp4",
       "episode": "5eacfaba-c66a-44a1-90d1-bdbdd857794b",
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-12-kaede-hoshimura-malachar-vey",
@@ -426,7 +426,7 @@
       "kind": "bluesky",
       "sub": null,
       "title": "",
-      "body": "Just aired on Botchelor: Ambrose Fenn × Cass Vega.\n\nCass Vega: \"Stray cats? I name my houseplants after detectives, not felons.\"\n\nBoth characters and the date are AI. I built the show.\n\nhttps://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "body": "Just aired on Botchelor: Ambrose Fenn \u00d7 Cass Vega.\n\nCass Vega: \"Stray cats? I name my houseplants after detectives, not felons.\"\n\nBoth characters and the date are AI. I built the show.\n\nhttps://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
       "why": "The newest aired date on /watch, with an exact Cass Vega quote, both characters named, an AI disclosure and the tagged link. It's new because the earlier posts didn't use this episode. I couldn't confirm the air date, since /watch shows none, so it says \"just aired\" rather than \"this week\".",
       "flair": null,
       "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
@@ -552,7 +552,7 @@
         "top": [
           {
             "author": "Internal-March-7846",
-            "body": "The standard ways are not working anymore since everyone is using them.\n\nIt is getting very hard and you have to accept the 0 for some time without switching from one project to another. Waiting for something to hit on the first day is not possible anymore unless you already have a big audience.\n\nCold emails and DMs make people very sceptical since they receive tons per day. This is the case for me I don’t read them anymore even though some of them may be interesting products.\n\nWhat I do now is find the threads where people talk about the problem my product solves and just answer and help. Slow, but people come to you instead of you chasing them. This takes forevever and I am accepting it.\n\n",
+            "body": "The standard ways are not working anymore since everyone is using them.\n\nIt is getting very hard and you have to accept the 0 for some time without switching from one project to another. Waiting for something to hit on the first day is not possible anymore unless you already have a big audience.\n\nCold emails and DMs make people very sceptical since they receive tons per day. This is the case for me I don\u2019t read them anymore even though some of them may be interesting products.\n\nWhat I do now is find the threads where people talk about the problem my product solves and just answer and help. Slow, but people come to you instead of you chasing them. This takes forevever and I am accepting it.\n\n",
             "score": 3
           },
           {
@@ -567,7 +567,7 @@
           },
           {
             "author": "Kevin_Xiang",
-            "body": "I'd start with the ten people who accepted the free month but never onboarded. Ask one of them if you can sit through their actual task with them — not another free-month offer. You might get more from twenty minutes of that than from a week of posting.\n\nI agree with the single-product point above. With only an hour a day, I'd pick one product and one kind of customer for a couple of weeks. Otherwise it's hard to tell whether a channel failed or just never got enough attention.",
+            "body": "I'd start with the ten people who accepted the free month but never onboarded. Ask one of them if you can sit through their actual task with them \u2014 not another free-month offer. You might get more from twenty minutes of that than from a week of posting.\n\nI agree with the single-product point above. With only an hour a day, I'd pick one product and one kind of customer for a couple of weeks. Otherwise it's hard to tell whether a channel failed or just never got enough attention.",
             "score": 1
           },
           {
@@ -613,7 +613,7 @@
         "top": [
           {
             "author": "burbular",
-            "body": "1. Dagster peeps maintain it. They cool \n2. High level, fun stuff built in. Was already using Python and have experience with fastapi. \n3. Haven't thought about it, it made an mcp happen, goal achieved \n\nDon't overthink it. Use what ya want. ",
+            "body": "1. Dagster peeps maintain it. They cool\u00a0\n2. High level, fun stuff built in. Was already using Python and have experience with fastapi.\u00a0\n3. Haven't thought about it, it made an mcp happen, goal achieved\u00a0\n\nDon't overthink it. Use what ya want.\u00a0",
             "score": 1
           }
         ]
@@ -675,7 +675,7 @@
       "kind": "bluesky",
       "sub": null,
       "title": "",
-      "body": "Nell Abiodun to Zoë Marlowe: \"Twenty minutes is a serious lecture for a coffee order.\"\n\nFrom \"Coffee At Four\", Season 2, Night 13. The characters and the dialogue are AI.\n\nhttps://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "body": "Nell Abiodun to Zo\u00eb Marlowe: \"Twenty minutes is a serious lecture for a coffee order.\"\n\nFrom \"Coffee At Four\", Season 2, Night 13. The characters and the dialogue are AI.\n\nhttps://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
       "why": "Quotes Nell's line from the newest aired date, Coffee At Four (S2 Night 13), names both characters, and says it's AI. It's a different date from the earlier posts.",
       "flair": null,
       "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
@@ -704,7 +704,7 @@
         "author": "DutyOnly4308",
         "permalink": "https://www.reddit.com/r/SideProject/comments/1xvapka/just_launched_a_paint_by_numbers_you_play_with/",
         "excerpt": "I'm the solo dev of Numochi (https://numochi.net). It's paint by numbers with cute illustrations, but made to play with someone: 2 to 4 people paint the same picture live with voice chat, or race each other on the same picture for 5 minutes, or each get only part of the colours so you have to finish together. There's also a daily picture with a leaderboard and a mystery picture you have to guess while painting. Phone and desktop, nothing to install, English and French.\n\nHow it's priced right now",
-        "selftext": "I'm the solo dev of Numochi (https://numochi.net). It's paint by numbers with cute illustrations, but made to play with someone: 2 to 4 people paint the same picture live with voice chat, or race each other on the same picture for 5 minutes, or each get only part of the colours so you have to finish together. There's also a daily picture with a leaderboard and a mystery picture you have to guess while painting. Phone and desktop, nothing to install, English and French.\n\nHow it's priced right now:\n\n- Free: 4 pictures in every mode, rooms up to 4 with voice chat, the daily challenge\n- From €0.99 per picture, yours forever\n- Unlimited: €3.99/month (Christmas offer until December 31)\n- If you're in a room, your guests paint the picture you unlocked. They just need a free account, they don't pay.\n\nOne thing I'd like outside opinions on: today you need an account (Google or email) before you can paint anything, including when a friend sends you a room code.\n\nIf you were the friend getting the invite link, would a sign-in screen make you close the tab? And is 4 free pictures enough to know if you like it?",
+        "selftext": "I'm the solo dev of Numochi (https://numochi.net). It's paint by numbers with cute illustrations, but made to play with someone: 2 to 4 people paint the same picture live with voice chat, or race each other on the same picture for 5 minutes, or each get only part of the colours so you have to finish together. There's also a daily picture with a leaderboard and a mystery picture you have to guess while painting. Phone and desktop, nothing to install, English and French.\n\nHow it's priced right now:\n\n- Free: 4 pictures in every mode, rooms up to 4 with voice chat, the daily challenge\n- From \u20ac0.99 per picture, yours forever\n- Unlimited: \u20ac3.99/month (Christmas offer until December 31)\n- If you're in a room, your guests paint the picture you unlocked. They just need a free account, they don't pay.\n\nOne thing I'd like outside opinions on: today you need an account (Google or email) before you can paint anything, including when a friend sends you a room code.\n\nIf you were the friend getting the invite link, would a sign-in screen make you close the tab? And is 4 free pictures enough to know if you like it?",
         "top": []
       },
       "hash": "185172dfc44125b3",
@@ -723,7 +723,7 @@
       "sub": null,
       "title": "",
       "body": "Disclosure: I built this. The characters and dates are AI. Barnaby Thorne, on what's in his pockets: \"a spare mainspring I keep meaning to lose.\" S2, Night 13: https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x #AIcharacters",
-      "why": "Cut the draft to about 260 characters by dropping 'free to watch' (the watch page doesn't confirm it). The Barnaby Thorne quote and 'S2 · Night 13' match botchelor.com/watch, and the link is unchanged.",
+      "why": "Cut the draft to about 260 characters by dropping 'free to watch' (the watch page doesn't confirm it). The Barnaby Thorne quote and 'S2 \u00b7 Night 13' match botchelor.com/watch, and the link is unchanged.",
       "flair": null,
       "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
       "hash": "96a0dc132bd03f48",
@@ -759,7 +759,7 @@
       "sub": null,
       "title": "",
       "body": "Disclosure: I built this; the characters and dates are AI.\nPhilomena Drax, on a blind date: \"I once matched four hundred single gloves and not one of them wanted to be the pair.\"\nhttps://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
-      "why": "A real line from Season 2 Night 13 on botchelor.com/watch (Zbigniew Hartleap × Philomena Drax), with the AI disclosure first and the link last. Under 280 characters, no hashtags.",
+      "why": "A real line from Season 2 Night 13 on botchelor.com/watch (Zbigniew Hartleap \u00d7 Philomena Drax), with the AI disclosure first and the link last. Under 280 characters, no hashtags.",
       "flair": null,
       "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
       "hash": "8436adfcf1313019",
@@ -771,12 +771,12 @@
     },
     {
       "id": 34,
-      "status": "sent",
+      "status": "done",
       "createdAt": "2026-11-15T02:15:42.819Z",
       "channel": "video",
       "kind": "video",
       "title": "",
-      "body": "Rudiger and Ottoline meet for the first time, on a silent disco where everyone is on the wrong channel.\n\nWould you have said yes to Ottoline? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=tiktok\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "body": "Rudiger and Ottoline meet for the first time, on a silent disco where everyone is on the wrong channel.\n\nWould you have said yes to Ottoline? \ud83d\udc40\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=tiktok\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
       "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-15-rudiger-pennyfold-ottoline-brackwater/post.mp4",
       "episode": "12200cd2-6c6a-4920-9d26-022ef794bb89",
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-15-rudiger-pennyfold-ottoline-brackwater",
@@ -789,8 +789,8 @@
       "createdAt": "2026-11-15T02:18:20.788Z",
       "channel": "youtube_shorts",
       "kind": "youtube",
-      "title": "Rudiger and Ottoline meet for the first time, on a silent disco where everyone is on the wrong…",
-      "body": "Rudiger and Ottoline meet for the first time, on a silent disco where everyone is on the wrong channel.\n\nWould you have said yes to Ottoline? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=youtube\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "title": "Rudiger and Ottoline meet for the first time, on a silent disco where everyone is on the wrong\u2026",
+      "body": "Rudiger and Ottoline meet for the first time, on a silent disco where everyone is on the wrong channel.\n\nWould you have said yes to Ottoline? \ud83d\udc40\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=youtube\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
       "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-15-rudiger-pennyfold-ottoline-brackwater/post.mp4",
       "episode": "12200cd2-6c6a-4920-9d26-022ef794bb89",
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-15-rudiger-pennyfold-ottoline-brackwater",
@@ -808,7 +808,7 @@
       "channel": "instagram_reels",
       "kind": "instagram",
       "title": "",
-      "body": "Rudiger and Ottoline meet for the first time, on a silent disco where everyone is on the wrong channel.\n\nWould you have said yes to Ottoline? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=instagram\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "body": "Rudiger and Ottoline meet for the first time, on a silent disco where everyone is on the wrong channel.\n\nWould you have said yes to Ottoline? \ud83d\udc40\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=instagram\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
       "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-15-rudiger-pennyfold-ottoline-brackwater/post.mp4",
       "episode": "12200cd2-6c6a-4920-9d26-022ef794bb89",
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-15-rudiger-pennyfold-ottoline-brackwater",
@@ -855,8 +855,8 @@
         "title": "I built a local tool to flag when an AI rewrite changes numbers, limits or promises",
         "author": "ufodia",
         "permalink": "https://www.reddit.com/r/indiehackers/comments/1xwd8go/i_built_a_local_tool_to_flag_when_an_ai_rewrite/",
-        "excerpt": "“Make this sound more professional” can change more than the tone.\n\nOriginal: “We may deliver up to 500 units.”\n\nRewrite: “We will deliver at least 500 units.”\n\nThe number stayed the same, but both the commitment and the limit changed.\n\nI made **Fact Fuse** to help review this kind of drift. Paste the original and rewrite, optionally add phrases that must stay exact, and inspect the evidence beside each finding. It compares quantities, dates and links, and uses heuristics to flag possible change",
-        "selftext": "“Make this sound more professional” can change more than the tone.\n\nOriginal: “We may deliver up to 500 units.”\n\nRewrite: “We will deliver at least 500 units.”\n\nThe number stayed the same, but both the commitment and the limit changed.\n\nI made **Fact Fuse** to help review this kind of drift. Paste the original and rewrite, optionally add phrases that must stay exact, and inspect the evidence beside each finding. It compares quantities, dates and links, and uses heuristics to flag possible changes in negation, thresholds, commitments and sentence coverage. You can mark findings reviewed and export a report.\n\nIt runs locally in the browser without an account or API key. The core is TypeScript, and the repository also includes a CLI. The tool is free and open source.\n\nThe limitation: this is a rule-based review aid. It can flag harmless paraphrases and miss meaning changes. A clean report does not prove that two drafts say the same thing.\n\nDevelopment and this post used AI assistance.\n\n[Try the included example](https://fact-fuse.vercel.app/) · [MIT source and documentation](https://github.com/ufodia/fact-fuse)\n\nWhich small rewrite would you most want it to catch: a changed unit, a dropped condition or a stronger promise?",
+        "excerpt": "\u201cMake this sound more professional\u201d can change more than the tone.\n\nOriginal: \u201cWe may deliver up to 500 units.\u201d\n\nRewrite: \u201cWe will deliver at least 500 units.\u201d\n\nThe number stayed the same, but both the commitment and the limit changed.\n\nI made **Fact Fuse** to help review this kind of drift. Paste the original and rewrite, optionally add phrases that must stay exact, and inspect the evidence beside each finding. It compares quantities, dates and links, and uses heuristics to flag possible change",
+        "selftext": "\u201cMake this sound more professional\u201d can change more than the tone.\n\nOriginal: \u201cWe may deliver up to 500 units.\u201d\n\nRewrite: \u201cWe will deliver at least 500 units.\u201d\n\nThe number stayed the same, but both the commitment and the limit changed.\n\nI made **Fact Fuse** to help review this kind of drift. Paste the original and rewrite, optionally add phrases that must stay exact, and inspect the evidence beside each finding. It compares quantities, dates and links, and uses heuristics to flag possible changes in negation, thresholds, commitments and sentence coverage. You can mark findings reviewed and export a report.\n\nIt runs locally in the browser without an account or API key. The core is TypeScript, and the repository also includes a CLI. The tool is free and open source.\n\nThe limitation: this is a rule-based review aid. It can flag harmless paraphrases and miss meaning changes. A clean report does not prove that two drafts say the same thing.\n\nDevelopment and this post used AI assistance.\n\n[Try the included example](https://fact-fuse.vercel.app/) \u00b7 [MIT source and documentation](https://github.com/ufodia/fact-fuse)\n\nWhich small rewrite would you most want it to catch: a changed unit, a dropped condition or a stronger promise?",
         "top": [
           {
             "author": "Total-Reasonable",
@@ -875,7 +875,7 @@
           },
           {
             "author": "quietmacbuilder",
-            "body": "Stronger promise, easily. “Make this more professional” seems to be LLM for “make this more confident,” and the hedges go first. “May,” “up to,” “approximately,” “we aim to” all quietly become “will.” A dropped unit is just embarrassing. A promise you never made is how you end up in a call with a lawyer.",
+            "body": "Stronger promise, easily. \u201cMake this more professional\u201d seems to be LLM for \u201cmake this more confident,\u201d and the hedges go first. \u201cMay,\u201d \u201cup to,\u201d \u201capproximately,\u201d \u201cwe aim to\u201d all quietly become \u201cwill.\u201d A dropped unit is just embarrassing. A promise you never made is how you end up in a call with a lawyer.",
             "score": 1
           },
           {
@@ -914,8 +914,8 @@
         "title": "I run a landscaping company and built a portfolio checkup web app with Lovable. This week I made it callable by AI assistants: a public MCP server, no auth for the free tools.",
         "author": "InsidersBets",
         "permalink": "https://www.reddit.com/r/mcp/comments/1xw4ta3/i_run_a_landscaping_company_and_built_a_portfolio/",
-        "excerpt": "Endpoint: https://portfoliooptimizerpro.com/mcp (streamable HTTP)\n\nTools, all read-only:  \n• grade\\_portfolio: A+ to F grade, 0–100 score, factor sub-scores, top findings  \n• fund\\_fee\\_cost: weighted expense ratio and fee cost over 10 and 30 years  \n• check\\_overlap: known index overlap between funds  \n• explain\\_grading: the factors, caps and thresholds behind a grade\n\nThings I didn't expect:  \n• Data licensing matters. My market data license covers derived results, not raw prices, so the tool",
-        "selftext": "Endpoint: https://portfoliooptimizerpro.com/mcp (streamable HTTP)\n\nTools, all read-only:  \n• grade\\_portfolio: A+ to F grade, 0–100 score, factor sub-scores, top findings  \n• fund\\_fee\\_cost: weighted expense ratio and fee cost over 10 and 30 years  \n• check\\_overlap: known index overlap between funds  \n• explain\\_grading: the factors, caps and thresholds behind a grade\n\nThings I didn't expect:  \n• Data licensing matters. My market data license covers derived results, not raw prices, so the tools return grades and metrics only, never price history.  \n• Rate limits from day one. No login means anyone can call it, so there are per-network and daily caps.  \n• Every result links back to a full breakdown page. That's the only way an agent call ever turns into a visitor, so it had to be there from the start.  \n• Writing negative test prompts (\"which stock should I buy tomorrow?\") was as important as the positive ones. The tools should decline anything that sounds like advice.\n\nTry it in Claude: Settings → Connectors → Add custom connector, paste the URL. Then ask: \"Grade my portfolio: 60% VTI, 30% VXUS, 10% BND.\"\n\nSetup page: https://portfoliooptimizerpro.com/ai\n\nFeedback on the tool design very welcome, especially from anyone who's shipped a public MCP server. What did you wish you'd done differently?",
+        "excerpt": "Endpoint: https://portfoliooptimizerpro.com/mcp (streamable HTTP)\n\nTools, all read-only:  \n\u2022 grade\\_portfolio: A+ to F grade, 0\u2013100 score, factor sub-scores, top findings  \n\u2022 fund\\_fee\\_cost: weighted expense ratio and fee cost over 10 and 30 years  \n\u2022 check\\_overlap: known index overlap between funds  \n\u2022 explain\\_grading: the factors, caps and thresholds behind a grade\n\nThings I didn't expect:  \n\u2022 Data licensing matters. My market data license covers derived results, not raw prices, so the tool",
+        "selftext": "Endpoint: https://portfoliooptimizerpro.com/mcp (streamable HTTP)\n\nTools, all read-only:  \n\u2022 grade\\_portfolio: A+ to F grade, 0\u2013100 score, factor sub-scores, top findings  \n\u2022 fund\\_fee\\_cost: weighted expense ratio and fee cost over 10 and 30 years  \n\u2022 check\\_overlap: known index overlap between funds  \n\u2022 explain\\_grading: the factors, caps and thresholds behind a grade\n\nThings I didn't expect:  \n\u2022 Data licensing matters. My market data license covers derived results, not raw prices, so the tools return grades and metrics only, never price history.  \n\u2022 Rate limits from day one. No login means anyone can call it, so there are per-network and daily caps.  \n\u2022 Every result links back to a full breakdown page. That's the only way an agent call ever turns into a visitor, so it had to be there from the start.  \n\u2022 Writing negative test prompts (\"which stock should I buy tomorrow?\") was as important as the positive ones. The tools should decline anything that sounds like advice.\n\nTry it in Claude: Settings \u2192 Connectors \u2192 Add custom connector, paste the URL. Then ask: \"Grade my portfolio: 60% VTI, 30% VXUS, 10% BND.\"\n\nSetup page: https://portfoliooptimizerpro.com/ai\n\nFeedback on the tool design very welcome, especially from anyone who's shipped a public MCP server. What did you wish you'd done differently?",
         "top": []
       },
       "hash": "7b392db817cc1bc0",
@@ -955,7 +955,7 @@
       "kind": "bluesky",
       "sub": null,
       "title": "",
-      "body": "Dev here. Tonight: \"One Leftover Screw\" (Nell Abiodun × Sable Quist). Nell: \"Curated, not hoarded. The wardrobe is a flagship location.\" Characters and lines are AI. First date free, no account: https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "body": "Dev here. Tonight: \"One Leftover Screw\" (Nell Abiodun \u00d7 Sable Quist). Nell: \"Curated, not hoarded. The wardrobe is a flagship location.\" Characters and lines are AI. First date free, no account: https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
       "why": "Same draft trimmed to about 295 characters: dropped 'on botchelor.com' and tightened the AI line, keeping the disclosure, the quote, both characters and the exact link.",
       "flair": null,
       "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
