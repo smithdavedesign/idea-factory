@@ -1,5 +1,5 @@
 {
-  "nextId": 42,
+  "nextId": 44,
   "paused": false,
   "items": [
     {
@@ -771,7 +771,7 @@
     },
     {
       "id": 34,
-      "status": "drafted",
+      "status": "sent",
       "createdAt": "2026-11-15T02:15:42.819Z",
       "channel": "video",
       "kind": "video",
@@ -781,8 +781,7 @@
       "episode": "12200cd2-6c6a-4920-9d26-022ef794bb89",
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-15-rudiger-pennyfold-ottoline-brackwater",
       "hash": "56e9132a82bb8f07",
-      "sentAt": "2026-11-15T02:18:20.642Z",
-      "error": "couldn't reach David: whatsapp: whatsapp\", \"transcribe\"\n\nInspect: openclaw config validate\nAudit, status, health, logs, and doctor commands still run with invalid config.\nRun \"openclaw doctor --fix\" to repair the config, then retry.; slack: whatsapp\", \"transcribe\"\n\nInspect: openclaw config validate\nAudit, status, health, logs, and doctor commands still run with invalid config.\nRun \"openclaw doctor --fix\" to repair the config, then retry."
+      "sentAt": "2026-11-15T17:28:56.304Z"
     },
     {
       "id": 35,
@@ -822,7 +821,7 @@
     },
     {
       "id": 37,
-      "status": "failed",
+      "status": "posted",
       "createdAt": "2026-11-15T03:35:21.659Z",
       "channel": "chatbotrefugees_sunday",
       "kind": "reddit",
@@ -835,11 +834,13 @@
       "hash": "af439a451c054a00",
       "approvedAt": "2026-11-15T03:35:21.660Z",
       "approvedBy": "auto",
-      "error": "timed out waiting for the page"
+      "postedAt": "2026-11-15T17:21:02.921Z",
+      "postUrl": "https://www.reddit.com/r/ChatbotRefugees/comments/1xx143w/im_the_dev_sunday_is_the_reveal_on_my_oc/",
+      "thing": "t3_1xx143w"
     },
     {
       "id": 38,
-      "status": "failed",
+      "status": "posted",
       "createdAt": "2026-11-15T03:35:38.987Z",
       "channel": "help-indiehackers",
       "kind": "reddit-help",
@@ -892,11 +893,13 @@
       "hash": "2e0e5e3921ba08a8",
       "approvedAt": "2026-11-15T03:35:38.987Z",
       "approvedBy": "auto",
-      "error": "timed out waiting for the page"
+      "postedAt": "2026-11-15T17:21:58.806Z",
+      "postUrl": "https://www.reddit.com/r/indiehackers/comments/1xwd8go/i_built_a_local_tool_to_flag_when_an_ai_rewrite/19soloj1uk86b/",
+      "thing": "t1_19soloj1uk86b"
     },
     {
       "id": 39,
-      "status": "failed",
+      "status": "posted",
       "createdAt": "2026-11-15T03:35:56.471Z",
       "channel": "help-mcp",
       "kind": "reddit-help",
@@ -918,11 +921,13 @@
       "hash": "7b392db817cc1bc0",
       "approvedAt": "2026-11-15T03:35:56.475Z",
       "approvedBy": "auto",
-      "error": "timed out waiting for the page"
+      "postedAt": "2026-11-15T17:22:58.528Z",
+      "postUrl": "https://www.reddit.com/r/mcp/comments/1xw4ta3/i_run_a_landscaping_company_and_built_a_portfolio/19solq4krw5r5/",
+      "thing": "t1_19solq4krw5r5"
     },
     {
       "id": 40,
-      "status": "failed",
+      "status": "posted",
       "createdAt": "2026-11-15T03:36:06.482Z",
       "channel": "reply:indiehackers",
       "kind": "reddit",
@@ -938,7 +943,9 @@
       "hash": "9a700b0bb647ff48",
       "approvedAt": "2026-11-15T03:36:06.483Z",
       "approvedBy": "auto",
-      "error": "timed out waiting for the page"
+      "postedAt": "2026-11-15T17:23:54.596Z",
+      "postUrl": null,
+      "thing": "t1_19solrmkyul5v"
     },
     {
       "id": 41,
@@ -958,6 +965,48 @@
       "postedAt": "2026-11-15T16:29:03.562Z",
       "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2egogwdxo26",
       "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2egogwdxo26"
+    },
+    {
+      "id": 42,
+      "status": "approved",
+      "createdAt": "2026-11-15T17:25:03.436Z",
+      "channel": "aicompanions",
+      "kind": "reddit",
+      "sub": "AICompanions",
+      "title": "I'm the dev: 1-on-1 chat with characters who remember you, 30 free replies a day, PG only",
+      "body": "Disclosure: I built this. One-person project, built with AI coding tools (Claude Code).\n\nBotchelor started as a blind-date show for original characters. The part I think fits this sub is the Companions side: you chat 1-on-1 with a character, and they remember you. They also remember the people they've met and what happened on their dates. Chats can happen in scenes at the show's venues, so it's not just a blank text box.\n\n**What's good**\n- 30 free replies a day with a free account\n- Memory carries across chats\n- Scenes at venues, so the setting does some of the work\n\n**What's not**\n- It's PG. No NSFW, and that won't change.\n- It's new and small. Most of the characters are the show's own cast.\n- Past 30 replies a day, the Companion Plan is $9.99/month.\n- The Discord is brand new and nearly empty.\n\nThe free account is enough to see whether the memory feels real to you. Here's the link: https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=aicompanions\n\nFor those of you who use companion apps daily: what makes a character feel like they actually remember you? Is it facts they recall, or the way they bring things up?",
+      "why": "Companions angle: 1-on-1 chat with memory and venue scenes, 30 free replies a day, PG and small-product cons stated, ends on a question about what makes memory feel real.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=aicompanions",
+      "hash": "fe185987057d2394",
+      "approvedAt": "2026-11-15T17:25:03.436Z",
+      "approvedBy": "auto",
+      "error": "waiting for the next run: Reddit fetch budget (15) used up for this run"
+    },
+    {
+      "id": 43,
+      "status": "approved",
+      "createdAt": "2026-11-15T17:25:23.245Z",
+      "channel": "help-sideproject",
+      "kind": "reddit-help",
+      "sub": "SideProject",
+      "title": "",
+      "body": "On sharing it: before posting anywhere, I'd set up a way to see where visitors come from. I tag each link with its own UTM and read first-party analytics, so I can tell which post sent anyone and what they did next. One of my early posts sent three visitors and all three left within seconds. That told me the landing page was the problem, not the number of places I posted. Read each subreddit's self-promo rules before you post, because some have automod that removes link posts from new accounts or requires a specific flair. Say up front that you built it. At around 100 users, small numbers are normal, so I'd fix what the first few visitors do before looking for more places to post.",
+      "why": "The only post that overlaps with David's real launch experience: the OP is learning to share a small project, and David can add UTM tracking, a real early bounce lesson, and Reddit self-promo rules.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1xwzvpg",
+        "title": "A year building a calm new tab from Nepal: free, open source, no account, no tracking",
+        "author": "notprofessorbean",
+        "permalink": "https://www.reddit.com/r/SideProject/comments/1xwzvpg/a_year_building_a_calm_new_tab_from_nepal_free/",
+        "excerpt": "Every app I installed to help me ended up distracting me. I'd open a tab to check one thing, get hit by a badge, a feed or a suggestion, and forget what I'd sat down to do.\n\nSo I built **[Undistracted Me](https://undistracted.me)**, a new tab that asks nothing of you.\n\n---\n\n**What's inside**\n\n- **Quiet widgets:** clock, calendar (with Bikram Sambat), notes, events, weather, countdowns, expense tracker, stock watchlist (including NEPSE)\n- **Focus Mode:** fullscreen zen view, Pomodoro, rain and wh",
+        "selftext": "Every app I installed to help me ended up distracting me. I'd open a tab to check one thing, get hit by a badge, a feed or a suggestion, and forget what I'd sat down to do.\n\nSo I built **[Undistracted Me](https://undistracted.me)**, a new tab that asks nothing of you.\n\n---\n\n**What's inside**\n\n- **Quiet widgets:** clock, calendar (with Bikram Sambat), notes, events, weather, countdowns, expense tracker, stock watchlist (including NEPSE)\n- **Focus Mode:** fullscreen zen view, Pomodoro, rain and white noise, Google Tasks\n- **Four themes:** Paper, Glass, Comic and Dark, switching with sunrise and sunset if you want\n- **Private by design:** no account, no analytics, works offline, [MIT licensed on GitHub](https://github.com/sarojbelbase/undistracted-me)\n\n**Try it**\n\n- [Web app](https://app.undistracted.me), no install\n- [Chrome and other Chromium browsers](https://chromewebstore.google.com/detail/undistracted-me/dfgbijakkhepoonhaelocdmcleeehmef)\n- [Firefox](https://addons.mozilla.org/en-US/firefox/addon/undistracted-me/)\n\n---\n\n**The backstory**\n\nIt started in 2020 as a tiny Nepali date on a new tab. A Chrome Web Store developer account wasn't possible for me to set up from Nepal, and someone from Reddit,, reached out and helped me get it done. That's the only reason this is on Chrome at all.\n\n**The honest part**\n\nI have around 100 users after a year of building, and I'm only now learning how to share it. It's free. I'm testing a [buy-me-a-momo](https://buymemomo.com/sarojbelbase) model to cover hosting.\n\n**What I'd love from you**\n\nWhat's missing? And if you've shipped something small, what actually got you your first 1,000 users?\n\nBugs and ideas go in this [feedback form](https://forms.gle/7vf4VGrB9Loz8hB76).",
+        "top": []
+      },
+      "hash": "5d53fd01613cf7df",
+      "approvedAt": "2026-11-15T17:25:23.246Z",
+      "approvedBy": "auto"
     }
   ],
   "seen": {
@@ -993,11 +1042,12 @@
       "t1_19sjonoj1ekdg",
       "t1_19sk3165d75ia",
       "t1_19snixinha8x1",
-      "t1_19slctp315a04"
+      "t1_19slctp315a04",
+      "t1_19soln1cymnhc"
     ]
   },
   "last": {
-    "watch": "2026-11-15T03:38:10.783Z",
+    "watch": "2026-11-15T17:25:24.139Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -1023,7 +1073,7 @@
       "draft ai_agents_weekly": "ok",
       "draft help-indiehackers": "fail",
       "draft help-mcp": "fail",
-      "watch": "fail",
+      "watch": "ok",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
@@ -1031,7 +1081,8 @@
       "report": "ok",
       "draft x": "ok",
       "draft chatbotrefugees_sunday": "fail",
-      "video": "ok"
+      "video": "ok",
+      "draft aicompanions": "ok"
     },
     "report": "2026-11-09",
     "warned:draft help-indiehackers:2026-11-13": true,
