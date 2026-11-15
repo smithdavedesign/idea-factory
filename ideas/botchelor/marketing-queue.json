@@ -822,7 +822,7 @@
     },
     {
       "id": 37,
-      "status": "approved",
+      "status": "failed",
       "createdAt": "2026-11-15T03:35:21.659Z",
       "channel": "chatbotrefugees_sunday",
       "kind": "reddit",
@@ -835,11 +835,11 @@
       "hash": "af439a451c054a00",
       "approvedAt": "2026-11-15T03:35:21.660Z",
       "approvedBy": "auto",
-      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 76407 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run"
+      "error": "timed out waiting for the page"
     },
     {
       "id": 38,
-      "status": "approved",
+      "status": "failed",
       "createdAt": "2026-11-15T03:35:38.987Z",
       "channel": "help-indiehackers",
       "kind": "reddit-help",
@@ -892,11 +892,11 @@
       "hash": "2e0e5e3921ba08a8",
       "approvedAt": "2026-11-15T03:35:38.987Z",
       "approvedBy": "auto",
-      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 76407 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run"
+      "error": "timed out waiting for the page"
     },
     {
       "id": 39,
-      "status": "approved",
+      "status": "failed",
       "createdAt": "2026-11-15T03:35:56.471Z",
       "channel": "help-mcp",
       "kind": "reddit-help",
@@ -918,11 +918,11 @@
       "hash": "7b392db817cc1bc0",
       "approvedAt": "2026-11-15T03:35:56.475Z",
       "approvedBy": "auto",
-      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 76407 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run"
+      "error": "timed out waiting for the page"
     },
     {
       "id": 40,
-      "status": "approved",
+      "status": "failed",
       "createdAt": "2026-11-15T03:36:06.482Z",
       "channel": "reply:indiehackers",
       "kind": "reddit",
@@ -938,7 +938,7 @@
       "hash": "9a700b0bb647ff48",
       "approvedAt": "2026-11-15T03:36:06.483Z",
       "approvedBy": "auto",
-      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 76407 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run"
+      "error": "timed out waiting for the page"
     }
   ],
   "seen": {
@@ -1004,7 +1004,7 @@
       "draft ai_agents_weekly": "ok",
       "draft help-indiehackers": "ok",
       "draft help-mcp": "ok",
-      "watch": "ok",
+      "watch": "fail",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
@@ -1020,6 +1020,7 @@
     "warned:watch:2026-11-14": true,
     "warned:draft chatbotrefugees_sunday:2026-11-14": true,
     "warned:draft help-indiehackers:2026-11-14": true,
-    "warned:draft help-mcp:2026-11-14": true
+    "warned:draft help-mcp:2026-11-14": true,
+    "warned:watch:2026-11-15": true
   }
 }
