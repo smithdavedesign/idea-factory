@@ -247,7 +247,7 @@
         "ai"
       ],
       "logName": "YouTube Shorts",
-      "note": "Each day's video kit uploaded as a public Short by the loop (bin/idea-market.js \u2192 io.youtubeUpload), with YouTube's altered/synthetic-content flag on. Setup: David creates the channel; a Google Cloud Desktop OAuth client (YouTube Data API v3, consent screen In production) in the keychain as vault/botchelor/YOUTUBE_CLIENT_ID + _CLIENT_SECRET; node bin/youtube-auth.js stores the refresh token; then status active and `node bin/idea-market.js draft youtube_shorts` posts the newest kit. If YouTube locks uploads to private, file the free API audit form (the error says so). Live 2026-11-11: channel Botchelor @Botchelor (UCo921Gz8WCepbzAwCIScn8A, a Brand Account under David's Google account); OAuth client in Google Cloud project botchelor-marketing (In production).",
+      "note": "Each day's video kit uploaded as a public Short by the loop (bin/idea-market.js → io.youtubeUpload), with YouTube's altered/synthetic-content flag on. Setup: David creates the channel; a Google Cloud Desktop OAuth client (YouTube Data API v3, consent screen In production) in the keychain as vault/botchelor/YOUTUBE_CLIENT_ID + _CLIENT_SECRET; node bin/youtube-auth.js stores the refresh token; then status active and `node bin/idea-market.js draft youtube_shorts` posts the newest kit. If YouTube locks uploads to private, file the free API audit form (the error says so). Live 2026-11-11: channel Botchelor @Botchelor (UCo921Gz8WCepbzAwCIScn8A, a Brand Account under David's Google account); OAuth client in Google Cloud project botchelor-marketing (In production).",
       "from": "2026-11-11"
     },
     {
@@ -289,7 +289,7 @@
       "kind": "stream",
       "status": "waiting",
       "logName": "Sunday reveal stream (YouTube Live + Twitch)",
-      "note": "One 1\u20132 hour test on a Sunday reveal night: the theater plays the week's dates, chat votes, votes go into /watch's vote. Needs the YouTube channel and a small server (~$12\u201324/mo, David's call from ownerBudget); this Mac can't spare the memory. Go 24/7 only if people watch."
+      "note": "One 1–2 hour test on a Sunday reveal night: the theater plays the week's dates, chat votes, votes go into /watch's vote. Needs the YouTube channel and a small server (~$12–24/mo, David's call from ownerBudget); this Mac can't spare the memory. Go 24/7 only if people watch."
     },
     {
       "id": "show_hn",
@@ -298,7 +298,7 @@
       "from": "2026-11-25",
       "cooldownDays": 35,
       "logName": "Show HN",
-      "angle": "Show HN for agent builders: send your agent on a blind date over MCP; the agent cast (characters made by agents, auditioning for the monthly cast) and the deterministic ending engine are the technical news since the Oct 24 post. Title starts \"Show HN: \", under 80 characters; body plain text, first person, what it is, how it works, what's hard, no marketing words. David posts it himself from his HN account, weekday 8\u201310am PT.",
+      "angle": "Show HN for agent builders: send your agent on a blind date over MCP; the agent cast (characters made by agents, auditioning for the monthly cast) and the deterministic ending engine are the technical news since the Oct 24 post. Title starts \"Show HN: \", under 80 characters; body plain text, first person, what it is, how it works, what's hard, no marketing words. David posts it himself from his HN account, weekday 8–10am PT.",
       "note": "Oct 24 Show HN got 1 point. HN frowns on automated or coordinated posting, so this is drafted for David and never auto-posted."
     },
     {
@@ -306,7 +306,68 @@
       "kind": "producthunt",
       "status": "waiting",
       "logName": "Product Hunt",
-      "note": "One launch, when the YouTube/Reels clips give a gallery to show. David's account posts it (hunters must be real people); a 12:01am PT Tuesday\u2013Thursday launch. Draft the tagline, description, first comment and gallery from the kit when David picks a date. 2026-11-15: David said yes; date Tue 2026-12-01 12:01am PT (December season premiere, The Botchelor with Nell). Draft in PRODUCTHUNT.md. David signs in to Product Hunt, Claude fills the form and schedules it."
+      "note": "One launch, when the YouTube/Reels clips give a gallery to show. David's account posts it (hunters must be real people); a 12:01am PT Tuesday–Thursday launch. Draft the tagline, description, first comment and gallery from the kit when David picks a date. 2026-11-15: David said yes; date Tue 2026-12-01 12:01am PT (December season premiere, The Botchelor with Nell). Draft in PRODUCTHUNT.md. David signs in to Product Hunt, Claude fills the form and schedules it."
+    },
+    {
+      "id": "claudeai",
+      "kind": "reddit",
+      "sub": "ClaudeAI",
+      "status": "active",
+      "from": "2026-11-18",
+      "cooldownDays": 3650,
+      "maxPosts": 1,
+      "flair": "Built with Claude",
+      "angle": "Showcase per the sub's rule: built BY David with Claude Code. Say clearly what was built, how Claude Code helped in detail (one concrete thing it got right and one it got wrong), what the site does, and that it's free to try (paid tiers exist). Minimal promo language, no referral links, one link. Never After Dark.",
+      "note": "Rules checked 2026-11-15: project showcases allowed if built with Claude by you, free to try and said so, detailed how-Claude-helped. Flair name 'Built with Claude' not yet confirmed (Reddit had this Mac blocked); the loop errors clearly if it's wrong."
+    },
+    {
+      "id": "aigamedev",
+      "kind": "reddit",
+      "sub": "aigamedev",
+      "status": "active",
+      "from": "2026-11-26",
+      "cooldownDays": 3650,
+      "maxPosts": 1,
+      "flair": "Commercial Self Promotion",
+      "angle": "Dev story, not an ad: how the show splits a deterministic rules engine (decides the ending from both character sheets) from the LLM (writes only the lines), and what broke along the way. Ask a real question to start discussion. PG only.",
+      "note": "Rules checked 2026-11-15: game promotion allowed only in the context of how AI was used to build it; anything with paid options needs the 'Commercial Self Promotion' flair; no adult content, no services."
+    },
+    {
+      "id": "uneed",
+      "kind": "card",
+      "status": "needs-account",
+      "logName": "Uneed",
+      "note": "Free launch queue (uneed.best/submit-a-tool), date assigned ≥50 days out; keeps its dofollow link at 20 upvotes. David signs in, Claude fills the form in his Chrome. Never pay for fast-track."
+    },
+    {
+      "id": "peerlist",
+      "kind": "card",
+      "status": "needs-account",
+      "logName": "Peerlist Launchpad",
+      "note": "Free weekly launch (Mondays UTC) from a verified individual profile: Work → New project → Launch. Needs cover image + demo link. No upvote asking. David signs in/verifies, Claude fills."
+    },
+    {
+      "id": "devhunt_mcp",
+      "kind": "card",
+      "status": "needs-account",
+      "logName": "DevHunt (MCP server)",
+      "note": "Free directory listing (nofollow) for the MCP server only, framed as a dev tool (botchelor.com/api/mcp). The $49 launch is not worth it. David signs in with GitHub, Claude fills."
+    },
+    {
+      "id": "taaft_thread",
+      "kind": "card",
+      "status": "active",
+      "from": "2026-11-20",
+      "cooldownDays": 30,
+      "logName": "TAAFT monthly X thread",
+      "note": "There's An AI For That has no free listing; once a month on X they pick one indie tool from a reply thread. Reply from @botchelo when the thread appears; listing itself is $49 (skip)."
+    },
+    {
+      "id": "claude_discord",
+      "kind": "card",
+      "status": "needs-account",
+      "logName": "Claude Discord showcase",
+      "note": "Anthropic's Discord (anthropic.com/discord). Post once in a showcase channel only if one exists and its rules allow it; join and read first."
     }
   ],
   "x": {
@@ -321,5 +382,6 @@
   },
   "threads": {
     "handle": "botchelor"
-  }
+  },
+  "channels_skipped_2026_11_15": "Checked and skipped: r/SillyTavernAI (only open-source/self-hostable apps may be promoted), r/WebGames (watch-only reads as a webtoy, banned), MCP Discord (no marketing allowed), Futurepedia/Toolify/Ben's Bites/TLDR AI (paid only), AlternativeTo (declines 'AI companions'; try once only as a show if ever)."
 }
