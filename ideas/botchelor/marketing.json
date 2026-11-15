@@ -335,23 +335,23 @@
     {
       "id": "uneed",
       "kind": "card",
-      "status": "needs-account",
+      "status": "off",
       "logName": "Uneed",
-      "note": "Free launch queue (uneed.best/submit-a-tool), date assigned ≥50 days out; keeps its dofollow link at 20 upvotes. David signs in, Claude fills the form in his Chrome. Never pay for fast-track."
+      "note": "2026-11-15 DONE: listed (uneed.best/tool/botchelor), free line, auto-launch Jun 22 2027 (~219 days). Needs upvote score 10 on launch day to stay published (below that it can't rejoin), 20 for dofollow. Fast-track $19.99 (~14 days) or pick-a-date $39.99 is David's call; nothing paid."
     },
     {
       "id": "peerlist",
       "kind": "card",
-      "status": "needs-account",
+      "status": "waiting",
       "logName": "Peerlist Launchpad",
-      "note": "Free weekly launch (Mondays UTC) from a verified individual profile: Work → New project → Launch. Needs cover image + demo link. No upvote asking. David signs in/verifies, Claude fills."
+      "note": "2026-11-15: project saved at 100% (peerlist.io/1426davejobs, AI+Gaming, cover+logo). Launchpad requires identity verification with a government ID: David's step (Peerlist → Verification). Then Claude launches it on a Monday UTC."
     },
     {
       "id": "devhunt_mcp",
       "kind": "card",
-      "status": "needs-account",
+      "status": "off",
       "logName": "DevHunt (MCP server)",
-      "note": "Free directory listing (nofollow) for the MCP server only, framed as a dev tool (botchelor.com/api/mcp). The $49 launch is not worth it. David signs in with GitHub, Claude fills."
+      "note": "2026-11-15 DONE: 'Botchelor MCP' listed (devhunt.org/tool/botchelor-mcp, links /agents + GitHub botchelor-mcp), free queue = launch ~Nov 4 2031, nofollow. Basic $19 / boosted $49 same-week launch is David's call; nothing paid. Maker comment set, AI auto-replies OFF."
     },
     {
       "id": "taaft_thread",
@@ -365,9 +365,9 @@
     {
       "id": "claude_discord",
       "kind": "card",
-      "status": "needs-account",
+      "status": "off",
       "logName": "Claude Discord showcase",
-      "note": "Anthropic's Discord (anthropic.com/discord). Post once in a showcase channel only if one exists and its rules allow it; join and read first."
+      "note": "2026-11-15: joined as @Botchelor. Server rules: 'No self-promotion'; light self-promo = warning then ban. #built-with-claude forum exists but is locked behind user levels. Revisit only if that forum unlocks and its own guidelines allow project posts."
     }
   ],
   "x": {

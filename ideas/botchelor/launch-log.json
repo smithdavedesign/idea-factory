@@ -40,7 +40,7 @@
       "url": "https://www.reddit.com/r/ChatbotRefugees/",
       "postUrl": "https://www.reddit.com/r/ChatbotRefugees/comments/1xfpchy/im_the_developer_a_blinddate_show_for_your_oc/",
       "postedAt": "2026-10-26T06:36:34+00:00",
-      "note": "Repost with the 'Promotion Sunday' flair, as the moderator invited after the 10-24 removal; inside the Sat 10:00\u2013Mon 11:59 UTC window. Posted by Claude via David's signed-in browser, text approved by David. AutoModerator: 'LLM Disclosure Not Verified' (optional verification). UPDATE 2026-10-29: removed by the sub's AI AutoModerator as 'outside the window' although posted 06:35 UTC Monday (inside it); David chose not to modmail."
+      "note": "Repost with the 'Promotion Sunday' flair, as the moderator invited after the 10-24 removal; inside the Sat 10:00–Mon 11:59 UTC window. Posted by Claude via David's signed-in browser, text approved by David. AutoModerator: 'LLM Disclosure Not Verified' (optional verification). UPDATE 2026-10-29: removed by the sub's AI AutoModerator as 'outside the window' although posted 06:35 UTC Monday (inside it); David chose not to modmail."
     },
     {
       "channel": "r/ChatbotRefugees (October Promotions megathread)",
@@ -89,7 +89,7 @@
       "url": "https://www.tiktok.com/@botchelorcom",
       "postUrl": "https://www.tiktok.com/@botchelorcom/video/7706232731197377822",
       "postedAt": "2026-11-09T18:20:00.000Z",
-      "note": "vote-link clip (Kaede \u00d7 Malachar, 56 s, AI-generated label on, caption exactly as approved incl. botchelor.com/vote?s=tiktok and 8 hashtags). Reposted: the first try (video 7706231855019855135) saved a garbled caption and was removed."
+      "note": "vote-link clip (Kaede × Malachar, 56 s, AI-generated label on, caption exactly as approved incl. botchelor.com/vote?s=tiktok and 8 hashtags). Reposted: the first try (video 7706231855019855135) saved a garbled caption and was removed."
     },
     {
       "channel": "r/JanitorAI_Refuges",
@@ -140,7 +140,7 @@
       "postUrl": "https://www.tiktok.com/@botchelorcom/video/7706986449412951326",
       "postedAt": "2026-11-11T18:43:00.000Z",
       "episode": "7a5e974f-803c-4d10-89ce-f56a37683991",
-      "note": "vote-link clip (Mitsuki \u00d7 Takeru laundromat, 61 s, AI-generated label on, caption incl. botchelor.com/vote?s=tiktok and 8 hashtags). Kit made 2026-11-09, posted instead of the repeat kit #9 (skipped). Filled by Claude via Chrome Apple Events JS; David uploaded the file and clicked Post."
+      "note": "vote-link clip (Mitsuki × Takeru laundromat, 61 s, AI-generated label on, caption incl. botchelor.com/vote?s=tiktok and 8 hashtags). Kit made 2026-11-09, posted instead of the repeat kit #9 (skipped). Filled by Claude via Chrome Apple Events JS; David uploaded the file and clicked Post."
     },
     {
       "channel": "YouTube Shorts",
@@ -154,7 +154,7 @@
       "url": "https://www.instagram.com/botchelor/",
       "postUrl": "https://www.instagram.com/reel/DfnzWsZALx1/",
       "postedAt": "2026-11-12T00:49:32.857Z",
-      "note": "First Reel (Kaede \u00d7 Malachar night ferry, kit rebuilt with the new vote line). Posted by Claude via a media-bucket link after the direct upload failed (idea-factory #68); caption tagged ?s=instagram, AI disclosure in the caption."
+      "note": "First Reel (Kaede × Malachar night ferry, kit rebuilt with the new vote line). Posted by Claude via a media-bucket link after the direct upload failed (idea-factory #68); caption tagged ?s=instagram, AI disclosure in the caption."
     },
     {
       "channel": "YouTube Shorts",
@@ -294,6 +294,24 @@
       "channel": "TikTok @botchelorcom",
       "url": "https://www.tiktok.com/@botchelorcom",
       "note": "Kit #34 (Rudiger x Ottoline): uploaded and captioned by Claude in Chrome, AI-generated label on, David clicked Post."
+    },
+    {
+      "postedAt": "2026-11-15T23:11:20.775Z",
+      "channel": "Uneed",
+      "url": "https://www.uneed.best/tool/botchelor",
+      "note": "Free waiting line, launches Jun 22 2027. utm_source=uneed."
+    },
+    {
+      "postedAt": "2026-11-15T23:11:20.775Z",
+      "channel": "DevHunt (MCP server)",
+      "url": "https://devhunt.org/tool/botchelor-mcp",
+      "note": "Free queue (~2031), nofollow. utm_source=devhunt on /agents."
+    },
+    {
+      "postedAt": "2026-11-15T23:11:20.775Z",
+      "channel": "Peerlist",
+      "url": "https://peerlist.io/1426davejobs",
+      "note": "Project saved; Launchpad waits on David's ID verification. utm_source=peerlist."
     }
   ]
 }
