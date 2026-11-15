@@ -1,0 +1,28 @@
+{
+  "title": "coiready — Amazon insurance-certificate checker for enhanced-safety sellers",
+  "repoName": "coiready",
+  "oneLiner": "For small Amazon sellers who now need a $1M liability certificate to keep enhanced-safety listings live, it checks the actual certificate PDF against Amazon's criteria before upload and writes the exact fix request for the broker, for $19.",
+  "overlaps": "covercheck (checks vendor insurance certificates for HOA boards) — same certificate-checking engine, but a different buyer and a different rulebook (Amazon's 13 criteria)",
+  "tags": [
+    "serious",
+    "business",
+    "one-time",
+    "reach:community",
+    "ecommerce",
+    "compliance",
+    "insurance"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://ppc.land/amazon-forces-1m-cover-on-small-safety-category-sellers-from-november-2/",
+    "https://www.ecomcrew.com/amazons-new-insurance-rules-hit-small-sellers-in-11-categories/",
+    "https://sellercentral.amazon.com/seller-forums/discussions/t/e0fe556d-c41a-4ba1-bd18-6aad1984e56c",
+    "https://sellercentral.amazon.com/seller-forums/discussions/t/b63e560c-251c-4d98-a683-2cf5415e5da6",
+    "https://www.assureful.com/blog/amazon-certificate-of-insurance",
+    "https://help.next-insurance.com/hc/en-us/articles/4417097180691-How-do-I-provide-proof-of-coverage-to-Amazon",
+    "https://myamazonguy.com/news/amazon-liability-insurance-requirements/"
+  ],
+  "slug": "coiready",
+  "recordedAt": "2026-11-15T17:32:32.588Z"
+}
