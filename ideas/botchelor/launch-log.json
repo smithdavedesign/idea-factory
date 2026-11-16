@@ -368,6 +368,13 @@
       "postUrl": "https://www.threads.com/@botchelor/post/Dfzv9R-m63U",
       "postedAt": "2026-11-16T16:08:28.536Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #55 on his phone; link tagged utm_content=threads."
+    },
+    {
+      "channel": "r/CharacterAI_No_Filter (second message asking permission, not a post)",
+      "url": "https://www.reddit.com/r/CharacterAI_No_Filter/",
+      "postUrl": null,
+      "postedAt": "2026-11-16T17:05:00+00:00",
+      "note": "David said yes to a follow-up (2026-11-16). No reply to the 11-08 message, and nothing showed it was ever delivered. Sent through reddit.com/message/compose/?to=r/CharacterAI_No_Filter by Claude in David's signed-in browser; this time the response was captured: sendMessageToSubreddit ok:true, errors null. Asks to post once with the Discussion flair about pasting a Character.AI character you wrote into the builder (botchelor.com/import?from=cai), says the show is PG and AI-written, offers the Alternatives list instead, and says this is the last ask. Rule 4 now names the mods' Discord as the contact route; nobody has joined it. old.reddit.com/api/compose is gone (404). Post only after a yes."
     }
   ]
 }
