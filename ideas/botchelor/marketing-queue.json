@@ -1381,11 +1381,12 @@
       "t1_19somaqzkp8pv",
       "t1_19soxjj7yr3j8",
       "t1_19sp4t891gsde",
-      "t1_19sqalayh2mci"
+      "t1_19sqalayh2mci",
+      "t1_19sqhhl3zew11"
     ]
   },
   "last": {
-    "watch": "2026-11-16T16:40:50.235Z",
+    "watch": "2026-11-16T19:41:42.110Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -1436,6 +1437,6 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-16T16:39:17.034Z"
+    "syncAt": "2026-11-16T19:41:00.900Z"
   }
 }
