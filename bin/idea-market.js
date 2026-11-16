@@ -361,6 +361,22 @@ async function videoKit(ctx, ch) {
 }
 
 /**
+ * A hand-edited episode cut takes the day's video slot when one is waiting in ${CLIPS}/cuts (botchelor
+ * scripts/clips/episode-cut.mjs, the December plan of 2026-11-16): moved into posts/ as today's kit, sent to David for
+ * TikTok like the daily kit, and followed on YouTube Shorts and Instagram Reels. One a day, since the video channel
+ * comes due once a day; the daily clip has the days with no cut waiting. Null when none is waiting.
+ */
+function cutKit(ctx, ch, now = new Date()) {
+  const kit = io.releaseCut(M.localDay(now, ctx.cfg.timezone || 'UTC'));
+  if (!kit) return null;
+  const item = M.addItem(ctx.queue, { channel: ch.id, kind: 'video', title: '', body: kit.caption, media: kit.video, episode: kit.episode, kitDir: kit.dir, cut: kit.cut });
+  emit({ component: 'market', event: 'cut', status: 'ok', subject: { idea: ctx.cfg.slug, channel: ch.id }, message: `released the episode cut ${kit.cut} as today's video kit (${io.stagedCuts().length} still waiting)` });
+  sendDraft(ctx, item, ch);
+  followKit(ctx, kit, ch.id);
+  return item;
+}
+
+/**
  * The same kit for the channels that follow the video channel (YouTube Shorts, Instagram Reels): one item each,
  * re-tagged for its source, and posted by the loop itself (autoPost). An episode goes to each channel once.
  */
@@ -368,9 +384,12 @@ function followKit(ctx, kit, of = 'video', only) {
   const out = [];
   for (const f of M.followers(ctx.cfg, of)) {
     if (only && f.id !== only) continue;
-    if (ctx.queue.items.some((i) => i.channel === f.id && i.episode && i.episode === kit.episode && i.status !== 'skipped')) continue;
+    // A daily kit goes to each channel once per date; a cut is its own video, so it goes once per cut, even when the
+    // date it's cut from already went out as a daily kit.
+    const already = (i) => (kit.cut ? i.cut === kit.cut : !i.cut && i.episode && i.episode === kit.episode);
+    if (ctx.queue.items.some((i) => i.channel === f.id && already(i) && i.status !== 'skipped')) continue;
     const { title, body } = M.kitPost(kit.caption, f.source || f.id, f.kind);
-    out.push(sendDraft(ctx, M.addItem(ctx.queue, { channel: f.id, kind: f.kind, title, body, media: kit.video, episode: kit.episode, kitDir: kit.dir }), f));
+    out.push(sendDraft(ctx, M.addItem(ctx.queue, { channel: f.id, kind: f.kind, title, body, media: kit.video, episode: kit.episode, kitDir: kit.dir, ...(kit.cut ? { cut: kit.cut } : {}) }), f));
   }
   return out;
 }
@@ -536,7 +555,7 @@ async function tick(slug, now = new Date()) {
   if (!ctx.queue.paused && M.localHour(now, tz) >= (ctx.cfg.draftAfterHour ?? 8) && M.localHour(now, tz) < 21) {
     for (const ch of M.draftOrder(M.dueChannels(ctx.cfg, { launchLog: ctx.launchLog, queue: ctx.queue, now }))) {
       if (ch.kind === 'video') {
-        if (M.localHour(now, tz) >= 18) await step('video', () => videoKit(ctx, ch));
+        if (M.localHour(now, tz) >= 18) await step('video', async () => cutKit(ctx, ch, now) || videoKit(ctx, ch));
         continue;
       }
       await step(`draft ${ch.id}`, () => draftChannel(ctx, ch, reddit));
@@ -598,4 +617,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { draftPrompt, writeDraft, load, handleReply, tick, drain };
+module.exports = { draftPrompt, writeDraft, load, handleReply, tick, drain, cutKit, followKit };
