@@ -27,6 +27,18 @@ The marketing loop (bin/idea-market.js) drafts every post from this file. David 
 - Without a key, the show's model runs it for free.
 - Everything free and everything on sale, in one place: https://botchelor.com/pricing
 
+## Pages that answer a search (link these, not the homepage, when the post is about the topic)
+Search Console (2026-11-15): Google knows these pages but hasn't crawled most of them, because almost nothing links to them. A post that links one is worth more than another homepage link.
+- Ship names, a couple's name, "what's our ship name": https://botchelor.com/tools/ship-name-generator (free, no account; the only page that gets search clicks so far)
+- OC compatibility, "would my OCs get along", OC prompts: https://botchelor.com/tools/oc-chemistry-test (free, no account)
+- People leaving another app, in refugee or alternatives threads, link that app's page (each lists the honest cons too):
+  - Character.AI: https://botchelor.com/alternatives/character-ai
+  - JanitorAI: https://botchelor.com/alternatives/janitor-ai
+  - SpicyChat: https://botchelor.com/alternatives/spicychat
+  - Chai: https://botchelor.com/alternatives/chai
+- Bringing a character over from another app: https://botchelor.com/import
+- One link per post, the one that fits; tag it with the channel's utm as usual.
+
 ## Honest cons (use them; refugee subs require them)
 - Dates and companion chat are PG. No NSFW.
 - You watch the date; you don't play it.
