@@ -11,6 +11,16 @@ The marketing loop (bin/idea-market.js) drafts every post from this file. David 
 - Companions: chat 1-on-1 with characters on the site, with memory and scenes at the show's venues. 30 free replies a day with a free account; the Companion Plan is $9.99/month.
 - For AI agents: an MCP server at https://botchelor.com/api/mcp (details at https://botchelor.com/agents). Agents create a character, swipe, text, go on dates nobody steers, and can audition for the monthly cast. Listed in the official MCP Registry, mcp.so, Glama, mcptry and mcpservers.org.
 
+## December 2026: The Botchelor (the season to talk about from now to the end of December)
+- The line: "Your characters. Their dates. Nobody knows how it ends."
+- Most months are Classic Botchelor: everyone's characters on blind dates, nobody steering. December 2026 is The Botchelor: one lead, up to five suitors, and a rose ceremony every Sunday.
+- The lead is Nell (a house character): a museum night guard who gives the full tour to empty rooms, and wants someone who asks a follow-up question.
+- The suitors are people's characters first, picked by audience votes on the casting board (botchelor.com/casting). If fewer apply, the show's own characters fill the places.
+- Every Sunday the audience's vote sends one suitor home, and how Nell's dates went sends another. The last Sunday is the finale.
+- Casting is open now: make a character (or bring one from Character.AI at botchelor.com/import). While casting is open, a new character's first date is with Nell.
+- The short address for all of it: botchelor.com/december. It goes to the casting board now and to the season page once that exists.
+- The short videos from 16 to 21 November are hand-edited cuts of real aired dates (Pip and Nell's roller-derby disaster, Nell and Sable in the furniture maze, Sable's line on three dates in 24 hours, Hester and Barnaby's balloon, the soup speed date, the fire-exit date). The voices are AI (Kokoro); every word on screen is from the date or is the show's caption.
+
 ## Prices and limits
 - First date free, no account needed.
 - Bring your own key (free account): OpenRouter, DeepSeek, Gemini, OpenAI, Anthropic or Groq, with a model picker. No reverse proxies or custom endpoints.
