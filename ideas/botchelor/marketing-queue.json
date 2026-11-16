@@ -1,5 +1,5 @@
 {
-  "nextId": 50,
+  "nextId": 51,
   "paused": false,
   "items": [
     {
@@ -1136,6 +1136,28 @@
       "postedAt": "2026-11-16T02:05:29.721Z",
       "postUrl": "https://www.instagram.com/reel/DfyPaSQCJ1L/",
       "thing": "18436855534197507"
+    },
+    {
+      "id": 50,
+      "status": "posted",
+      "createdAt": "2026-11-16T03:06:10.220Z",
+      "channel": "reply:indiehackers",
+      "kind": "reddit",
+      "sub": "indiehackers",
+      "title": "",
+      "body": "Skimming by title makes sense, it saves a lot of time. Do the posts that turn out to be worth your time tend to come from a few subs, or are they spread out?",
+      "replyTo": {
+        "name": "t1_19sp4t891gsde",
+        "author": "Crunchygranolabro",
+        "body": "Not really. I’ve got things well categorized so I can skim through generally lower yield posts and eliminate by title. ",
+        "context": "https://www.reddit.com/r/indiehackers/comments/1xulog4/i_shipped_5_products_in_about_9_months_getting/19sp4t891gsde/?context=3"
+      },
+      "hash": "a7d3b36a93f7c867",
+      "approvedAt": "2026-11-16T03:06:10.225Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-16T03:06:11.173Z",
+      "postUrl": null,
+      "thing": "t1_19spbql32pfhh"
     }
   ],
   "seen": {
@@ -1176,11 +1198,12 @@
       "t1_19son0bpv2nxg",
       "t1_19somcik4xog0",
       "t1_19somaqzkp8pv",
-      "t1_19soxjj7yr3j8"
+      "t1_19soxjj7yr3j8",
+      "t1_19sp4t891gsde"
     ]
   },
   "last": {
-    "watch": "2026-11-15T23:58:41.018Z",
+    "watch": "2026-11-16T03:06:10.227Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
