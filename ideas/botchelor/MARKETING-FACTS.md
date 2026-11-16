@@ -22,7 +22,7 @@ The marketing loop (bin/idea-market.js) drafts every post from this file. David 
 - The short videos from 16 to 21 November are hand-edited cuts of real aired dates (Pip and Nell's roller-derby disaster, Nell and Sable in the furniture maze, Sable's line on three dates in 24 hours, Hester and Barnaby's balloon, the soup speed date, the fire-exit date). The voices are AI (Kokoro); every word on screen is from the date or is the show's caption.
 
 ## Prices and limits
-- First date free, no account needed.
+- 3 free dates a week for everyone, back every Monday 00:00 UTC; no account needed to start. (Was "first date free" until 2026-11-16; the site has said 3 a week for a while.)
 - Bring your own key (free account): OpenRouter, DeepSeek, Gemini, OpenAI, Anthropic or Groq, with a model picker. No reverse proxies or custom endpoints.
 - Without a key, the show's model runs it for free.
 - Everything free and everything on sale, in one place: https://botchelor.com/pricing
