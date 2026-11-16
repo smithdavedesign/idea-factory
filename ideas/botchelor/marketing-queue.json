@@ -1,5 +1,5 @@
 {
-  "nextId": 58,
+  "nextId": 59,
   "paused": false,
   "items": [
     {
@@ -1339,6 +1339,28 @@
       "postUrl": "https://www.reddit.com/r/mcp/comments/1xxnou4/mcpopenrussian_a_local_readonly_mcp_server_that/19sqc09l2tj5t/",
       "thing": "t1_19sqc09l2tj5t",
       "removedSeen": "not found"
+    },
+    {
+      "id": 58,
+      "status": "posted",
+      "createdAt": "2026-11-16T22:42:23.197Z",
+      "channel": "reply:mcp",
+      "kind": "reddit",
+      "sub": "mcp",
+      "title": "",
+      "body": "Thanks for checking it against your eval logs. Zero cross-language calls in about 140 is a better answer than my guess, so leaving the names alone makes sense. Glad the description issue is fixed too. For the 7 of 38 skips, a short line in the README that users can paste into their system prompt (something like \"always check the dictionary tool for Russian translations\") might help more than the descriptions can, since the descriptions only matter once the model has decided to call a tool.",
+      "replyTo": {
+        "name": "t1_19sqr0whuygxw",
+        "author": "No_Television_5967",
+        "body": "Thanks, this was useful. I checked it against the code and my eval logs. In three evaluation runs (about 140 calls) the model never sent an English word to `lookup_entries` or a Russian word to `search_entries`, so I'm not renaming the tools. But your point about the descriptions was right.\n\nI have addressed [the issue here](https://github.com/nicolacalzone/mcp-openrussian/issues/3) and solved it!   \n  \nThere is still a real limit. For simple translations the model often skips the tool and answers from memory (7 of 38 prompts), and descriptions can't force it to call the tool.",
+        "context": "https://www.reddit.com/r/mcp/comments/1xxnou4/mcpopenrussian_a_local_readonly_mcp_server_that/19sqr0whuygxw/?context=3"
+      },
+      "hash": "14d912ecbb0c62b5",
+      "approvedAt": "2026-11-16T22:42:23.199Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-16T22:42:24.214Z",
+      "postUrl": null,
+      "thing": "t1_19sqs78dfy43o"
     }
   ],
   "seen": {
@@ -1382,11 +1404,12 @@
       "t1_19soxjj7yr3j8",
       "t1_19sp4t891gsde",
       "t1_19sqalayh2mci",
-      "t1_19sqhhl3zew11"
+      "t1_19sqhhl3zew11",
+      "t1_19sqr0whuygxw"
     ]
   },
   "last": {
-    "watch": "2026-11-16T19:41:42.110Z",
+    "watch": "2026-11-16T22:42:23.203Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -1437,6 +1460,6 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-16T19:41:00.900Z"
+    "syncAt": "2026-11-16T22:42:06.428Z"
   }
 }
