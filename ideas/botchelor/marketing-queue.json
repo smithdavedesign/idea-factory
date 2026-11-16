@@ -1258,7 +1258,7 @@
     ]
   },
   "last": {
-    "watch": "2026-11-16T10:35:47.123Z",
+    "watch": "2026-11-16T13:36:05.046Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -1307,6 +1307,6 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-16T10:35:43.644Z"
+    "syncAt": "2026-11-16T13:36:01.746Z"
   }
 }
