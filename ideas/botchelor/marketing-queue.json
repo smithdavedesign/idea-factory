@@ -1258,7 +1258,7 @@
     ]
   },
   "last": {
-    "watch": "2026-11-16T03:06:10.227Z",
+    "watch": "2026-11-16T07:35:30.581Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -1284,7 +1284,7 @@
       "draft ai_agents_weekly": "ok",
       "draft help-indiehackers": "fail",
       "draft help-mcp": "fail",
-      "watch": "fail",
+      "watch": "ok",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
@@ -1307,6 +1307,6 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-16T04:06:56.227Z"
+    "syncAt": "2026-11-16T07:35:27.322Z"
   }
 }
