@@ -189,7 +189,8 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-10T21:03:40.203Z",
       "postUrl": null,
-      "thing": "t1_19sfyfh4k5u0x"
+      "thing": "t1_19sfyfh4k5u0x",
+      "removedSeen": "not found"
     },
     {
       "id": 8,
@@ -211,7 +212,8 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-11T00:04:24.584Z",
       "postUrl": null,
-      "thing": "t1_19sg6hor6bn0i"
+      "thing": "t1_19sg6hor6bn0i",
+      "removedSeen": "not found"
     },
     {
       "id": 9,
@@ -646,7 +648,8 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-13T13:23:47.253Z",
       "postUrl": null,
-      "thing": "t1_19skqlnuoie8w"
+      "thing": "t1_19skqlnuoie8w",
+      "removedSeen": "not found"
     },
     {
       "id": 28,
@@ -665,7 +668,8 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-13T16:25:57.441Z",
       "postUrl": "https://www.reddit.com/r/modelcontextprotocol/comments/1xvcbqg/i_built_a_remote_mcp_server_where_the_default/",
-      "thing": "t3_1xvcbqg"
+      "thing": "t3_1xvcbqg",
+      "removedSeen": "not found"
     },
     {
       "id": 29,
@@ -712,7 +716,8 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-13T16:26:55.687Z",
       "postUrl": "https://www.reddit.com/r/SideProject/comments/1xvapka/just_launched_a_paint_by_numbers_you_play_with/19skyrpzyguzk/",
-      "thing": "t1_19skyrpzyguzk"
+      "thing": "t1_19skyrpzyguzk",
+      "removedSeen": "not found"
     },
     {
       "id": 31,
@@ -1153,6 +1158,7 @@
     "warned:watch:2026-11-15": true,
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
-    "warned:draft help-mcp:2026-11-15": true
+    "warned:draft help-mcp:2026-11-15": true,
+    "syncAt": "2026-11-16T00:35:30.243Z"
   }
 }
