@@ -1,0 +1,32 @@
+{
+  "title": "boxcheck — W-2 Box 12 code TT overtime-premium check for small employers",
+  "repoName": "boxcheck",
+  "oneLiner": "For owners and bookkeepers of 5–50 employee hourly businesses, it recomputes each employee's qualified overtime premium from the payroll register in the browser, so the new W-2 Box 12 code TT figure can be checked before W-2s go out.",
+  "overlaps": "none in portfolio; closest is lienclock (same small-business compliance-deadline pattern, different user and rule)",
+  "tags": [
+    "serious",
+    "business",
+    "one-time",
+    "reach:community",
+    "compliance",
+    "payroll",
+    "tax"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://www.thetaxadviser.com/news/2026/aug/irs-updates-overtime-deduction-faqs-adds-reporting-details/",
+    "https://blog.taxbandits.com/w-2-box-12-code-tt-vs-box-14-what-changed-for-qualified-overtime-reporting/",
+    "https://bbklaw.com/resources/la-062426-take-note-mandatory-reporting-of-employees-qualified-overtime-compensation-for-2026",
+    "https://gusto.com/resources/guides/switch-payroll-providers/onpay-pricing",
+    "https://overtimeproof.pages.dev/",
+    "https://webiis10.mondaq.com/unitedstates/employee-rights-labour-relations/1784372/is-your-payroll-company-correctly-calculating-the-no-tax-on-overtime-rule-penalties-will-apply-for-the-2026-tax-year",
+    "https://247wallst.com/personal-finance/2026/08/22/the-overtime-tax-break-only-counts-the-half-not-the-time-and-a-half-most-workers-are-overestimating-it-by-double/",
+    "https://support.gusto.com/article/106622205100000/",
+    "https://gusto.com/resources/guides/best-cheap-payroll-services",
+    "https://indeedflex.com/career-hub/tools/overtime-calculator",
+    "https://toggl.com/overtime-calculator/"
+  ],
+  "slug": "boxcheck",
+  "recordedAt": "2026-11-16T17:02:09.116Z"
+}
