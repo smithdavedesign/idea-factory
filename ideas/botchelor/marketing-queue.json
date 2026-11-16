@@ -1,5 +1,5 @@
 {
-  "nextId": 45,
+  "nextId": 46,
   "paused": false,
   "items": [
     {
@@ -1040,6 +1040,28 @@
       "postedAt": "2026-11-15T20:57:46.390Z",
       "postUrl": null,
       "thing": "t1_19sovb0xvj99e"
+    },
+    {
+      "id": 45,
+      "status": "posted",
+      "createdAt": "2026-11-15T23:58:41.015Z",
+      "channel": "reply:indiehackers",
+      "kind": "reddit",
+      "sub": "indiehackers",
+      "title": "",
+      "body": "That makes sense. Short common words like \"run\" and \"training\" will match everything in a medical sub, and more tuning won't fix that. Good to know the manual pass stays quick when the list of subs is small. I'm at that scale too, so I'll keep reading by hand and not spend more time on the filter. Did you end up cutting any subs because they were too noisy?",
+      "replyTo": {
+        "name": "t1_19soxjj7yr3j8",
+        "author": "Crunchygranolabro",
+        "body": "Tuning the filter had some use, but it’s still annoying because words like “run” and “training” show up a lot in medical subs so you catch a lot of posts that are just not pertinent.   \nWithout a ton of subs the manual pass is pretty quick. ",
+        "context": "https://www.reddit.com/r/indiehackers/comments/1xulog4/i_shipped_5_products_in_about_9_months_getting/19soxjj7yr3j8/?context=3"
+      },
+      "hash": "5e4da46ff428a7ff",
+      "approvedAt": "2026-11-15T23:58:41.016Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-15T23:58:41.943Z",
+      "postUrl": null,
+      "thing": "t1_19sp3djdkdp5w"
     }
   ],
   "seen": {
@@ -1079,11 +1101,12 @@
       "t1_19soln1cymnhc",
       "t1_19son0bpv2nxg",
       "t1_19somcik4xog0",
-      "t1_19somaqzkp8pv"
+      "t1_19somaqzkp8pv",
+      "t1_19soxjj7yr3j8"
     ]
   },
   "last": {
-    "watch": "2026-11-15T20:57:45.459Z",
+    "watch": "2026-11-15T23:58:41.018Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
