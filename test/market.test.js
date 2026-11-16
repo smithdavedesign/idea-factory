@@ -102,6 +102,8 @@ test('drafts come back as JSON, possibly wrapped in prose', () => {
 test('draft checks: link kept exactly, no After Dark, no vote-asking, lengths', () => {
   const link = M.utmLink(cfg, cfg.channels[1]);
   assert.equal(link, 'https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=jai');
+  // A channel's own landing page keeps the same tags.
+  assert.equal(M.utmLink(cfg, cfg.channels[1], '/alternatives/janitor-ai'), 'https://botchelor.com/alternatives/janitor-ai?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=jai');
   const ok = { kind: 'reddit', title: 'T', body: `hi ${link}`, link };
   assert.deepEqual(M.checkDraft(ok), []);
   assert.match(M.checkDraft({ ...ok, body: 'hi https://botchelor.com/' }).join(), /link/);

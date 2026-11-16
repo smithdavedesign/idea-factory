@@ -104,6 +104,7 @@
     },
     {
       "id": "characterairunaways",
+      "path": "/alternatives/character-ai",
       "kind": "reddit-thread",
       "sub": "CharacterAIrunaways",
       "status": "active",
@@ -124,6 +125,7 @@
     },
     {
       "id": "chatbotrefugees_sunday",
+      "path": "/alternatives/character-ai",
       "kind": "reddit",
       "sub": "ChatbotRefugees",
       "status": "active",
@@ -144,6 +146,7 @@
     },
     {
       "id": "janitorai_refuges",
+      "path": "/alternatives/janitor-ai",
       "kind": "reddit",
       "sub": "JanitorAI_Refuges",
       "status": "active",

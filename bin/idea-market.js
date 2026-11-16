@@ -97,7 +97,7 @@ function draftPrompt(ctx, ch, { rules = [], thread, previous, change, reply, hel
     if (ch.flair) parts.push(`It will carry the flair "${ch.flair}".`);
     if (rules.length) parts.push(`The community's current rules (follow every one; if a rule forbids this post, return {"title":"","body":"","why":"blocked: <rule>"}):\n${rules.join('\n')}`);
     if (recent.length) parts.push(`Our earlier posts there (don't repeat them; say what's new):\n${recent.join('\n')}`);
-    parts.push(`Include this exact link once, unchanged: ${M.utmLink(ctx.cfg, ch)}`);
+    parts.push(`Include this exact link once, unchanged: ${M.utmLink(ctx.cfg, ch, ch.path)}`);
     if (ch.kind === 'bluesky' || ch.kind === 'x' || ch.kind === 'threads') parts.push(`At most ${{ x: 280, bluesky: 300, threads: 500 }[ch.kind]} characters including the link. Title: "".`);
     if (ch.kind === 'reddit-thread' || ch.kind === 'discord') parts.push('Title: "" (a comment or announcement has none).');
     if (ch.kind === 'hn') parts.push('Hacker News is plain text: no Markdown, no emoji, no hype words. The title starts "Show HN: " and stays under 80 characters. Put the link as the body\'s first line (David pastes it into HN\'s URL field) and then the text, which HN shows as the first comment.');
@@ -175,7 +175,7 @@ async function draftChannel(ctx, ch, reddit) {
   // (2026-11-11: X's draft was over 280 characters and nothing went out on X that day).
   const over = M.checkDraft({ kind: ch.kind, title: d.title, body: d.body }).find((e) => /longer than/.test(e));
   if (over) d = await writeDraft(ctx, ch, { rules, thread, previous: d, change: `It is too long: ${over}. Cut it to fit, keeping the link exactly as it is.` });
-  const item = M.addItem(ctx.queue, { channel: ch.id, kind: ch.kind, sub: ch.sub || null, title: d.title, body: d.body, why: d.why || null, flair: ch.flair || null, link: M.utmLink(ctx.cfg, ch), ...(thread ? { thread } : {}) });
+  const item = M.addItem(ctx.queue, { channel: ch.id, kind: ch.kind, sub: ch.sub || null, title: d.title, body: d.body, why: d.why || null, flair: ch.flair || null, link: M.utmLink(ctx.cfg, ch, ch.path), ...(thread ? { thread } : {}) });
   return sendDraft(ctx, item, ch);
 }
 
