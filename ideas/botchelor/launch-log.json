@@ -354,6 +354,20 @@
       "postUrl": null,
       "postedAt": "2026-11-16T05:38:50.211Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) draft #53, written and queued by Claude under David's standing OK for the socials (2026-11-10): the December open call; link tagged utm_content=discord."
+    },
+    {
+      "channel": "r/JanitorAI_Refuges",
+      "url": "https://www.reddit.com/r/JanitorAI_Refuges/",
+      "postUrl": "https://www.reddit.com/r/JanitorAI_Refuges/comments/1xxt9lr/im_the_dev_decembers_season_is_a_rose_ceremony/",
+      "postedAt": "2026-11-16T16:07:35.885Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #54 on his phone; flair \"self advertising\"; link tagged utm_content=janitorai_refuges."
+    },
+    {
+      "channel": "Threads",
+      "url": null,
+      "postUrl": "https://www.threads.com/@botchelor/post/Dfzv9R-m63U",
+      "postedAt": "2026-11-16T16:08:28.536Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #55 on his phone; link tagged utm_content=threads."
     }
   ]
 }

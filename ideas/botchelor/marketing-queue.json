@@ -1,5 +1,5 @@
 {
-  "nextId": 54,
+  "nextId": 58,
   "paused": false,
   "items": [
     {
@@ -1213,6 +1213,127 @@
       "postedAt": "2026-11-16T05:38:50.211Z",
       "postUrl": null,
       "thing": "1571761443504914512"
+    },
+    {
+      "id": 54,
+      "status": "posted",
+      "createdAt": "2026-11-16T16:06:39.298Z",
+      "channel": "janitorai_refuges",
+      "kind": "reddit",
+      "sub": "JanitorAI_Refuges",
+      "title": "I'm the dev: December's season is a rose ceremony for your OCs (pros and cons inside)",
+      "body": "Disclosure: I built this. One-person project, built with AI coding tools (Claude Code).\n\nI posted here a week ago about Botchelor. What's new is December's season, so this is not a repeat.\n\n**What it is**\n\nBotchelor is a blind-date show for original characters. They're your own, adults only, no real people, and not fan fiction. You describe your OC, they match with someone, and the date plays out as an episode you watch. You don't steer it. A rules engine picks the ending (second date, friends, disaster and more), and the AI writes the lines on the way there.\n\n**What's new: The Botchelor (December)**\n\nMost months are everyone's characters on blind dates. December is one lead, up to five suitors, and a rose ceremony every Sunday. The lead is Nell, a house character. She's a museum night guard who gives the full tour to empty rooms, and she wants someone who asks a follow-up question. The suitors are people's characters, picked by audience votes on the casting board. If too few apply, the show's own characters fill the places. Each Sunday the audience vote sends one suitor home, and how Nell's dates went sends another. The last Sunday is the finale. Casting is open now. While it is, a new character's first date is with Nell.\n\n**Pros**\n\n- First date is free, no account needed.\n- Characters remember past dates, exes, second dates and texting afterwards.\n- You can bring a character over from Character.AI.\n- You can set up a scenario (rival spies, castaways, the knight and the dragon), and your character remembers it next time.\n- You can chat 1-on-1 with characters too, with memory. A free account gets 30 replies a day.\n\n**Cons**\n\n- Dates and chat are PG. There is no NSFW.\n- You watch the date. You don't play it. If you want to drive the scene yourself, this isn't that.\n- It's new and small. The dating pool is mostly the show's own cast.\n- The Discord server is brand new and small.\n- Chat past 30 replies a day costs $9.99/month (Companion Plan).\n\n**Proxy support**\n\nNo reverse proxies or custom endpoints. With a free account you can bring your own key from OpenRouter, DeepSeek, Gemini, OpenAI, Anthropic or Groq, with a model picker. Without a key, the show's own model runs it for free.\n\n**Support**\n\nDiscord: https://discord.gg/8VDdRF9YU (feedback, bugs, sharing dates). Email: support@botchelor.com. You can also reply here.\n\nThe page for people leaving Janitor AI, with the cons listed there too: https://botchelor.com/alternatives/janitor-ai?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=janitorai_refuges\n\nFor those who've tried watch-only formats: would a rose ceremony where the audience helps decide who goes home make you want to cast a character, or is not steering the date a dealbreaker?",
+      "why": "New angle vs 11/9 post: December's Nell rose-ceremony season and open casting, in the required pros/cons/support/proxy format, with PG limit stated first among cons.",
+      "flair": "self advertising",
+      "link": "https://botchelor.com/alternatives/janitor-ai?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=janitorai_refuges",
+      "hash": "ba3dedf34d73be1e",
+      "approvedAt": "2026-11-16T16:06:39.298Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-16T16:07:35.885Z",
+      "postUrl": "https://www.reddit.com/r/JanitorAI_Refuges/comments/1xxt9lr/im_the_dev_decembers_season_is_a_rose_ceremony/",
+      "thing": "t3_1xxt9lr"
+    },
+    {
+      "id": 55,
+      "status": "posted",
+      "createdAt": "2026-11-16T16:07:01.053Z",
+      "channel": "threads",
+      "kind": "threads",
+      "sub": null,
+      "title": "",
+      "body": "I built this (solo, with AI coding tools). The characters, the dates and every line are AI.\n\nFrom tonight's date, Sable Quist to Juniper Vale: \"A WITNESS?! That giraffe is going to need a lawyer.\"\n\nBotchelor is a blind-date show for original characters. Nobody steers it, and the first date is free.\n\nhttps://botchelor.com/?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "why": "Opens with the builder disclosure and says it's all AI, then quotes one exact line from the latest aired date (Night 16, Sable Quist and Juniper Vale), with one line of context and the link.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "hash": "3b54026cc4dc29d9",
+      "approvedAt": "2026-11-16T16:07:01.053Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-16T16:08:28.536Z",
+      "postUrl": "https://www.threads.com/@botchelor/post/Dfzv9R-m63U",
+      "thing": "Dfzv9R-m63U"
+    },
+    {
+      "id": 56,
+      "status": "failed",
+      "createdAt": "2026-11-16T16:07:13.961Z",
+      "channel": "help-indiehackers",
+      "kind": "reddit-help",
+      "sub": "indiehackers",
+      "title": "",
+      "body": "The gross-up formula is right: divide by (1 - rate) instead of multiplying by (1 + rate). But I'd agree with the commenters that it only moves the cost to the client. Whether they accept it is the real question, and that's about the rate you quote, not the algebra.\n\nI can only speak to Stripe subscriptions, not B2B invoicing. What I found there is that the fixed $0.30 matters more than the percentage on small amounts. On a $9.99 charge, 2.9% + $0.30 is about $0.59, nearly 6% of the price. I stopped thinking in percentages and priced the plan so the expected fee was already in the number, rather than showing a fee line. For cross-border, check what Stripe actually charged on a few real payments in your dashboard before trusting a stacked estimate, because it varies by card and currency.",
+      "why": "A practical reply on fee math and pricing that draws only on David's Stripe subscription experience, says plainly that it isn't B2B invoicing, and makes no mention of any product or link.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1xw9ahx",
+        "title": "The math mistake that quietly costs B2B freelancers ~$832/year on Stripe & PayPal (and how I built a tool to fix it)",
+        "author": "Comfortable_Wash7785",
+        "permalink": "https://www.reddit.com/r/indiehackers/comments/1xw9ahx/the_math_mistake_that_quietly_costs_b2b/",
+        "excerpt": "Hey Indie Hackers,\n\nWhen invoicing international B2B clients, most freelancers and small agencies make two costly mistakes when trying to pass payment processor fees onto the client:\n\n1. **Ignoring stacked cross-border fees:** Everyone knows Stripe's standard `2.9% + $0.30` rate. Almost nobody factors in the extra `+1.5%` international card surcharge and `+1% to +2%` FX conversion fee until the payout hits their bank. image\\_0f043d.png\n2. **Getting the Gross-Up math wrong:** If you want to recei",
+        "selftext": "Hey Indie Hackers,\n\nWhen invoicing international B2B clients, most freelancers and small agencies make two costly mistakes when trying to pass payment processor fees onto the client:\n\n1. **Ignoring stacked cross-border fees:** Everyone knows Stripe's standard `2.9% + $0.30` rate. Almost nobody factors in the extra `+1.5%` international card surcharge and `+1% to +2%` FX conversion fee until the payout hits their bank. image\\_0f043d.png\n2. **Getting the Gross-Up math wrong:** If you want to receive **$1,250.00 net** and the real stacked fee is `4.4% + $0.30`, simply adding 4.4% (`$1,250 × 1.044 + $0.30 = $1,305.30`) leaves you short because Stripe takes 4.4% of that new total too. You actually have to use the inverse algebraic formula: `($1,250 + $0.30) / (1 - 0.044) = $1,307.85`\n\nRunning that same $1,250 invoice on PayPal costs **$1,316.17** grossed-up — a **$832/year** difference per 100 invoices.\n\nI got tired of fixing this in spreadsheets every month, so I built a lightweight B2B calculator (**FinGrossUp Pro**) with local persistence, side-by-side Stripe vs. PayPal benchmarks, batch CSV processing, and clean PDF receipt exports so clients can see the exact fee breakdown.\n\nNo links here to keep things clean — if you want to check out the Gumroad page or try it out, **you can find the direct link in my profile**.\n\nCurious how other indie founders here handle cross-border processor fees: do you eat the 4–5% margin loss or gross-up your B2B invoices?",
+        "top": [
+          {
+            "author": "Total-Reasonable",
+            "body": "Check the legal side before you ship a \"fee breakdown\" to clients: card surcharging is restricted or banned in some places, and Stripe and the card networks have rules about passing processor fees through as a line item. Many freelancers sidestep it by quoting a higher flat rate, or by offering a bank transfer (ACH or SEPA) at the base price. That usually saves more than any gross-up math, and it might be a useful toggle in your calculator.",
+            "score": 7
+          },
+          {
+            "author": "Vast-Hunt-9484",
+            "body": "i'd separate the pricing decision from the math: the actual fee can vary by card, country, currency, and payment method, so one percentage may be off. before adding a surcharge line, check the rules in each market and the processor or card-network terms; a fixed quote that absorbs expected costs is often simpler. offer bank transfer as an alternative if it is practical, then compare your actual net per method over a small sample. showing the assumptions and actual-fee variance may be more useful than a headline annual gap by itself.",
+            "score": 1
+          },
+          {
+            "author": "Gula_Stories",
+            "body": "Honest q: do clients actually pay the grossed-up amount without pushing back? Feels like the awkward \"why is there a fee line\" convo is the real cost here lol... or do most ppl just bake it into the rate?",
+            "score": 1
+          },
+          {
+            "author": "Wonderful_Cod_7587",
+            "body": "So the $832 is the extra the client pays, not money out of your pocket. Grossing up is exactly the thing that means it doesn't cost you anything, which kind of guts the headline.",
+            "score": 1
+          },
+          {
+            "author": "Hour_Investment_6356",
+            "body": "If you gross up you're not the one losing the $832, the client is. The gap between $1,307.85 and $1,316.17 is just a bigger number on the invoice either way.",
+            "score": 1
+          },
+          {
+            "author": "Nervous_Promotion195",
+            "body": "just add 5% and move on",
+            "score": 1
+          }
+        ]
+      },
+      "hash": "562f0f1cbf1ca94f",
+      "approvedAt": "2026-11-16T16:07:13.961Z",
+      "approvedBy": "auto",
+      "error": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+    },
+    {
+      "id": 57,
+      "status": "approved",
+      "createdAt": "2026-11-16T16:07:34.273Z",
+      "channel": "help-mcp",
+      "kind": "reddit-help",
+      "sub": "mcp",
+      "title": "",
+      "body": "With six tools that sound close to each other, the thing that tripped agents up for me was picking the wrong one, not the lookups themselves. `lookup_entries`, `search_entries` and `get_entry` are easy to confuse from the names alone. What helped was putting the choice in each description: say what input the tool takes (an inflected Russian form, an English meaning, an entry id) and say when to use another tool instead. I'd also name the failure case in the text, such as \"returns nothing if the word isn't in the dictionary, so don't guess a lemma\". A model reads that and stops inventing an answer, which is the problem you built this to fix. It's worth running a few prompts in a client and checking which tool it actually calls. The calls it makes often differ from the ones you expected.",
+      "why": "Fits David's real experience writing MCP tool descriptions agents understand; the post has no comments, and the six similar-sounding tools make tool-choice a concrete point to add.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1xxnou4",
+        "title": "mcp-openrussian: a local, read-only MCP server that grounds LLMs in a real Russian dictionary",
+        "author": "No_Television_5967",
+        "permalink": "https://www.reddit.com/r/mcp/comments/1xxnou4/mcpopenrussian_a_local_readonly_mcp_server_that/",
+        "excerpt": "LLMs are pretty decent Russian tutors until they invent stress marks, use wrong cases after the verbs, or mix up aspect pairs. I wanted them to check a real dictionary instead, so I built an MCP server over the **OpenRussian** dataset.\n\n**Tools:**\n\n* `analyze_text`: checks every Russian word in a text and returns lemmas, grammatical readings and unknown words\n* `lookup_entries`: takes any inflected form and finds the lemma and its grammatical forms\n* `search_entries`: searches by English or Germ",
+        "selftext": "LLMs are pretty decent Russian tutors until they invent stress marks, use wrong cases after the verbs, or mix up aspect pairs. I wanted them to check a real dictionary instead, so I built an MCP server over the **OpenRussian** dataset.\n\n**Tools:**\n\n* `analyze_text`: checks every Russian word in a text and returns lemmas, grammatical readings and unknown words\n* `lookup_entries`: takes any inflected form and finds the lemma and its grammatical forms\n* `search_entries`: searches by English or German meaning, or by Russian spelling\n* `get_entry`: returns the full entry with inflection tables, translations, government, aspect partners and examples\n* `browse_entries`: filters by frequency rank, CEFR level and part of speech\n* `find_examples`: finds Tatoeba sentences for a word or a specific form\n\n**Details:**\n\n* Python 3.12+ and SQLite. Read-only, and no network calls during lookups\n* Works with any MCP client. MIT licence. Data is CC BY-SA 4.0 (OpenRussian) and CC BY 2.0 FR (Tatoeba).\n\nIf you’re learning Russian and want to try it, please let me know how it goes!\n\n**PRs are welcome**: new tools, tests, docs, client configs.  \nA similar server for other languages would be a fun fork as well!\n\n👉 [link to mcp-openrussian](https://github.com/nicolacalzone/mcp-openrussian)",
+        "top": []
+      },
+      "hash": "89d2454cde32d0e5",
+      "approvedAt": "2026-11-16T16:07:34.279Z",
+      "approvedBy": "auto",
+      "error": "waiting for the next run: Reddit fetch budget (15) used up for this run"
     }
   ],
   "seen": {
@@ -1282,8 +1403,8 @@
       "draft mcpservers": "ok",
       "draft characterairunaways": "ok",
       "draft ai_agents_weekly": "ok",
-      "draft help-indiehackers": "fail",
-      "draft help-mcp": "fail",
+      "draft help-indiehackers": "ok",
+      "draft help-mcp": "ok",
       "watch": "ok",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
@@ -1294,7 +1415,9 @@
       "draft chatbotrefugees_sunday": "fail",
       "video": "ok",
       "draft aicompanions": "ok",
-      "sync": "ok"
+      "sync": "ok",
+      "draft janitorai_refuges": "ok",
+      "draft threads": "ok"
     },
     "report": "2026-11-09",
     "warned:draft help-indiehackers:2026-11-13": true,
