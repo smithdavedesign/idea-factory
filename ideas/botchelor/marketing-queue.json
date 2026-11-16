@@ -1,5 +1,5 @@
 {
-  "nextId": 47,
+  "nextId": 50,
   "paused": false,
   "items": [
     {
@@ -1086,6 +1086,56 @@
       "postedAt": "2026-11-16T01:00:23.482Z",
       "postUrl": "https://x.com/botchelorLLC/status/2122132603184767189",
       "thing": "2122132603184767189"
+    },
+    {
+      "id": 47,
+      "status": "sent",
+      "createdAt": "2026-11-16T02:03:03.263Z",
+      "channel": "video",
+      "kind": "video",
+      "title": "",
+      "body": "Sable and Juniper meet for the first time, on an open safari jeep at dawn, rolling slowly across the grass while a guide whispers about lions and a giraffe stares at the couple for far too long.\n\nWould you have said yes to Juniper? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=tiktok\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-16-sable-quist-juniper-vale/post.mp4",
+      "episode": "5305594b-ea07-4b56-ad87-a1725c18113f",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-16-sable-quist-juniper-vale",
+      "hash": "1907f63cabd06907",
+      "sentAt": "2026-11-16T02:03:45.367Z"
+    },
+    {
+      "id": 48,
+      "status": "posted",
+      "createdAt": "2026-11-16T02:03:45.372Z",
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "title": "Sable and Juniper meet for the first time, on an open safari jeep at dawn, rolling slowly across…",
+      "body": "Sable and Juniper meet for the first time, on an open safari jeep at dawn, rolling slowly across the grass while a guide whispers about lions and a giraffe stares at the couple for far too long.\n\nWould you have said yes to Juniper? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=youtube\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-16-sable-quist-juniper-vale/post.mp4",
+      "episode": "5305594b-ea07-4b56-ad87-a1725c18113f",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-16-sable-quist-juniper-vale",
+      "hash": "bfdf265677cca18f",
+      "approvedAt": "2026-11-16T02:03:45.372Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-16T02:03:50.035Z",
+      "postUrl": "https://www.youtube.com/shorts/vkJOH2Hovew",
+      "thing": "vkJOH2Hovew"
+    },
+    {
+      "id": 49,
+      "status": "posted",
+      "createdAt": "2026-11-16T02:03:45.372Z",
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "title": "",
+      "body": "Sable and Juniper meet for the first time, on an open safari jeep at dawn, rolling slowly across the grass while a guide whispers about lions and a giraffe stares at the couple for far too long.\n\nWould you have said yes to Juniper? 👀\n\nEvery night the audience votes what happens on one of the show's dates: botchelor.com/vote?s=instagram\nWatch the whole date at botchelor.com. Both are AI characters; the date is AI-generated fiction.\n\n#botchelor #aicharacters #blinddate #datingshow #originalcharacter",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-16-sable-quist-juniper-vale/post.mp4",
+      "episode": "5305594b-ea07-4b56-ad87-a1725c18113f",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-16-sable-quist-juniper-vale",
+      "hash": "f0720bf1b3942984",
+      "approvedAt": "2026-11-16T02:03:45.372Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-16T02:05:29.721Z",
+      "postUrl": "https://www.instagram.com/reel/DfyPaSQCJ1L/",
+      "thing": "18436855534197507"
     }
   ],
   "seen": {
