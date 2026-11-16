@@ -1238,7 +1238,8 @@
       "draft x": "ok",
       "draft chatbotrefugees_sunday": "fail",
       "video": "ok",
-      "draft aicompanions": "ok"
+      "draft aicompanions": "ok",
+      "sync": "ok"
     },
     "report": "2026-11-09",
     "warned:draft help-indiehackers:2026-11-13": true,
@@ -1251,6 +1252,6 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-16T01:03:35.487Z"
+    "syncAt": "2026-11-16T04:06:56.227Z"
   }
 }
