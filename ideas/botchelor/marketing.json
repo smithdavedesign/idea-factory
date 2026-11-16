@@ -104,13 +104,13 @@
     },
     {
       "id": "characterairunaways",
-      "path": "/alternatives/character-ai",
+      "path": "/import?from=cai",
       "kind": "reddit-thread",
       "sub": "CharacterAIrunaways",
       "status": "active",
       "from": "2026-11-12",
       "cooldownDays": 30,
-      "angle": "A short comment in the alternatives megathread: what Botchelor is, honest pros and cons, free first date.",
+      "angle": "A short comment in the alternatives megathread, only in a megathread we have not commented in yet (rule 6: no repeated promotion). David 2026-11-16: lead with moving a character over: paste what you wrote on Character.AI (name, description, greeting, definition) and it goes on a speed date with the cast; nothing is fetched from their account; PG; honest cons; free first date. Rule 7 bans companion products: describe only the date show, never the one-to-one chat or calls.",
       "match": "best character ai alternatives|megathread"
     },
     {
@@ -125,7 +125,7 @@
     },
     {
       "id": "chatbotrefugees_sunday",
-      "path": "/alternatives/character-ai",
+      "path": "/import?from=cai",
       "kind": "reddit",
       "sub": "ChatbotRefugees",
       "status": "active",
@@ -142,7 +142,7 @@
         "toUtc": "Mon 11:59",
         "preferUtcHour": 19
       },
-      "angle": "Promotion Sunday post. Their AI automod enforces the Sat 10:00 to Mon 11:59 UTC window. Best result so far (9 points): short, disclosure first, one question at the end. Tie it to this week's Sunday reveal vote."
+      "angle": "Promotion Sunday post. Their AI automod enforces the Sat 10:00 to Mon 11:59 UTC window. Best result so far (9 points): short, disclosure first, one question at the end. David 2026-11-16: next one is the Character.AI rescue post (docs/launch-kit.md, 'Character.AI rescue', r/ChatbotRefugees draft): for people moving characters off Character.AI, paste a character you wrote (name, description, greeting, definition) and the builder opens filled in; first date is a speed date of about a minute, then the character texts you. Say plainly: not a chat app, PG (a character written for adult chat keeps their personality and loses the scenes), nothing is fetched from their Character.AI account, not connected to Character.AI, three free dates a week. Nothing about Character.AI's own affairs. Ask: did the date sound like your character?"
     },
     {
       "id": "janitorai_refuges",
