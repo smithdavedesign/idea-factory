@@ -81,7 +81,8 @@
       "cooldownDays": 3650,
       "maxPosts": 1,
       "flair": "Self Promotion",
-      "angle": "Honest builder story asking for feedback: a deterministic engine decides how dates end and AI only writes the lines; real use is near zero so far; the four numbers being watched (landed, created a character, watched a date end, came back). One self-promotion post per product."
+      "angle": "Honest builder story asking for feedback: a deterministic engine decides how dates end and AI only writes the lines; real use is near zero so far; the four numbers being watched (landed, created a character, watched a date end, came back). One self-promotion post per product.",
+      "publicNote": "One post ever, per the sub's rule."
     },
     {
       "id": "mcpservers",
@@ -195,7 +196,8 @@
       "sub": "CharacterAI_No_Filter",
       "status": "waiting",
       "flair": "Discussion",
-      "note": "Rule 4: no advertising without mod approval. Modmail sent 2026-11-08; set active when they say yes."
+      "note": "Rule 4: no advertising without mod approval. Modmail sent 2026-11-08; set active when they say yes.",
+      "publicNote": "Waiting on the moderators' answer about posting."
     },
     {
       "id": "video",
@@ -204,7 +206,8 @@
       "from": "2026-11-10",
       "cooldownDays": 1,
       "note": "A TikTok/Reels/Shorts kit from the day's clip (scripts/clips/post-kit.mjs in ~/.botchelor-crowd/repo), sent to David's WhatsApp with the caption. He uploads it as @botchelorcom with TikTok's AI-generated label on, then replies mk done <id>. Never After Dark.",
-      "logName": "TikTok/Reels/Shorts (@botchelorcom)"
+      "logName": "TikTok/Reels/Shorts (@botchelorcom)",
+      "publicNote": "A short clip of one of the day's dates, every day."
     },
     {
       "id": "bluesky",
@@ -222,7 +225,8 @@
       "cooldownDays": 7,
       "angle": "Weekly announcement in our own server's #announcements: the first one welcomes people and says what the server is for (feedback, bug reports, sharing your characters' dates); later ones cover the season so far, Sunday's reveal, and what changed. Discord Markdown; no @everyone.",
       "logName": "Discord (#announcements)",
-      "from": "2026-11-10"
+      "from": "2026-11-10",
+      "publicNote": "Our own server: a digest of the week's dates."
     },
     {
       "id": "x",
@@ -248,7 +252,8 @@
       ],
       "logName": "YouTube Shorts",
       "note": "Each day's video kit uploaded as a public Short by the loop (bin/idea-market.js → io.youtubeUpload), with YouTube's altered/synthetic-content flag on. Setup: David creates the channel; a Google Cloud Desktop OAuth client (YouTube Data API v3, consent screen In production) in the keychain as vault/botchelor/YOUTUBE_CLIENT_ID + _CLIENT_SECRET; node bin/youtube-auth.js stores the refresh token; then status active and `node bin/idea-market.js draft youtube_shorts` posts the newest kit. If YouTube locks uploads to private, file the free API audit form (the error says so). Live 2026-11-11: channel Botchelor @Botchelor (UCo921Gz8WCepbzAwCIScn8A, a Brand Account under David's Google account); OAuth client in Google Cloud project botchelor-marketing (In production).",
-      "from": "2026-11-11"
+      "from": "2026-11-11",
+      "publicNote": "The day's clip as a Short."
     },
     {
       "id": "instagram_reels",
@@ -258,14 +263,16 @@
       "status": "active",
       "logName": "Instagram Reels",
       "note": "Each day's kit as a Reel (io.instagramReel). LIVE 2026-11-11: @botchelor (IG user 17841464970954936) in the Botchelor business portfolio (1599859378877687, not smithdavedesign's), Meta app \"Botchelor marketing\" 2226376481650794 with Unified login (Facebook Login for Business config 1638703558035470): a system-user token that never expires in vault/botchelor/INSTAGRAM_TOKEN, the id in INSTAGRAM_USER_ID, app secret in INSTAGRAM_APP_SECRET. The caption carries the AI disclosure; the API has no field for Instagram's own AI label. share_to_feed is on.",
-      "from": "2026-11-11"
+      "from": "2026-11-11",
+      "publicNote": "The day's clip as a Reel."
     },
     {
       "id": "facebook_reels",
       "kind": "facebook",
       "status": "off",
       "logName": "Facebook Reels",
-      "note": "Not built. Instagram can cross-post Reels to a linked Facebook Page from its own settings, which covers this without a second upload."
+      "note": "Not built. Instagram can cross-post Reels to a linked Facebook Page from its own settings, which covers this without a second upload.",
+      "publicNote": "Not set up; Instagram can cross-post later."
     },
     {
       "id": "threads",
@@ -275,21 +282,24 @@
       "note": "2026-11-15: account live (@botchelor via Instagram login, bio+photo), first post by hand; in the loop from 2026-11-16 (io.threadsPost: synthetic paste into the Lexical composer, read-back must match, scripted Post click). Needs the loop's own browser signed in to Threads once.",
       "cooldownDays": 1,
       "from": "2026-11-16",
-      "angle": "One short post a day as @botchelor on Threads, different from the day's X and Bluesky posts: a best line or moment from a date that aired on botchelor.com (fetch https://botchelor.com/watch; quote it exactly and name both characters), one line of context, then the link. Say the characters and dates are AI. No hashtags, or one topic tag at most."
+      "angle": "One short post a day as @botchelor on Threads, different from the day's X and Bluesky posts: a best line or moment from a date that aired on botchelor.com (fetch https://botchelor.com/watch; quote it exactly and name both characters), one line of context, then the link. Say the characters and dates are AI. No hashtags, or one topic tag at most.",
+      "publicNote": "One post a day."
     },
     {
       "id": "chub_cards",
       "kind": "card",
       "status": "off",
       "logName": "Chub (character cards)",
-      "note": "House cast as character cards on Chub (chub.ai), each linking back to the character's dates. Check the site's rules on links first; one account, posted by hand or by me in David's signed-in Chrome; never After Dark characters. Next: JanitorAI-style libraries only where self-links are allowed. 2026-11-15 DONE (status off = nothing more to post): account @botchelor (David signed in), 5 PG house cards posted by Claude via the creator form (Tavern PNG import fills fields and tags; do not re-add tags, clicking a selected tag removes it). Next: add more house cast only if Chub sends visitors (utm_source=chub)."
+      "note": "House cast as character cards on Chub (chub.ai), each linking back to the character's dates. Check the site's rules on links first; one account, posted by hand or by me in David's signed-in Chrome; never After Dark characters. Next: JanitorAI-style libraries only where self-links are allowed. 2026-11-15 DONE (status off = nothing more to post): account @botchelor (David signed in), 5 PG house cards posted by Claude via the creator form (Tavern PNG import fills fields and tags; do not re-add tags, clicking a selected tag removes it). Next: add more house cast only if Chub sends visitors (utm_source=chub).",
+      "publicNote": "Five of the show's cast as character cards, each linking back to their dates."
     },
     {
       "id": "sunday_stream",
       "kind": "stream",
       "status": "waiting",
       "logName": "Sunday reveal stream (YouTube Live + Twitch)",
-      "note": "One 1–2 hour test on a Sunday reveal night: the theater plays the week's dates, chat votes, votes go into /watch's vote. Needs the YouTube channel and a small server (~$12–24/mo, David's call from ownerBudget); this Mac can't spare the memory. Go 24/7 only if people watch."
+      "note": "One 1–2 hour test on a Sunday reveal night: the theater plays the week's dates, chat votes, votes go into /watch's vote. Needs the YouTube channel and a small server (~$12–24/mo, David's call from ownerBudget); this Mac can't spare the memory. Go 24/7 only if people watch.",
+      "publicNote": "A test live stream on a Sunday reveal night, not done yet."
     },
     {
       "id": "show_hn",
@@ -299,14 +309,16 @@
       "cooldownDays": 35,
       "logName": "Show HN",
       "angle": "Show HN for agent builders: send your agent on a blind date over MCP; the agent cast (characters made by agents, auditioning for the monthly cast) and the deterministic ending engine are the technical news since the Oct 24 post. Title starts \"Show HN: \", under 80 characters; body plain text, first person, what it is, how it works, what's hard, no marketing words. David posts it himself from his HN account, weekday 8–10am PT.",
-      "note": "Oct 24 Show HN got 1 point. HN frowns on automated or coordinated posting, so this is drafted for David and never auto-posted."
+      "note": "Oct 24 Show HN got 1 point. HN frowns on automated or coordinated posting, so this is drafted for David and never auto-posted.",
+      "publicNote": "Drafted for the founder, who posts it himself; Hacker News doesn't want automated posts."
     },
     {
       "id": "producthunt",
       "kind": "producthunt",
       "status": "waiting",
       "logName": "Product Hunt",
-      "note": "One launch, when the YouTube/Reels clips give a gallery to show. David's account posts it (hunters must be real people); a 12:01am PT Tuesday–Thursday launch. Draft the tagline, description, first comment and gallery from the kit when David picks a date. 2026-11-15: David said yes; date Tue 2026-12-01 12:01am PT (December season premiere, The Botchelor with Nell). Draft in PRODUCTHUNT.md. David signs in to Product Hunt, Claude fills the form and schedules it."
+      "note": "One launch, when the YouTube/Reels clips give a gallery to show. David's account posts it (hunters must be real people); a 12:01am PT Tuesday–Thursday launch. Draft the tagline, description, first comment and gallery from the kit when David picks a date. 2026-11-15: David said yes; date Tue 2026-12-01 12:01am PT (December season premiere, The Botchelor with Nell). Draft in PRODUCTHUNT.md. David signs in to Product Hunt, Claude fills the form and schedules it.",
+      "publicNote": "Launching Tue 1 Dec 2026."
     },
     {
       "id": "claudeai",
@@ -318,7 +330,8 @@
       "maxPosts": 1,
       "flair": "Built with Claude",
       "angle": "Showcase per the sub's rule: built BY David with Claude Code. Say clearly what was built, how Claude Code helped in detail (one concrete thing it got right and one it got wrong), what the site does, and that it's free to try (paid tiers exist). Minimal promo language, no referral links, one link. Never After Dark.",
-      "note": "Rules checked 2026-11-15: project showcases allowed if built with Claude by you, free to try and said so, detailed how-Claude-helped. Flair name 'Built with Claude' not yet confirmed (Reddit had this Mac blocked); the loop errors clearly if it's wrong."
+      "note": "Rules checked 2026-11-15: project showcases allowed if built with Claude by you, free to try and said so, detailed how-Claude-helped. Flair name 'Built with Claude' not yet confirmed (Reddit had this Mac blocked); the loop errors clearly if it's wrong.",
+      "publicNote": "Project showcases are allowed when you built it with Claude; one post."
     },
     {
       "id": "aigamedev",
@@ -330,28 +343,32 @@
       "maxPosts": 1,
       "flair": "Commercial Self Promotion",
       "angle": "Dev story, not an ad: how the show splits a deterministic rules engine (decides the ending from both character sheets) from the LLM (writes only the lines), and what broke along the way. Ask a real question to start discussion. PG only.",
-      "note": "Rules checked 2026-11-15: game promotion allowed only in the context of how AI was used to build it; anything with paid options needs the 'Commercial Self Promotion' flair; no adult content, no services."
+      "note": "Rules checked 2026-11-15: game promotion allowed only in the context of how AI was used to build it; anything with paid options needs the 'Commercial Self Promotion' flair; no adult content, no services.",
+      "publicNote": "One post about how it's built, flaired as commercial self-promotion."
     },
     {
       "id": "uneed",
       "kind": "card",
       "status": "off",
       "logName": "Uneed",
-      "note": "2026-11-15 DONE: listed (uneed.best/tool/botchelor), free line, auto-launch Jun 22 2027 (~219 days). Needs upvote score 10 on launch day to stay published (below that it can't rejoin), 20 for dofollow. Fast-track $19.99 (~14 days) or pick-a-date $39.99 is David's call; nothing paid."
+      "note": "2026-11-15 DONE: listed (uneed.best/tool/botchelor), free line, auto-launch Jun 22 2027 (~219 days). Needs upvote score 10 on launch day to stay published (below that it can't rejoin), 20 for dofollow. Fast-track $19.99 (~14 days) or pick-a-date $39.99 is David's call; nothing paid.",
+      "publicNote": "Listed; free launch slot June 2027."
     },
     {
       "id": "peerlist",
       "kind": "card",
       "status": "waiting",
       "logName": "Peerlist Launchpad",
-      "note": "2026-11-15: project saved at 100% (peerlist.io/1426davejobs, AI+Gaming, cover+logo). Launchpad requires identity verification with a government ID: David's step (Peerlist → Verification). Then Claude launches it on a Monday UTC."
+      "note": "2026-11-15: project saved at 100% (peerlist.io/1426davejobs, AI+Gaming, cover+logo). Launchpad requires identity verification with a government ID: David's step (Peerlist → Verification). Then Claude launches it on a Monday UTC.",
+      "publicNote": "Project page made; the launch waits on the founder's ID check."
     },
     {
       "id": "devhunt_mcp",
       "kind": "card",
       "status": "off",
       "logName": "DevHunt (MCP server)",
-      "note": "2026-11-15 DONE: 'Botchelor MCP' listed (devhunt.org/tool/botchelor-mcp, links /agents + GitHub botchelor-mcp), free queue = launch ~Nov 4 2031, nofollow. Basic $19 / boosted $49 same-week launch is David's call; nothing paid. Maker comment set, AI auto-replies OFF."
+      "note": "2026-11-15 DONE: 'Botchelor MCP' listed (devhunt.org/tool/botchelor-mcp, links /agents + GitHub botchelor-mcp), free queue = launch ~Nov 4 2031, nofollow. Basic $19 / boosted $49 same-week launch is David's call; nothing paid. Maker comment set, AI auto-replies OFF.",
+      "publicNote": "The MCP server, listed; the free queue runs to about 2031."
     },
     {
       "id": "taaft_thread",
@@ -360,7 +377,8 @@
       "from": "2026-11-20",
       "cooldownDays": 30,
       "logName": "TAAFT monthly X thread",
-      "note": "There's An AI For That has no free listing; once a month on X they pick one indie tool from a reply thread. Reply from @botchelo when the thread appears; listing itself is $49 (skip)."
+      "note": "There's An AI For That has no free listing; once a month on X they pick one indie tool from a reply thread. Reply from @botchelo when the thread appears; listing itself is $49 (skip).",
+      "publicNote": "Monthly reply thread where they pick one small tool; a listing costs $49, which we skip."
     },
     {
       "id": "claude_discord",
@@ -383,5 +401,79 @@
   "threads": {
     "handle": "botchelor"
   },
-  "channels_skipped_2026_11_15": "Checked and skipped: r/SillyTavernAI (only open-source/self-hostable apps may be promoted), r/WebGames (watch-only reads as a webtoy, banned), MCP Discord (no marketing allowed), Futurepedia/Toolify/Ben's Bites/TLDR AI (paid only), AlternativeTo (declines 'AI companions'; try once only as a show if ever)."
+  "publicLog": true,
+  "_publicLog_why": "publicLog: send this calendar, every post and `spend` to botchelor.com/marketing every 3 hours (lib/market-sync.js; David 2026-11-15 'full transparency'). Only `publicNote`, `skipped[].why`, `spend` and `upcoming` text is shown; `note`/`angle` stay private.",
+  "skipped": [
+    {
+      "id": "sillytavernai",
+      "name": "r/SillyTavernAI",
+      "kind": "reddit",
+      "url": "https://www.reddit.com/r/SillyTavernAI/",
+      "why": "Only open-source or self-hostable apps may be promoted there, and Botchelor is neither."
+    },
+    {
+      "id": "webgames",
+      "name": "r/WebGames",
+      "kind": "reddit",
+      "url": "https://www.reddit.com/r/WebGames/",
+      "why": "For games you play; Botchelor is watched, which their rules count as a webtoy."
+    },
+    {
+      "id": "mcp_discord",
+      "name": "Model Context Protocol Discord",
+      "kind": "discord",
+      "why": "A contributors' server that doesn't allow marketing."
+    },
+    {
+      "id": "claude_discord_skip",
+      "name": "Claude Discord",
+      "kind": "discord",
+      "why": "No self-promotion; its project forum opens only to established members."
+    },
+    {
+      "id": "paid_directories",
+      "name": "Futurepedia, Toolify, Ben's Bites, TLDR AI",
+      "kind": "listing",
+      "why": "Paid placement only, and we don't pay for listings."
+    },
+    {
+      "id": "alternativeto",
+      "name": "AlternativeTo",
+      "kind": "listing",
+      "url": "https://alternativeto.net/",
+      "why": "It declines AI companion apps."
+    },
+    {
+      "id": "reality_tv",
+      "name": "Reality-TV subreddits",
+      "kind": "reddit",
+      "why": "Not ours to post in: those communities are about real shows and real people."
+    }
+  ],
+  "spend": [
+    {
+      "what": "Uneed fast-track",
+      "usd": 19.99,
+      "status": "planned",
+      "note": "A launch in about two weeks instead of June 2027. Coming soon."
+    },
+    {
+      "what": "DevHunt basic launch (the MCP server)",
+      "usd": 19,
+      "status": "planned",
+      "note": "A launch in a week we pick, with a followed search link, instead of the free queue (~2031). Coming soon."
+    }
+  ],
+  "upcoming": [
+    {
+      "id": "producthunt-2026-12-01",
+      "at": "2026-12-01T08:01:00Z",
+      "channel": "producthunt",
+      "name": "Product Hunt",
+      "type": "listing",
+      "title": "Launch day, with December's season premiere",
+      "source": "product_hunt",
+      "note": "Posted from the founder's own account; no vote-asking."
+    }
+  ]
 }
