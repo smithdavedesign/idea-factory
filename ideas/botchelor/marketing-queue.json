@@ -1,5 +1,5 @@
 {
-  "nextId": 46,
+  "nextId": 47,
   "paused": false,
   "items": [
     {
@@ -1067,6 +1067,25 @@
       "postedAt": "2026-11-15T23:58:41.943Z",
       "postUrl": null,
       "thing": "t1_19sp3djdkdp5w"
+    },
+    {
+      "id": 46,
+      "status": "posted",
+      "createdAt": "2026-11-16T00:59:58.278Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "I built botchelor, an AI blind-date show. The characters and the dates are AI.\n\nSable Quist, on a giraffe watching their date: \"A WITNESS?! That giraffe is going to need a lawyer.\"\n\nhttps://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "why": "Same disclosure, quote and link as before. I shortened the setup line to get the post under 280 characters (about 270 now).",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "hash": "eb9c76cee95b1966",
+      "approvedAt": "2026-11-16T00:59:58.283Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-16T01:00:23.482Z",
+      "postUrl": "https://x.com/botchelorLLC/status/2122132603184767189",
+      "thing": "2122132603184767189"
     }
   ],
   "seen": {
@@ -1159,6 +1178,6 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-16T00:35:30.243Z"
+    "syncAt": "2026-11-16T01:03:35.487Z"
   }
 }

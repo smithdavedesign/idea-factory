@@ -312,6 +312,13 @@
       "channel": "Peerlist",
       "url": "https://peerlist.io/1426davejobs",
       "note": "Project saved; Launchpad waits on David's ID verification. utm_source=peerlist."
+    },
+    {
+      "channel": "X",
+      "url": null,
+      "postUrl": "https://x.com/botchelorLLC/status/2122132603184767189",
+      "postedAt": "2026-11-16T01:00:23.482Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #46 on his phone; link tagged utm_content=x."
     }
   ]
 }
