@@ -72,6 +72,8 @@ test('buildFeed: every post the loop made or David logged, once, with how to rec
   assert.equal(peer.url, null);
   assert.ok(!f.posts.some((p) => /not a post/.test(p.channel_name)));
   assert.ok(!S.PRIVATE.test(JSON.stringify(f)));
+  assert.equal(f.posts.find((p) => p.channel === 'uneed').note, null, 'working notes stay private');
+  assert.equal(chatbots.note, 'Removed there.');
 });
 
 test('the live calendar builds a feed with nothing private in it', () => {
