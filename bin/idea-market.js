@@ -16,6 +16,7 @@ const os = require('os');
 const path = require('path');
 const M = require('../lib/market');
 const io = require('../lib/market-io');
+const { buildFeed } = require('../lib/market-sync');
 const { claudeTask } = require('../lib/claude');
 const { emit } = require('../lib/events');
 
@@ -468,6 +469,38 @@ async function drain(slug) {
   return files.length;
 }
 
+const SYNC_EVERY_MS = 3 * 3_600_000;
+const METRICS_FOR_MS = 30 * 86_400_000;
+
+/**
+ * The public marketing page (botchelor /marketing): read each recent Reddit post's score and replies (posts from the
+ * last 30 days), then send the whole log (lib/market-sync.js). Every 3 hours from tick, or `idea-market.js sync`.
+ */
+async function syncMarketing(ctx, reddit, now = new Date()) {
+  const recent = ctx.queue.items.filter((i) => i.status === 'posted' && i.thing && i.kind.startsWith('reddit') && now - Date.parse(i.postedAt) < METRICS_FOR_MS);
+  if (recent.length && reddit) {
+    try {
+      await reddit.ensure();
+      for (const it of recent) {
+        const st = await reddit.status(it.thing).catch(() => null);
+        if (!st) continue;
+        if (Number.isFinite(st.score)) it.score = st.score;
+        if (Number.isFinite(st.comments)) it.comments = st.comments;
+        if (st.removed && !it.removedSeen) it.removedSeen = st.removed;
+      }
+      saveQueue(ctx);
+    } catch (e) {
+      emit({ component: 'market', event: 'sync', status: 'warn', subject: { idea: ctx.cfg.slug }, message: `Reddit scores not refreshed: ${String(e.message || e).slice(0, 200)}` });
+    }
+  }
+  const feed = buildFeed(ctx.cfg, ctx.queue, ctx.launchLog);
+  const r = await io.sendMarketingFeed(ctx.cfg.site, feed);
+  ctx.queue.last.syncAt = now.toISOString();
+  saveQueue(ctx);
+  emit({ component: 'market', event: 'sync', status: 'ok', subject: { idea: ctx.cfg.slug }, message: `marketing log sent: ${r.posts} posts, ${r.channels} channels` });
+  return r;
+}
+
 async function tick(slug, now = new Date()) {
   await drain(slug);
   const ctx = load(slug);
@@ -514,6 +547,7 @@ async function tick(slug, now = new Date()) {
   if (ctx.cfg.autoPost) await step('post', () => postApproved(ctx, reddit, now), { logsItself: true });
   if (now - Date.parse(ctx.queue.last.listingsAt || '1970-01-01') > 24 * 3_600_000) await step('listings', () => watchListings(ctx));
   if (M.localWeekday(now, tz) === 5 && M.localHour(now, tz) >= 9 && ctx.queue.last.report !== M.weekOf(now)) await step('report', () => weeklyReport(ctx, now));
+  if (ctx.cfg.publicLog && now - Date.parse(ctx.queue.last.syncAt || '1970-01-01') > SYNC_EVERY_MS) await step('sync', () => syncMarketing(ctx, reddit, now));
 }
 
 async function main() {
@@ -528,6 +562,13 @@ async function main() {
   const ran = await withLock(cmd === 'drain' ? 15 * 60_000 : 0, async () => {
     if (cmd === 'tick') return tick(slug);
     if (cmd === 'drain') return drain(slug);
+    if (cmd === 'sync') {
+      // `sync --no-reddit` sends the log without reading Reddit scores (no browser needed).
+      const ctx = load(slug === '--no-reddit' ? 'botchelor' : slug);
+      const reddit = process.argv.includes('--no-reddit') ? null : new io.Reddit({ account: ctx.cfg.reddit?.account });
+      console.log(JSON.stringify(await syncMarketing(ctx, reddit)));
+      return 'done';
+    }
     if (cmd === 'draft') {
       const ctx = load(slug);
       const ch = channelOf(ctx, a);
@@ -544,7 +585,7 @@ async function main() {
       if (ctx.cfg.autoPost) await postApproved(ctx, reddit);
       return 'done';
     }
-    throw new Error('usage: idea-market.js tick|drain|list [slug] · draft <channel> [slug]');
+    throw new Error('usage: idea-market.js tick|drain|list|sync [slug] · draft <channel> [slug]');
   });
   if (ran === null && cmd !== 'tick') console.error('another marketing run holds the lock');
 }
