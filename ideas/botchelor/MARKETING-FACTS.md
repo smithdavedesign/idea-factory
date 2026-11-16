@@ -91,7 +91,7 @@ Disclosure: I built this. One-person project, built with AI coding tools (Claude
 
 You describe your OC (adults only, your own, no real people), they match with someone, and the date plays out as an episode you watch. You don't steer it: a rules engine picks the ending, the AI writes the way there. Pick a setup if you like (rival spies, castaways, the knight and the dragon), and your character remembers it next time.
 
-First date free, no account: <link>
+Free to start, no account: <link>
 
 Does "you can't steer it" sound fun or frustrating?
 
