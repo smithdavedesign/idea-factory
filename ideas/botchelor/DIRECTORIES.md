@@ -6,7 +6,7 @@ Already done or covered, so not repeated here: official MCP Registry, Glama, Lob
 
 Facts used in the copy come from botchelor.com/pricing, /press, /llms.txt, /alternatives/character-ai and the two /tools pages, as fetched on 2026-11-16. Two notes:
 - The site says **3 free dates a week** (back every Monday 00:00 UTC). MARKETING-FACTS.md still says "first date free". The copy follows the site.
-- `/tools/oc-name-generator` and `/tools/oc-questions` return **404** today, so they aren't linked anywhere below. Add them once they're live.
+- `/tools/oc-name-generator` (plus a page per style: /fantasy, /modern, /scifi, /gothic, /cozy) and `/tools/oc-questions` went live later on 2026-11-16. They fit the same places as the ship name generator (worldbuilding and writer tool lists, #7 above): add them as extra lines there.
 - No copy mentions After Dark or anything 18+, as MARKETING-FACTS.md requires. Every listing describes the public PG show only.
 
 On links: GitHub adds `rel="nofollow"` to README links, so the awesome lists pass no PageRank. They are still worth doing. Google and LLM crawlers read them, they send referral visits, and other directories copy from them. For GitHub lists, use the clean URL (maintainers often strip tracking parameters, and the referrer already says github.com). The utm version is given in case you want it.

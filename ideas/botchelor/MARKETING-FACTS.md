@@ -31,6 +31,8 @@ The marketing loop (bin/idea-market.js) drafts every post from this file. David 
 Search Console (2026-11-15): Google knows these pages but hasn't crawled most of them, because almost nothing links to them. A post that links one is worth more than another homepage link.
 - Ship names, a couple's name, "what's our ship name": https://botchelor.com/tools/ship-name-generator (free, no account; the only page that gets search clicks so far)
 - OC compatibility, "would my OCs get along", OC prompts: https://botchelor.com/tools/oc-chemistry-test (free, no account)
+- OC names, "name ideas for my OC", fantasy/sci-fi/gothic/cozy/modern names: https://botchelor.com/tools/oc-name-generator (a page per style, e.g. /tools/oc-name-generator/fantasy; each name opens the builder with it filled in; free, no AI, no account; live 2026-11-16)
+- "Questions to ask your OC", OC asks, character questionnaires, writing prompts: https://botchelor.com/tools/oc-questions (86 questions in 7 themes, one at a time at a shareable link; free, no account; live 2026-11-16)
 - People leaving another app, in refugee or alternatives threads, link that app's page (each lists the honest cons too):
   - Character.AI: https://botchelor.com/alternatives/character-ai
   - JanitorAI: https://botchelor.com/alternatives/janitor-ai
