@@ -1231,7 +1231,8 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-16T16:07:35.885Z",
       "postUrl": "https://www.reddit.com/r/JanitorAI_Refuges/comments/1xxt9lr/im_the_dev_decembers_season_is_a_rose_ceremony/",
-      "thing": "t3_1xxt9lr"
+      "thing": "t3_1xxt9lr",
+      "removedSeen": "not found"
     },
     {
       "id": 55,
@@ -1311,7 +1312,7 @@
     },
     {
       "id": 57,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-16T16:07:34.273Z",
       "channel": "help-mcp",
       "kind": "reddit-help",
@@ -1333,7 +1334,11 @@
       "hash": "89d2454cde32d0e5",
       "approvedAt": "2026-11-16T16:07:34.279Z",
       "approvedBy": "auto",
-      "error": "waiting for the next run: Reddit fetch budget (15) used up for this run"
+      "error": "waiting for the next run: Reddit fetch budget (15) used up for this run",
+      "postedAt": "2026-11-16T16:39:20.441Z",
+      "postUrl": "https://www.reddit.com/r/mcp/comments/1xxnou4/mcpopenrussian_a_local_readonly_mcp_server_that/19sqc09l2tj5t/",
+      "thing": "t1_19sqc09l2tj5t",
+      "removedSeen": "not found"
     }
   ],
   "seen": {
@@ -1375,11 +1380,12 @@
       "t1_19somcik4xog0",
       "t1_19somaqzkp8pv",
       "t1_19soxjj7yr3j8",
-      "t1_19sp4t891gsde"
+      "t1_19sp4t891gsde",
+      "t1_19sqalayh2mci"
     ]
   },
   "last": {
-    "watch": "2026-11-16T13:36:05.046Z",
+    "watch": "2026-11-16T16:40:50.235Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -1430,6 +1436,6 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-16T13:36:01.746Z"
+    "syncAt": "2026-11-16T16:39:17.034Z"
   }
 }
