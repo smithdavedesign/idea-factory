@@ -1,0 +1,65 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "A real 2026 W-2 Box 12 code TT rule change, but the plain 40-hour premium that M1 can compute is the part payroll providers already get right. The hard cases (bonuses, differentials, state rules) are the ones M1 only flags, and there is no evidence anyone would pay $29 for a separate check.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 2,
+      "evidence": "RESEARCH.md says Confidence Low and admits no first-hand quote or payment evidence. The sources are articles and law-firm notes, which show a rule exists, not that anyone would be upset if this vanished. Interest is not demand."
+    },
+    "statusQuo": {
+      "score": 4,
+      "evidence": "Employers use their payroll provider (Gusto, OnPay, ADP), which calculates TT in-system, or a CPA or bookkeeper. Free overtime calculators and overtimeproof.pages.dev exist. The workaround is real but mostly free or already bundled, so the pain left over is the unusual-pay cases."
+    },
+    "specificity": {
+      "score": 3,
+      "evidence": "The buyer is described as the owner or bookkeeper of a 5-50 employee hourly business. That is a category, not a named person. No named buyer, no heard consequence beyond a possible W-2c and penalty (the $680 figure is unconfirmed)."
+    },
+    "wedge": {
+      "score": 4,
+      "evidence": "The M1 wedge (CSV in, weekly premium out) is shippable in a weekend but covers only the plain 40-hour week. M2 flags regular-rate cases instead of solving them. So the paid version is not the wedge. Someone with a plain week needs no tool, and someone with a complex week gets a flag, not an answer."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "The provision is dated to 2026 tax years. Providers will ship native TT support and the IRS FAQs have shifted twice, so the gap shrinks each year. Demand peaks in January, then falls away."
+    }
+  },
+  "premises": [
+    "Small employers will miscompute TT. Partly supported: sources say non-FLSA formulas and mixed pay make it hard, but they say it of payroll in general, not of providers' TT output.",
+    "Employers outside a payroll provider's calculation are a sizable group. Not supported: no count or quote.",
+    "They would pay $29 for an independent check. Unsupported: the price is a guess and the evidence only shows they pay for payroll as a whole.",
+    "A plain-week recompute is useful. Weak: the hard part is the regular rate, which M1 skips."
+  ],
+  "alternatives": [
+    "Minimal: free single-page calculator and explainer, no payment, built for search traffic in January. Cheap, but earns nothing.",
+    "Ideal: full regular-rate engine covering bonuses, differentials and state daily-overtime rules. This is the valuable part but is not a weekend build and brings advice liability.",
+    "Extend an existing repo: none of the related ideas in context search share the code. packpass, coiready, deductwise and lienclock are the same shape (a narrow compliance checker for small sellers or owners), and those cover other deadlines. Compare their demand results before building another.",
+    "Lateral: sell to bookkeepers serving many small clients, with a bulk comparison of providers' TT figures. A better buyer, but needs real conversations first."
+  ],
+  "wedge": "A browser-only CSV check that reports weekly premium and flags rows it cannot calculate. Worth testing only if a bookkeeper confirms the mixed-pay rows are what they struggle with.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "TypeScript + Vite static app, Papa Parse, Vitest, Vercel Hobby, all free. The one test that proves M1: 52 hours at $20 returns 12 overtime hours and 120.00. The calculation is easy, but M1 does not cover the cases that make this valuable."
+  },
+  "risks": [
+    "Providers get TT right for most customers, shrinking the market to edge cases M1 does not solve.",
+    "Tax and payroll advice liability.",
+    "IRS guidance still moving, so a rule fix can invalidate the tool.",
+    "Seasonal: a build in late 2026 has about two months before January demand fades.",
+    "Free calculators and overtimeproof.pages.dev already sit at the low end.",
+    "Reaching buyers is unverified."
+  ],
+  "killCriteria": "Drop it if no bookkeeper or owner out of about 10 asked says the mixed-pay cases are a real problem they would pay to solve, or if the first 50 visitors produce no upload or purchase attempt.",
+  "landing": {
+    "headline": "",
+    "subhead": "",
+    "bullets": [],
+    "cta": "",
+    "audience": ""
+  },
+  "launch": {
+    "channels": [],
+    "post": ""
+  }
+}
