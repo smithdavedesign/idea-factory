@@ -333,6 +333,27 @@
       "postUrl": "https://www.instagram.com/reel/DfyPaSQCJ1L/",
       "postedAt": "2026-11-16T02:05:29.721Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #49 on his phone; link tagged utm_content=instagram_reels."
+    },
+    {
+      "channel": "X",
+      "url": null,
+      "postUrl": "https://x.com/botchelorLLC/status/2122202394755039438",
+      "postedAt": "2026-11-16T05:37:43.085Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) draft #51, written and queued by Claude under David's standing OK for the socials (2026-11-10): the December open call; link tagged utm_content=x."
+    },
+    {
+      "channel": "Bluesky",
+      "url": null,
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2fsrozsbp2d",
+      "postedAt": "2026-11-16T05:38:17.288Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) draft #52, written and queued by Claude under David's standing OK for the socials (2026-11-10): the December open call; link tagged utm_content=bluesky."
+    },
+    {
+      "channel": "Discord (#announcements)",
+      "url": null,
+      "postUrl": null,
+      "postedAt": "2026-11-16T05:38:50.211Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) draft #53, written and queued by Claude under David's standing OK for the socials (2026-11-10): the December open call; link tagged utm_content=discord."
     }
   ]
 }

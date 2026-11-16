@@ -1,5 +1,5 @@
 {
-  "nextId": 51,
+  "nextId": 54,
   "paused": false,
   "items": [
     {
@@ -1158,6 +1158,61 @@
       "postedAt": "2026-11-16T03:06:11.173Z",
       "postUrl": null,
       "thing": "t1_19spbql32pfhh"
+    },
+    {
+      "id": 51,
+      "status": "posted",
+      "createdAt": "2026-11-16T05:32:20.048Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "December's lead on Botchelor: Nell, a museum night guard. Five suitors, roses every Sunday.\n\nMade an original character? This invite puts them straight on an audition date with her (first come):\nhttps://botchelor.com/casting/invite/WXyLIVKw80\n\nI built it; the dates are AI.",
+      "why": "December open call (plan part D): first-come casting invite codes from part C (#1699). Written and queued by Claude under David's standing OK for the socials (2026-11-10).",
+      "flair": null,
+      "approvedAt": "2026-11-16T05:32:20.048Z",
+      "approvedBy": "auto",
+      "hash": "ffe840cf95318f6b",
+      "postedAt": "2026-11-16T05:37:43.085Z",
+      "postUrl": "https://x.com/botchelorLLC/status/2122202394755039438",
+      "thing": "2122202394755039438",
+      "note": "postUrl corrected by hand: the poster read the profile before the new post showed and recorded #46s URL"
+    },
+    {
+      "id": 52,
+      "status": "posted",
+      "createdAt": "2026-11-16T05:32:20.048Z",
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "sub": null,
+      "title": "",
+      "body": "December's lead on Botchelor: Nell, a museum night guard. Five suitors, roses every Sunday.\n\nMade an original character? This invite puts them straight on an audition date with her (first come):\nhttps://botchelor.com/casting/invite/tYCnHBDWkR\n\nI built it; the dates are AI.",
+      "why": "December open call (plan part D): first-come casting invite codes from part C (#1699). Written and queued by Claude under David's standing OK for the socials (2026-11-10).",
+      "flair": null,
+      "approvedAt": "2026-11-16T05:32:20.048Z",
+      "approvedBy": "auto",
+      "hash": "2bb5c14f930ab858",
+      "postedAt": "2026-11-16T05:38:17.288Z",
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2fsrozsbp2d",
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2fsrozsbp2d"
+    },
+    {
+      "id": 53,
+      "status": "posted",
+      "createdAt": "2026-11-16T05:32:20.048Z",
+      "channel": "discord",
+      "kind": "discord",
+      "sub": null,
+      "title": "",
+      "body": "**December casting: two invite codes for OC creators**\n\nDisclosure: I built this; the dates are AI-written.\n\nNell is December's lead: a museum night guard who gives the full tour to empty rooms and wants someone who asks a follow-up question. Five suitors, a rose ceremony every Sunday, and the audience votes.\n\nTwo invite codes, first come, first served. Each skips the usual three-dates wait and puts your original character (yours, a fictional adult, PG on the show) straight on an audition date with Nell:\nhttps://botchelor.com/casting/invite/vAZhC7dSur\nhttps://botchelor.com/casting/invite/SP0pVcykOT\n\nBringing a character over: paste a Character.AI character's fields, drop a SillyTavern/Chub card, or write a few lines about them. They stay yours, credited by the creator name you choose.",
+      "why": "December open call (plan part D): first-come casting invite codes from part C (#1699). Written and queued by Claude under David's standing OK for the socials (2026-11-10).",
+      "flair": null,
+      "approvedAt": "2026-11-16T05:32:20.048Z",
+      "approvedBy": "auto",
+      "hash": "3f65b4828020bf14",
+      "postedAt": "2026-11-16T05:38:50.211Z",
+      "postUrl": null,
+      "thing": "1571761443504914512"
     }
   ],
   "seen": {
