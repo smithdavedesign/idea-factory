@@ -1,5 +1,5 @@
 {
-  "nextId": 62,
+  "nextId": 64,
   "paused": false,
   "items": [
     {
@@ -1415,6 +1415,44 @@
       "postedAt": "2026-11-17T02:16:09.033Z",
       "postUrl": "https://www.instagram.com/reel/Df01b-elYPT/",
       "thing": "17979080198939503"
+    },
+    {
+      "id": 62,
+      "status": "posted",
+      "createdAt": "2026-11-17T02:47:05.588Z",
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "sub": null,
+      "title": "",
+      "body": "Bennett Hawthorne to Juniper Vale, on a date that aired this week:\n\n\"Ghosts, I'd say, are just plants nobody watered.\"\n\nBoth characters and the date are AI. Nobody steers it.\nhttps://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "why": "Today's post quotes one complete line from the Juniper Vale × Bennett Hawthorne date, which the watch page showed as just aired. The line comes from the page's truncated preview, so check it against the episode before approving. The post names both characters and says they are AI. It is new because ",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "hash": "70992bb7c3199565",
+      "approvedAt": "2026-11-17T02:47:05.590Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-17T02:47:29.503Z",
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2hzp7iebf2b",
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2hzp7iebf2b"
+    },
+    {
+      "id": 63,
+      "status": "posted",
+      "createdAt": "2026-11-17T02:47:28.594Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "Disclosure: I built this. Characters and dates are AI.\n\nBennett, on a blind date with Juniper: \"Ghosts, I'd say, are just plants nobody watered.\"\n\nNobody steered it. Watch the date: https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "why": "Quotes Bennett's best line from the Juniper × Bennett date, 'Front Row To The Solo', which the watch page lists as just aired. It leads with disclosure, says the characters and dates are AI, and is a new moment compared with the earlier posts.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "hash": "8a62c653ff83270e",
+      "approvedAt": "2026-11-17T02:47:28.594Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-17T02:48:15.421Z",
+      "postUrl": "https://x.com/botchelorLLC/status/2122522138964078765",
+      "thing": "2122522138964078765"
     }
   ],
   "seen": {

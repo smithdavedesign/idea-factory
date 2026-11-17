@@ -389,6 +389,20 @@
       "postUrl": "https://www.instagram.com/reel/Df01b-elYPT/",
       "postedAt": "2026-11-17T02:16:09.033Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #61 on his phone; link tagged utm_content=instagram_reels."
+    },
+    {
+      "channel": "Bluesky",
+      "url": null,
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2hzp7iebf2b",
+      "postedAt": "2026-11-17T02:47:29.503Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #62 on his phone; link tagged utm_content=bluesky."
+    },
+    {
+      "channel": "X",
+      "url": null,
+      "postUrl": "https://x.com/botchelorLLC/status/2122522138964078765",
+      "postedAt": "2026-11-17T02:48:15.421Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #63 on his phone; link tagged utm_content=x."
     }
   ]
 }
