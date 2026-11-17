@@ -417,6 +417,13 @@
       "postUrl": null,
       "postedAt": "2026-11-17T03:05:00+00:00",
       "note": "David said \"send them out now\" (2026-11-17). Sent by Claude through the site's business form (her Bluesky bio forbids DMs), name Botchelor, reply address support@botchelor.com; the form answered \"Thank you for your response\". The December casting invite for Virgilio, with a single-use code (valid to 2026-12-16) and the disclosure that David built it and the dates are AI-written. Text: ~/.botchelor-dec/d-invitations.md."
+    },
+    {
+      "channel": "Creator invite: likesumiink (a comment on their Chub card, the only route they give)",
+      "url": "https://chub.ai/characters/likesumiink/hailey-ebba65a5",
+      "postUrl": "https://chub.ai/characters/likesumiink/hailey-ebba65a5",
+      "postedAt": "2026-11-17T03:40:00+00:00",
+      "note": "David signed in to Chub (account botchelor) and said to send. Posted by Claude in the card's Discussion: a short comment with no link, saying he makes a small AI dating show and offering an invite link if they want one. The link (single-use code) goes only if they answer. Text: ~/.botchelor-dec/d-invitations.md."
     }
   ]
 }
