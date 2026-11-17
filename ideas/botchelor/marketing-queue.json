@@ -1,5 +1,5 @@
 {
-  "nextId": 59,
+  "nextId": 62,
   "paused": false,
   "items": [
     {
@@ -1361,6 +1361,60 @@
       "postedAt": "2026-11-16T22:42:24.214Z",
       "postUrl": null,
       "thing": "t1_19sqs78dfy43o"
+    },
+    {
+      "id": 59,
+      "status": "drafted",
+      "createdAt": "2026-11-17T02:13:29.155Z",
+      "channel": "video",
+      "kind": "video",
+      "title": "",
+      "body": "Pip carded Mum at roller derby. Mum ate a Hobnob at Pip from the penalty box.\n\nPip said yes. Nell said maybe. Whose side are you on? 👀\n\nWatch the whole date: botchelor.com/episodes/ed42110f-d7ad-4341-8ce4-c9c20e64dd9f?s=tiktok\nEvery character is AI, and every date is AI-generated fiction.\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #rollerderby #firstdate #funny",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-16-zz-cut-1-referee-report/post.mp4",
+      "episode": "ed42110f-d7ad-4341-8ce4-c9c20e64dd9f",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-16-zz-cut-1-referee-report",
+      "cut": "1-referee-report",
+      "hash": "b77dd07ad1c17b8d",
+      "sentAt": "2026-11-17T02:14:06.072Z",
+      "error": "couldn't reach David: whatsapp: OpenClaw took too long to respond.\nYour request may have completed. Check its result before trying again.\nCheck the Control UI or run `openclaw gateway status` in your terminal.; slack: [outbound/deliver] outbound queue write failed; continuing without durability (channel=slack to=C0C85QYP4MN): Media exceeds 5MB limit (got 17.36MB)"
+    },
+    {
+      "id": 60,
+      "status": "posted",
+      "createdAt": "2026-11-17T02:14:06.074Z",
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "title": "Pip carded Mum at roller derby. Mum ate a Hobnob at Pip from the penalty box. #Shorts",
+      "body": "Pip carded Mum at roller derby. Mum ate a Hobnob at Pip from the penalty box.\n\nPip said yes. Nell said maybe. Whose side are you on? 👀\n\nWatch the whole date: botchelor.com/episodes/ed42110f-d7ad-4341-8ce4-c9c20e64dd9f?s=youtube\nEvery character is AI, and every date is AI-generated fiction.\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #rollerderby #firstdate #funny",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-16-zz-cut-1-referee-report/post.mp4",
+      "episode": "ed42110f-d7ad-4341-8ce4-c9c20e64dd9f",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-16-zz-cut-1-referee-report",
+      "cut": "1-referee-report",
+      "hash": "6111eae258befeee",
+      "approvedAt": "2026-11-17T02:14:06.074Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-17T02:14:13.234Z",
+      "postUrl": "https://www.youtube.com/shorts/qH9xV6N9IpY",
+      "thing": "qH9xV6N9IpY"
+    },
+    {
+      "id": 61,
+      "status": "posted",
+      "createdAt": "2026-11-17T02:14:06.075Z",
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "title": "",
+      "body": "Pip carded Mum at roller derby. Mum ate a Hobnob at Pip from the penalty box.\n\nPip said yes. Nell said maybe. Whose side are you on? 👀\n\nWatch the whole date: botchelor.com/episodes/ed42110f-d7ad-4341-8ce4-c9c20e64dd9f?s=instagram\nEvery character is AI, and every date is AI-generated fiction.\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #rollerderby #firstdate #funny",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-16-zz-cut-1-referee-report/post.mp4",
+      "episode": "ed42110f-d7ad-4341-8ce4-c9c20e64dd9f",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-16-zz-cut-1-referee-report",
+      "cut": "1-referee-report",
+      "hash": "f6c895ed2177c142",
+      "approvedAt": "2026-11-17T02:14:06.075Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-17T02:16:09.033Z",
+      "postUrl": "https://www.instagram.com/reel/Df01b-elYPT/",
+      "thing": "17979080198939503"
     }
   ],
   "seen": {
@@ -1409,7 +1463,7 @@
     ]
   },
   "last": {
-    "watch": "2026-11-16T22:42:23.203Z",
+    "watch": "2026-11-17T01:43:18.181Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -1460,6 +1514,6 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-16T22:42:06.428Z"
+    "syncAt": "2026-11-17T01:43:15.197Z"
   }
 }
