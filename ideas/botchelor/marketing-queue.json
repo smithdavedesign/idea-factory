@@ -1,5 +1,5 @@
 {
-  "nextId": 64,
+  "nextId": 67,
   "paused": false,
   "items": [
     {
@@ -1453,6 +1453,70 @@
       "postedAt": "2026-11-17T02:48:15.421Z",
       "postUrl": "https://x.com/botchelorLLC/status/2122522138964078765",
       "thing": "2122522138964078765"
+    },
+    {
+      "id": 64,
+      "status": "posted",
+      "createdAt": "2026-11-17T16:20:09.887Z",
+      "channel": "aichapp",
+      "kind": "reddit",
+      "sub": "aichapp",
+      "title": "I'm the dev: December is a dating-show season with a museum night guard as the lead, and casting is open for your OCs",
+      "body": "Disclosure: I built this. One-person project, built with AI coding tools (Claude Code).\n\nBotchelor is a blind-date show for original characters (yours, adults only, no real people). You describe a character, they match with someone, and the date plays out as an episode you watch. A rules engine picks the ending and the AI writes the lines on the way there.\n\nMost months are plain blind dates. December is a different format: one lead, up to five suitors, and a rose ceremony every Sunday. The lead is Nell, a house character. She's a museum night guard who gives the full tour to empty rooms, and she wants someone who asks a follow-up question. The suitors are meant to be people's characters. If fewer than five apply, the show's own characters fill the spots.\n\nCasting is open now. While it is, a new character's first date is with Nell. If you already have a character on Character.AI, the site has an import page, so you don't have to rebuild them.\n\nCons, so you know before clicking:\n\n- Dates and chat are PG. No NSFW.\n- You watch the date. You don't play it.\n- It's new and small, so the dating pool is mostly the show's own cast.\n- 3 free dates a week with no account. Chatting 1-on-1 with characters is 30 free replies a day, and more than that is $9.99/month.\n\nLink: https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=aichapp\n\nFor those of you who make characters: what kind of person would your OC want to be on a date with a night guard who gives tours to empty rooms?",
+      "why": "December season angle (Nell as lead, open casting for OCs, Character.AI import) instead of a generic app intro, with real cons and disclosure first.",
+      "flair": "App Promotion",
+      "link": "https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=aichapp",
+      "hash": "43a3fa0b5b39a45b",
+      "approvedAt": "2026-11-17T16:20:09.888Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-17T16:20:57.601Z",
+      "postUrl": "https://www.reddit.com/r/aichapp/comments/1xyoqra/im_the_dev_december_is_a_datingshow_season_with_a/",
+      "thing": "t3_1xyoqra"
+    },
+    {
+      "id": 65,
+      "status": "posted",
+      "createdAt": "2026-11-17T16:20:37.125Z",
+      "channel": "threads",
+      "kind": "threads",
+      "sub": null,
+      "title": "",
+      "body": "Bennett Hawthorne to Juniper Vale, on the Night 16 date \"Front Row To The Solo\" on botchelor:\n\n\"Guilty as charged. I'm on time to everything, which I gather makes me a menace here.\"\n\nBoth characters and the whole date are AI. I built the show, and nobody steers it.\n\nhttps://botchelor.com/?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "why": "A different post from yesterday's: one exact line from the latest aired date (Bennett to Juniper, Night 16), with both characters named, the AI disclosure, and the tagged link.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "hash": "39afd814c34f5e61",
+      "approvedAt": "2026-11-17T16:20:37.125Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-17T16:22:03.991Z",
+      "postUrl": "https://www.threads.com/@botchelor/post/Df2WTqsG1l-",
+      "thing": "Df2WTqsG1l-"
+    },
+    {
+      "id": 66,
+      "status": "failed",
+      "createdAt": "2026-11-17T16:20:56.005Z",
+      "channel": "help-mcp",
+      "kind": "reddit-help",
+      "sub": "mcp",
+      "title": "",
+      "body": "I can't speak to lazy-loading across many servers. The one remote MCP server I've built (Streamable HTTP) has a small tool set, so I never had to solve that. The part I did spend time on was the tool descriptions. An agent only sees the name and description when it decides what to call. Tool names that overlap or descriptions that say what a tool is instead of when to use it were where I'd look first. That matters more with your design, because an app's tools only appear after the agent opens that app. The one-line entry in your short list then has to carry the whole decision about whether to load it. I'd test that list by giving a fresh agent a task and checking whether it opens the right app without being told which.",
+      "why": "FormMCP explicitly asks about tool loading and design feedback; the answer is limited to David's real experience (small remote MCP server, writing tool descriptions agents understand), says plainly what he hasn't done, and adds a concrete way to test the app list.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1xykr5i",
+        "title": "FormMCP: one MCP connection to a whole family of desktop apps, loading each app's tools only when needed (GPL-3.0)",
+        "author": "nodemode_ai",
+        "permalink": "https://www.reddit.com/r/mcp/comments/1xykr5i/formmcp_one_mcp_connection_to_a_whole_family_of/",
+        "excerpt": "Maker here. We have a family of open-source desktop apps &amp; each one has its own tools for agents. Loading all of them into context at once is wasteful, so we built FormMCP.\n\nIt gives Claude Code, Codex &amp; Cursor one connection. The agent sees every app in one short list, &amp; an app's own tools load only when a task needs them. There's per-agent control, hooks that can refuse a call, &amp; secrets in replies are hidden. It never installs anything.\n\n* Source: [https://github.com/nodemode-",
+        "selftext": "Maker here. We have a family of open-source desktop apps &amp; each one has its own tools for agents. Loading all of them into context at once is wasteful, so we built FormMCP.\n\nIt gives Claude Code, Codex &amp; Cursor one connection. The agent sees every app in one short list, &amp; an app's own tools load only when a task needs them. There's per-agent control, hooks that can refuse a call, &amp; secrets in replies are hidden. It never installs anything.\n\n* Source: [https://github.com/nodemode-dev/formMCP](https://github.com/nodemode-dev/formMCP)\n* Walkthrough (5 min): [https://formai.studio/formmcp/walkthrough/?utm\\_source=reddit](https://formai.studio/formmcp/walkthrough/?utm_source=reddit)\n* Licence: GPL-3.0\n\nEarly (0.x). Interested in how others are handling tool loading across many servers, &amp; in anything about the hook design that looks wrong.",
+        "top": []
+      },
+      "hash": "e3b43c748e48adfe",
+      "approvedAt": "2026-11-17T16:20:56.005Z",
+      "approvedBy": "auto",
+      "error": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
     }
   ],
   "seen": {
@@ -1539,7 +1603,8 @@
       "draft aicompanions": "ok",
       "sync": "ok",
       "draft janitorai_refuges": "ok",
-      "draft threads": "ok"
+      "draft threads": "ok",
+      "draft aichapp": "ok"
     },
     "report": "2026-11-09",
     "warned:draft help-indiehackers:2026-11-13": true,

@@ -431,6 +431,20 @@
       "postUrl": null,
       "postedAt": "2026-11-17T04:05:00+00:00",
       "note": "David signed in to @botchelor and said to send. Sent by Claude as one message from @botchelor: the December casting invite for Sarea Morn with a single-use code (valid to 2026-12-16) and the disclosure. Instagram answered \"Message request sent\"; no more messages are possible until they accept. One closing sentence was cut to fit the 1,000-character limit. Text: ~/.botchelor-dec/d-invitations.md."
+    },
+    {
+      "channel": "r/aichapp",
+      "url": "https://www.reddit.com/r/aichapp/",
+      "postUrl": "https://www.reddit.com/r/aichapp/comments/1xyoqra/im_the_dev_december_is_a_datingshow_season_with_a/",
+      "postedAt": "2026-11-17T16:20:57.601Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #64 on his phone; flair \"App Promotion\"; link tagged utm_content=aichapp."
+    },
+    {
+      "channel": "Threads",
+      "url": null,
+      "postUrl": "https://www.threads.com/@botchelor/post/Df2WTqsG1l-",
+      "postedAt": "2026-11-17T16:22:03.991Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #65 on his phone; link tagged utm_content=threads."
     }
   ]
 }
