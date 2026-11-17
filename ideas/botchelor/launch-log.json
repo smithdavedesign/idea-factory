@@ -424,6 +424,13 @@
       "postUrl": "https://chub.ai/characters/likesumiink/hailey-ebba65a5",
       "postedAt": "2026-11-17T03:40:00+00:00",
       "note": "David signed in to Chub (account botchelor) and said to send. Posted by Claude in the card's Discussion: a short comment with no link, saying he makes a small AI dating show and offering an invite link if they want one. The link (single-use code) goes only if they answer. Text: ~/.botchelor-dec/d-invitations.md."
+    },
+    {
+      "channel": "Creator invite: RinKnox (Instagram message to @rin.gg.ai, not a post)",
+      "url": "https://www.instagram.com/rin.gg.ai/",
+      "postUrl": null,
+      "postedAt": "2026-11-17T04:05:00+00:00",
+      "note": "David signed in to @botchelor and said to send. Sent by Claude as one message from @botchelor: the December casting invite for Sarea Morn with a single-use code (valid to 2026-12-16) and the disclosure. Instagram answered \"Message request sent\"; no more messages are possible until they accept. One closing sentence was cut to fit the 1,000-character limit. Text: ~/.botchelor-dec/d-invitations.md."
     }
   ]
 }
