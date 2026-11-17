@@ -1364,7 +1364,7 @@
     },
     {
       "id": 59,
-      "status": "drafted",
+      "status": "sent",
       "createdAt": "2026-11-17T02:13:29.155Z",
       "channel": "video",
       "kind": "video",
@@ -1375,8 +1375,7 @@
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-16-zz-cut-1-referee-report",
       "cut": "1-referee-report",
       "hash": "b77dd07ad1c17b8d",
-      "sentAt": "2026-11-17T02:14:06.072Z",
-      "error": "couldn't reach David: whatsapp: OpenClaw took too long to respond.\nYour request may have completed. Check its result before trying again.\nCheck the Control UI or run `openclaw gateway status` in your terminal.; slack: [outbound/deliver] outbound queue write failed; continuing without durability (channel=slack to=C0C85QYP4MN): Media exceeds 5MB limit (got 17.36MB)"
+      "sentAt": "2026-11-17T22:43:42.654Z"
     },
     {
       "id": 60,
@@ -1495,7 +1494,7 @@
     },
     {
       "id": 66,
-      "status": "failed",
+      "status": "posted",
       "createdAt": "2026-11-17T16:20:56.005Z",
       "channel": "help-mcp",
       "kind": "reddit-help",
@@ -1517,7 +1516,9 @@
       "hash": "e3b43c748e48adfe",
       "approvedAt": "2026-11-17T16:20:56.005Z",
       "approvedBy": "auto",
-      "error": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+      "postedAt": "2026-11-17T22:42:39.026Z",
+      "postUrl": "https://www.reddit.com/r/mcp/comments/1xykr5i/formmcp_one_mcp_connection_to_a_whole_family_of/19sskfu3k70xt/",
+      "thing": "t1_19sskfu3k70xt"
     }
   ],
   "seen": {
@@ -1566,7 +1567,7 @@
     ]
   },
   "last": {
-    "watch": "2026-11-17T16:54:08.613Z",
+    "watch": "2026-11-17T22:41:48.595Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -1590,9 +1591,9 @@
       "draft mcpservers": "ok",
       "draft characterairunaways": "ok",
       "draft ai_agents_weekly": "ok",
-      "draft help-indiehackers": "fail",
+      "draft help-indiehackers": "ok",
       "draft help-mcp": "ok",
-      "watch": "fail",
+      "watch": "ok",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
@@ -1618,7 +1619,7 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-17T19:58:04.365Z",
+    "syncAt": "2026-11-17T23:00:34.671Z",
     "warned:draft help-indiehackers:2026-11-17": true,
     "warned:watch:2026-11-17": true
   }
