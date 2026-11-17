@@ -77,3 +77,20 @@ test('ensureCrowdDeps says so when npm ci fails', () => {
     assert.throws(() => io.ensureCrowdDeps(repo), /dependencies are missing and npm ci failed: npm ERR! missing lockfile/);
   } finally { delete process.env.NPM_BIN; }
 });
+
+test('only a lost copy of our own browser server counts as stray (2026-11-15, 11-17 stalls)', () => {
+  const { isStrayLoopServer } = require('../lib/market-io');
+  const loopDir = '/Users/x/idea-factory';
+  // Ours, state file gone: kill it.
+  assert.equal(isStrayLoopServer({ pid: 94337, comm: 'bun', cwd: loopDir }, { loopDir, recordedPid: null }), true);
+  // Ours, but the state file names another pid: a leftover, kill it.
+  assert.equal(isStrayLoopServer({ pid: 94337, comm: 'bun', cwd: `${loopDir}/` }, { loopDir, recordedPid: 111 }), true);
+  // The server our state file records: not stray.
+  assert.equal(isStrayLoopServer({ pid: 94337, comm: 'bun', cwd: loopDir }, { loopDir, recordedPid: 94337 }), false);
+  // Another session's headed browse, in its own project: never touched.
+  assert.equal(isStrayLoopServer({ pid: 5, comm: 'bun', cwd: '/Users/x/Documents/Repos/botchelor' }, { loopDir }), false);
+  // Not bun, or nothing known about it: never touched.
+  assert.equal(isStrayLoopServer({ pid: 5, comm: 'node', cwd: loopDir }, { loopDir }), false);
+  assert.equal(isStrayLoopServer({ pid: 5, comm: 'bun', cwd: '' }, { loopDir }), false);
+  assert.equal(isStrayLoopServer({ pid: 0, comm: 'bun', cwd: loopDir }, { loopDir }), false);
+});
