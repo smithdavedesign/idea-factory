@@ -1471,7 +1471,8 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-17T16:20:57.601Z",
       "postUrl": "https://www.reddit.com/r/aichapp/comments/1xyoqra/im_the_dev_december_is_a_datingshow_season_with_a/",
-      "thing": "t3_1xyoqra"
+      "thing": "t3_1xyoqra",
+      "removedSeen": "not found"
     },
     {
       "id": 65,
@@ -1565,7 +1566,7 @@
     ]
   },
   "last": {
-    "watch": "2026-11-17T13:49:43.396Z",
+    "watch": "2026-11-17T16:54:08.613Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -1617,6 +1618,6 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-17T13:49:40.338Z"
+    "syncAt": "2026-11-17T16:53:25.407Z"
   }
 }
