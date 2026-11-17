@@ -1592,7 +1592,7 @@
       "draft ai_agents_weekly": "ok",
       "draft help-indiehackers": "fail",
       "draft help-mcp": "ok",
-      "watch": "ok",
+      "watch": "fail",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
@@ -1618,7 +1618,8 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-17T16:53:25.407Z",
-    "warned:draft help-indiehackers:2026-11-17": true
+    "syncAt": "2026-11-17T19:58:04.365Z",
+    "warned:draft help-indiehackers:2026-11-17": true,
+    "warned:watch:2026-11-17": true
   }
 }
