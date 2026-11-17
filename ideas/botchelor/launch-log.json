@@ -403,6 +403,20 @@
       "postUrl": "https://x.com/botchelorLLC/status/2122522138964078765",
       "postedAt": "2026-11-17T02:48:15.421Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #63 on his phone; link tagged utm_content=x."
+    },
+    {
+      "channel": "Creator invite: quelanaenjoyer (email her Chub bio invites, not a post)",
+      "url": "https://chub.ai/characters/quelanaenjoyer/zdeslava-89dded9d59fc",
+      "postUrl": null,
+      "postedAt": "2026-11-16T18:00:30+00:00",
+      "note": "Sent by David from his Gmail (the draft Claude prepared): the December casting invite for Zdeslava with a single-use code (valid to 2026-12-16)."
+    },
+    {
+      "channel": "Creator invite: A. Rhetters (her site's business form, not a post)",
+      "url": "https://arhettersbooks.wordpress.com",
+      "postUrl": null,
+      "postedAt": "2026-11-17T03:05:00+00:00",
+      "note": "David said \"send them out now\" (2026-11-17). Sent by Claude through the site's business form (her Bluesky bio forbids DMs), name Botchelor, reply address support@botchelor.com; the form answered \"Thank you for your response\". The December casting invite for Virgilio, with a single-use code (valid to 2026-12-16) and the disclosure that David built it and the dates are AI-written. Text: ~/.botchelor-dec/d-invitations.md."
     }
   ]
 }
