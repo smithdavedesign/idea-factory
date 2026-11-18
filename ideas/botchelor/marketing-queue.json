@@ -1,5 +1,5 @@
 {
-  "nextId": 72,
+  "nextId": 73,
   "paused": false,
   "items": [
     {
@@ -1610,6 +1610,23 @@
       "postedAt": "2026-11-18T02:09:46.245Z",
       "postUrl": "https://www.instagram.com/reel/Df3ZfWnjfDw/",
       "thing": "18108153476369917"
+    },
+    {
+      "id": 72,
+      "status": "approved",
+      "createdAt": "2026-11-18T16:16:04.919Z",
+      "channel": "threads",
+      "kind": "threads",
+      "sub": null,
+      "title": "",
+      "body": "Disclosure: I built Botchelor. The characters and the dates are AI.\n\nSable Quist to Callan Skye, on a date that aired this week:\n\n\"Superstitious AND you climb things? Okay, I'm obsessed.\"\n\nNobody steered it. Watch the rest of the date, free, no account:\nhttps://botchelor.com/?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "why": "A verbatim Sable Quist line to Callan Skye from the latest aired date (S2 Night 17), a new moment and not a repeat of the earlier posts. It states the AI disclosure first and uses no hashtags. I quoted it from the /watch page text and didn't re-check it character for character, so check it against t",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "hash": "9cee130b68ac146d",
+      "approvedAt": "2026-11-18T16:16:04.923Z",
+      "approvedBy": "auto",
+      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 13044 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run"
     }
   ],
   "seen": {
@@ -1688,7 +1705,7 @@
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
-      "draft help-sideproject": "ok",
+      "draft help-sideproject": "fail",
       "report": "ok",
       "draft x": "ok",
       "draft chatbotrefugees_sunday": "fail",
@@ -1697,7 +1714,8 @@
       "sync": "ok",
       "draft janitorai_refuges": "ok",
       "draft threads": "ok",
-      "draft aichapp": "ok"
+      "draft aichapp": "ok",
+      "draft claudeai": "fail"
     },
     "report": "2026-11-09",
     "warned:draft help-indiehackers:2026-11-13": true,
@@ -1713,6 +1731,9 @@
     "syncAt": "2026-11-18T14:14:48.311Z",
     "warned:draft help-indiehackers:2026-11-17": true,
     "warned:watch:2026-11-17": true,
-    "warned:watch:2026-11-18": true
+    "warned:watch:2026-11-18": true,
+    "warned:draft claudeai:2026-11-18": true,
+    "warned:draft help-indiehackers:2026-11-18": true,
+    "warned:draft help-sideproject:2026-11-18": true
   }
 }
