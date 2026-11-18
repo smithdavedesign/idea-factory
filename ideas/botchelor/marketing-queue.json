@@ -1,5 +1,5 @@
 {
-  "nextId": 69,
+  "nextId": 72,
   "paused": false,
   "items": [
     {
@@ -1557,6 +1557,59 @@
       "postedAt": "2026-11-18T00:03:47.853Z",
       "postUrl": "https://x.com/botchelorLLC/status/2122843058794545452",
       "thing": "2122843058794545452"
+    },
+    {
+      "id": 69,
+      "status": "sent",
+      "createdAt": "2026-11-18T02:06:27.306Z",
+      "channel": "video",
+      "kind": "video",
+      "title": "",
+      "body": "December's Botchelor knew the way out the whole time.\n\nNell or Sable: who's in more trouble here? 🌹\n\nWatch the whole date: botchelor.com/episodes/4bec5555-8e60-459d-ab21-e790c5af53fe?s=tiktok\nEvery character is AI, and every date is AI-generated fiction.\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #confession #romance",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-17-zz-cut-2-she-knew-the-way-out/post.mp4",
+      "episode": "4bec5555-8e60-459d-ab21-e790c5af53fe",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-17-zz-cut-2-she-knew-the-way-out",
+      "cut": "2-she-knew-the-way-out",
+      "hash": "172078513de83db1",
+      "sentAt": "2026-11-18T02:07:05.698Z"
+    },
+    {
+      "id": 70,
+      "status": "posted",
+      "createdAt": "2026-11-18T02:07:05.701Z",
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "title": "December's Botchelor knew the way out the whole time. #Shorts",
+      "body": "December's Botchelor knew the way out the whole time.\n\nNell or Sable: who's in more trouble here? 🌹\n\nWatch the whole date: botchelor.com/episodes/4bec5555-8e60-459d-ab21-e790c5af53fe?s=youtube\nEvery character is AI, and every date is AI-generated fiction.\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #confession #romance",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-17-zz-cut-2-she-knew-the-way-out/post.mp4",
+      "episode": "4bec5555-8e60-459d-ab21-e790c5af53fe",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-17-zz-cut-2-she-knew-the-way-out",
+      "cut": "2-she-knew-the-way-out",
+      "hash": "d6ea2bd57ba4c01d",
+      "approvedAt": "2026-11-18T02:07:05.701Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-18T02:07:30.166Z",
+      "postUrl": "https://www.youtube.com/shorts/aKfN2GECqKE",
+      "thing": "aKfN2GECqKE"
+    },
+    {
+      "id": 71,
+      "status": "posted",
+      "createdAt": "2026-11-18T02:07:05.702Z",
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "title": "",
+      "body": "December's Botchelor knew the way out the whole time.\n\nNell or Sable: who's in more trouble here? 🌹\n\nWatch the whole date: botchelor.com/episodes/4bec5555-8e60-459d-ab21-e790c5af53fe?s=instagram\nEvery character is AI, and every date is AI-generated fiction.\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #confession #romance",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-17-zz-cut-2-she-knew-the-way-out/post.mp4",
+      "episode": "4bec5555-8e60-459d-ab21-e790c5af53fe",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-17-zz-cut-2-she-knew-the-way-out",
+      "cut": "2-she-knew-the-way-out",
+      "hash": "d92811367599ba40",
+      "approvedAt": "2026-11-18T02:07:05.702Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-18T02:09:46.245Z",
+      "postUrl": "https://www.instagram.com/reel/Df3ZfWnjfDw/",
+      "thing": "18108153476369917"
     }
   ],
   "seen": {
@@ -1629,9 +1682,9 @@
       "draft mcpservers": "ok",
       "draft characterairunaways": "ok",
       "draft ai_agents_weekly": "ok",
-      "draft help-indiehackers": "ok",
+      "draft help-indiehackers": "fail",
       "draft help-mcp": "ok",
-      "watch": "ok",
+      "watch": "fail",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
@@ -1657,7 +1710,7 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-17T23:00:34.671Z",
+    "syncAt": "2026-11-18T02:06:27.277Z",
     "warned:draft help-indiehackers:2026-11-17": true,
     "warned:watch:2026-11-17": true
   }
