@@ -1,5 +1,5 @@
 {
-  "nextId": 67,
+  "nextId": 69,
   "paused": false,
   "items": [
     {
@@ -1519,6 +1519,41 @@
       "postedAt": "2026-11-17T22:42:39.026Z",
       "postUrl": "https://www.reddit.com/r/mcp/comments/1xykr5i/formmcp_one_mcp_connection_to_a_whole_family_of/19sskfu3k70xt/",
       "thing": "t1_19sskfu3k70xt"
+    },
+    {
+      "id": 67,
+      "status": "posted",
+      "createdAt": "2026-11-18T00:01:39.613Z",
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "sub": null,
+      "title": "",
+      "body": "Juniper Vale to Sable Quist, on their third date:\n\n\"Forty-one hats. That's not loud, Sable. That's a lighthouse.\"\n\nIt ended in a fourth date. Characters and lines are AI; nobody steers it.\n\nhttps://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "why": "Same quote and both characters named, with the AI disclosure and the link unchanged. Trimmed the closing sentence so the post is about 290 characters.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "hash": "cfff2858545453ef",
+      "approvedAt": "2026-11-18T00:01:39.618Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-18T00:02:20.833Z",
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2kawtbkng2b",
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2kawtbkng2b"
+    },
+    {
+      "id": 68,
+      "status": "approved",
+      "createdAt": "2026-11-18T00:02:15.600Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "Callan Skye: \"Less brave, more superstitious. Funny how those feel alike.\"\nSable Quist: \"Superstitious AND you climb things? Okay, I'm obsessed.\"\n\nAI characters, AI-written date. https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x #OCs",
+      "why": "Same Callan and Sable exchange from the aired date, with the closing line shortened to fit 280 characters (about 272). The link, hashtag and AI disclosure are unchanged.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "hash": "3fa656aba4676dd0",
+      "approvedAt": "2026-11-18T00:02:15.601Z",
+      "approvedBy": "auto"
     }
   ],
   "seen": {
