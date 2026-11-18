@@ -1,5 +1,5 @@
 {
-  "nextId": 75,
+  "nextId": 78,
   "paused": false,
   "items": [
     {
@@ -1649,7 +1649,8 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-18T18:04:04.823Z",
       "postUrl": "https://www.reddit.com/r/ClaudeAI/comments/1xzm3yf/i_built_a_blinddate_show_for_original_characters/",
-      "thing": "t3_1xzm3yf"
+      "thing": "t3_1xzm3yf",
+      "removedSeen": "not found"
     },
     {
       "id": 74,
@@ -1677,7 +1678,66 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-18T18:24:43.705Z",
       "postUrl": "https://www.reddit.com/r/SideProject/comments/1xzlkyt/creating_a_friend_first_social_app/19su15vptl0hx/",
-      "thing": "t1_19su15vptl0hx"
+      "thing": "t1_19su15vptl0hx",
+      "removedSeen": "not found"
+    },
+    {
+      "id": 75,
+      "status": "posted",
+      "createdAt": "2026-11-18T21:27:00.571Z",
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "sub": null,
+      "title": "",
+      "body": "Juniper Vale: \"You haven't blinked since you sat down.\"\nVectron Maxwell: \"Deferred, pending the sunset's final verdict.\"\n\nNight 18 on Botchelor. Characters, lines and date are all AI.\n\nhttps://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "why": "Same quoted-line post, with the last sentence shortened to bring it to about 286 characters. The AI disclosure and the exact link are unchanged.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "hash": "3a16b80b577b872b",
+      "approvedAt": "2026-11-18T21:27:00.620Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-18T21:29:06.677Z",
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2mitqjgi62m",
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2mitqjgi62m"
+    },
+    {
+      "id": 76,
+      "status": "posted",
+      "createdAt": "2026-11-18T21:27:38.278Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "\"Mostly. That's where I live, on the mostly.\"\n\nJuniper Vale to Vectron Maxwell, S2 Night 18, \"Golden Hour Countdown\". The characters and the date are AI.\n\nhttps://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x\n\n#OC #AIcharacters",
+      "why": "Same quote, attribution, AI disclosure, link and hashtags as before; I cut only \"and nobody steers it\", which brings it to about 264 characters. I counted by hand because the shell was denied.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "hash": "ef43bcec4fda7d40",
+      "approvedAt": "2026-11-18T21:27:38.281Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-18T21:30:00.813Z",
+      "postUrl": "https://x.com/botchelorLLC/status/2123166825731285503",
+      "thing": "2123166825731285503"
+    },
+    {
+      "id": 77,
+      "status": "failed",
+      "createdAt": "2026-11-18T21:27:49.825Z",
+      "channel": "reply:SideProject",
+      "kind": "reddit",
+      "sub": "SideProject",
+      "title": "",
+      "body": "Thanks for letting me know, I appreciate it! If anything is confusing or breaks along the way, reply here and I'll take a look.",
+      "replyTo": {
+        "name": "t1_19su1fz1cwp1f",
+        "author": "Opposite_Animal9458",
+        "body": "Thank you i just sent them a message :)",
+        "context": "https://www.reddit.com/r/SideProject/comments/1xzlkyt/creating_a_friend_first_social_app/19su1fz1cwp1f/?context=3"
+      },
+      "hash": "bd607e5e094d1a72",
+      "approvedAt": "2026-11-18T21:27:49.826Z",
+      "approvedBy": "auto",
+      "error": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
     }
   ],
   "seen": {
@@ -1722,11 +1782,12 @@
       "t1_19sp4t891gsde",
       "t1_19sqalayh2mci",
       "t1_19sqhhl3zew11",
-      "t1_19sqr0whuygxw"
+      "t1_19sqr0whuygxw",
+      "t1_19su1fz1cwp1f"
     ]
   },
   "last": {
-    "watch": "2026-11-18T18:04:01.809Z",
+    "watch": "2026-11-18T21:29:05.847Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"

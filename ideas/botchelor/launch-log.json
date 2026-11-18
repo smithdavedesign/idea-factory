@@ -487,6 +487,20 @@
       "postUrl": "https://www.reddit.com/r/ClaudeAI/comments/1xzm3yf/i_built_a_blinddate_show_for_original_characters/",
       "postedAt": "2026-11-18T18:04:04.823Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #73 on his phone; flair \"Built with Claude\"; link tagged utm_content=claudeai."
+    },
+    {
+      "channel": "Bluesky",
+      "url": null,
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2mitqjgi62m",
+      "postedAt": "2026-11-18T21:29:06.677Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #75 on his phone; link tagged utm_content=bluesky."
+    },
+    {
+      "channel": "X",
+      "url": null,
+      "postUrl": "https://x.com/botchelorLLC/status/2123166825731285503",
+      "postedAt": "2026-11-18T21:30:00.813Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #76 on his phone; link tagged utm_content=x."
     }
   ]
 }
