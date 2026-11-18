@@ -1,0 +1,86 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "A funny boxed-toy mock-up of a kid's drawing is a pleasant gift gag, but no source shows anyone paying $9 for it and Canva is free. It is also the third near-identical 'photo to funny keepsake bundle' idea in the pipeline (alterpaw, giftlet), with no distribution edge.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "RESEARCH.md shows the category pays ($99 Budsies, $75 Artkive, £18-£20 keyrings) but admits 'no source shows people paying $9 for it specifically' and has no sales data for the mock-up niche. Reddit/blog sources only show parents have too many drawings. Nobody is described as upset if it vanished."
+    },
+    "statusQuo": {
+      "score": 4,
+      "evidence": "Status quo is photograph-and-toss, or free Canva/mockup templates (Etsy PSDs at $1.49-$4.24). That is a real workaround but a cheap, painless one; the research itself says 'parents rarely do it', which reads as low pain, not unmet pain."
+    },
+    "specificity": {
+      "score": 4,
+      "evidence": "Target is 'parents and grandparents' gifting a drawing the week before a holiday. That is a plausible moment but a category, not a named person; there is no quote or conversation behind it. Consequence of not solving it is a mild missed gag."
+    },
+    "wedge": {
+      "score": 6,
+      "evidence": "Narrow and weekend-buildable: one photo, one toy-box template, watermarked preview, $9 to unwatermark. Genuinely cheap to test. Weakness is that the wedge is one-time and seasonal, with no retention."
+    },
+    "futureFit": {
+      "score": 3,
+      "evidence": "Generic image tools and chat assistants will make 'turn this drawing into a toy box' a one-prompt task for free within the 3-year window, which makes a $9 template product less essential, not more. Moat is taste and templates, which are easy to copy (RESEARCH.md)."
+    }
+  },
+  "premises": [
+    "A $9 instant digital option fills a gap between free DIY and $18-$100 physical keepsakes. Research confirms the gap on price but not that anyone wants to buy in it.",
+    "Grandparents and relatives will buy a finished mock-up image rather than make or skip it. Unsupported: no evidence of purchase behaviour at this price.",
+    "Parents will upload photos of their children's art to a new site. Plausible with a delete-after-7-days policy, but trust and COPPA framing add friction.",
+    "The product is distinct from alterpaw and giftlet. Weak: same buyer motive (funny personalised gift from a photo), same price band, same channels."
+  ],
+  "alternatives": [
+    "Minimal: skip the app. Make a single Canva or static page with 3 sample toy boxes from a stock kid-drawing, put a $9 Stripe link and 'send me the drawing, I'll send it back in 24h' on it, and hand-make the first 5 orders. Tests willingness to pay in a weekend with no pipeline.",
+    "Extend an existing repo: add a 'kid's drawing as toy box' template to alterpaw (photo to funny bundle, $9-$20) instead of a separate product. Reuses upload, compositing, copy generation and payment, and shares the same audience and channels.",
+    "Lateral: sell it as a Q4 gift-season template pack for designers and Etsy sellers rather than to parents. Etsy mockups already sell at $1.49-$4.24, which shows the price ceiling is low."
+  ],
+  "wedge": "One upload, one toy-box template, watermarked preview, $9 to remove the watermark. Better still, a fake-door page with sample outputs and a $9 button, measuring clicks before any code.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "M1 is buildable in a weekend: Next.js on Cloudflare Workers (OpenNext), client-side @imgly/background-removal, canvas compositing of one template, free-model blurb, R2 with a 7-day lifecycle. Watch the 3 MiB Worker bundle limit against background-removal assets (run it in the browser, not the Worker). The one test that proves M1: POST /api/preview with a 1200x1600 JPG returns a watermarked PNG in under 30 seconds, and a blank page returns 422. Payment arrives in M2, so M1 proves only the render, not demand."
+  },
+  "risks": [
+    "Willingness to pay $9 versus free Canva and DIY is unproven.",
+    "One-time, seasonal purchase (Nov-Dec peak) with no retention. Today is 2026-11-18, so a two-week test lands in the peak but a build would not be live in time to catch much of it.",
+    "Photos of children: privacy, consent, COPPA framing, and a stronger trust bar than a pet photo.",
+    "Heavy overlap with alterpaw and giftlet splits David's attention and channel effort across near-identical gift products, none of which has shown paid demand.",
+    "Trademark risk if templates drift toward real toy or cereal brands.",
+    "Easy to copy; no distribution advantage is identified (Pinterest and parent communities are crowded and hostile to promotion)."
+  ],
+  "killCriteria": "Not applicable to a pass. If David overrides: drop it if a fake-door page with sample outputs gets under 50 targeted visitors in 14 days with fewer than 5 email signups, or if fewer than 3 of the first 20 people shown a real preview click a $9 buy button.",
+  "m1Observation": "Watch 5 parents or grandparents upload a drawing with no help: do they photograph it well enough for background removal, do they edit the blurb or accept it, do they share the watermarked preview, and do they hesitate or abandon at the $9 step. Note whether they compare it with Canva out loud.",
+  "landing": {
+    "headline": "Turn your kid's drawing into an 'official' toy box",
+    "subhead": "Upload a photo of a drawing and get a funny boxed-toy mock-up, ready to share or print, in under a minute.",
+    "bullets": [
+      "Works from a phone photo of the drawing",
+      "Funny fictional-brand packaging with a blurb about your child",
+      "Print-ready file for a grandparent gift",
+      "Photos deleted after 7 days"
+    ],
+    "cta": "Join the waitlist",
+    "audience": "Parents and grandparents with a child's drawing who want a quick, cheap gift before a holiday or birthday."
+  },
+  "launch": {
+    "channels": [
+      {
+        "name": "r/Parenting",
+        "url": "https://www.reddit.com/r/Parenting/",
+        "why": "Parents with artwork piles; read the rules before posting any link."
+      },
+      {
+        "name": "r/declutter",
+        "url": "https://www.reddit.com/r/declutter/",
+        "why": "The 'what do I do with kids' drawings' threads cited in RESEARCH.md come from here."
+      },
+      {
+        "name": "r/grandparents",
+        "url": "https://www.reddit.com/r/grandparents/",
+        "why": "Grandparents are the gift buyers and recipients."
+      }
+    ],
+    "post": "I keep ending up with kids' drawings I love but can't keep. I'm testing a tool that turns a photo of one into a funny 'official toy' box (fake brand, silly blurb) you can share or print as a gift. Page: {url}. Would you ever pay a few dollars for this, or would you just make it in Canva?"
+  }
+}
