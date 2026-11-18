@@ -1541,7 +1541,7 @@
     },
     {
       "id": 68,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-18T00:02:15.600Z",
       "channel": "x",
       "kind": "x",
@@ -1553,7 +1553,10 @@
       "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
       "hash": "3fa656aba4676dd0",
       "approvedAt": "2026-11-18T00:02:15.601Z",
-      "approvedBy": "auto"
+      "approvedBy": "auto",
+      "postedAt": "2026-11-18T00:03:47.853Z",
+      "postUrl": "https://x.com/botchelorLLC/status/2122843058794545452",
+      "thing": "2122843058794545452"
     }
   ],
   "seen": {
@@ -1607,7 +1610,7 @@
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
     },
-    "listingsAt": "2026-11-16T23:43:14.532Z",
+    "listingsAt": "2026-11-18T00:04:28.031Z",
     "warned:draft indiehackers:2026-11-10": true,
     "warned:watch:2026-11-10": true,
     "warned:watch:2026-11-11": true,
