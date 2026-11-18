@@ -1,5 +1,5 @@
 {
-  "nextId": 74,
+  "nextId": 75,
   "paused": false,
   "items": [
     {
@@ -1650,6 +1650,34 @@
       "postedAt": "2026-11-18T18:04:04.823Z",
       "postUrl": "https://www.reddit.com/r/ClaudeAI/comments/1xzm3yf/i_built_a_blinddate_show_for_original_characters/",
       "thing": "t3_1xzm3yf"
+    },
+    {
+      "id": 74,
+      "status": "posted",
+      "createdAt": "2026-11-18T18:24:41.254Z",
+      "channel": "help-sideproject",
+      "kind": "reddit-help",
+      "sub": "SideProject",
+      "title": "",
+      "body": "Asking the mods before you post the link is the right call. I've found the self-promo rules differ a lot between subs. Some only allow it in a weekly thread, some require a specific flair, and automod can remove a post with a link in it without telling you why. I'd send modmail now and ask exactly what they allow, so you don't find out through a removal. Whatever you end up posting, say in the first line that you're the one building it, because that is what people there seem to want to see first.",
+      "why": "Niacove's dev is unsure about posting a fundraising link on Reddit. David's real experience with Reddit self-promo rules, flairs, automod removals and disclosure applies directly, and nobody has commented yet.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1xzlkyt",
+        "title": "Creating a friend first social app",
+        "author": "Opposite_Animal9458",
+        "permalink": "https://www.reddit.com/r/SideProject/comments/1xzlkyt/creating_a_friend_first_social_app/",
+        "excerpt": "💜 Introducing Niacove! 🌙\n\nI've been independently developing Niacove, an LGBTQ+ inclusive, friendship-first social app for adults (18+).\n\nMy goal is to create a welcoming fantasy-inspired community where people can connect through shared interests, conversations, and customizable avatars rather than focusing on appearances.\n\nI've recently made progress on the app's interface using FlutterFlow, including profiles and a fantasy café where Residents will eventually be able to participate in forum",
+        "selftext": "💜 Introducing Niacove! 🌙\n\nI've been independently developing Niacove, an LGBTQ+ inclusive, friendship-first social app for adults (18+).\n\nMy goal is to create a welcoming fantasy-inspired community where people can connect through shared interests, conversations, and customizable avatars rather than focusing on appearances.\n\nI've recently made progress on the app's interface using FlutterFlow, including profiles and a fantasy café where Residents will eventually be able to participate in forums and live conversations.\n\nI'm also creating original avatar artwork in Krita!\n\nNiacove is still in early development, but I'm excited to finally have some of my work to share.\n\nI've started a small GoFundMe with an initial goal of $450 to help cover development tools, artwork, and other early expenses.\n\nThere is absolutely no pressure to donate even a share helps a lot! I won't post the link unless a mod gives me permission but if you would like to help and see the screens and art i currently have available feel free to message me or comment and I will share.\n\nThank you in advance for all feedback whether positive or negative. I want to see this come to fruition and the community will always come first developing this app. Thank you :) ",
+        "top": []
+      },
+      "hash": "a730cf98a4401322",
+      "approvedAt": "2026-11-18T18:24:41.269Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-18T18:24:43.705Z",
+      "postUrl": "https://www.reddit.com/r/SideProject/comments/1xzlkyt/creating_a_friend_first_social_app/19su15vptl0hx/",
+      "thing": "t1_19su15vptl0hx"
     }
   ],
   "seen": {
