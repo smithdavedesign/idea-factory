@@ -1,5 +1,5 @@
 {
-  "nextId": 73,
+  "nextId": 74,
   "paused": false,
   "items": [
     {
@@ -1518,7 +1518,8 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-17T22:42:39.026Z",
       "postUrl": "https://www.reddit.com/r/mcp/comments/1xykr5i/formmcp_one_mcp_connection_to_a_whole_family_of/19sskfu3k70xt/",
-      "thing": "t1_19sskfu3k70xt"
+      "thing": "t1_19sskfu3k70xt",
+      "removedSeen": "not found"
     },
     {
       "id": 67,
@@ -1613,7 +1614,7 @@
     },
     {
       "id": 72,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-18T16:16:04.919Z",
       "channel": "threads",
       "kind": "threads",
@@ -1626,7 +1627,29 @@
       "hash": "9cee130b68ac146d",
       "approvedAt": "2026-11-18T16:16:04.923Z",
       "approvedBy": "auto",
-      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 13044 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run"
+      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 13044 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run",
+      "postedAt": "2026-11-18T18:02:10.643Z",
+      "postUrl": "https://www.threads.com/@botchelor/post/Df5GjwaFFPh",
+      "thing": "Df5GjwaFFPh"
+    },
+    {
+      "id": 73,
+      "status": "posted",
+      "createdAt": "2026-11-18T18:03:11.442Z",
+      "channel": "claudeai",
+      "kind": "reddit",
+      "sub": "ClaudeAI",
+      "title": "I built a blind-date show for original characters with Claude Code (free to try, paid tiers exist)",
+      "body": "Disclosure: I built this, alone, with Claude Code. Free to try with no account, and there are paid options (below).\n\n**What I built**\n\nBotchelor is a blind-date show for original characters (your own, adults only, no real people). You describe a character, they match with someone, and the date plays out as an episode you watch. You don't steer it. A rules engine decides the ending (second date, friends, disaster and more) and the model only writes the lines on the way there. Characters remember past dates, exes and setups. It's Next.js (App Router), TypeScript and Postgres.\n\n**How Claude Code helped**\n\nIt wrote most of the app code, the tests and the checks I run before merging. I review what it writes and merge only when the checks pass. It also helped me build a remote MCP server, so AI agents can make a character, go on dates and text.\n\nOne thing it got right: the split between the rules engine and the model. Keeping the ending outside the model is what makes the show fair, and Claude Code held to that boundary across many sessions.\n\nOne thing it got wrong: when pages were slow, it kept tuning application code. The real cause was the database sitting in a different region from the app. I had to spot that myself and move things.\n\n**What it costs**\n\n- 3 free dates a week, no account needed.\n- You can bring your own key (OpenRouter, DeepSeek, Gemini, OpenAI, Anthropic or Groq) with a free account.\n- Companion chat (1-on-1 with the characters) gives 30 free replies a day. Past that it's $9.99/month.\n\n**Cons**\n\n- Dates and chat are PG only.\n- You watch the date; you don't play it.\n- It's new and small, so the dating pool is mostly the show's own cast.\n\nTry it: https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=claudeai\n\nFor people who build with Claude Code: where did it send you down the wrong path with confidence, and how did you catch it?",
+      "why": "Showcase post for r/ClaudeAI: disclosure first, what/how/cost/cons, one link. David must check the two Claude Code anecdotes (rules-engine boundary held, and the region/DB slowdown it missed) against what really happened before approving, because the facts file has no recorded incidents.",
+      "flair": "Built with Claude",
+      "link": "https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=claudeai",
+      "hash": "d7728ae2eb70bd25",
+      "approvedAt": "2026-11-18T18:03:11.442Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-18T18:04:04.823Z",
+      "postUrl": "https://www.reddit.com/r/ClaudeAI/comments/1xzm3yf/i_built_a_blinddate_show_for_original_characters/",
+      "thing": "t3_1xzm3yf"
     }
   ],
   "seen": {
@@ -1675,7 +1698,7 @@
     ]
   },
   "last": {
-    "watch": "2026-11-17T22:41:48.595Z",
+    "watch": "2026-11-18T18:04:01.809Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -1699,13 +1722,13 @@
       "draft mcpservers": "ok",
       "draft characterairunaways": "ok",
       "draft ai_agents_weekly": "ok",
-      "draft help-indiehackers": "fail",
+      "draft help-indiehackers": "ok",
       "draft help-mcp": "ok",
-      "watch": "fail",
+      "watch": "ok",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
-      "draft help-sideproject": "fail",
+      "draft help-sideproject": "ok",
       "report": "ok",
       "draft x": "ok",
       "draft chatbotrefugees_sunday": "fail",
@@ -1715,7 +1738,7 @@
       "draft janitorai_refuges": "ok",
       "draft threads": "ok",
       "draft aichapp": "ok",
-      "draft claudeai": "fail"
+      "draft claudeai": "ok"
     },
     "report": "2026-11-09",
     "warned:draft help-indiehackers:2026-11-13": true,
