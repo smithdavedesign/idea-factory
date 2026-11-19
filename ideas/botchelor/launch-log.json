@@ -515,6 +515,13 @@
       "postUrl": "https://www.instagram.com/reel/Df59zM9E56t/",
       "postedAt": "2026-11-19T02:05:22.640Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #80 on his phone; link tagged utm_content=instagram_reels."
+    },
+    {
+      "channel": "Threads",
+      "url": null,
+      "postUrl": "https://www.threads.com/@botchelor/post/Df7efHrG5wg",
+      "postedAt": "2026-11-19T16:09:43.788Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #81 on his phone; link tagged utm_content=threads."
     }
   ]
 }

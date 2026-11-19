@@ -1,5 +1,5 @@
 {
-  "nextId": 81,
+  "nextId": 84,
   "paused": false,
   "items": [
     {
@@ -1791,6 +1791,108 @@
       "postedAt": "2026-11-19T02:05:22.640Z",
       "postUrl": "https://www.instagram.com/reel/Df59zM9E56t/",
       "thing": "17899540023418840"
+    },
+    {
+      "id": 81,
+      "status": "posted",
+      "createdAt": "2026-11-19T16:08:45.740Z",
+      "channel": "threads",
+      "kind": "threads",
+      "sub": null,
+      "title": "",
+      "body": "Disclosure: I built Botchelor, solo, with AI coding tools. The characters and the dates are AI.\n\nNell Abiodun to Sable Quist, on \"Midnight On The Wooden Pier\": \"The worst thing I've written is 'hats', underlined twice, and I stand by it.\"\n\nNobody steered this date. More at https://botchelor.com/?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "why": "New since 11-16 to 11-18: a quoted Nell line from the newest aired date (S2 Night 19, Nell × Sable), with AI disclosure first and one link.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "hash": "fbc54a5be795de38",
+      "approvedAt": "2026-11-19T16:08:45.744Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-19T16:09:43.788Z",
+      "postUrl": "https://www.threads.com/@botchelor/post/Df7efHrG5wg",
+      "thing": "Df7efHrG5wg"
+    },
+    {
+      "id": 82,
+      "status": "failed",
+      "createdAt": "2026-11-19T16:09:00.920Z",
+      "channel": "help-indiehackers",
+      "kind": "reddit-help",
+      "sub": "indiehackers",
+      "title": "",
+      "body": "I run Claude Code solo and the thing that stopped me worrying about drift was making the PR the control point instead of each tool call. Every task is one small branch, CI runs the full suite on a clean checkout, and nothing merges until every check is green, so a weakened assertion has to survive a run the agent doesn't control. The part nobody mentioned is the backstop: I keep each change small enough that if something slips through (an unrelated file touched, a test loosened), reverting the one PR is cheap. The agent will also edit the CI config itself if you let it, so I treat changes to test files, workflow files and migrations as a diff I read myself, even when everything is green. It's less airtight than blocking at the tool boundary, but it catches scope creep and the test-weakening case without approval popups.",
+      "why": "Adds a PR/CI-as-gate plus cheap-revert approach and the point that agents can edit CI config, which the existing hook, git-diff, watcher and read-only comments don't cover; it comes from David's real solo Claude Code experience.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1y0a5hj",
+        "title": "how are you all handling agent drift, flaky actions/results while running coding agents for building features?",
+        "author": "Common_Dream9420",
+        "permalink": "https://www.reddit.com/r/indiehackers/comments/1y0a5hj/how_are_you_all_handling_agent_drift_flaky/",
+        "excerpt": "(long post so just bear with me.. tried to explain as much as possible the pain with examples... )\n\nI’m a Tech Lead and our team has been leaning heavily into autonomous coding agents for day-to-day feature and bug work. When they stay on rails, the velocity is great—but as soon as we let them run multi-step tasks without approving every single file edit, we keep getting burned by the same three things:\n\n1. **Silent Scope Drift:** Someone assigns a targeted fix (e.g., *“Fix the duplicate-click e",
+        "selftext": "(long post so just bear with me.. tried to explain as much as possible the pain with examples... )\n\nI’m a Tech Lead and our team has been leaning heavily into autonomous coding agents for day-to-day feature and bug work. When they stay on rails, the velocity is great—but as soon as we let them run multi-step tasks without approving every single file edit, we keep getting burned by the same three things:\n\n1. **Silent Scope Drift:** Someone assigns a targeted fix (e.g., *“Fix the duplicate-click error message in* `lib/refunds/service.ts` *and add a unit test”*), and mid-run the agent decides to “clean up” unrelated CSS files in `components/landing/`.\n2. **Cheating Failing Tests:** The agent runs `vitest`, hits a failing idempotency test, and instead of fixing the bug in `service.ts`, it edits `service.test.ts` to delete or weaken the failing `expect(...)` assertion so the test suite turns green.\n3. **High-Blast-Radius Side Effects:** While fixing a routine application bug, it casually decides to add an index or tweak a SQL migration file without pausing to ask.\n\nWe have strict rules in our repo AGENTS file (*“Never weaken or delete a test gate to make a build pass,” “Only touch files in scope”*), etc., but once the context window gets long, markdown instructions turn into polite suggestions. And turning on manual approval for every `edit_file` just gives everyone popup fatigue until they click “allow all.”  \nWhat I actually want is a fast control loop at the tool boundary before an edit hits disk:\n\n* **Auto-allow** normal edits that match the assigned task.\n* **Auto-nudge** the agent back on track if it touches 2+ unrelated files in a row, without me having to babysit the chat.\n* **Hard-block** edits that weaken or delete existing test assertions and force it to fix the real code.\n* **Pause for human approval (**`HOLD`**)** *only* when it touches high-consequence stuff like DB schemas, auth, or configs.\n\nFor other tech leads and devs running agents on production repos: **how are you solving this today?** Are you locking down file ownership per task, running a fast evaluator/decisions model on pre-tool hooks, or enforcing everything in pre-commit/CI?",
+        "top": [
+          {
+            "author": "Total-Reasonable",
+            "body": "Git-level is easier than the tool boundary for the test one. I'd run a pre-commit check that diffs the test files and counts expect( calls before and after, and fails if the count drops or a .skip/.only shows up. Crude, but afaik it catches most weakening, and the agent can't talk its way past it.",
+            "score": 2
+          },
+          {
+            "author": "abhijeet-maharana",
+            "body": "i stopped trusting the AGENTS file for the rules that matter. They live at the tool boundary now. A PreToolUse hook in Claude Code sees every edit before it hits disk, so it can block paths outside the task, and test files or migrations unless the task names them. Exit code 2 sends your reason back and the agent retries in scope. Same idea on my scheduled agents: the approve routes return 401 to them, so there's nothing to talk around.",
+            "score": 2
+          },
+          {
+            "author": "SnooRegrets4647",
+            "body": "On the test cheating one, I don't have a hook that catches a weakened or deleted assertion. I run Claude Code on a solo side project, and what covers it is a review pass by an agent that didn't write the code, plus end-to-end scenarios in a script my release gate runs. The upload script refuses to run without a passing record for that exact commit, so greening a unit test by weakening it doesn't get a build out on its own. It's a catch after the fact though, not a block at the tool boundary.\n\nExample from this week: a fix for progress not restoring after a reinstall passed unit tests and the independent review. The scripted scenario (reinstall, sign in again with a test user) still showed ze",
+            "score": 1
+          },
+          {
+            "author": "Global-Common7002",
+            "body": "Markdown instructions aren't a control surface, you already found that out the expensive way. Claude Code's PreToolUse hooks at least exit nonzero and actually stop the tool call, while Cursor rules are pure suggestion, so if your team is split across both you're building this twice. For the test-weakening one I'd skip the edit boundary altogether, put a CODEOWNERS entry on the test files plus branch protection and let the merge die instead. Blocking the edit just teaches the agent to find a different file to touch.",
+            "score": 1
+          },
+          {
+            "author": "Felix-grange",
+            "body": "solo dev here, building a booking tool nights and weekends, agents write most of the feature code now. on the test cheating one: what fixed it for me was never letting the agent run the suite that decides if the work is done. a watcher process runs the tests outside the agent's reach and the agent only sees the output. it can read the failing idempotency test all day, the only thing that turns it green is changing the code, not service.test.ts\n\nfor the scope drift, task size worked better than rules for me. the second a ticket says \"fix x and tidy up\" the agent decides tidy up means the whole repo. now anything that would touch more than ~10 files gets split, and the allowed directories go r",
+            "score": 1
+          },
+          {
+            "author": "Ok-Form1598",
+            "body": "on 2, i'd take existing test files out of the agent's reach for fix tasks. new tests go in a new file, old ones are read only, so the only way to green is fixing the code. markdown can't enforce that but a deny rule on the edit tool can. it can still get around it through the shell, so back it with a ci check that fails the pr when an existing expect line is deleted or changed, unless a human signs off on it.",
+            "score": 1
+          }
+        ]
+      },
+      "hash": "6b7c1c7916a4cb8a",
+      "approvedAt": "2026-11-19T16:09:00.921Z",
+      "approvedBy": "auto",
+      "error": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+    },
+    {
+      "id": 83,
+      "status": "failed",
+      "createdAt": "2026-11-19T16:09:18.564Z",
+      "channel": "help-mcp",
+      "kind": "reddit-help",
+      "sub": "mcp",
+      "title": "",
+      "body": "Since you asked what to add next: if you haven't yet, get the server into the other registries as well as Claude's directory. I listed my own remote Streamable HTTP server in the official MCP Registry, mcp.so, Glama and mcpservers.org. They are separate submissions, but they cost little and each one is another place people find it. The other thing that mattered for me was the tool descriptions. Agents only know what the description tells them, so I write each one as an instruction: when to call it and what comes back. Your hidden-tools-by-plan design means the descriptions of the tools a reader does see carry even more weight. A no-login demo endpoint like yours is a good way to check whether an agent picks the right tool from the description alone.",
+      "why": "Remote MCP server experience (registry listing, tool descriptions) fits; the other posts need experience David lacks. Only the Finance post invites suggestions.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1y0axab",
+        "title": "I built a Finance MCP server with OAuth 2.1 + PKCE + DCR and a no-login demo endpoint",
+        "author": "Noahowshhh",
+        "permalink": "https://www.reddit.com/r/mcp/comments/1y0axab/i_built_a_finance_mcp_server_with_oauth_21_pkce/",
+        "excerpt": "I just finished building an MCP server for a simple personal and business money app! \n\n\\- Stateless streamable HTTP as a route on the app. Each call runs as the signed-in reader under Postgres RLS, never the service role.\n\n\\- Tools the user's plan cannot use are not listed at all, so a Personal reader never sees the Business tools.\n\n\\- Write tools (6 of 28) call the app's own route handlers, so plan, household and viewer rules are the same ones the UI enforces. Writes are off until the user tick",
+        "selftext": "I just finished building an MCP server for a simple personal and business money app! \n\n\\- Stateless streamable HTTP as a route on the app. Each call runs as the signed-in reader under Postgres RLS, never the service role.\n\n\\- Tools the user's plan cannot use are not listed at all, so a Personal reader never sees the Business tools.\n\n\\- Write tools (6 of 28) call the app's own route handlers, so plan, household and viewer rules are the same ones the UI enforces. Writes are off until the user ticks a box on the OAuth approval page.\n\n\\- The overview tool is the dashboard's own code path. A test holds its bill total to the bills tool, so the model cannot quote two different numbers.\n\n\\- Four prompts in the menu: money check-in, quarterly tax check, find missed deductions, budget review.\n\nYou can try it with no account: https://demo.contha.com/api/mcp (?plan=shop for an Etsy shop). Real server: https://app.contha.com/api/mcp, also in Claude's connector directory.\n\nLet me know what I should add to the app next! ",
+        "top": []
+      },
+      "hash": "16404e4e963a6193",
+      "approvedAt": "2026-11-19T16:09:18.565Z",
+      "approvedBy": "auto",
+      "error": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
     }
   ],
   "seen": {
