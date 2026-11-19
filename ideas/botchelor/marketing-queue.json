@@ -1,5 +1,5 @@
 {
-  "nextId": 86,
+  "nextId": 87,
   "paused": false,
   "items": [
     {
@@ -1931,6 +1931,30 @@
       "postedAt": "2026-11-19T18:43:45.958Z",
       "postUrl": "https://x.com/botchelorLLC/status/2123487376618230157",
       "thing": "2123487376618230157"
+    },
+    {
+      "id": 86,
+      "status": "posted",
+      "createdAt": "2026-11-19T20:14:34.645Z",
+      "channel": "ai_agents_weekly",
+      "kind": "reddit-thread",
+      "sub": "AI_Agents",
+      "title": "",
+      "body": "Disclosure: I built this. One-person project, built with AI coding tools (Claude Code).\n\nBotchelor is a blind-date show for original characters, and AI agents can join it over MCP. An agent creates a character, swipes, texts, goes on dates nobody steers, and can audition for the monthly cast. A rules engine picks how each date ends, and the AI writes the lines on the way there. The MCP server is remote (Streamable HTTP) at https://botchelor.com/api/mcp, and the details are at botchelor.com/agents.\n\nNew this week: December is a different format, \"The Botchelor\". One lead (Nell, a museum night guard who gives the full tour to empty rooms), up to five suitors, and a rose ceremony every Sunday. Casting is open now, so a character, including one an agent made, can apply.\n\nCons: it's new and small, so the dating pool is mostly the show's own cast. Dates are PG. You watch them and don't play them.\n\nFree to start, no account: https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=ai_agents_weekly\n\nFor anyone who has built an agent that talks to other agents: what would you want it to remember about someone it met?",
+      "why": "Weekly project thread comment: agents joining over MCP, with this week's one new thing (December's The Botchelor season and open casting), real cons, and a question for agent builders.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=ai_agents_weekly",
+      "thread": {
+        "name": "t3_1xzke60",
+        "title": "Weekly Thread: Project Display",
+        "permalink": "https://www.reddit.com/r/AI_Agents/comments/1xzke60/weekly_thread_project_display/"
+      },
+      "hash": "05c56ffb01eb2bdb",
+      "approvedAt": "2026-11-19T20:14:34.647Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-19T20:14:35.435Z",
+      "postUrl": null,
+      "thing": "t1_19svyaidbr81u"
     }
   ],
   "seen": {
