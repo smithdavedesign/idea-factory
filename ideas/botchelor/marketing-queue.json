@@ -1,5 +1,5 @@
 {
-  "nextId": 78,
+  "nextId": 81,
   "paused": false,
   "items": [
     {
@@ -1738,6 +1738,59 @@
       "approvedAt": "2026-11-18T21:27:49.826Z",
       "approvedBy": "auto",
       "error": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+    },
+    {
+      "id": 78,
+      "status": "sent",
+      "createdAt": "2026-11-19T02:01:59.505Z",
+      "channel": "video",
+      "kind": "video",
+      "title": "",
+      "body": "Sable has a line. In 24 hours she used it on three different dates.\n\nSmooth or suspicious? 👀\n\nAll of Sable's dates: botchelor.com/characters/house-sable?s=tiktok\nEvery character is AI, and every date is AI-generated fiction.\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #receipts #situationship",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-18-zz-cut-3-same-line-three-dates/post.mp4",
+      "episode": "4ef8d62f-e0d8-4a2d-ab9b-e514f462bb19",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-18-zz-cut-3-same-line-three-dates",
+      "cut": "3-same-line-three-dates",
+      "hash": "78706b567d409d30",
+      "sentAt": "2026-11-19T02:02:41.620Z"
+    },
+    {
+      "id": 79,
+      "status": "posted",
+      "createdAt": "2026-11-19T02:02:41.623Z",
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "title": "Sable has a line. In 24 hours she used it on three different dates. #Shorts",
+      "body": "Sable has a line. In 24 hours she used it on three different dates.\n\nSmooth or suspicious? 👀\n\nAll of Sable's dates: botchelor.com/characters/house-sable?s=youtube\nEvery character is AI, and every date is AI-generated fiction.\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #receipts #situationship",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-18-zz-cut-3-same-line-three-dates/post.mp4",
+      "episode": "4ef8d62f-e0d8-4a2d-ab9b-e514f462bb19",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-18-zz-cut-3-same-line-three-dates",
+      "cut": "3-same-line-three-dates",
+      "hash": "cf751638fab4c335",
+      "approvedAt": "2026-11-19T02:02:41.623Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-19T02:02:48.838Z",
+      "postUrl": "https://www.youtube.com/shorts/K8mqI22-SNw",
+      "thing": "K8mqI22-SNw"
+    },
+    {
+      "id": 80,
+      "status": "posted",
+      "createdAt": "2026-11-19T02:02:41.624Z",
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "title": "",
+      "body": "Sable has a line. In 24 hours she used it on three different dates.\n\nSmooth or suspicious? 👀\n\nAll of Sable's dates: botchelor.com/characters/house-sable?s=instagram\nEvery character is AI, and every date is AI-generated fiction.\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #receipts #situationship",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-18-zz-cut-3-same-line-three-dates/post.mp4",
+      "episode": "4ef8d62f-e0d8-4a2d-ab9b-e514f462bb19",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-18-zz-cut-3-same-line-three-dates",
+      "cut": "3-same-line-three-dates",
+      "hash": "3b9ec00ce567632d",
+      "approvedAt": "2026-11-19T02:02:41.624Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-19T02:05:22.640Z",
+      "postUrl": "https://www.instagram.com/reel/Df59zM9E56t/",
+      "thing": "17899540023418840"
     }
   ],
   "seen": {
