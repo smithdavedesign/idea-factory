@@ -1,5 +1,5 @@
 {
-  "nextId": 84,
+  "nextId": 86,
   "paused": false,
   "items": [
     {
@@ -1893,6 +1893,44 @@
       "approvedAt": "2026-11-19T16:09:18.565Z",
       "approvedBy": "auto",
       "error": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+    },
+    {
+      "id": 84,
+      "status": "posted",
+      "createdAt": "2026-11-19T18:41:55.806Z",
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "sub": null,
+      "title": "",
+      "body": "Just aired on Botchelor, night 19: Barnaby Thorne × Sable Quist.\n\nSable: \"BARNABY! Four whole seconds of quiet, a personal record!\"\n\nThe characters and the date are AI. #OCs\nhttps://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "why": "A new daily line from the date that just aired (Barnaby Thorne × Sable Quist, S2 night 19), quoted exactly from botchelor.com/watch, with both characters named and the AI disclosure.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "hash": "af18e7cf2188c2ad",
+      "approvedAt": "2026-11-19T18:41:55.808Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-19T18:42:36.828Z",
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2opyx4gno2w",
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2opyx4gno2w"
+    },
+    {
+      "id": 85,
+      "status": "posted",
+      "createdAt": "2026-11-19T18:42:32.022Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "Barnaby: \"Four seconds, and I counted four and a half, but I'll allow the rounding.\"\n\nFrom \"Midnight Among The Poetry Cats.\" Characters and dates are AI.\n\nhttps://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x\n\n#Botchelor #OC",
+      "why": "Barnaby's best line from a date that aired on botchelor.com, with the Sable setup sentence cut so the post fits 280 characters (about 262 by hand count) and the link left unchanged.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "hash": "6353ba865a2d7ebd",
+      "approvedAt": "2026-11-19T18:42:32.022Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-19T18:43:45.958Z",
+      "postUrl": "https://x.com/botchelorLLC/status/2123487376618230157",
+      "thing": "2123487376618230157"
     }
   ],
   "seen": {
@@ -1942,7 +1980,7 @@
     ]
   },
   "last": {
-    "watch": "2026-11-19T15:38:08.664Z",
+    "watch": "2026-11-19T18:42:36.091Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"

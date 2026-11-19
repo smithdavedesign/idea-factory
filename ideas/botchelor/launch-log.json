@@ -522,6 +522,20 @@
       "postUrl": "https://www.threads.com/@botchelor/post/Df7efHrG5wg",
       "postedAt": "2026-11-19T16:09:43.788Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #81 on his phone; link tagged utm_content=threads."
+    },
+    {
+      "channel": "Bluesky",
+      "url": null,
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2opyx4gno2w",
+      "postedAt": "2026-11-19T18:42:36.828Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #84 on his phone; link tagged utm_content=bluesky."
+    },
+    {
+      "channel": "X",
+      "url": null,
+      "postUrl": "https://x.com/botchelorLLC/status/2123487376618230157",
+      "postedAt": "2026-11-19T18:43:45.958Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #85 on his phone; link tagged utm_content=x."
     }
   ]
 }
