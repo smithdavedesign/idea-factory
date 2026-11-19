@@ -1,0 +1,53 @@
+{
+  "verdict": "pass",
+  "score": 4.5,
+  "summary": "Real dated trigger (TPT Basic/Exclusive split, 31 Dec deadline), but no evidence anyone pays for tier math or migration help, and the calculator is free-substitutable. The decision window closes before a 14-day test finishes, and David has no seller reach.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "Petition (1,523 signatures) and Chalkbeat anger are interest in the policy, not demand for a tool; RESEARCH admits no seller said they'd pay."
+    },
+    "statusQuo": {
+      "score": 4,
+      "evidence": "Free spreadsheet/ChatGPT does the tier math in minutes; migration pain is inferred from a Gumroad-to-Shopify guide; CSV import on target platforms unconfirmed."
+    },
+    "specificity": {
+      "score": 5,
+      "evidence": "Persona is clear (established TPT seller, 30-300 resources, Premium opt-in screen) but unnamed, and the buyers who leave TPT are the unevidenced subset."
+    },
+    "wedge": {
+      "score": 5,
+      "evidence": "Wedge is the listing pack, not the free calculator; M1 as scoped ships the free part."
+    },
+    "futureFit": {
+      "score": 3,
+      "evidence": "Urgency is a one-time policy cliff that decays after 1 Jan 2027; TPT may soften terms."
+    }
+  },
+  "premises": [
+    "Sellers face a real money decision by 31 Dec: supported, with secondary-source fees.",
+    "No free personalised answer exists: weak, the math is trivial.",
+    "Hand migration is painful enough to pay $19: inferred, not evidenced.",
+    "A solo developer can reach sellers in time: unsupported.",
+    "Sellers will leave exclusivity to sell elsewhere: unclear, other storefronts bring no buyers."
+  ],
+  "alternatives": [
+    "Minimal: free calculator page posted in seller groups to test reach and questions first.",
+    "Ideal: calculator + listing pack + fee-refresh subscription (higher risk, seasonal).",
+    "Lateral: one marketplace-seller landing page shared with landfall/ownshot/packpass so one audience effort serves several ideas."
+  ],
+  "wedge": "Listing-pack-only: paste a catalogue sheet, get Payhip/Etsy-ready copy and fee-adjusted prices for $19; calculator stays free.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Static Vite/TS on Cloudflare Pages/Vercel, fees.json, Vitest. Proof test: 245.00 Basic / 387.50 Exclusive 77.5% / 400.00 at 80% / break-even 43, and no network calls. M1 is the free part; paid demand sits in M2."
+  },
+  "risks": [
+    "31 Dec deadline leaves no time to act on a 14-day test",
+    "Free substitutes make the calculator worth $0",
+    "TPT may soften terms or sellers default to Basic",
+    "Fee figures from secondary sources",
+    "No reach into seller communities"
+  ],
+  "killCriteria": "Fewer than 3 $19 pre-orders or 8 signups from 100 qualified visitors in 14 days; TPT relaxes off-platform restriction; target platforms offer CSV import making the pack redundant."
+}
