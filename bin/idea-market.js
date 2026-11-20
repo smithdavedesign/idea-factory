@@ -7,6 +7,10 @@
 //                                           launchd runs this when the inbox folder changes)
 //   node bin/idea-market.js draft <channel> [slug]   draft one channel now and send it to David
 //   node bin/idea-market.js list [slug]     the open drafts
+//   node bin/idea-market.js stats [slug]    read how the posts do now (tick: once a day) and print views per post
+//   node bin/idea-market.js covers [slug]   set the cover of every posted Short that has none (tick: once a day)
+//
+// Every post but Reddit carries a picture (lib/market-media.js): the video kit's cover, or the linked page's og:image.
 //
 // What it never does: post anything David didn't approve with "mk post <id>" (the exact text he saw: item.hash),
 // DM, vote, or use an account other than the configured one. Drafts are written by Claude on the subscription
@@ -16,6 +20,8 @@ const os = require('os');
 const path = require('path');
 const M = require('../lib/market');
 const io = require('../lib/market-io');
+const MM = require('../lib/market-media');
+const MS = require('../lib/market-stats');
 const { buildFeed } = require('../lib/market-sync');
 const { claudeTask } = require('../lib/claude');
 const { emit } = require('../lib/events');
@@ -208,9 +214,49 @@ function sendDraft(ctx, item, ch) {
   return item;
 }
 
+/**
+ * The picture a post carries (lib/market-media.js): {plan, image} or {plan, error}; {plan: null} for none. Never
+ * throws: a picture that can't be made costs the picture, not the post.
+ */
+async function pictureFor(item) {
+  let plan = null;
+  try { plan = MM.imagePlan(item, { kits: MM.recentKits() }); } catch (e) { return { plan: null }; }
+  if (!plan) return { plan: null };
+  try { return { plan, image: await MM.postImage(item, { plan, maxBytes: item.kind === 'bluesky' ? 950_000 : 2_000_000 }) }; }
+  catch (e) { return { plan, error: String(e.message || e) }; }
+}
+
+const YT_VERIFY = 'cover:youtube:verify';
+const YT_VERIFY_FIX = 'YouTube won\'t take the Shorts\' covers as thumbnails until the channel is phone-verified (custom thumbnails need it). ' +
+  'Verify once at https://www.youtube.com/verify, signed in as the Botchelor channel (@Botchelor); the Shorts still go up meanwhile, ' +
+  'and the loop sets the covers of the ones already posted on its next daily run.';
+
+/** Tell David once that YouTube wants the channel verified; forget it once a thumbnail goes through. */
+function youtubeVerifyNote(ctx, outcome, now = new Date()) {
+  const told = (ctx.queue.last.told ||= {});
+  if (outcome?.ok) { delete told[YT_VERIFY]; return; }
+  if (!outcome?.verify) return;
+  for (const n of MS.notesToTell(told, [{ key: YT_VERIFY, message: YT_VERIFY_FIX }], M.localDay(now, ctx.cfg.timezone || 'UTC'), { covers: (k) => k === YT_VERIFY })) {
+    io.tell(`🖼 ${n.message}`);
+    emit({ component: 'market', event: 'covers', status: 'warn', subject: { idea: ctx.cfg.slug, channel: 'youtube_shorts' }, message: `Shorts thumbnails refused until the channel is verified (told David): ${String(outcome.error || '').slice(0, 200)}` });
+  }
+}
+
+/** Record on the item what happened to its picture; a post that went without it is a warning in the system log. */
+function recordPicture(ctx, item, pic, res) {
+  const out = MM.imageOutcome(pic.plan, pic.image, pic.error, res?.image);
+  if (!out) return;
+  item.image = { ...out, at: new Date().toISOString() };
+  if (!out.ok) emit({ component: 'market', event: 'picture', status: 'warn', subject: { idea: ctx.cfg.slug, channel: item.channel }, message: `#${item.id} ${item.channel}: posted without its picture: ${out.error}` });
+  if (item.kind === 'youtube') youtubeVerifyNote(ctx, out);
+}
+
 async function publish(ctx, item, reddit) {
   if (M.draftHash(item) !== item.hash) throw new Error('the text changed after David saw it; resend it first');
   const ch = channelOf(ctx, item.channel) || { id: item.channel, kind: item.kind, sub: item.sub };
+  // Covers on every post but Reddit (David 2026-11-19): the kit's cover, or the linked page's og:image.
+  const pic = await pictureFor(item);
+  const image = pic.image || undefined;
   let res;
   if (item.replyTo) { await reddit.ensure(); res = await reddit.comment({ parent: item.replyTo.name, text: item.body }); }
   else if (item.kind === 'reddit') { await reddit.ensure(); res = await reddit.submit({ sub: ch.sub, title: item.title, text: item.body, flair: item.flair }); }
@@ -221,17 +267,18 @@ async function publish(ctx, item, reddit) {
     // Reddit's reply often has no permalink for a comment: build it from the post's.
     if (!res.url && res.name) res.url = `${item.helpOn.permalink.replace(/\/?$/, '/')}${String(res.name).replace(/^t1_/, '')}/`;
   }
-  else if (item.kind === 'bluesky') res = await io.blueskyPost(item.body);
-  else if (item.kind === 'discord') res = await io.discordPost(item.body);
-  else if (item.kind === 'x') res = await io.xPost(item.body, ctx.cfg.x?.handle);
-  else if (item.kind === 'threads') res = await io.threadsPost(item.body, ctx.cfg.threads?.handle);
-  else if (item.kind === 'youtube') res = await io.youtubeUpload({ video: item.media, title: item.title, description: item.body, tags: ch.tags || [] });
-  else if (item.kind === 'instagram') res = await io.instagramReel({ video: item.media, caption: item.body });
+  else if (item.kind === 'bluesky') res = await io.blueskyPost(item.body, { image });
+  else if (item.kind === 'discord') res = await io.discordPost(item.body, { image });
+  else if (item.kind === 'x') res = await io.xPost(item.body, ctx.cfg.x?.handle, { image });
+  else if (item.kind === 'threads') res = await io.threadsPost(item.body, ctx.cfg.threads?.handle, { image });
+  else if (item.kind === 'youtube') res = await io.youtubeUpload({ video: item.media, title: item.title, description: item.body, tags: ch.tags || [], cover: image?.file });
+  else if (item.kind === 'instagram') res = await io.instagramReel({ video: item.media, caption: item.body, cover: image?.file });
   else throw new Error(`I can't post ${item.kind} myself yet; post it and reply mk done ${item.id}`);
   item.status = 'posted';
   item.postedAt = new Date().toISOString();
   item.postUrl = res.url;
   item.thing = res.name;
+  recordPicture(ctx, item, pic, res);
   if (!item.replyTo && !item.helpOn) logPost(ctx, item, ch);
   saveQueue(ctx);
   emit({ component: 'market', event: 'post', status: 'ok', subject: { idea: ctx.cfg.slug, channel: item.channel }, message: `#${item.id} posted to ${item.channel} after David approved it: ${res.url || res.name}` });
@@ -252,11 +299,16 @@ function logPost(ctx, item, ch) {
   ctx.launchLog = log;
 }
 
+const needsReddit = (item) => Boolean(item.replyTo) || String(item.kind || '').startsWith('reddit');
+
 /** Approved items whose window is open: post them and tell David. */
 async function postApproved(ctx, reddit, now = new Date()) {
+  let redditBlocked = false;
   for (const item of ctx.queue.items.filter((i) => i.status === 'approved')) {
     const ch = channelOf(ctx, item.channel);
     if (ch && !item.replyTo && !M.mayPostNow(ch, now)) continue;
+    // Reddit refused this run already: its other items wait too, the rest still go out.
+    if (redditBlocked && needsReddit(item)) continue;
     try {
       const res = await publish(ctx, item, reddit);
       const where = item.sub ? `r/${item.sub}` : item.channel;
@@ -267,11 +319,15 @@ async function postApproved(ctx, reddit, now = new Date()) {
       const wait = M.postRetryLater(e, { item, now });
       if (wait) {
         // About this run, not the post: keep it approved for the next tick. A spent Reddit budget ends this run's
-        // posting; a browser that won't start skips only what needs it (Bluesky, Shorts and Reels still go out).
+        // posting; a browser that won't start skips only what needs it (Bluesky, Shorts and Reels still go out); a
+        // Reddit block (an HTML 403 instead of JSON) holds this run's other Reddit items and waits up to a day.
+        const again = String(item.error || '').startsWith('waiting for the next run: Reddit blocked');
         item.error = `waiting for the next run: ${String(e.message || e)}`;
         saveQueue(ctx);
-        emit({ component: 'market', event: 'post', status: wait === 'budget' ? 'ok' : 'info', subject: { idea: ctx.cfg.slug, channel: item.channel }, message: `#${item.id} ${item.channel}: ${wait === 'budget' ? 'Reddit budget used up' : 'the browser is unavailable'}, posting next run` });
+        const why = { budget: 'Reddit budget used up', browser: 'the browser is unavailable', reddit: `Reddit blocked the request (${String(e.message || e).replace(/^.*?\((HTTP[^)]*)\).*$/, '$1')})` }[wait];
+        emit({ component: 'market', event: 'post', status: wait === 'budget' ? 'ok' : wait === 'reddit' && !again ? 'warn' : 'info', subject: { idea: ctx.cfg.slug, channel: item.channel }, message: `#${item.id} ${item.channel}: ${why}, posting next run` });
         if (wait === 'budget') break;
+        if (wait === 'reddit') redditBlocked = true;
         continue;
       }
       item.status = 'failed';
@@ -394,12 +450,93 @@ function followKit(ctx, kit, of = 'video', only) {
   return out;
 }
 
+// ─── how posts do: once a day ──────────────────────────────────────────────────────────────────────────────
+
+const statsFile = (ctx) => path.join(ctx.dir, 'marketing-stats.json');
+const STATS_WHY = 'How the marketing loop\'s posts do, read once a day (bin/idea-market.js dailyStats, lib/market-stats.js): per queue id, its channel and the numbers each day for its first 30 days (YouTube views/likes/comments; Instagram likes/comments, and views/reach/shares/saved once the app has the insights permission; Bluesky likes/reposts/replies). The latest numbers are also on the queue item (stats).';
+
+/** The "still not measurable" notes (told to David once) as short lines for the Friday report. */
+function standingNotes(ctx) {
+  return Object.entries(ctx.queue.last.told || {}).filter(([k]) => MS.NOTE_SHORT[k]).map(([k, day]) => ({ key: k, message: `${MS.NOTE_SHORT[k]}; told ${day}` }));
+}
+
+/**
+ * Read every recent post's numbers (io.STATS_FETCHERS, one per kind), keep them on the items and in
+ * marketing-stats.json, and tell David once about anything that can't be measured and how to fix it.
+ */
+async function dailyStats(ctx, now = new Date()) {
+  const day = M.localDay(now, ctx.cfg.timezone || 'UTC');
+  const history = readJson(statsFile(ctx), { _why: STATS_WHY, posts: {} });
+  const targets = MS.statsTargets(ctx.queue.items, Object.keys(io.STATS_FETCHERS), { now });
+  const notes = [];
+  const ran = new Set();
+  const done = [];
+  const failed = [];
+  for (const [kind, items] of Object.entries(targets)) {
+    try {
+      const r = await io.STATS_FETCHERS[kind](items);
+      const n = MS.recordStats(items, history, day, r.stats, now);
+      notes.push(...(r.notes || []));
+      ran.add(kind);
+      done.push(`${kind} ${n}/${items.length}`);
+    } catch (e) {
+      failed.push(`${kind}: ${String(e.message || e).slice(0, 160)}`);
+    }
+  }
+  writeJson(statsFile(ctx), history);
+  ctx.queue.last.statsDay = day;
+  const told = (ctx.queue.last.told ||= {});
+  const tellNow = MS.notesToTell(told, notes, day, { covers: (k) => [...ran].some((kind) => k.startsWith(`stats:${kind}:`)) });
+  saveQueue(ctx);
+  for (const n of tellNow) io.tell(`📈 Marketing stats: ${n.message}`);
+  const rows = MS.weekRows(ctx.queue.items, history, { from: new Date(now.getTime() - 6 * 86_400_000).toISOString().slice(0, 10), to: now.toISOString().slice(0, 10) });
+  const views = rows.filter((r) => Number.isFinite(r.views)).reduce((a, r) => a + r.views, 0);
+  emit({ component: 'market', event: 'stats', status: failed.length ? 'warn' : 'ok', subject: { idea: ctx.cfg.slug },
+    message: `daily stats read: ${done.join(', ') || 'nothing to measure'} (${views} views on this week's measured posts)${failed.length ? `; not read: ${failed.join('; ')}` : ''}${notes.length ? `; ${notes.map((n) => n.key).join(', ')}` : ''}` });
+  return { done, failed, notes, rows };
+}
+
+/**
+ * YouTube Shorts covers (thumbnails.set, 50 quota units each), once a day: every posted Short whose cover isn't set
+ * yet, newest first, including the ones posted before covers existed (the backfill). The first "verify your channel"
+ * refusal ends the run, so an unverified channel costs one call a day; once David verifies, the next run sets them all.
+ */
+async function youtubeCovers(ctx, now = new Date()) {
+  ctx.queue.last.coversDay = M.localDay(now, ctx.cfg.timezone || 'UTC');
+  const todo = ctx.queue.items
+    .filter((i) => i.kind === 'youtube' && i.status === 'posted' && i.thing && i.kitDir && !i.image?.ok && !(i.image && !i.image.verify && (i.image.tries || 0) >= 3))
+    .sort((a, b) => String(b.postedAt).localeCompare(String(a.postedAt)));
+  const set = [];
+  const failed = [];
+  let blocked = null;
+  for (const item of todo) {
+    let res;
+    let file = null;
+    try { file = MM.coverJpeg(item.kitDir, { maxBytes: 2_000_000 }); } catch (e) { res = { ok: false, error: `couldn't make the picture: ${String(e.message || e).slice(0, 200)}` }; }
+    if (file) res = await io.youtubeThumbnail(item.thing, file);
+    item.image = { source: 'kit', kit: path.basename(item.kitDir), ok: res.ok, ...(res.ok ? { how: 'thumbnail' } : { error: res.error, ...(res.verify ? { verify: true } : {}) }), tries: (item.image?.tries || 0) + 1, at: new Date().toISOString() };
+    if (res.ok) set.push(item.id);
+    else if (res.verify) { blocked = res; break; }
+    else failed.push(`#${item.id}: ${res.error}`);
+  }
+  saveQueue(ctx);
+  if (set.length) youtubeVerifyNote(ctx, { ok: true });
+  else if (blocked) youtubeVerifyNote(ctx, { ok: false, verify: true, error: blocked.error });
+  saveQueue(ctx);
+  if (set.length || failed.length) {
+    emit({ component: 'market', event: 'covers', status: failed.length ? 'warn' : 'ok', subject: { idea: ctx.cfg.slug, channel: 'youtube_shorts' },
+      message: `Shorts covers: ${set.length ? `set on #${set.join(', #')}` : 'none set'}${failed.length ? `; failed ${failed.join('; ').slice(0, 300)}` : ''}${blocked ? '; then YouTube asked for channel verification' : ''}` });
+  }
+  return { todo: todo.length, set, failed, blocked: blocked ? blocked.error : null };
+}
+
 async function weeklyReport(ctx, now = new Date()) {
   const to = now.toISOString().slice(0, 10);
   const from = new Date(now.getTime() - 6 * 86_400_000).toISOString().slice(0, 10);
   const eng = await io.engagement(ctx.cfg.site, from, to);
   const posted = (ctx.launchLog.posts || []).filter((p) => p.postedAt && p.postedAt.slice(0, 10) >= from);
-  io.tell(M.reportMessage({ engagement: eng, posted, from, to }));
+  const statsLines = MS.statsReportLines(MS.weekRows(ctx.queue.items, readJson(statsFile(ctx), { posts: {} }), { from, to }), { notes: standingNotes(ctx) });
+  io.tell(M.reportMessage({ engagement: eng, posted, from, to, statsLines }));
   ctx.queue.last.report = M.weekOf(now);
   saveQueue(ctx);
   emit({ component: 'market', event: 'report', status: eng ? 'ok' : 'fail', subject: { idea: ctx.cfg.slug }, message: `weekly marketing report sent (${posted.length} posts${eng ? '' : '; engagement numbers unavailable'})` });
@@ -537,6 +674,8 @@ async function tick(slug, now = new Date()) {
       }
     } catch (e) {
       const msg = String(e.message || e).slice(0, 400);
+      // Reddit refusing this Mac for now isn't the step failing: it runs again next tick. A warning, no phone message.
+      if (M.redditBlocked(e)) { emit({ component: 'market', event: name, status: 'warn', subject: { idea: slug }, message: `${name}: ${msg}` }); return; }
       emit({ component: 'market', event: name, status: 'fail', subject: { idea: slug }, message: `${name}: ${msg}` });
       M.stepRecovered(health, name, false);
       saveQueue(ctx);
@@ -565,6 +704,9 @@ async function tick(slug, now = new Date()) {
   if (now - Date.parse(ctx.queue.last.watch || '1970-01-01') > WATCH_EVERY_MS) await step('watch', () => watchInbox(ctx, reddit));
   if (ctx.cfg.autoPost) await step('post', () => postApproved(ctx, reddit, now), { logsItself: true });
   if (now - Date.parse(ctx.queue.last.listingsAt || '1970-01-01') > 24 * 3_600_000) await step('listings', () => watchListings(ctx));
+  // Once a day from 7:00: how the posts do, and any Short still missing its cover.
+  if (M.localHour(now, tz) >= 7 && ctx.queue.last.statsDay !== M.localDay(now, tz)) await step('stats', () => dailyStats(ctx, now));
+  if (M.localHour(now, tz) >= 7 && ctx.queue.last.coversDay !== M.localDay(now, tz)) await step('covers', () => youtubeCovers(ctx, now));
   if (M.localWeekday(now, tz) === 5 && M.localHour(now, tz) >= 9 && ctx.queue.last.report !== M.weekOf(now)) await step('report', () => weeklyReport(ctx, now));
   if (ctx.cfg.publicLog && now - Date.parse(ctx.queue.last.syncAt || '1970-01-01') > SYNC_EVERY_MS) await step('sync', () => syncMarketing(ctx, reddit, now));
 }
@@ -588,6 +730,19 @@ async function main() {
       console.log(JSON.stringify(await syncMarketing(ctx, reddit)));
       return 'done';
     }
+    if (cmd === 'stats') {
+      // Read every recent post's numbers now (the tick does it once a day) and print them.
+      const ctx = load(slug);
+      const r = await dailyStats(ctx);
+      const all = MS.weekRows(ctx.queue.items, readJson(statsFile(ctx), { posts: {} }), { from: '1970-01-01', to: '9999-12-31' });
+      console.log([`read: ${r.done.join(', ') || 'nothing'}${r.failed.length ? ` · not read: ${r.failed.join('; ')}` : ''}`, ...MS.statsReportLines(all, { notes: r.notes, max: 100 })].join('\n'));
+      return 'done';
+    }
+    if (cmd === 'covers') {
+      // Set the cover of every posted Short that has none yet (the tick does it once a day).
+      console.log(JSON.stringify(await youtubeCovers(load(slug))));
+      return 'done';
+    }
     if (cmd === 'draft') {
       const ctx = load(slug);
       const ch = channelOf(ctx, a);
@@ -604,7 +759,7 @@ async function main() {
       if (ctx.cfg.autoPost) await postApproved(ctx, reddit);
       return 'done';
     }
-    throw new Error('usage: idea-market.js tick|drain|list|sync [slug] · draft <channel> [slug]');
+    throw new Error('usage: idea-market.js tick|drain|list|sync|stats|covers [slug] · draft <channel> [slug]');
   });
   if (ran === null && cmd !== 'tick') console.error('another marketing run holds the lock');
 }
