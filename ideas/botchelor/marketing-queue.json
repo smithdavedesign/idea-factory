@@ -367,6 +367,14 @@
         "likes": 0,
         "comments": 0,
         "at": "2026-11-20T00:44:24.580Z"
+      },
+      "image": {
+        "source": "kit",
+        "kit": "2026-11-11-kaede-hoshimura-malachar-vey",
+        "ok": true,
+        "how": "thumbnail",
+        "tries": 1,
+        "at": "2026-11-20T01:44:18.320Z"
       }
     },
     {
@@ -429,6 +437,14 @@
         "likes": 0,
         "comments": 0,
         "at": "2026-11-20T00:44:24.580Z"
+      },
+      "image": {
+        "source": "kit",
+        "kit": "2026-11-12-kaede-hoshimura-malachar-vey",
+        "ok": true,
+        "how": "thumbnail",
+        "tries": 1,
+        "at": "2026-11-20T01:44:11.986Z"
       }
     },
     {
@@ -862,6 +878,14 @@
         "likes": 0,
         "comments": 0,
         "at": "2026-11-20T00:44:24.580Z"
+      },
+      "image": {
+        "source": "kit",
+        "kit": "2026-11-15-rudiger-pennyfold-ottoline-brackwater",
+        "ok": true,
+        "how": "thumbnail",
+        "tries": 1,
+        "at": "2026-11-20T01:44:09.077Z"
       }
     },
     {
@@ -1192,6 +1216,14 @@
         "likes": 0,
         "comments": 0,
         "at": "2026-11-20T00:44:24.580Z"
+      },
+      "image": {
+        "source": "kit",
+        "kit": "2026-11-16-sable-quist-juniper-vale",
+        "ok": true,
+        "how": "thumbnail",
+        "tries": 1,
+        "at": "2026-11-20T01:44:05.953Z"
       }
     },
     {
@@ -1486,6 +1518,14 @@
         "likes": 0,
         "comments": 0,
         "at": "2026-11-20T00:44:24.580Z"
+      },
+      "image": {
+        "source": "kit",
+        "kit": "2026-11-16-zz-cut-1-referee-report",
+        "ok": true,
+        "how": "thumbnail",
+        "tries": 1,
+        "at": "2026-11-20T01:44:02.583Z"
       }
     },
     {
@@ -1706,6 +1746,14 @@
         "likes": 0,
         "comments": 0,
         "at": "2026-11-20T00:44:24.580Z"
+      },
+      "image": {
+        "source": "kit",
+        "kit": "2026-11-17-zz-cut-2-she-knew-the-way-out",
+        "ok": true,
+        "how": "thumbnail",
+        "tries": 1,
+        "at": "2026-11-20T01:43:56.552Z"
       }
     },
     {
@@ -1905,11 +1953,10 @@
       "image": {
         "source": "kit",
         "kit": "2026-11-18-zz-cut-3-same-line-three-dates",
-        "ok": false,
-        "error": "YouTube refused the thumbnail (403): The authenticated user doesn't have permissions to upload and set custom video thumbnails.",
-        "verify": true,
-        "tries": 2,
-        "at": "2026-11-20T01:34:49.689Z"
+        "ok": true,
+        "how": "thumbnail",
+        "tries": 3,
+        "at": "2026-11-20T01:43:50.105Z"
       },
       "stats": {
         "views": 3,
@@ -2255,7 +2302,6 @@
     "warned:draft help-sideproject:2026-11-18": true,
     "coversDay": "2026-11-19",
     "told": {
-      "cover:youtube:verify": "2026-11-19",
       "stats:instagram:insights": "2026-11-19"
     },
     "statsDay": "2026-11-19"
