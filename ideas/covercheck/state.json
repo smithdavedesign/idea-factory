@@ -6,7 +6,7 @@
     "source": "repohq"
   },
   "ownerApproved": true,
-  "updatedAt": "2026-11-13T18:52:06.838Z",
+  "updatedAt": "2026-11-20T18:58:47.354Z",
   "repo": "https://github.com/smithdavedesign/covercheck",
   "revenue": {
     "mrr": 0,
@@ -130,15 +130,15 @@
     "M3"
   ],
   "funnel": {
-    "at": "2026-11-13T18:52:06.838Z",
+    "at": "2026-11-20T18:58:47.354Z",
     "d7": {
-      "visit": 1,
+      "visit": 0,
       "signup": 0,
       "activate": 0,
       "checkout": 0
     },
     "prev7": {
-      "visit": 0,
+      "visit": 1,
       "signup": 0,
       "activate": 0,
       "checkout": 0
@@ -154,12 +154,7 @@
       "activate": false,
       "checkout": false
     },
-    "referrers7d": [
-      {
-        "host": "direct",
-        "visitors": 1
-      }
-    ]
+    "referrers7d": []
   },
   "golive": {
     "mergedAt": "2026-10-23T06:25:52.979Z",
