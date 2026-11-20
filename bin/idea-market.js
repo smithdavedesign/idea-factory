@@ -273,6 +273,7 @@ async function publish(ctx, item, reddit) {
   else if (item.kind === 'threads') res = await io.threadsPost(item.body, ctx.cfg.threads?.handle, { image });
   else if (item.kind === 'youtube') res = await io.youtubeUpload({ video: item.media, title: item.title, description: item.body, tags: ch.tags || [], cover: image?.file });
   else if (item.kind === 'instagram') res = await io.instagramReel({ video: item.media, caption: item.body, cover: image?.file });
+  else if (item.kind === 'tiktok') res = await io.tiktokPost({ video: item.media, caption: item.body, cover: image?.file, handle: ctx.cfg.tiktok?.handle });
   else throw new Error(`I can't post ${item.kind} myself yet; post it and reply mk done ${item.id}`);
   item.status = 'posted';
   item.postedAt = new Date().toISOString();
@@ -411,15 +412,28 @@ async function videoKit(ctx, ch) {
   if (!clip) return null;
   const kit = io.buildVideoKit(clip.episode);
   const item = M.addItem(ctx.queue, { channel: ch.id, kind: 'video', title: '', body: kit.caption, media: kit.video, episode: clip.episode, kitDir: kit.dir });
-  sendDraft(ctx, item, ch);
+  handKit(ctx, item, ch);
   followKit(ctx, { ...kit, episode: clip.episode }, ch.id);
   return item;
 }
 
 /**
+ * The day's kit itself: sent to David to upload to TikTok by hand, unless a TikTok channel follows the video channel
+ * (the loop then posts it there itself, with Shorts and Reels, and David hears once it's up).
+ */
+function handKit(ctx, item, ch) {
+  if (!M.postsTikTok(ctx.cfg, ch.id)) return sendDraft(ctx, item, ch);
+  item.status = 'kit';
+  item.hash = M.draftHash(item);
+  saveQueue(ctx);
+  emit({ component: 'market', event: 'draft', status: 'ok', subject: { idea: ctx.cfg.slug, channel: item.channel }, message: `#${item.id} ${item.channel}: today's video kit (${path.basename(item.kitDir || '')}); the loop posts it to TikTok, Shorts and Reels itself` });
+  return item;
+}
+
+/**
  * A hand-edited episode cut takes the day's video slot when one is waiting in ${CLIPS}/cuts (botchelor
- * scripts/clips/episode-cut.mjs, the December plan of 2026-11-16): moved into posts/ as today's kit, sent to David for
- * TikTok like the daily kit, and followed on YouTube Shorts and Instagram Reels. One a day, since the video channel
+ * scripts/clips/episode-cut.mjs, the December plan of 2026-11-16): moved into posts/ as today's kit, handled like the
+ * daily kit (handKit), and followed on TikTok, YouTube Shorts and Instagram Reels. One a day, since the video channel
  * comes due once a day; the daily clip has the days with no cut waiting. Null when none is waiting.
  */
 function cutKit(ctx, ch, now = new Date()) {
@@ -427,13 +441,13 @@ function cutKit(ctx, ch, now = new Date()) {
   if (!kit) return null;
   const item = M.addItem(ctx.queue, { channel: ch.id, kind: 'video', title: '', body: kit.caption, media: kit.video, episode: kit.episode, kitDir: kit.dir, cut: kit.cut });
   emit({ component: 'market', event: 'cut', status: 'ok', subject: { idea: ctx.cfg.slug, channel: ch.id }, message: `released the episode cut ${kit.cut} as today's video kit (${io.stagedCuts().length} still waiting)` });
-  sendDraft(ctx, item, ch);
+  handKit(ctx, item, ch);
   followKit(ctx, kit, ch.id);
   return item;
 }
 
 /**
- * The same kit for the channels that follow the video channel (YouTube Shorts, Instagram Reels): one item each,
+ * The same kit for the channels that follow the video channel (TikTok, YouTube Shorts, Instagram Reels): one item each,
  * re-tagged for its source, and posted by the loop itself (autoPost). An episode goes to each channel once.
  */
 function followKit(ctx, kit, of = 'video', only) {
