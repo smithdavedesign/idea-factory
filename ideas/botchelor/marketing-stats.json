@@ -47,8 +47,12 @@
       "postedAt": "2026-11-12T00:49:32.857Z",
       "days": {
         "2026-11-19": {
+          "views": 46,
           "likes": 0,
-          "comments": 0
+          "comments": 0,
+          "shares": 0,
+          "saved": 0,
+          "reach": 41
         }
       }
     },
@@ -72,8 +76,12 @@
       "postedAt": "2026-11-12T02:40:33.166Z",
       "days": {
         "2026-11-19": {
+          "views": 4,
           "likes": 0,
-          "comments": 0
+          "comments": 0,
+          "shares": 0,
+          "saved": 0,
+          "reach": 4
         }
       }
     },
@@ -136,8 +144,12 @@
       "postedAt": "2026-11-15T02:26:22.428Z",
       "days": {
         "2026-11-19": {
+          "views": 1,
           "likes": 0,
-          "comments": 0
+          "comments": 0,
+          "shares": 0,
+          "saved": 0,
+          "reach": 1
         }
       }
     },
@@ -174,8 +186,12 @@
       "postedAt": "2026-11-16T02:05:29.721Z",
       "days": {
         "2026-11-19": {
+          "views": 43,
           "likes": 0,
-          "comments": 0
+          "comments": 0,
+          "shares": 0,
+          "saved": 0,
+          "reach": 41
         }
       }
     },
@@ -212,8 +228,12 @@
       "postedAt": "2026-11-17T02:16:09.033Z",
       "days": {
         "2026-11-19": {
+          "views": 5,
           "likes": 0,
-          "comments": 0
+          "comments": 0,
+          "shares": 0,
+          "saved": 0,
+          "reach": 5
         }
       }
     },
@@ -250,7 +270,7 @@
       "postedAt": "2026-11-18T02:07:30.166Z",
       "days": {
         "2026-11-19": {
-          "views": 9,
+          "views": 10,
           "likes": 0,
           "comments": 0
         }
@@ -263,8 +283,12 @@
       "postedAt": "2026-11-18T02:09:46.245Z",
       "days": {
         "2026-11-19": {
+          "views": 0,
           "likes": 0,
-          "comments": 0
+          "comments": 0,
+          "shares": 0,
+          "saved": 0,
+          "reach": 0
         }
       }
     },
@@ -288,7 +312,7 @@
       "postedAt": "2026-11-19T02:02:48.838Z",
       "days": {
         "2026-11-19": {
-          "views": 4,
+          "views": 5,
           "likes": 0,
           "comments": 0
         }
@@ -301,8 +325,12 @@
       "postedAt": "2026-11-19T02:05:22.640Z",
       "days": {
         "2026-11-19": {
+          "views": 0,
           "likes": 0,
-          "comments": 0
+          "comments": 0,
+          "shares": 0,
+          "saved": 0,
+          "reach": 0
         }
       }
     },
@@ -352,7 +380,7 @@
       "postedAt": "2026-11-20T02:20:11.936Z",
       "days": {
         "2026-11-19": {
-          "views": 0,
+          "views": 8,
           "likes": 0,
           "comments": 0
         }
@@ -365,11 +393,15 @@
       "postedAt": "2026-11-20T02:23:02.946Z",
       "days": {
         "2026-11-19": {
+          "views": 7,
           "likes": 0,
-          "comments": 0
+          "comments": 0,
+          "shares": 0,
+          "saved": 0,
+          "reach": 6
         }
       }
     }
   },
-  "updatedAt": "2026-11-20T02:24:43.563Z"
+  "updatedAt": "2026-11-20T05:51:50.281Z"
 }
