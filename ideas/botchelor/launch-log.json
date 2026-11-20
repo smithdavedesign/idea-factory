@@ -550,6 +550,27 @@
       "postUrl": "https://www.tiktok.com/@botchelorcom/video/7710052500782599454",
       "postedAt": "2026-11-20T01:01:48.701Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #87 on his phone; link tagged utm_content=tiktok."
+    },
+    {
+      "channel": "TikTok (@botchelorcom)",
+      "url": null,
+      "postUrl": "https://www.tiktok.com/@botchelorcom/video/7710072373436861726",
+      "postedAt": "2026-11-20T02:18:55.524Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #89 on his phone; link tagged utm_content=tiktok."
+    },
+    {
+      "channel": "YouTube Shorts",
+      "url": null,
+      "postUrl": "https://www.youtube.com/shorts/svNj6MCLqKM",
+      "postedAt": "2026-11-20T02:20:11.936Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #90 on his phone; link tagged utm_content=youtube_shorts."
+    },
+    {
+      "channel": "Instagram Reels",
+      "url": null,
+      "postUrl": "https://www.instagram.com/reel/Df8kmbEHNBk/",
+      "postedAt": "2026-11-20T02:23:02.946Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #91 on his phone; link tagged utm_content=instagram_reels."
     }
   ]
 }
