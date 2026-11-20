@@ -132,3 +132,10 @@ test('without a TikTok channel the kit still goes to David to upload, as before'
   assert.equal(item.status, 'sent');
   assert.match(told[0].msg, /Upload it as @botchelorcom/);
 });
+
+test('the public feed links the TikTok channel to its profile', () => {
+  const S = require('../lib/market-sync');
+  assert.equal(S.channelUrl({ tiktok: { handle: 'botchelorcom' } }, { id: 'tiktok', kind: 'tiktok' }), 'https://www.tiktok.com/@botchelorcom');
+  assert.equal(S.channelUrl({}, { id: 'video', kind: 'video' }), 'https://www.tiktok.com/@botchelorcom');
+  assert.equal(S.channelName({ id: 'tiktok', kind: 'tiktok' }), 'TikTok');
+});
