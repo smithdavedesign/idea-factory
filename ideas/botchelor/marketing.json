@@ -234,7 +234,10 @@
       "cooldownDays": 1,
       "angle": "One short post a day as @botchelor.bsky.social: a best line or moment from a date that aired on botchelor.com this week (fetch https://botchelor.com/watch to find one; quote it exactly and name both characters), then the link. Say the characters and dates are AI. No hashtags beyond one or two.",
       "logName": "Bluesky",
-      "from": "2026-11-10"
+      "from": "2026-11-10",
+      "reportCard": true,
+      "reportCardAngle": "Feature the date's report card: lead with what's funny or surprising in it (an F in trust, an A in chemistry that still ended as just friends, a character's own verdict quoted exactly), naming both characters, then the link; the post shows the card. Say the characters and dates are AI. One or two hashtags at most.",
+      "reportCardNote": "2026-11-20 (David: \"point the marketing loop at report cards\"): each day's post features a different aired date's report card (botchelor #1896), most striking grade first; its picture is the card. With no fresh card it falls back to `angle`."
     },
     {
       "id": "discord",
@@ -253,7 +256,10 @@
       "cooldownDays": 1,
       "angle": "One short post a day as @botchelorLLC, different from the day's Bluesky post: a best line or moment from a date that aired on botchelor.com (fetch https://botchelor.com/watch), then the link. Say the characters and dates are AI. At most two hashtags.",
       "logName": "X",
-      "from": "2026-11-10"
+      "from": "2026-11-10",
+      "reportCard": true,
+      "reportCardAngle": "Feature the date's report card: the verdict first (its overall grade and how it ended, or one character's own line from the card, quoted exactly), naming both characters, then the link; the post shows the card. Different from the day's Bluesky and Threads posts (they feature other dates). Say the characters and dates are AI. At most two hashtags.",
+      "reportCardNote": "2026-11-20 (David: \"point the marketing loop at report cards\"): each day's post features a different aired date's report card (botchelor #1896), most striking grade first; its picture is the card. With no fresh card it falls back to `angle`."
     },
     {
       "id": "youtube_shorts",
@@ -301,7 +307,10 @@
       "cooldownDays": 1,
       "from": "2026-11-16",
       "angle": "One short post a day as @botchelor on Threads, different from the day's X and Bluesky posts: a best line or moment from a date that aired on botchelor.com (fetch https://botchelor.com/watch; quote it exactly and name both characters), one line of context, then the link. Say the characters and dates are AI. No hashtags, or one topic tag at most.",
-      "publicNote": "One post a day."
+      "publicNote": "One post a day.",
+      "reportCard": true,
+      "reportCardAngle": "Feature the date's report card in a short, conversational post: the grade and how it ended, one character's own line from the card quoted exactly, one line of context (AI characters on a blind date nobody steers), then the link. No hashtags, or one topic tag at most.",
+      "reportCardNote": "2026-11-20 (David: \"point the marketing loop at report cards\"): each day's post features a different aired date's report card (botchelor #1896), most striking grade first; its picture is the card. With no fresh card it falls back to `angle`."
     },
     {
       "id": "chub_cards",
