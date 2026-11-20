@@ -1,5 +1,5 @@
 {
-  "nextId": 96,
+  "nextId": 97,
   "paused": false,
   "items": [
     {
@@ -2431,6 +2431,34 @@
       "link": "https://botchelor.com/?utm_source=card&utm_medium=social&utm_campaign=season1&utm_content=taaft_thread",
       "hash": "b48cfedde48159bf",
       "sentAt": "2026-11-20T16:30:46.307Z"
+    },
+    {
+      "id": 96,
+      "status": "posted",
+      "createdAt": "2026-11-20T17:05:45.584Z",
+      "channel": "help-sideproject",
+      "kind": "reddit-help",
+      "sub": "SideProject",
+      "title": "",
+      "body": "On the $1–5/month figure: with six agents per setup, the cost depends mostly on how often a debate runs and how much context each agent gets, not on the model price. What has worked for me in keeping LLM spend near zero is a hard per-day cap inside the app (count the calls and stop when it's hit). I also give each feature its own budget and send the cheap steps to a free-tier or small model. I'd make the daily cap a visible setting and show a running cost estimate, because a retry loop on a bad day can blow through a monthly estimate quickly. It would also help to publish what a typical day of calls adds up to with Gemini, so buyers can check the $1–5 for themselves.",
+      "why": "Only post where David's real LLM-cost-control experience (daily caps, per-feature budgets) fits and no comment exists yet; it questions the bring-your-own-key cost claim without any trading advice or product mention.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1y17q8b",
+        "title": "I built a desktop AI trading desk for gold, launching today ($79, runs on your own PC)",
+        "author": "Special_Bumblebee376",
+        "permalink": "https://www.reddit.com/r/SideProject/comments/1y17q8b/i_built_a_desktop_ai_trading_desk_for_gold/",
+        "excerpt": "Hi all! After months of building, I'm launching Aurum Desk.\n\n\n\nThe idea: instead of one AI or one indicator deciding a trade, a team of 6 AI agents meets, debates and votes on each gold setup, and you see the whole reasoning on Telegram.\n\n\n\nWhat I'm proud of:\n\n• It runs on your own PC (Windows + MetaTrader 5); your keys never leave it\n\n• One-click installer: Setup.bat installs n8n, PostgreSQL, Python and Node for you\n\n• A scoreboard that scores every setup on real prices, traded or not, so you s",
+        "selftext": "Hi all! After months of building, I'm launching Aurum Desk.\n\n\n\nThe idea: instead of one AI or one indicator deciding a trade, a team of 6 AI agents meets, debates and votes on each gold setup, and you see the whole reasoning on Telegram.\n\n\n\nWhat I'm proud of:\n\n• It runs on your own PC (Windows + MetaTrader 5); your keys never leave it\n\n• One-click installer: Setup.bat installs n8n, PostgreSQL, Python and Node for you\n\n• A scoreboard that scores every setup on real prices, traded or not, so you see what actually works\n\n• Safety first: stops, loss limits, and a /stop command on Telegram\n\n\n\nPricing: one payment, $79 launch price, lifetime updates. Users bring their own AI key (about $1–5/month with Gemini).\n\n\n\nInstall video: [https://www.youtube.com/watch?v=O-rfixuMAos](https://www.youtube.com/watch?v=O-rfixuMAos)\n\nPage: [https://buymeacoffee.com/supportaurm/e/600464](https://buymeacoffee.com/supportaurm/e/600464)\n\n\n\nI'd love feedback on the product, the pricing, or the page. And yes, trading is risky: I tell everyone to start on demo.",
+        "top": []
+      },
+      "hash": "c79e527d2c1c27af",
+      "approvedAt": "2026-11-20T17:05:45.587Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-20T17:05:46.536Z",
+      "postUrl": "https://www.reddit.com/r/SideProject/comments/1y17q8b/i_built_a_desktop_ai_trading_desk_for_gold/19sxi3jo7ont0/",
+      "thing": "t1_19sxi3jo7ont0"
     }
   ],
   "seen": {
@@ -2525,7 +2553,7 @@
       "covers": "ok",
       "draft taaft_thread": "ok"
     },
-    "report": "2026-11-09",
+    "report": "2026-11-16",
     "warned:draft help-indiehackers:2026-11-13": true,
     "warned:watch:2026-11-13": true,
     "warned:watch:2026-11-14": true,
