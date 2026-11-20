@@ -1908,8 +1908,8 @@
         "ok": false,
         "error": "YouTube refused the thumbnail (403): The authenticated user doesn't have permissions to upload and set custom video thumbnails.",
         "verify": true,
-        "tries": 1,
-        "at": "2026-11-20T00:41:36.788Z"
+        "tries": 2,
+        "at": "2026-11-20T01:34:49.689Z"
       },
       "stats": {
         "views": 3,
@@ -2193,7 +2193,7 @@
     ]
   },
   "last": {
-    "watch": "2026-11-19T21:46:37.063Z",
+    "watch": "2026-11-20T01:18:00.955Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
