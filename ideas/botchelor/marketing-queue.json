@@ -1,5 +1,5 @@
 {
-  "nextId": 87,
+  "nextId": 88,
   "paused": false,
   "items": [
     {
@@ -19,7 +19,13 @@
       "approvedAt": "2026-11-10T18:52:36.423Z",
       "postedAt": "2026-11-10T18:52:37.331Z",
       "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3mzy4ekgaoh2i",
-      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3mzy4ekgaoh2i"
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3mzy4ekgaoh2i",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reposts": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 2,
@@ -247,7 +253,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-11T16:31:31.841Z",
       "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n22ex6kd5s2g",
-      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n22ex6kd5s2g"
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n22ex6kd5s2g",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reposts": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 11,
@@ -349,7 +361,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-11T21:51:46.124Z",
       "postUrl": "https://www.youtube.com/shorts/YaGFdaM4VyY",
-      "thing": "YaGFdaM4VyY"
+      "thing": "YaGFdaM4VyY",
+      "stats": {
+        "views": 2,
+        "likes": 0,
+        "comments": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 16,
@@ -367,7 +385,12 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-12T00:49:32.857Z",
       "postUrl": "https://www.instagram.com/reel/DfnzWsZALx1/",
-      "thing": "18017636561984789"
+      "thing": "18017636561984789",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 17,
@@ -400,7 +423,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-12T02:37:55.491Z",
       "postUrl": "https://www.youtube.com/shorts/fD_5ntu5QNg",
-      "thing": "fD_5ntu5QNg"
+      "thing": "fD_5ntu5QNg",
+      "stats": {
+        "views": 0,
+        "likes": 0,
+        "comments": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 19,
@@ -418,7 +447,12 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-12T02:40:33.166Z",
       "postUrl": "https://www.instagram.com/reel/DfoANPfga4F/",
-      "thing": "18102285998398594"
+      "thing": "18102285998398594",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 20,
@@ -437,7 +471,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-12T16:29:15.217Z",
       "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n24vbzqizn2o",
-      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n24vbzqizn2o"
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n24vbzqizn2o",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reposts": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 21,
@@ -688,7 +728,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-13T16:26:27.704Z",
       "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n27flxfti52y",
-      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n27flxfti52y"
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n27flxfti52y",
+      "stats": {
+        "likes": 1,
+        "comments": 0,
+        "reposts": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 30,
@@ -753,7 +799,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-14T16:23:57.435Z",
       "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2bvwflsbl2u",
-      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2bvwflsbl2u"
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2bvwflsbl2u",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reposts": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 33,
@@ -804,7 +856,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-15T02:18:50.561Z",
       "postUrl": "https://www.youtube.com/shorts/Hlre08VkQag",
-      "thing": "Hlre08VkQag"
+      "thing": "Hlre08VkQag",
+      "stats": {
+        "views": 13,
+        "likes": 0,
+        "comments": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 36,
@@ -822,7 +880,12 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-15T02:26:22.428Z",
       "postUrl": "https://www.instagram.com/reel/DfvtAWsiK5V/",
-      "thing": "18123103324943301"
+      "thing": "18123103324943301",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 37,
@@ -972,7 +1035,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-15T16:29:03.562Z",
       "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2egogwdxo26",
-      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2egogwdxo26"
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2egogwdxo26",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reposts": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 42,
@@ -1117,7 +1186,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-16T02:03:50.035Z",
       "postUrl": "https://www.youtube.com/shorts/vkJOH2Hovew",
-      "thing": "vkJOH2Hovew"
+      "thing": "vkJOH2Hovew",
+      "stats": {
+        "views": 11,
+        "likes": 0,
+        "comments": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 49,
@@ -1135,7 +1210,12 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-16T02:05:29.721Z",
       "postUrl": "https://www.instagram.com/reel/DfyPaSQCJ1L/",
-      "thing": "18436855534197507"
+      "thing": "18436855534197507",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 50,
@@ -1194,7 +1274,13 @@
       "hash": "2bb5c14f930ab858",
       "postedAt": "2026-11-16T05:38:17.288Z",
       "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2fsrozsbp2d",
-      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2fsrozsbp2d"
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2fsrozsbp2d",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reposts": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 53,
@@ -1394,7 +1480,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-17T02:14:13.234Z",
       "postUrl": "https://www.youtube.com/shorts/qH9xV6N9IpY",
-      "thing": "qH9xV6N9IpY"
+      "thing": "qH9xV6N9IpY",
+      "stats": {
+        "views": 33,
+        "likes": 0,
+        "comments": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 61,
@@ -1413,7 +1505,12 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-17T02:16:09.033Z",
       "postUrl": "https://www.instagram.com/reel/Df01b-elYPT/",
-      "thing": "17979080198939503"
+      "thing": "17979080198939503",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 62,
@@ -1432,7 +1529,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-17T02:47:29.503Z",
       "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2hzp7iebf2b",
-      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2hzp7iebf2b"
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2hzp7iebf2b",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reposts": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 63,
@@ -1538,7 +1641,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-18T00:02:20.833Z",
       "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2kawtbkng2b",
-      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2kawtbkng2b"
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2kawtbkng2b",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reposts": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 68,
@@ -1591,7 +1700,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-18T02:07:30.166Z",
       "postUrl": "https://www.youtube.com/shorts/aKfN2GECqKE",
-      "thing": "aKfN2GECqKE"
+      "thing": "aKfN2GECqKE",
+      "stats": {
+        "views": 9,
+        "likes": 0,
+        "comments": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 71,
@@ -1610,7 +1725,12 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-18T02:09:46.245Z",
       "postUrl": "https://www.instagram.com/reel/Df3ZfWnjfDw/",
-      "thing": "18108153476369917"
+      "thing": "18108153476369917",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 72,
@@ -1698,7 +1818,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-18T21:29:06.677Z",
       "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2mitqjgi62m",
-      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2mitqjgi62m"
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2mitqjgi62m",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reposts": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 76,
@@ -1721,7 +1847,7 @@
     },
     {
       "id": 77,
-      "status": "failed",
+      "status": "posted",
       "createdAt": "2026-11-18T21:27:49.825Z",
       "channel": "reply:SideProject",
       "kind": "reddit",
@@ -1735,13 +1861,16 @@
         "context": "https://www.reddit.com/r/SideProject/comments/1xzlkyt/creating_a_friend_first_social_app/19su1fz1cwp1f/?context=3"
       },
       "hash": "bd607e5e094d1a72",
-      "approvedAt": "2026-11-18T21:27:49.826Z",
+      "approvedAt": "2026-11-20T01:10:54.145Z",
       "approvedBy": "auto",
-      "error": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+      "error": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "postedAt": "2026-11-20T01:10:55.015Z",
+      "postUrl": null,
+      "thing": "t1_19swbibo1cxqb"
     },
     {
       "id": 78,
-      "status": "sent",
+      "status": "kit",
       "createdAt": "2026-11-19T02:01:59.505Z",
       "channel": "video",
       "kind": "video",
@@ -1752,7 +1881,8 @@
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-18-zz-cut-3-same-line-three-dates",
       "cut": "3-same-line-three-dates",
       "hash": "78706b567d409d30",
-      "sentAt": "2026-11-19T02:02:41.620Z"
+      "sentAt": "2026-11-19T02:02:41.620Z",
+      "note": "Posted to TikTok by the loop as #87 (2026-11-19); no hand upload needed."
     },
     {
       "id": 79,
@@ -1771,7 +1901,22 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-19T02:02:48.838Z",
       "postUrl": "https://www.youtube.com/shorts/K8mqI22-SNw",
-      "thing": "K8mqI22-SNw"
+      "thing": "K8mqI22-SNw",
+      "image": {
+        "source": "kit",
+        "kit": "2026-11-18-zz-cut-3-same-line-three-dates",
+        "ok": false,
+        "error": "YouTube refused the thumbnail (403): The authenticated user doesn't have permissions to upload and set custom video thumbnails.",
+        "verify": true,
+        "tries": 1,
+        "at": "2026-11-20T00:41:36.788Z"
+      },
+      "stats": {
+        "views": 3,
+        "likes": 0,
+        "comments": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 80,
@@ -1790,7 +1935,12 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-19T02:05:22.640Z",
       "postUrl": "https://www.instagram.com/reel/Df59zM9E56t/",
-      "thing": "17899540023418840"
+      "thing": "17899540023418840",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 81,
@@ -1813,7 +1963,7 @@
     },
     {
       "id": 82,
-      "status": "failed",
+      "status": "posted",
       "createdAt": "2026-11-19T16:09:00.920Z",
       "channel": "help-indiehackers",
       "kind": "reddit-help",
@@ -1864,13 +2014,16 @@
         ]
       },
       "hash": "6b7c1c7916a4cb8a",
-      "approvedAt": "2026-11-19T16:09:00.921Z",
+      "approvedAt": "2026-11-20T01:07:51.014Z",
       "approvedBy": "auto",
-      "error": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 39430 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run",
+      "postedAt": "2026-11-20T01:09:52.974Z",
+      "postUrl": "https://www.reddit.com/r/indiehackers/comments/1y0a5hj/how_are_you_all_handling_agent_drift_flaky/19swbgnwfthk3/",
+      "thing": "t1_19swbgnwfthk3"
     },
     {
       "id": 83,
-      "status": "failed",
+      "status": "posted",
       "createdAt": "2026-11-19T16:09:18.564Z",
       "channel": "help-mcp",
       "kind": "reddit-help",
@@ -1890,9 +2043,12 @@
         "top": []
       },
       "hash": "16404e4e963a6193",
-      "approvedAt": "2026-11-19T16:09:18.565Z",
+      "approvedAt": "2026-11-20T01:09:50.055Z",
       "approvedBy": "auto",
-      "error": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON"
+      "error": "SyntaxError: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "postedAt": "2026-11-20T01:10:21.996Z",
+      "postUrl": "https://www.reddit.com/r/mcp/comments/1y0axab/i_built_a_finance_mcp_server_with_oauth_21_pkce/19swbhfu7ofz4/",
+      "thing": "t1_19swbhfu7ofz4"
     },
     {
       "id": 84,
@@ -1911,7 +2067,13 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-19T18:42:36.828Z",
       "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2opyx4gno2w",
-      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2opyx4gno2w"
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2opyx4gno2w",
+      "stats": {
+        "likes": 0,
+        "comments": 0,
+        "reposts": 0,
+        "at": "2026-11-20T00:44:24.580Z"
+      }
     },
     {
       "id": 85,
@@ -1954,7 +2116,34 @@
       "approvedBy": "auto",
       "postedAt": "2026-11-19T20:14:35.435Z",
       "postUrl": null,
-      "thing": "t1_19svyaidbr81u"
+      "thing": "t1_19svyaidbr81u",
+      "removedSeen": "not found"
+    },
+    {
+      "id": 87,
+      "status": "posted",
+      "createdAt": "2026-11-20T01:00:48.128Z",
+      "channel": "tiktok",
+      "kind": "tiktok",
+      "title": "",
+      "body": "Sable has a line. In 24 hours she used it on three different dates.\n\nSmooth or suspicious? 👀\n\nAll of Sable's dates: botchelor.com/characters/house-sable?s=tiktok\nEvery character is AI, and every date is AI-generated fiction.\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #receipts #situationship",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-18-zz-cut-3-same-line-three-dates/post.mp4",
+      "episode": "4ef8d62f-e0d8-4a2d-ab9b-e514f462bb19",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-18-zz-cut-3-same-line-three-dates",
+      "cut": "3-same-line-three-dates",
+      "hash": "78706b567d409d30",
+      "approvedAt": "2026-11-20T01:00:48.131Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-20T01:01:48.701Z",
+      "postUrl": "https://www.tiktok.com/@botchelorcom/video/7710052500782599454",
+      "thing": "7710052500782599454",
+      "image": {
+        "source": "kit",
+        "kit": "2026-11-18-zz-cut-3-same-line-three-dates",
+        "ok": true,
+        "how": "cover",
+        "at": "2026-11-20T01:01:48.702Z"
+      }
     }
   ],
   "seen": {
@@ -2004,12 +2193,12 @@
     ]
   },
   "last": {
-    "watch": "2026-11-19T18:42:36.091Z",
+    "watch": "2026-11-19T21:46:37.063Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
     },
-    "listingsAt": "2026-11-19T00:31:49.619Z",
+    "listingsAt": "2026-11-20T00:47:55.756Z",
     "warned:draft indiehackers:2026-11-10": true,
     "warned:watch:2026-11-10": true,
     "warned:watch:2026-11-11": true,
@@ -2057,12 +2246,18 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-19T20:45:38.116Z",
+    "syncAt": "2026-11-19T23:46:40.608Z",
     "warned:draft help-indiehackers:2026-11-17": true,
     "warned:watch:2026-11-17": true,
     "warned:watch:2026-11-18": true,
     "warned:draft claudeai:2026-11-18": true,
     "warned:draft help-indiehackers:2026-11-18": true,
-    "warned:draft help-sideproject:2026-11-18": true
+    "warned:draft help-sideproject:2026-11-18": true,
+    "coversDay": "2026-11-19",
+    "told": {
+      "cover:youtube:verify": "2026-11-19",
+      "stats:instagram:insights": "2026-11-19"
+    },
+    "statsDay": "2026-11-19"
   }
 }

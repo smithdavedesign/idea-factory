@@ -1,0 +1,324 @@
+{
+  "_why": "How the marketing loop's posts do, read once a day (bin/idea-market.js dailyStats, lib/market-stats.js): per queue id, its channel and the numbers each day for its first 30 days (YouTube views/likes/comments; Instagram likes/comments, and views/reach/shares/saved once the app has the insights permission; Bluesky likes/reposts/replies). The latest numbers are also on the queue item (stats).",
+  "posts": {
+    "1": {
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "url": "https://bsky.app/profile/botchelor.bsky.social/post/3mzy4ekgaoh2i",
+      "postedAt": "2026-11-10T18:52:37.331Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0,
+          "reposts": 0
+        }
+      }
+    },
+    "10": {
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "url": "https://bsky.app/profile/botchelor.bsky.social/post/3n22ex6kd5s2g",
+      "postedAt": "2026-11-11T16:31:31.841Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0,
+          "reposts": 0
+        }
+      }
+    },
+    "15": {
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "url": "https://www.youtube.com/shorts/YaGFdaM4VyY",
+      "postedAt": "2026-11-11T21:51:46.124Z",
+      "days": {
+        "2026-11-19": {
+          "views": 2,
+          "likes": 0,
+          "comments": 0
+        }
+      }
+    },
+    "16": {
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "url": "https://www.instagram.com/reel/DfnzWsZALx1/",
+      "postedAt": "2026-11-12T00:49:32.857Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0
+        }
+      }
+    },
+    "18": {
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "url": "https://www.youtube.com/shorts/fD_5ntu5QNg",
+      "postedAt": "2026-11-12T02:37:55.491Z",
+      "days": {
+        "2026-11-19": {
+          "views": 0,
+          "likes": 0,
+          "comments": 0
+        }
+      }
+    },
+    "19": {
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "url": "https://www.instagram.com/reel/DfoANPfga4F/",
+      "postedAt": "2026-11-12T02:40:33.166Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0
+        }
+      }
+    },
+    "20": {
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "url": "https://bsky.app/profile/botchelor.bsky.social/post/3n24vbzqizn2o",
+      "postedAt": "2026-11-12T16:29:15.217Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0,
+          "reposts": 0
+        }
+      }
+    },
+    "29": {
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "url": "https://bsky.app/profile/botchelor.bsky.social/post/3n27flxfti52y",
+      "postedAt": "2026-11-13T16:26:27.704Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 1,
+          "comments": 0,
+          "reposts": 0
+        }
+      }
+    },
+    "32": {
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "url": "https://bsky.app/profile/botchelor.bsky.social/post/3n2bvwflsbl2u",
+      "postedAt": "2026-11-14T16:23:57.435Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0,
+          "reposts": 0
+        }
+      }
+    },
+    "35": {
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "url": "https://www.youtube.com/shorts/Hlre08VkQag",
+      "postedAt": "2026-11-15T02:18:50.561Z",
+      "days": {
+        "2026-11-19": {
+          "views": 13,
+          "likes": 0,
+          "comments": 0
+        }
+      }
+    },
+    "36": {
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "url": "https://www.instagram.com/reel/DfvtAWsiK5V/",
+      "postedAt": "2026-11-15T02:26:22.428Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0
+        }
+      }
+    },
+    "41": {
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "url": "https://bsky.app/profile/botchelor.bsky.social/post/3n2egogwdxo26",
+      "postedAt": "2026-11-15T16:29:03.562Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0,
+          "reposts": 0
+        }
+      }
+    },
+    "48": {
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "url": "https://www.youtube.com/shorts/vkJOH2Hovew",
+      "postedAt": "2026-11-16T02:03:50.035Z",
+      "days": {
+        "2026-11-19": {
+          "views": 11,
+          "likes": 0,
+          "comments": 0
+        }
+      }
+    },
+    "49": {
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "url": "https://www.instagram.com/reel/DfyPaSQCJ1L/",
+      "postedAt": "2026-11-16T02:05:29.721Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0
+        }
+      }
+    },
+    "52": {
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "url": "https://bsky.app/profile/botchelor.bsky.social/post/3n2fsrozsbp2d",
+      "postedAt": "2026-11-16T05:38:17.288Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0,
+          "reposts": 0
+        }
+      }
+    },
+    "60": {
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "url": "https://www.youtube.com/shorts/qH9xV6N9IpY",
+      "postedAt": "2026-11-17T02:14:13.234Z",
+      "days": {
+        "2026-11-19": {
+          "views": 33,
+          "likes": 0,
+          "comments": 0
+        }
+      }
+    },
+    "61": {
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "url": "https://www.instagram.com/reel/Df01b-elYPT/",
+      "postedAt": "2026-11-17T02:16:09.033Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0
+        }
+      }
+    },
+    "62": {
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "url": "https://bsky.app/profile/botchelor.bsky.social/post/3n2hzp7iebf2b",
+      "postedAt": "2026-11-17T02:47:29.503Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0,
+          "reposts": 0
+        }
+      }
+    },
+    "67": {
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "url": "https://bsky.app/profile/botchelor.bsky.social/post/3n2kawtbkng2b",
+      "postedAt": "2026-11-18T00:02:20.833Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0,
+          "reposts": 0
+        }
+      }
+    },
+    "70": {
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "url": "https://www.youtube.com/shorts/aKfN2GECqKE",
+      "postedAt": "2026-11-18T02:07:30.166Z",
+      "days": {
+        "2026-11-19": {
+          "views": 9,
+          "likes": 0,
+          "comments": 0
+        }
+      }
+    },
+    "71": {
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "url": "https://www.instagram.com/reel/Df3ZfWnjfDw/",
+      "postedAt": "2026-11-18T02:09:46.245Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0
+        }
+      }
+    },
+    "75": {
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "url": "https://bsky.app/profile/botchelor.bsky.social/post/3n2mitqjgi62m",
+      "postedAt": "2026-11-18T21:29:06.677Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0,
+          "reposts": 0
+        }
+      }
+    },
+    "79": {
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "url": "https://www.youtube.com/shorts/K8mqI22-SNw",
+      "postedAt": "2026-11-19T02:02:48.838Z",
+      "days": {
+        "2026-11-19": {
+          "views": 3,
+          "likes": 0,
+          "comments": 0
+        }
+      }
+    },
+    "80": {
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "url": "https://www.instagram.com/reel/Df59zM9E56t/",
+      "postedAt": "2026-11-19T02:05:22.640Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0
+        }
+      }
+    },
+    "84": {
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "url": "https://bsky.app/profile/botchelor.bsky.social/post/3n2opyx4gno2w",
+      "postedAt": "2026-11-19T18:42:36.828Z",
+      "days": {
+        "2026-11-19": {
+          "likes": 0,
+          "comments": 0,
+          "reposts": 0
+        }
+      }
+    }
+  },
+  "updatedAt": "2026-11-20T00:44:24.580Z"
+}
