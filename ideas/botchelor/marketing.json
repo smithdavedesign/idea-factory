@@ -1,9 +1,12 @@
 {
-  "_why": "The marketing loop's calendar for botchelor (bin/idea-market.js, lib/market.js; David 2026-11-09: \"create an automation to run the social media and marketing\"). Each morning it drafts the channels that are due, sends each draft to David on WhatsApp and Slack, and posts only what he approves with \"mk post <id>\". Channels: kind reddit (a post), reddit-thread (a comment in the sub's pinned thread whose title matches `match`), bluesky, discord (our own server's webhook), video (a TikTok/Reels/Shorts kit David uploads), x (browser), youtube and instagram (uploaded by the loop itself: they `follows` the video channel, so each day's kit goes out there too, re-tagged ?s=<source>), and kinds David posts by hand (hn, producthunt, card): drafted and sent to him even with autoPost on. Strategy and order: LAUNCH-KIT.md, \"Distribution plan\". status: active, waiting (blocked on someone: see note), needs-account, off. cooldownDays: the least time between our posts there (the community's own rule when it has one). from: the first day it may go out. window: UTC days (0 = Sunday) and hours it may post. maxPosts: lifetime cap (indiehackers allows one per product).",
+  "_why": "The marketing loop's calendar for botchelor (bin/idea-market.js, lib/market.js; David 2026-11-09: \"create an automation to run the social media and marketing\"). Each morning it drafts the channels that are due, sends each draft to David on WhatsApp and Slack, and posts only what he approves with \"mk post <id>\". Channels: kind reddit (a post), reddit-thread (a comment in the sub's pinned thread whose title matches `match`), bluesky, discord (our own server's webhook), video (the day's short-video kit, made by the loop), x (browser), tiktok, youtube and instagram (posted by the loop itself: they `follows` the video channel, so each day's kit goes out there too, re-tagged ?s=<source>), and kinds David posts by hand (hn, producthunt, card): drafted and sent to him even with autoPost on. Strategy and order: LAUNCH-KIT.md, \"Distribution plan\". status: active, waiting (blocked on someone: see note), needs-account, off. cooldownDays: the least time between our posts there (the community's own rule when it has one). from: the first day it may go out. window: UTC days (0 = Sunday) and hours it may post. maxPosts: lifetime cap (indiehackers allows one per product).",
   "slug": "botchelor",
   "site": "https://botchelor.com/",
   "reddit": {
     "account": "Outside_Sir_9341"
+  },
+  "tiktok": {
+    "handle": "botchelorcom"
   },
   "utm": {
     "campaign": "season1",
@@ -22,7 +25,8 @@
     "hn": 1,
     "producthunt": 1,
     "card": 2,
-    "threads": 1
+    "threads": 1,
+    "tiktok": 1
   },
   "draftAfterHour": 8,
   "timezone": "America/Los_Angeles",
@@ -208,9 +212,20 @@
       "status": "active",
       "from": "2026-11-10",
       "cooldownDays": 1,
-      "note": "A TikTok/Reels/Shorts kit from the day's clip (scripts/clips/post-kit.mjs in ~/.botchelor-crowd/repo), sent to David's WhatsApp with the caption. He uploads it as @botchelorcom with TikTok's AI-generated label on, then replies mk done <id>. Never After Dark.",
+      "note": "The day's short-video kit (scripts/clips/post-kit.mjs in ~/.botchelor-crowd/repo: a daily episode, or a staged hand cut after 18:00). The channels that follow it post it: TikTok, YouTube Shorts and Instagram Reels, all by the loop since 2026-11-19 (before that David uploaded each kit to TikTok by hand, and TikTok lapsed). Never After Dark.",
       "logName": "TikTok/Reels/Shorts (@botchelorcom)",
       "publicNote": "A short clip of one of the day's dates, every day."
+    },
+    {
+      "id": "tiktok",
+      "kind": "tiktok",
+      "follows": "video",
+      "source": "tiktok",
+      "status": "active",
+      "from": "2026-11-19",
+      "logName": "TikTok (@botchelorcom)",
+      "note": "Each day's video kit posted by the loop through TikTok Studio in the signed-in marketing browser (io.tiktokPost; TikTok's Content Posting API needs an audited app before posts can be public): caption pasted and read back, TikTok's AI-generated content label on (no label, no post), the kit's cover.png as the cover, then the new post's URL read off tiktokstudio/content. Stats (views, likes, comments) come off the same page once a day. If the browser is signed out it copies the sign-in from David's Chrome (.tiktok.com and www.tiktok.com). Before 2026-11-19 David uploaded each kit by hand (@botchelorcom).",
+      "publicNote": "The day's clip on TikTok."
     },
     {
       "id": "bluesky",
