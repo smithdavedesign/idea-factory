@@ -2532,9 +2532,9 @@
       "draft mcpservers": "ok",
       "draft characterairunaways": "ok",
       "draft ai_agents_weekly": "ok",
-      "draft help-indiehackers": "ok",
+      "draft help-indiehackers": "fail",
       "draft help-mcp": "ok",
-      "watch": "ok",
+      "watch": "fail",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
@@ -2564,7 +2564,7 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-20T18:08:34.529Z",
+    "syncAt": "2026-11-20T21:08:56.186Z",
     "warned:draft help-indiehackers:2026-11-17": true,
     "warned:watch:2026-11-17": true,
     "warned:watch:2026-11-18": true,
@@ -2573,6 +2573,8 @@
     "warned:draft help-sideproject:2026-11-18": true,
     "coversDay": "2026-11-20",
     "told": {},
-    "statsDay": "2026-11-20"
+    "statsDay": "2026-11-20",
+    "warned:draft help-indiehackers:2026-11-20": true,
+    "warned:watch:2026-11-20": true
   }
 }
