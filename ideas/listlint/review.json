@@ -1,0 +1,54 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "A metadata-only photo check for Etsy's new unedited-photo rule: the pain is real but unproven as paid, the evidence it builds is forgeable and Etsy says it is building its own authorship tools. It also duplicates ownshot, which targets the same sellers and appeals with stronger independent timestamps.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "No seller was found asking for this (RESEARCH.md, Risks). The rule is real (valueaddedresource.net, 22 Oct 2026) and wrongful takedowns are common (Etsy community threads), but fear of a rule is interest, not demand. Enforcement is only 'planned for early 2027'. The SEO-tool prices are anchored on a different job (search ranking), so the $9/$19 price is a guess."
+    },
+    "statusQuo": {
+      "score": 4,
+      "evidence": "Sellers open listings by hand and retake photos, which is painful at hundreds of listings. Many will simply retake or add one phone photo per listing, which costs minutes and is free. That workaround is cheaper than a $19 scan for most shops."
+    },
+    "specificity": {
+      "score": 4,
+      "evidence": "The buyer is 'Etsy seller with 50-2,000 listings of physical goods'. That is a filter, not a person: no named seller, no quote asking for a checker. The sharpest persona is the seller of a wrongly removed best-seller, and that persona is already served by ownshot."
+    },
+    "wedge": {
+      "score": 5,
+      "evidence": "M1 (a browser EXIF/C2PA labeller) is a genuine weekend build at $0. But a table of labels is not something a seller pays for this week. Value only appears at M3 (evidence pack), and by then the product is ownshot with weaker proof."
+    },
+    "futureFit": {
+      "score": 3,
+      "evidence": "Etsy's VP of Customer Operations said it is developing authorship tools, and the rules were revised within 15 days. A native feature or a wording change would erase the product. Metadata can be stripped or forged, so the evidence will carry little weight with Etsy."
+    }
+  },
+  "premises": [
+    "Sellers need to know which listings lack an unedited photo before enforcement: supported by the policy reports, but the pain is anticipatory, with no enforcement yet.",
+    "Photo metadata is useful evidence of authorship: weak. The research itself says it cannot prove a file was never edited and can be forged.",
+    "Sellers keep a local, listing-organised folder of originals: unverified, and the complaint in the sources is that originals are often gone.",
+    "A third party can out-build Etsy's own tooling: doubtful given the stated plan for authorship tools.",
+    "Sellers will pay for compliance, not just SEO: no evidence either way."
+  ],
+  "alternatives": [
+    "Extend ownshot (David's existing Etsy-appeal idea): add listlint's folder scan as its free pre-scan lead magnet, so one product serves audit plus dated proof. Effort S, reuses ownshot's audience and packet builder.",
+    "Minimal: a free single-photo checker page plus a community post, no payments. Effort S, tests reach only.",
+    "Ideal: a full-shop auditor with CSV import, hash matching and evidence packs. Effort M-L, rebuilds what ownshot already plans."
+  ],
+  "wedge": "A free browser page that labels a dropped folder of photos (likely-unedited / edited / unknown) with reasons. It is best offered as a feature inside ownshot, not as a standalone product.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Vite + TS static app on Vercel, exifr, c2pa JS and canvas dHash, with no server and no Etsy API. The one test that proves M1: the four fixture cases return the right labels with zero network requests. Buildable, but building it does not test demand."
+  },
+  "risks": [
+    "Overlaps ownshot almost entirely (same sellers, same Creativity Standards appeals, same evidence packet), so it splits attention and audience.",
+    "Etsy ships native authorship tooling or changes the wording, erasing the need.",
+    "Metadata evidence is forgeable, so appeals built on it may be ignored and the product over-promises.",
+    "Most sellers will fix the problem by adding one phone photo, which is free.",
+    "Enforcement may slip, so urgency may not arrive; the policy page itself was not read (403).",
+    "Self-promotion rules on Etsy seller forums and subreddits are unchecked."
+  ],
+  "killCriteria": "Drop it if ownshot's demand test is running or planned for the same Etsy audience, or if, after two weeks and at least 50 visitors, fewer than 5% join the waitlist or no seller replies that they have listings with no unedited photo."
+}

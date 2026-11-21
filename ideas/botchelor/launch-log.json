@@ -606,6 +606,13 @@
       "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2tlj6aqio26",
       "postedAt": "2026-11-21T17:05:31.947Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #103 on his phone; link tagged utm_content=bluesky."
+    },
+    {
+      "channel": "Threads",
+      "url": null,
+      "postUrl": "https://www.threads.com/@botchelor/post/DgAykB-GVVe",
+      "postedAt": "2026-11-21T17:41:22.256Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #105 on his phone; link tagged utm_content=threads."
     }
   ]
 }

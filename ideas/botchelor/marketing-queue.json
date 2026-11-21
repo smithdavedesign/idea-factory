@@ -1,5 +1,5 @@
 {
-  "nextId": 106,
+  "nextId": 109,
   "paused": false,
   "items": [
     {
@@ -2550,7 +2550,7 @@
     },
     {
       "id": 101,
-      "status": "failed",
+      "status": "skipped",
       "createdAt": "2026-11-21T05:57:40.040Z",
       "channel": "instagram_reels",
       "kind": "instagram",
@@ -2563,11 +2563,12 @@
       "hash": "33bdbbf9740c17e3",
       "approvedAt": "2026-11-21T05:57:40.041Z",
       "approvedBy": "auto",
-      "error": "Instagram didn't publish the Reel: {\"message\":\"Fatal\",\"code\":-1,\"type\":\"OAuthException\",\"error_subcode\":2207085,\"is_transient\":false,\"error_user_msg\":\"An internal server error occurred. Please try again later.\",\"error_user_title\":\"Gene"
+      "error": "Instagram didn't publish the Reel: {\"message\":\"Fatal\",\"code\":-1,\"type\":\"OAuthException\",\"error_subcode\":2207085,\"is_transient\":false,\"error_user_msg\":\"An internal server error occurred. Please try again later.\",\"error_user_title\":\"Gene",
+      "note": "failed (starved Mac after power cut), retried by hand 2026-11-21"
     },
     {
       "id": 102,
-      "status": "failed",
+      "status": "skipped",
       "createdAt": "2026-11-21T06:03:19.138Z",
       "channel": "tiktok",
       "kind": "tiktok",
@@ -2580,7 +2581,8 @@
       "hash": "2dcdd46740498e51",
       "approvedAt": "2026-11-21T06:03:19.142Z",
       "approvedBy": "auto",
-      "error": "couldn't open TikTok's upload page: [browse] Headed server running (PID 8637) but not responding. [browse] Run '/open-gstack-browser' to restart."
+      "error": "couldn't open TikTok's upload page: [browse] Headed server running (PID 8637) but not responding. [browse] Run '/open-gstack-browser' to restart.",
+      "note": "failed (starved Mac after power cut), retried by hand 2026-11-21"
     },
     {
       "id": 103,
@@ -2620,7 +2622,7 @@
     },
     {
       "id": 104,
-      "status": "failed",
+      "status": "skipped",
       "createdAt": "2026-11-21T16:59:45.877Z",
       "channel": "x",
       "kind": "x",
@@ -2637,11 +2639,12 @@
       "hash": "18e509f687199cb3",
       "approvedAt": "2026-11-21T16:59:45.879Z",
       "approvedBy": "auto",
-      "error": "X's composer didn't take the text exactly (tried twice); nothing was posted"
+      "error": "X's composer didn't take the text exactly (tried twice); nothing was posted",
+      "note": "failed (starved Mac after power cut), retried by hand 2026-11-21"
     },
     {
       "id": 105,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-21T17:00:11.285Z",
       "channel": "threads",
       "kind": "threads",
@@ -2658,7 +2661,72 @@
       "hash": "be3972e51b93fdf2",
       "approvedAt": "2026-11-21T17:00:11.321Z",
       "approvedBy": "auto",
-      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 11965 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run"
+      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 11965 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run",
+      "postedAt": "2026-11-21T17:41:22.256Z",
+      "postUrl": "https://www.threads.com/@botchelor/post/DgAykB-GVVe",
+      "thing": "DgAykB-GVVe",
+      "image": {
+        "source": "og",
+        "page": "https://botchelor.com/episodes/6df1b492-106a-4cae-a09b-ebffaceffa6d/report-card?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+        "ok": true,
+        "how": "attached",
+        "at": "2026-11-21T17:41:22.257Z"
+      }
+    },
+    {
+      "id": 106,
+      "status": "approved",
+      "createdAt": "2026-11-21T17:36:25.947Z",
+      "channel": "tiktok",
+      "kind": "tiktok",
+      "title": "",
+      "body": "A speed date, a countdown, and a thermos of soup.\n\nIs soup on a speed date a dealbreaker? Be honest. 🍲\n\nWatch the whole date: botchelor.com/episodes/2b8381d0-8211-4e86-baa4-2337206659f3?s=tiktok\nEvery character is AI, and every date is AI-generated fiction.\nAmbrose is by darood: botchelor.com/creators/darood\nCass is by darood: botchelor.com/creators/darood\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #speeddating #firstdate #funny",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup/post.mp4",
+      "episode": "2b8381d0-8211-4e86-baa4-2337206659f3",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup",
+      "cut": "5-soup",
+      "hash": "2dcdd46740498e51",
+      "approvedAt": "2026-11-21T17:36:25.948Z",
+      "approvedBy": "auto",
+      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 37967 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run"
+    },
+    {
+      "id": 107,
+      "status": "failed",
+      "createdAt": "2026-11-21T17:36:45.724Z",
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "title": "",
+      "body": "A speed date, a countdown, and a thermos of soup.\n\nIs soup on a speed date a dealbreaker? Be honest. 🍲\n\nWatch the whole date: botchelor.com/episodes/2b8381d0-8211-4e86-baa4-2337206659f3?s=instagram\nEvery character is AI, and every date is AI-generated fiction.\nAmbrose is by darood: botchelor.com/creators/darood\nCass is by darood: botchelor.com/creators/darood\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #speeddating #firstdate #funny",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup/post.mp4",
+      "episode": "2b8381d0-8211-4e86-baa4-2337206659f3",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup",
+      "cut": "5-soup",
+      "hash": "33bdbbf9740c17e3",
+      "approvedAt": "2026-11-21T17:36:45.725Z",
+      "approvedBy": "auto",
+      "error": "Instagram didn't publish the Reel: {\"message\":\"Fatal\",\"code\":-1,\"type\":\"OAuthException\",\"error_subcode\":2207085,\"is_transient\":false,\"error_user_msg\":\"An internal server error occurred. Please try again later.\",\"error_user_title\":\"Gene"
+    },
+    {
+      "id": 108,
+      "status": "approved",
+      "createdAt": "2026-11-21T17:39:05.181Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "A C, and a disaster: Nell Abiodun × Marcel Fontaine, two AI characters on an unsteered AI blind date. Trust D, Awkwardness D. https://botchelor.com/episodes/cba4179c-6356-4fb0-8122-09c6b1096f6a/report-card?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "why": "Leads with the verdict (C, disaster) and the D grades on the card, names both characters and says they and the date are AI. It features a different date from earlier posts and leaves out the long quotes to fit the 280 limit with the link.",
+      "flair": null,
+      "link": "https://botchelor.com/episodes/cba4179c-6356-4fb0-8122-09c6b1096f6a/report-card?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "reportCard": {
+        "episodeId": "cba4179c-6356-4fb0-8122-09c6b1096f6a",
+        "title": "Nell Abiodun × Marcel Fontaine got a C on their AI blind date (a disaster)"
+      },
+      "hash": "bceb5e08d0cae4ef",
+      "approvedAt": "2026-11-21T17:39:05.181Z",
+      "approvedBy": "auto",
+      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 37967 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run"
     }
   ],
   "seen": {
@@ -2778,6 +2846,7 @@
     "warned:watch:2026-11-20": true,
     "warned:watch:2026-11-21": true,
     "warned:draft chatbotrefugees_sunday:2026-11-21": true,
-    "warned:draft help-mcp:2026-11-21": true
+    "warned:draft help-mcp:2026-11-21": true,
+    "warned:draft help-indiehackers:2026-11-21": true
   }
 }
