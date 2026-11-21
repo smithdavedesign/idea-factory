@@ -24,9 +24,10 @@ test('browse runs with bun on PATH (launchd has no ~/.bun/bin) and its state fil
   fs.writeFileSync(path.join(dir, 'bun', 'bin', 'bun'), '#!/bin/sh\necho bun-ran\n', { mode: 0o755 });
   // A stand-in for gstack's browse CLI: it fails the way the real one did when bun wasn't on PATH.
   const fake = path.join(dir, 'browse');
-  fs.writeFileSync(fake, '#!/bin/sh\ncommand -v bun >/dev/null || { echo "[browse] Executable not found in \\$PATH: \\"bun\\"" >&2; exit 1; }\nbun\necho "state=$BROWSE_STATE_FILE"\necho "pgid=$(ps -o pgid= -p $$ | tr -d " ")"\n', { mode: 0o755 });
+  fs.writeFileSync(fake, '#!/bin/sh\ncommand -v bun >/dev/null || { echo "[browse] Executable not found in \\$PATH: \\"bun\\"" >&2; exit 1; }\nbun\necho "state=$BROWSE_STATE_FILE"\necho "pgid=$(ps -o pgid= -p $$ | tr -d " ")"\necho "cwd=$(pwd -P)"\n', { mode: 0o755 });
   const state = path.join(dir, 'm', 'browse.json');
-  const io = fresh({ GSTACK_BROWSE: fake, BUN_INSTALL: path.join(dir, 'bun'), MARKET_BROWSE_STATE: state });
+  const loopDir = fs.realpathSync(tmp('loop-'));
+  const io = fresh({ GSTACK_BROWSE: fake, BUN_INSTALL: path.join(dir, 'bun'), MARKET_BROWSE_STATE: state, MARKET_LOOP_DIR: loopDir });
   const launchdPath = '/Users/x/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin';
   assert.equal(io.browseEnv({ PATH: launchdPath }).PATH, `${launchdPath}:${path.join(dir, 'bun', 'bin')}`);
   assert.equal(io.browseEnv({ PATH: `${io.BUN_BIN}:/usr/bin` }).PATH, `${io.BUN_BIN}:/usr/bin`);
@@ -34,6 +35,8 @@ test('browse runs with bun on PATH (launchd has no ~/.bun/bin) and its state fil
 
   const savedPath = process.env.PATH;
   process.env.PATH = '/usr/bin:/bin';
+  const savedCwd = process.cwd();
+  process.chdir('/'); // where launchd starts the tick (2026-11-21)
   try {
     const r = io.browse(['status']);
     assert.equal(r.ok, true, r.err);
@@ -41,7 +44,9 @@ test('browse runs with bun on PATH (launchd has no ~/.bun/bin) and its state fil
     assert.match(r.out, new RegExp(`state=${state.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
     const mine = spawnSync('ps', ['-o', 'pgid=', '-p', String(process.pid)], { encoding: 'utf8' }).stdout.trim();
     assert.notEqual(r.out.match(/pgid=(\d+)/)[1], mine, 'browse should not share our process group');
-  } finally { process.env.PATH = savedPath; }
+    // From the loop's folder, wherever the tick was started: that's how freeStrayPort knows a lost server is ours.
+    assert.equal(r.out.match(/cwd=(.+)/)[1].trim(), loopDir);
+  } finally { process.env.PATH = savedPath; process.chdir(savedCwd); }
 });
 
 test('browseError reports what browse said instead of always blaming "No active page"', () => {
