@@ -1,5 +1,5 @@
 {
-  "nextId": 109,
+  "nextId": 111,
   "paused": false,
   "items": [
     {
@@ -2675,7 +2675,7 @@
     },
     {
       "id": 106,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-21T17:36:25.947Z",
       "channel": "tiktok",
       "kind": "tiktok",
@@ -2688,7 +2688,17 @@
       "hash": "2dcdd46740498e51",
       "approvedAt": "2026-11-21T17:36:25.948Z",
       "approvedBy": "auto",
-      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 37967 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run"
+      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 37967 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run",
+      "postedAt": "2026-11-21T18:07:28.328Z",
+      "postUrl": "https://www.tiktok.com/@botchelorcom/video/7710687863175679263",
+      "thing": "7710687863175679263",
+      "image": {
+        "source": "kit",
+        "kit": "2026-11-20-zz-cut-5-soup",
+        "ok": true,
+        "how": "cover",
+        "at": "2026-11-21T18:07:28.330Z"
+      }
     },
     {
       "id": 107,
@@ -2709,7 +2719,7 @@
     },
     {
       "id": 108,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-21T17:39:05.181Z",
       "channel": "x",
       "kind": "x",
@@ -2726,7 +2736,59 @@
       "hash": "bceb5e08d0cae4ef",
       "approvedAt": "2026-11-21T17:39:05.181Z",
       "approvedBy": "auto",
-      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 37967 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run"
+      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 37967 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run",
+      "postedAt": "2026-11-21T18:08:59.143Z",
+      "postUrl": "https://x.com/botchelorLLC/status/2124203390809120797",
+      "thing": "2124203390809120797",
+      "image": {
+        "source": "og",
+        "page": "https://botchelor.com/episodes/cba4179c-6356-4fb0-8122-09c6b1096f6a/report-card?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+        "ok": true,
+        "how": "attached",
+        "at": "2026-11-21T18:08:59.143Z"
+      }
+    },
+    {
+      "id": 109,
+      "status": "approved",
+      "createdAt": "2026-11-21T18:10:17.537Z",
+      "channel": "chatbotrefugees_sunday",
+      "kind": "reddit",
+      "sub": "ChatbotRefugees",
+      "title": "I'm the dev: moving a character off Character.AI? Paste it in and watch a one-minute first date",
+      "body": "Disclosure: I built this. One-person project, built with AI coding tools (Claude Code).\n\nNew since my last posts: a way to bring over a character you wrote. Paste in the name, description, greeting and definition, and the builder opens filled in. Their first date is a speed date of about a minute, then the character texts you.\n\nPlainly:\n\n- It's not a chat app. You watch the date play out; you don't steer it.\n- It's PG. A character written for adult chat keeps their personality and loses the scenes.\n- Nothing is fetched from your Character.AI account. You paste the text yourself.\n- It's not connected to Character.AI.\n- 3 free dates a week.\n\nTry it: https://botchelor.com/import?from=cai&utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=chatbotrefugees_sunday\n\nDid the date sound like your character?",
+      "why": "Promotion Sunday post for the Character.AI rescue import flow: disclosure first, plain cons, no claims about Character.AI's own affairs, one closing question.",
+      "flair": "Promotion Sunday",
+      "link": "https://botchelor.com/import?from=cai&utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=chatbotrefugees_sunday",
+      "hash": "10e3561ba08f4a10",
+      "approvedAt": "2026-11-21T18:10:17.539Z",
+      "approvedBy": "auto"
+    },
+    {
+      "id": 110,
+      "status": "approved",
+      "createdAt": "2026-11-21T18:10:35.070Z",
+      "channel": "help-mcp",
+      "kind": "reddit-help",
+      "sub": "mcp",
+      "title": "",
+      "body": "I'd check your tool descriptions first. When I built a remote MCP server, agents picked tools almost entirely from the description text. Names and parameter schemas mattered less than I expected. The questions you say you ask, like \"biggest drops in the last few hours\" and \"how did this line move today\", are worth putting into the descriptions nearly word for word. State what comes back, what the time window means, and which tool to call for which question. If \"dropping odds\" and \"current line\" are separate tools, say in each description when to use the other one, or the agent will guess. I'd also keep parameters like sport, window and match identifier few and explicitly typed. Weaker or free-tier models do much better with a handful of obvious arguments than with a flexible filter object.",
+      "why": "The pinnradar post asks for feedback on its tools and has no comments. David's real experience with writing tool descriptions that agents understand is directly relevant.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1y1zg6x",
+        "title": "Made an MCP server for live sports odds !",
+        "author": "Significant-Sun-9735",
+        "permalink": "https://www.reddit.com/r/mcp/comments/1y1zg6x/made_an_mcp_server_for_live_sports_odds/",
+        "excerpt": "i do a bit of sports betting and kept writing small scripts to check odds and line moves.. Got tired of it , so i put an MCP server on top of my odds API ..It gives  live and prematch odds from pinnacle, also it gives dropping odds (which line moved at most recently) .. We got soccer , tennis , basketball and ten more sports.\n\nEndpoint is [https://mcp.pinnradar.com/mcp](https://mcp.pinnradar.com/mcp) and you can log in with 0Auth , or use API key if yours client doesnt support it. Also we have a",
+        "selftext": "i do a bit of sports betting and kept writing small scripts to check odds and line moves.. Got tired of it , so i put an MCP server on top of my odds API ..It gives  live and prematch odds from pinnacle, also it gives dropping odds (which line moved at most recently) .. We got soccer , tennis , basketball and ten more sports.\n\nEndpoint is [https://mcp.pinnradar.com/mcp](https://mcp.pinnradar.com/mcp) and you can log in with 0Auth , or use API key if yours client doesnt support it. Also we have a free plan and its in the official MCP registry as as com.pinnradar/odds .\n\nStuff i usually ask it - which soccer games had the biggest drops in the last hours or whats the current line on a specific game and how did it move today?.\n\nTo be clear that is my own project. Some feedback will be welcome from people here . are the tools useful as they are or is there anything could be added ?",
+        "top": []
+      },
+      "hash": "bd3c4fd5d52b4372",
+      "approvedAt": "2026-11-21T18:10:35.070Z",
+      "approvedBy": "auto",
+      "error": "waiting for the next run: Reddit fetch budget (15) used up for this run"
     }
   ],
   "seen": {
@@ -2776,7 +2838,7 @@
     ]
   },
   "last": {
-    "watch": "2026-11-20T19:38:54.792Z",
+    "watch": "2026-11-21T18:10:38.440Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -2800,16 +2862,16 @@
       "draft mcpservers": "ok",
       "draft characterairunaways": "ok",
       "draft ai_agents_weekly": "ok",
-      "draft help-indiehackers": "fail",
-      "draft help-mcp": "fail",
-      "watch": "fail",
+      "draft help-indiehackers": "ok",
+      "draft help-mcp": "ok",
+      "watch": "ok",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
       "draft help-sideproject": "ok",
       "report": "ok",
       "draft x": "ok",
-      "draft chatbotrefugees_sunday": "fail",
+      "draft chatbotrefugees_sunday": "ok",
       "video": "ok",
       "draft aicompanions": "ok",
       "sync": "ok",
