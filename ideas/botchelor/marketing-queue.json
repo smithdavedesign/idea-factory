@@ -2555,7 +2555,7 @@
     },
     {
       "id": 102,
-      "status": "approved",
+      "status": "failed",
       "createdAt": "2026-11-21T06:03:19.138Z",
       "channel": "tiktok",
       "kind": "tiktok",
@@ -2568,7 +2568,7 @@
       "hash": "2dcdd46740498e51",
       "approvedAt": "2026-11-21T06:03:19.142Z",
       "approvedBy": "auto",
-      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 65404 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run"
+      "error": "couldn't open TikTok's upload page: [browse] Headed server running (PID 8637) but not responding. [browse] Run '/open-gstack-browser' to restart."
     }
   ],
   "seen": {
@@ -2686,6 +2686,7 @@
     "statsDay": "2026-11-20",
     "warned:draft help-indiehackers:2026-11-20": true,
     "warned:watch:2026-11-20": true,
-    "warned:watch:2026-11-21": true
+    "warned:watch:2026-11-21": true,
+    "warned:draft chatbotrefugees_sunday:2026-11-21": true
   }
 }
