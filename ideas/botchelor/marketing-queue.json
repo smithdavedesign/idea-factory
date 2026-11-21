@@ -1,5 +1,5 @@
 {
-  "nextId": 97,
+  "nextId": 101,
   "paused": false,
   "items": [
     {
@@ -1730,7 +1730,7 @@
     },
     {
       "id": 69,
-      "status": "sent",
+      "status": "expired",
       "createdAt": "2026-11-18T02:06:27.306Z",
       "channel": "video",
       "kind": "video",
@@ -2459,6 +2459,80 @@
       "postedAt": "2026-11-20T17:05:46.536Z",
       "postUrl": "https://www.reddit.com/r/SideProject/comments/1y17q8b/i_built_a_desktop_ai_trading_desk_for_gold/19sxi3jo7ont0/",
       "thing": "t1_19sxi3jo7ont0"
+    },
+    {
+      "id": 97,
+      "status": "kit",
+      "createdAt": "2026-11-21T02:29:45.371Z",
+      "channel": "video",
+      "kind": "video",
+      "title": "",
+      "body": "A speed date, a countdown, and a thermos of soup.\n\nIs soup on a speed date a dealbreaker? Be honest. 🍲\n\nWatch the whole date: botchelor.com/episodes/2b8381d0-8211-4e86-baa4-2337206659f3?s=tiktok\nEvery character is AI, and every date is AI-generated fiction.\nAmbrose is by darood: botchelor.com/creators/darood\nCass is by darood: botchelor.com/creators/darood\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #speeddating #firstdate #funny",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup/post.mp4",
+      "episode": "2b8381d0-8211-4e86-baa4-2337206659f3",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup",
+      "cut": "5-soup",
+      "hash": "2dcdd46740498e51"
+    },
+    {
+      "id": 98,
+      "status": "approved",
+      "createdAt": "2026-11-21T02:29:45.374Z",
+      "channel": "tiktok",
+      "kind": "tiktok",
+      "title": "",
+      "body": "A speed date, a countdown, and a thermos of soup.\n\nIs soup on a speed date a dealbreaker? Be honest. 🍲\n\nWatch the whole date: botchelor.com/episodes/2b8381d0-8211-4e86-baa4-2337206659f3?s=tiktok\nEvery character is AI, and every date is AI-generated fiction.\nAmbrose is by darood: botchelor.com/creators/darood\nCass is by darood: botchelor.com/creators/darood\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #speeddating #firstdate #funny",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup/post.mp4",
+      "episode": "2b8381d0-8211-4e86-baa4-2337206659f3",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup",
+      "cut": "5-soup",
+      "hash": "2dcdd46740498e51",
+      "approvedAt": "2026-11-21T02:29:45.374Z",
+      "approvedBy": "auto",
+      "error": "waiting for the next run: the automated browser won't start: [browse] Connect failed: Server failed to start: [browse] Failed to start: [browse] Port 34567 (from BROWSE_PORT env) is in use; port 34567 is held by pid 65404 (bun), another session's headed browse (gstack pins this port for every one): once it's gone the loop reconnects on its next run"
+    },
+    {
+      "id": 99,
+      "status": "posted",
+      "createdAt": "2026-11-21T02:29:45.375Z",
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "title": "A speed date, a countdown, and a thermos of soup. #Shorts",
+      "body": "A speed date, a countdown, and a thermos of soup.\n\nIs soup on a speed date a dealbreaker? Be honest. 🍲\n\nWatch the whole date: botchelor.com/episodes/2b8381d0-8211-4e86-baa4-2337206659f3?s=youtube\nEvery character is AI, and every date is AI-generated fiction.\nAmbrose is by darood: botchelor.com/creators/darood\nCass is by darood: botchelor.com/creators/darood\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #speeddating #firstdate #funny",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup/post.mp4",
+      "episode": "2b8381d0-8211-4e86-baa4-2337206659f3",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup",
+      "cut": "5-soup",
+      "hash": "6ed0f0bf924e9d2e",
+      "approvedAt": "2026-11-21T02:29:45.375Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-21T02:30:22.844Z",
+      "postUrl": "https://www.youtube.com/shorts/-u8qZBGt3rA",
+      "thing": "-u8qZBGt3rA",
+      "image": {
+        "source": "kit",
+        "kit": "2026-11-20-zz-cut-5-soup",
+        "ok": true,
+        "how": "thumbnail",
+        "at": "2026-11-21T02:30:22.844Z"
+      }
+    },
+    {
+      "id": 100,
+      "status": "failed",
+      "createdAt": "2026-11-21T02:29:45.376Z",
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "title": "",
+      "body": "A speed date, a countdown, and a thermos of soup.\n\nIs soup on a speed date a dealbreaker? Be honest. 🍲\n\nWatch the whole date: botchelor.com/episodes/2b8381d0-8211-4e86-baa4-2337206659f3?s=instagram\nEvery character is AI, and every date is AI-generated fiction.\nAmbrose is by darood: botchelor.com/creators/darood\nCass is by darood: botchelor.com/creators/darood\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #speeddating #firstdate #funny",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup/post.mp4",
+      "episode": "2b8381d0-8211-4e86-baa4-2337206659f3",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup",
+      "cut": "5-soup",
+      "hash": "33bdbbf9740c17e3",
+      "approvedAt": "2026-11-21T02:29:45.376Z",
+      "approvedBy": "auto",
+      "error": "Instagram didn't publish the Reel: {\"message\":\"Fatal\",\"code\":-1,\"type\":\"OAuthException\",\"error_subcode\":2207085,\"is_transient\":false,\"error_user_msg\":\"An internal server error occurred. Please try again later.\",\"error_user_title\":\"Gene"
     }
   ],
   "seen": {

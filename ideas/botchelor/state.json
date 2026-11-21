@@ -6,7 +6,7 @@
     "summary": "A fun, weekend-buildable concept, but there is no evidence anyone wants a watch-only AI date for their OC or would pay for it, and moderation plus companion-chatbot and contest-law exposure is heavy for a near-zero-overhead owner. The only reachable audience (pro-AI OC roleplayers) is narrow and may skew young or NSFW.",
     "at": "2026-10-13T08:55:27.449Z"
   },
-  "updatedAt": "2026-11-21T02:28:26.512Z",
+  "updatedAt": "2026-11-21T02:44:13.655Z",
   "ownerApproved": true,
   "ownerDecision": {
     "decision": "build",
@@ -70,7 +70,7 @@
         "owner": "david",
         "label": "Launch posted",
         "done": true,
-        "evidence": "85 posts logged"
+        "evidence": "86 posts logged"
       },
       {
         "id": "firstUser",
@@ -96,7 +96,7 @@
     "total": 10,
     "buyer": "An adult (18+) who has written an original character and already roleplays it with AI, e.g. a regular in the r/CharacterAI or r/SillyTavernAI subreddits or an AI-roleplay Discord such as the Shapes Inc server; not art-first OC communities, which reject AI. No named individual or community size is verified.",
     "price": "$4 once",
-    "updatedAt": "2026-11-20T16:42:03.039Z"
+    "updatedAt": "2026-11-21T02:44:13.655Z"
   },
   "revenue": {
     "mrr": 0,
@@ -150,15 +150,15 @@
     "M4"
   ],
   "funnel": {
-    "at": "2026-11-21T02:28:26.512Z",
+    "at": "2026-11-21T02:44:13.655Z",
     "d7": {
-      "visit": 300,
+      "visit": 299,
       "signup": 0,
       "activate": 0,
       "checkout": 0
     },
     "prev7": {
-      "visit": 184,
+      "visit": 185,
       "signup": 0,
       "activate": 0,
       "checkout": 0
@@ -177,7 +177,7 @@
     "referrers7d": [
       {
         "host": "direct",
-        "visitors": 269
+        "visitors": 268
       },
       {
         "host": "reddit.com",
