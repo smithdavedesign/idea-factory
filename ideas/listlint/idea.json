@@ -1,0 +1,33 @@
+{
+  "title": "listlint — Etsy photo-rule audit and appeal evidence",
+  "repoName": "listlint",
+  "oneLiner": "For Etsy sellers with hundreds of listings, it scans their photo folder against Etsy's new unedited-photo rule and builds per-listing evidence for appeals, in the browser.",
+  "overlaps": "none — closest is tiebreak (also serves Etsy-type sellers, but is a voting poll); no portfolio repo covers marketplace policy compliance",
+  "tags": [
+    "serious",
+    "business",
+    "saas",
+    "reach:community",
+    "ecommerce",
+    "compliance"
+  ],
+  "effort": "Low",
+  "confidence": "Low",
+  "sources": [
+    "https://www.valueaddedresource.net/etsy-bans-ai-patterns/",
+    "https://help.etsy.com/hc/en-us/articles/33558571339159",
+    "https://developers.etsy.com/documentation/",
+    "https://revenuegeeks.com/etsy/seller-tools",
+    "https://www.valueaddedresource.net/etsy-creativity-standards-takedowns-no-appeal/",
+    "https://community.etsy.com/t5/Technical-Issues/Etsy-falsely-removed-my-best-selling-listing/td-p/146515383",
+    "https://community.etsy.com/t5/Technical-Issues/My-listings-continue-to-be-wrongfully-taken-down-by-Etsy-s-AI/m-p/146626966",
+    "https://help.etsy.com/hc/en-us/articles/115015672628-What-Can-I-Do-If-My-Account-Is-Suspended-",
+    "https://community.etsy.com/t5/Technical-Issues/False-Suspension-Led-To-Open-Cases-Which-Ruined-Store/m-p/146579614",
+    "https://craftybase.com/blog/best-etsy-seo-tools",
+    "https://dev.to/makertoolst_5671ac6d1fa330ba6c/best-etsy-seo-tool-2026-erank-vs-alura-vs-marmalead-compared-10cn",
+    "https://developers.etsy.com/documentation/essentials/authentication",
+    "https://www.etsy.com/legal/policy/listing-image-requirements/253962679005"
+  ],
+  "slug": "listlint",
+  "recordedAt": "2026-11-21T17:02:33.091Z"
+}
