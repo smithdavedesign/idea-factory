@@ -1,5 +1,5 @@
 {
-  "nextId": 103,
+  "nextId": 106,
   "paused": false,
   "items": [
     {
@@ -2569,6 +2569,77 @@
       "approvedAt": "2026-11-21T06:03:19.142Z",
       "approvedBy": "auto",
       "error": "couldn't open TikTok's upload page: [browse] Headed server running (PID 8637) but not responding. [browse] Run '/open-gstack-browser' to restart."
+    },
+    {
+      "id": 103,
+      "status": "posted",
+      "createdAt": "2026-11-21T16:59:28.467Z",
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "sub": null,
+      "title": "",
+      "body": "I made this. AI characters, AI date: Cymbal Baylor × Juniper Vale, a C. \"Do you believe in ghosts, Cymbal? Not in theory. At least one.\" https://botchelor.com/episodes/b26b10af-f0d9-4f3d-ac01-2903b64a4d01/report-card?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "why": "Opens with the builder disclosure and the C grade, then Juniper's ghost question quoted exactly as the hook. It names both characters and says the date is AI, and the card image carries the rest of the grades.",
+      "flair": null,
+      "link": "https://botchelor.com/episodes/b26b10af-f0d9-4f3d-ac01-2903b64a4d01/report-card?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "reportCard": {
+        "episodeId": "b26b10af-f0d9-4f3d-ac01-2903b64a4d01",
+        "title": "Cymbal Baylor × Juniper Vale got a C on their AI blind date (a disaster)"
+      },
+      "hash": "3b7489884900b48a",
+      "approvedAt": "2026-11-21T16:59:28.478Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-21T17:05:31.947Z",
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2tlj6aqio26",
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2tlj6aqio26",
+      "image": {
+        "source": "og",
+        "page": "https://botchelor.com/episodes/b26b10af-f0d9-4f3d-ac01-2903b64a4d01/report-card?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+        "ok": true,
+        "how": "link card",
+        "at": "2026-11-21T17:05:31.948Z"
+      }
+    },
+    {
+      "id": 104,
+      "status": "failed",
+      "createdAt": "2026-11-21T16:59:45.877Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "I built this. AI characters Brig Ransom × Cymbal Baylor: C, walk-out. \"That's a heavy signal to drop in a market this loud.\"\nhttps://botchelor.com/episodes/405c39b6-d944-4da8-9a2b-de6e24669989/report-card?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "why": "Leads with the C and the walk-out plus the card's own quoted line, naming both AI characters, with a short builder disclosure. It features a date the earlier posts didn't.",
+      "flair": null,
+      "link": "https://botchelor.com/episodes/405c39b6-d944-4da8-9a2b-de6e24669989/report-card?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "reportCard": {
+        "episodeId": "405c39b6-d944-4da8-9a2b-de6e24669989",
+        "title": "Brig Ransom × Cymbal Baylor got a C on their AI blind date (a disaster · a walk-out)"
+      },
+      "hash": "18e509f687199cb3",
+      "approvedAt": "2026-11-21T16:59:45.879Z",
+      "approvedBy": "auto",
+      "error": "X's composer didn't take the text exactly (tried twice); nothing was posted"
+    },
+    {
+      "id": 105,
+      "status": "approved",
+      "createdAt": "2026-11-21T17:00:11.285Z",
+      "channel": "threads",
+      "kind": "threads",
+      "sub": null,
+      "title": "",
+      "body": "Disclosure: I built this (solo, with Claude Code).\n\nA C overall, and the date ended in disaster. Awkwardness got an F.\n\nBoth characters are AI, and nobody steers the date. One of them says on the card: \"I'd rather hear one straight answer than a bit of business.\"\n\nMarcel Fontaine × Armand Valois, report card: https://botchelor.com/episodes/6df1b492-106a-4cae-a09b-ebffaceffa6d/report-card?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "why": "Same draft, cut under 500 characters by dropping only the rules-engine sentence; the link and quote are unchanged.",
+      "flair": null,
+      "link": "https://botchelor.com/episodes/6df1b492-106a-4cae-a09b-ebffaceffa6d/report-card?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "reportCard": {
+        "episodeId": "6df1b492-106a-4cae-a09b-ebffaceffa6d",
+        "title": "Marcel Fontaine × Armand Valois got a C on their AI blind date (a disaster)"
+      },
+      "hash": "be3972e51b93fdf2",
+      "approvedAt": "2026-11-21T17:00:11.321Z",
+      "approvedBy": "auto"
     }
   ],
   "seen": {
@@ -2643,7 +2714,7 @@
       "draft characterairunaways": "ok",
       "draft ai_agents_weekly": "ok",
       "draft help-indiehackers": "fail",
-      "draft help-mcp": "ok",
+      "draft help-mcp": "fail",
       "watch": "fail",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
@@ -2687,6 +2758,7 @@
     "warned:draft help-indiehackers:2026-11-20": true,
     "warned:watch:2026-11-20": true,
     "warned:watch:2026-11-21": true,
-    "warned:draft chatbotrefugees_sunday:2026-11-21": true
+    "warned:draft chatbotrefugees_sunday:2026-11-21": true,
+    "warned:draft help-mcp:2026-11-21": true
   }
 }
