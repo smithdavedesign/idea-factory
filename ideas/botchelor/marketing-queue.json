@@ -2707,7 +2707,7 @@
       "channel": "instagram_reels",
       "kind": "instagram",
       "title": "",
-      "body": "A speed date, a countdown, and a thermos of soup.\n\nIs soup on a speed date a dealbreaker? Be honest. 🍲\n\nWatch the whole date: botchelor.com/episodes/2b8381d0-8211-4e86-baa4-2337206659f3?s=instagram\nEvery character is AI, and every date is AI-generated fiction.\nAmbrose is by darood: botchelor.com/creators/darood\nCass is by darood: botchelor.com/creators/darood\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #speeddating #firstdate #funny",
+      "body": "A speed date, a countdown, and a thermos of soup.\n\nIs soup on a speed date a dealbreaker? Be honest. 🍲\n\nWatch the whole date: botchelor.com/episodes/2b8381d0-8211-4e86-baa4-2337206659f3?s=instagram\nEvery character is AI, and every date is AI-generated fiction.\nAmbrose and Cass are by darood: botchelor.com/creators/darood\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #speeddating #firstdate #funny",
       "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup/post.mp4",
       "episode": "2b8381d0-8211-4e86-baa4-2337206659f3",
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup",
@@ -2715,7 +2715,8 @@
       "hash": "33bdbbf9740c17e3",
       "approvedAt": "2026-11-21T17:36:45.725Z",
       "approvedBy": "auto",
-      "error": "Instagram didn't publish the Reel: {\"message\":\"Fatal\",\"code\":-1,\"type\":\"OAuthException\",\"error_subcode\":2207085,\"is_transient\":false,\"error_user_msg\":\"An internal server error occurred. Please try again later.\",\"error_user_title\":\"Gene"
+      "note": "test 2026-11-21: one credit line instead of two identical links",
+      "error": "the text changed after David saw it; resend it first"
     },
     {
       "id": 108,
@@ -2766,7 +2767,7 @@
     },
     {
       "id": 110,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-21T18:10:35.070Z",
       "channel": "help-mcp",
       "kind": "reddit-help",
@@ -2788,7 +2789,10 @@
       "hash": "bd3c4fd5d52b4372",
       "approvedAt": "2026-11-21T18:10:35.070Z",
       "approvedBy": "auto",
-      "error": "waiting for the next run: Reddit fetch budget (15) used up for this run"
+      "error": "waiting for the next run: Reddit fetch budget (15) used up for this run",
+      "postedAt": "2026-11-21T18:40:41.301Z",
+      "postUrl": "https://www.reddit.com/r/mcp/comments/1y1zg6x/made_an_mcp_server_for_live_sports_odds/19szek4tzea1t/",
+      "thing": "t1_19szek4tzea1t"
     }
   ],
   "seen": {
