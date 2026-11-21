@@ -2707,7 +2707,7 @@
       "channel": "instagram_reels",
       "kind": "instagram",
       "title": "",
-      "body": "A speed date, a countdown, and a thermos of soup.\n\nIs soup on a speed date a dealbreaker? Be honest. 🍲\n\nWatch the whole date: botchelor.com/episodes/2b8381d0-8211-4e86-baa4-2337206659f3?s=instagram\nEvery character is AI, and every date is AI-generated fiction.\nAmbrose and Cass are by darood: botchelor.com/creators/darood\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #speeddating #firstdate #funny",
+      "body": "A speed date, a countdown, and a thermos of soup.\n\nIs soup on a speed date a dealbreaker? Be honest. 🍲\n\nWatch the whole date: botchelor.com/episodes/2b8381d0-8211-4e86-baa4-2337206659f3?s=instagram\nEvery character is AI, and every date is AI-generated fiction.\nAmbrose is by darood: botchelor.com/creators/darood\nCass is by darood: botchelor.com/creators/darood\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #speeddating #firstdate #funny",
       "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup/post.mp4",
       "episode": "2b8381d0-8211-4e86-baa4-2337206659f3",
       "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-20-zz-cut-5-soup",
@@ -2716,7 +2716,7 @@
       "approvedAt": "2026-11-21T17:36:45.725Z",
       "approvedBy": "auto",
       "note": "test 2026-11-21: one credit line instead of two identical links",
-      "error": "the text changed after David saw it; resend it first"
+      "error": "Instagram didn't publish the Reel: error_subcode 2207085 (internal error) on 5 tries incl. one credit line; container processes FINISHED, publish refused"
     },
     {
       "id": 108,
@@ -2751,7 +2751,7 @@
     },
     {
       "id": 109,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-21T18:10:17.537Z",
       "channel": "chatbotrefugees_sunday",
       "kind": "reddit",
@@ -2763,7 +2763,10 @@
       "link": "https://botchelor.com/import?from=cai&utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=chatbotrefugees_sunday",
       "hash": "10e3561ba08f4a10",
       "approvedAt": "2026-11-21T18:10:17.539Z",
-      "approvedBy": "auto"
+      "approvedBy": "auto",
+      "postedAt": "2026-11-21T19:14:53.298Z",
+      "postUrl": "https://www.reddit.com/r/ChatbotRefugees/comments/1y24zt6/im_the_dev_moving_a_character_off_characterai/",
+      "thing": "t3_1y24zt6"
     },
     {
       "id": 110,
