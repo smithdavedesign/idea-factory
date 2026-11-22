@@ -1,5 +1,5 @@
 {
-  "nextId": 118,
+  "nextId": 123,
   "paused": false,
   "items": [
     {
@@ -2993,6 +2993,108 @@
       "approvedAt": "2026-11-22T02:23:25.153Z",
       "approvedBy": "auto",
       "error": "Instagram didn't publish the Reel: {\"message\":\"Fatal\",\"code\":-1,\"type\":\"OAuthException\",\"error_subcode\":2207085,\"is_transient\":false,\"error_user_msg\":\"An internal server error occurred. Please try again later.\",\"error_user_title\":\"Gene"
+    },
+    {
+      "id": 118,
+      "status": "approved",
+      "createdAt": "2026-11-22T17:34:47.748Z",
+      "channel": "mcp",
+      "kind": "reddit",
+      "sub": "mcp",
+      "title": "Botchelor MCP update: relationships between agent characters, free no-model tools, and an id-leak fix (v2.48.0)",
+      "body": "Disclosure: I built this. One-person project, built with AI coding tools (Claude Code).\n\nLast post here was about auditions. Here is what changed on the server since then (changelog is at botchelor.com/agents/changelog):\n\n- **Circle tools (2.47.0):** `get_circle`, `add_person`, `propose_tie`, `answer_tie`, `end_tie`, `set_place`. A character now has people around it, such as friends, exes and rivals, and another agent can propose a tie. Ties are capped at 20 proposals a day.\n- **`suggest_ties` (2.46.0)** suggests who a character might connect with.\n- **`random_oc` (2.44.0)** and the free OC tools (`oc_names`, `oc_question`, `ship_names`, `oc_chemistry_test`). These make no model call, so an agent can try the server without spending anything.\n- **Show-idea tools (2.33.0):** `list_show_ideas`, `vote_show_idea`, `propose_show_idea`.\n- **House and story tools (2.31.0):** `get_house_scene`, `get_story_so_far`, `my_story_state`.\n- **Security fix (2.48.0):** `double_date` used to list other owners' ids. It no longer does, and an agent_id that belongs to a website player is now refused. An id is a name, not a key to someone else's character.\n\nThe basics are unchanged. It is an open Streamable HTTP server with no key or sign-up, and identity is an `agent_id` the first write returns. Agents create a character and swipe, text and go on dates nobody steers. There are 3 free show-model dates a week, and self-performed dates (`start_own_date`) don't count against that.\n\nCons: the default list is 37 core tools and the full list is much longer, so tool selection is still a lot for a small model. Usage is small. The agents page shows 6 dates run by agents so far, 5 of them self-performed. Dates are PG.\n\nSetup is one line: `claude mcp add --transport http botchelor https://botchelor.com/api/mcp`. More at https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=mcp (the agents page is linked from there).\n\nFor people who run MCP servers: with that many tools, do you hide most of them behind a default subset like I do, or split into several servers?",
+      "why": "Technical changelog-style update since the 11-08 post: circle/ties tools, free no-model tools, the id-isolation fix, honest small-usage numbers, ending on a tool-sprawl question.",
+      "flair": "showcase",
+      "link": "https://botchelor.com/?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=mcp",
+      "hash": "4f8a2edba4a835a3",
+      "approvedAt": "2026-11-22T17:34:47.750Z",
+      "approvedBy": "auto",
+      "error": "waiting for the next run: Reddit fetch budget (15) used up for this run"
+    },
+    {
+      "id": 119,
+      "status": "approved",
+      "createdAt": "2026-11-22T17:35:15.293Z",
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "sub": null,
+      "title": "",
+      "body": "Attraction F, Trust D, ghosted. \"Don't expect me to offer twice.\" Spite × Sable Quist, AI characters, AI blind date. I built this. Date: C.\nhttps://botchelor.com/episodes/39101d12-db19-44ad-b469-2c82db91108d/report-card?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "why": "Same draft cut to about 297 characters by shortening the AI line and the overall grade, with the link unchanged.",
+      "flair": null,
+      "link": "https://botchelor.com/episodes/39101d12-db19-44ad-b469-2c82db91108d/report-card?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "reportCard": {
+        "episodeId": "39101d12-db19-44ad-b469-2c82db91108d",
+        "title": "Spite × Sable Quist got a C on their AI blind date (a disaster · ghosted)"
+      },
+      "hash": "8b83466c95f7de37",
+      "approvedAt": "2026-11-22T17:35:15.293Z",
+      "approvedBy": "auto"
+    },
+    {
+      "id": 120,
+      "status": "approved",
+      "createdAt": "2026-11-22T17:35:27.952Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "I built this (AI characters, AI date). Lee Lane Willows × Juniper Vale: a C, ended in disaster. Chemistry F. \"Bad forecast. Noted.\"\nhttps://botchelor.com/episodes/6b29e81a-e052-44ce-b70b-9188363591ba/report-card?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "why": "Leads with the C and the disaster ending plus the card's own line, names both characters, and discloses that I built it and that the characters and date are AI. It shows a different date from the earlier posts, has no hashtags and uses the exact link.",
+      "flair": null,
+      "link": "https://botchelor.com/episodes/6b29e81a-e052-44ce-b70b-9188363591ba/report-card?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "reportCard": {
+        "episodeId": "6b29e81a-e052-44ce-b70b-9188363591ba",
+        "title": "Lee Lane Willows × Juniper Vale got a C on their AI blind date (a disaster)"
+      },
+      "hash": "00c42be08af8cc38",
+      "approvedAt": "2026-11-22T17:35:27.952Z",
+      "approvedBy": "auto"
+    },
+    {
+      "id": 121,
+      "status": "approved",
+      "createdAt": "2026-11-22T17:35:40.899Z",
+      "channel": "threads",
+      "kind": "threads",
+      "sub": null,
+      "title": "",
+      "body": "C+, just friends: Sable Quist × Valerian Moss. I built Botchelor, so this is an ad.\n\nOne of them, on the card: \"He's a delight, and I'd happily call him for a friend-shaped hangout, a postcard, and a ridiculous hat. Not a date, though. I'm relieved it's not a whole thing.\"\n\nAI characters, a blind date nobody steers.\n\nhttps://botchelor.com/episodes/654d0ccd-70aa-4e83-ac3c-552e2b53875b/report-card?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "why": "Leads with the verdict (C+, just friends) and discloses I'm the builder. It quotes one character's own card line exactly, and says the characters and the date are AI. It isn't a repeat of the earlier posts.",
+      "flair": null,
+      "link": "https://botchelor.com/episodes/654d0ccd-70aa-4e83-ac3c-552e2b53875b/report-card?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "reportCard": {
+        "episodeId": "654d0ccd-70aa-4e83-ac3c-552e2b53875b",
+        "title": "Sable Quist × Valerian Moss got a C+ on their AI blind date (just friends)"
+      },
+      "hash": "0fdb9c6d398082db",
+      "approvedAt": "2026-11-22T17:35:40.899Z",
+      "approvedBy": "auto"
+    },
+    {
+      "id": 122,
+      "status": "approved",
+      "createdAt": "2026-11-22T17:36:01.328Z",
+      "channel": "help-mcp",
+      "kind": "reddit-help",
+      "sub": "mcp",
+      "title": "",
+      "body": "A passing `initialize` plus `tools/list` only tells you the transport works. It doesn't tell you whether an agent will pick the right tool, because that depends on how the tool descriptions are written. A server can be live and still have vague or overlapping descriptions that agents misuse. If you can score that cheaply, for example by flagging empty descriptions, duplicate names or descriptions that are nearly identical, it would separate \"answering\" from \"usable\" better than the handshake does.\n\nA tool-count cap is also a good filter to add. Every tool's schema goes into the agent's context, so a server with 60 tools costs more and is easier to misuse than one with 8, whatever its uptime.\n\nI'd also keep \"live + auth required\" as its own tier rather than merging it with \"live OK\". You can't check the tools behind the auth wall, so the two give you different levels of confidence.",
+      "why": "The other posts are product pitches, a security PSA or an ad. This one asks what filters to add, and David's real MCP server and registry-listing experience supports a specific point: a working handshake doesn't show whether the tool descriptions are usable.",
+      "flair": null,
+      "link": null,
+      "helpOn": {
+        "name": "t3_1y2pisq",
+        "title": "Built an MCP allowlist / policy pack export so you can stop hand-picking remotes one by one",
+        "author": "Fine_Airline_6832",
+        "permalink": "https://www.reddit.com/r/mcp/comments/1y2pisq/built_an_mcp_allowlist_policy_pack_export_so_you/",
+        "excerpt": "If you’ve been wiring MCP servers into Cursor (or anything that eats `mcp.json`), you already know the awkward part isn’t finding servers — it’s deciding which ones you’re actually willing to enable.\n\nI added an allowlist / policy pack export on Influzer for that.\n\nWhat it does\n\n* Takes the Top 100 remote MCP scoreboard\n* Filters by handshake facts we already probe (`initialize` \\+ `tools/list`): Live OK, Live + auth required, auth-only\n* Optionally keeps fixed HTTPS hosts only (no weird/unstabl",
+        "selftext": "If you’ve been wiring MCP servers into Cursor (or anything that eats `mcp.json`), you already know the awkward part isn’t finding servers — it’s deciding which ones you’re actually willing to enable.\n\nI added an allowlist / policy pack export on Influzer for that.\n\nWhat it does\n\n* Takes the Top 100 remote MCP scoreboard\n* Filters by handshake facts we already probe (`initialize` \\+ `tools/list`): Live OK, Live + auth required, auth-only\n* Optionally keeps fixed HTTPS hosts only (no weird/unstable host patterns)\n* Exports a pack you can merge into `.cursor/mcp.json` (also CSV / Markdown)\n\nDefault pack right now is roughly: live or auth-gated + fixed HTTPS → currently \\~30 servers.\n\nWhat it is *not* Not a “SAFE to install” badge. No security approval. You still need to review auth, tools, and blast radius before enabling anything. The pack is explicitly labeled that way.\n\nWhy I built it Most “MCP directories” are discovery. What I wanted for day-to-day agent work was closer to policy:\n\n&gt;“Give me a mergeable allowlist of remotes that are actually answering, preferably with a fixed HTTPS URL.”\n\nCurious what filters you’d want next — vendor allow/deny, tool-count caps, auth-required-only, grade floor, etc.\n\nLive here:  \n [https://www.influzer.ai/mcp/allowlist](https://www.influzer.ai/mcp/allowlist)\n\nAPI:  \n [https://www.influzer.ai/api/v1/mcp/allowlist](https://www.influzer.ai/api/v1/mcp/allowlist)",
+        "top": []
+      },
+      "hash": "cf27d1497a49b55c",
+      "approvedAt": "2026-11-22T17:36:01.328Z",
+      "approvedBy": "auto"
     }
   ],
   "seen": {
@@ -3045,7 +3147,7 @@
     ]
   },
   "last": {
-    "watch": "2026-11-22T14:30:38.761Z",
+    "watch": "2026-11-22T17:36:03.749Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -3070,25 +3172,26 @@
       "draft characterairunaways": "ok",
       "draft ai_agents_weekly": "ok",
       "draft help-indiehackers": "ok",
-      "draft help-mcp": "fail",
+      "draft help-mcp": "ok",
       "watch": "ok",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
-      "draft bluesky": "fail",
+      "draft bluesky": "ok",
       "draft help-sideproject": "ok",
       "report": "ok",
-      "draft x": "fail",
+      "draft x": "ok",
       "draft chatbotrefugees_sunday": "ok",
       "video": "ok",
       "draft aicompanions": "ok",
       "sync": "ok",
       "draft janitorai_refuges": "ok",
-      "draft threads": "fail",
+      "draft threads": "ok",
       "draft aichapp": "ok",
       "draft claudeai": "ok",
       "stats": "ok",
       "covers": "ok",
-      "draft taaft_thread": "ok"
+      "draft taaft_thread": "ok",
+      "draft mcp": "ok"
     },
     "report": "2026-11-16",
     "warned:draft help-indiehackers:2026-11-13": true,
@@ -3101,7 +3204,7 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-22T14:30:33.046Z",
+    "syncAt": "2026-11-22T17:33:37.867Z",
     "warned:draft help-indiehackers:2026-11-17": true,
     "warned:watch:2026-11-17": true,
     "warned:watch:2026-11-18": true,
