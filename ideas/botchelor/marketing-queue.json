@@ -3106,7 +3106,7 @@
     },
     {
       "id": 122,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-22T17:36:01.328Z",
       "channel": "help-mcp",
       "kind": "reddit-help",
@@ -3128,7 +3128,10 @@
       "hash": "cf27d1497a49b55c",
       "approvedAt": "2026-11-22T17:36:01.328Z",
       "approvedBy": "auto",
-      "error": "waiting for the next run: Reddit blocked this request (HTTP 404, a web page instead of JSON); waiting for the next run"
+      "error": "waiting for the next run: Reddit blocked this request (HTTP 404, a web page instead of JSON); waiting for the next run",
+      "postedAt": "2026-11-22T18:39:55.019Z",
+      "postUrl": "https://www.reddit.com/r/mcp/comments/1y2pisq/built_an_mcp_allowlist_policy_pack_export_so_you/19t16r3j01u2r/",
+      "thing": "t1_19t16r3j01u2r"
     }
   ],
   "seen": {
