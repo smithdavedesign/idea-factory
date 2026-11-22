@@ -3046,7 +3046,7 @@
     },
     {
       "id": 120,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-22T17:35:27.952Z",
       "channel": "x",
       "kind": "x",
@@ -3062,11 +3062,21 @@
       },
       "hash": "00c42be08af8cc38",
       "approvedAt": "2026-11-22T17:35:27.952Z",
-      "approvedBy": "auto"
+      "approvedBy": "auto",
+      "postedAt": "2026-11-22T18:08:12.640Z",
+      "postUrl": "https://x.com/botchelorLLC/status/2124565532490002830",
+      "thing": "2124565532490002830",
+      "image": {
+        "source": "og",
+        "page": "https://botchelor.com/episodes/6b29e81a-e052-44ce-b70b-9188363591ba/report-card?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+        "ok": true,
+        "how": "attached",
+        "at": "2026-11-22T18:08:12.641Z"
+      }
     },
     {
       "id": 121,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-22T17:35:40.899Z",
       "channel": "threads",
       "kind": "threads",
@@ -3082,7 +3092,17 @@
       },
       "hash": "0fdb9c6d398082db",
       "approvedAt": "2026-11-22T17:35:40.899Z",
-      "approvedBy": "auto"
+      "approvedBy": "auto",
+      "postedAt": "2026-11-22T18:09:18.777Z",
+      "postUrl": "https://www.threads.com/@botchelor/post/DgDajoFmaTF",
+      "thing": "DgDajoFmaTF",
+      "image": {
+        "source": "og",
+        "page": "https://botchelor.com/episodes/654d0ccd-70aa-4e83-ac3c-552e2b53875b/report-card?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+        "ok": true,
+        "how": "attached",
+        "at": "2026-11-22T18:09:18.778Z"
+      }
     },
     {
       "id": 122,
@@ -3107,7 +3127,8 @@
       },
       "hash": "cf27d1497a49b55c",
       "approvedAt": "2026-11-22T17:36:01.328Z",
-      "approvedBy": "auto"
+      "approvedBy": "auto",
+      "error": "waiting for the next run: Reddit blocked this request (HTTP 404, a web page instead of JSON); waiting for the next run"
     }
   ],
   "seen": {
