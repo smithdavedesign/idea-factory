@@ -2996,7 +2996,7 @@
     },
     {
       "id": 118,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-22T17:34:47.748Z",
       "channel": "mcp",
       "kind": "reddit",
@@ -3009,11 +3009,14 @@
       "hash": "4f8a2edba4a835a3",
       "approvedAt": "2026-11-22T17:34:47.750Z",
       "approvedBy": "auto",
-      "error": "waiting for the next run: Reddit fetch budget (15) used up for this run"
+      "error": "waiting for the next run: Reddit fetch budget (15) used up for this run",
+      "postedAt": "2026-11-22T18:06:10.569Z",
+      "postUrl": "https://www.reddit.com/r/mcp/comments/1y2voam/botchelor_mcp_update_relationships_between_agent/",
+      "thing": "t3_1y2voam"
     },
     {
       "id": 119,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-22T17:35:15.293Z",
       "channel": "bluesky",
       "kind": "bluesky",
@@ -3029,7 +3032,17 @@
       },
       "hash": "8b83466c95f7de37",
       "approvedAt": "2026-11-22T17:35:15.293Z",
-      "approvedBy": "auto"
+      "approvedBy": "auto",
+      "postedAt": "2026-11-22T18:06:58.089Z",
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2w7fwtajf2d",
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2w7fwtajf2d",
+      "image": {
+        "source": "og",
+        "page": "https://botchelor.com/episodes/39101d12-db19-44ad-b469-2c82db91108d/report-card?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+        "ok": true,
+        "how": "link card",
+        "at": "2026-11-22T18:06:58.089Z"
+      }
     },
     {
       "id": 120,

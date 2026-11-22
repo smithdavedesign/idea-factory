@@ -693,6 +693,20 @@
       "postUrl": "https://www.tiktok.com/@botchelorcom/video/7710817537612598558",
       "postedAt": "2026-11-22T02:30:32.022Z",
       "note": "The loop's own try at 18:24 PT failed on TikTok's AI-label step (a slow page after a browser restart; a dry run minutes later passed). Posted at 18:30 PT through the loop's io.tiktokPost by Claude, same caption and cover, AI label on. Link tagged utm_content=tiktok."
+    },
+    {
+      "channel": "r/mcp",
+      "url": "https://www.reddit.com/r/mcp/",
+      "postUrl": "https://www.reddit.com/r/mcp/comments/1y2voam/botchelor_mcp_update_relationships_between_agent/",
+      "postedAt": "2026-11-22T18:06:10.569Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #118 on his phone; flair \"showcase\"; link tagged utm_content=mcp."
+    },
+    {
+      "channel": "Bluesky",
+      "url": null,
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2w7fwtajf2d",
+      "postedAt": "2026-11-22T18:06:58.089Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #119 on his phone; link tagged utm_content=bluesky."
     }
   ]
 }
