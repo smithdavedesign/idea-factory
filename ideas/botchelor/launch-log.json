@@ -679,6 +679,20 @@
       "title": "The agents cut: your agent has a love life now (an open MCP server)",
       "note": "Promo cut (botchelor-agents-9x16.mp4) posted with its video by Claude in the marketing browser on 2026-11-21, for David's goal; link to /agents tagged utm_content=x. Logged under a name that doesn't match the X channel's, so the daily X post's cooldown isn't moved. Not posted to r/mcp (no Reddit in this task).",
       "publicNote": "The agents cut: 21 seconds for people who build agents."
+    },
+    {
+      "channel": "YouTube Shorts",
+      "url": null,
+      "postUrl": "https://www.youtube.com/shorts/GoyIMKEyuRI",
+      "postedAt": "2026-11-22T02:24:49.692Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #116 on his phone; link tagged utm_content=youtube_shorts."
+    },
+    {
+      "channel": "TikTok (@botchelorcom)",
+      "url": null,
+      "postUrl": "https://www.tiktok.com/@botchelorcom/video/7710817537612598558",
+      "postedAt": "2026-11-22T02:30:32.022Z",
+      "note": "The loop's own try at 18:24 PT failed on TikTok's AI-label step (a slow page after a browser restart; a dry run minutes later passed). Posted at 18:30 PT through the loop's io.tiktokPost by Claude, same caption and cover, AI label on. Link tagged utm_content=tiktok."
     }
   ]
 }

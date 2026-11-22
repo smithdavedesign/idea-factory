@@ -1,5 +1,5 @@
 {
-  "nextId": 114,
+  "nextId": 118,
   "paused": false,
   "items": [
     {
@@ -2872,6 +2872,91 @@
       },
       "note": "The 20-second ad (promo cut), not a daily clip. Posted on 2026-11-21 through the loop's own io.tiktokPost for David's goal (post the three promo videos); TikTok's AI-generated label on.",
       "hash": "d0cf115992aad07a"
+    },
+    {
+      "id": 114,
+      "status": "kit",
+      "createdAt": "2026-11-22T02:23:25.146Z",
+      "channel": "video",
+      "kind": "video",
+      "title": "",
+      "body": "The quiet corner was a fire exit. It worked anyway.\n\nForty minutes of apologies: charming or exhausting? 😅\n\nWatch the whole date: botchelor.com/episodes/cdc14f1e-3b74-4770-9f4e-581a5c72d454?s=tiktok\nEvery character is AI, and every date is AI-generated fiction.\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #nightclub #firstdate #romance",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-21-zz-cut-6-doorway-with-ambitions/post.mp4",
+      "episode": "cdc14f1e-3b74-4770-9f4e-581a5c72d454",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-21-zz-cut-6-doorway-with-ambitions",
+      "cut": "6-doorway-with-ambitions",
+      "hash": "15fa4208f5fedaef"
+    },
+    {
+      "id": 115,
+      "status": "posted",
+      "createdAt": "2026-11-22T02:23:25.150Z",
+      "channel": "tiktok",
+      "kind": "tiktok",
+      "title": "",
+      "body": "The quiet corner was a fire exit. It worked anyway.\n\nForty minutes of apologies: charming or exhausting? 😅\n\nWatch the whole date: botchelor.com/episodes/cdc14f1e-3b74-4770-9f4e-581a5c72d454?s=tiktok\nEvery character is AI, and every date is AI-generated fiction.\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #nightclub #firstdate #romance",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-21-zz-cut-6-doorway-with-ambitions/post.mp4",
+      "episode": "cdc14f1e-3b74-4770-9f4e-581a5c72d454",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-21-zz-cut-6-doorway-with-ambitions",
+      "cut": "6-doorway-with-ambitions",
+      "hash": "15fa4208f5fedaef",
+      "approvedAt": "2026-11-22T02:23:25.150Z",
+      "approvedBy": "auto",
+      "error": "couldn't turn on TikTok's AI-generated content label (off); nothing was posted",
+      "postedAt": "2026-11-22T02:30:32.022Z",
+      "postUrl": "https://www.tiktok.com/@botchelorcom/video/7710817537612598558",
+      "thing": "7710817537612598558",
+      "image": {
+        "source": "kit",
+        "kit": "2026-11-21-zz-cut-6-doorway-with-ambitions",
+        "ok": true,
+        "how": "cover",
+        "at": "2026-11-22T02:30:32.022Z"
+      },
+      "note": "The loop's own try at 18:24 PT failed on TikTok's AI-label step (a slow page after a browser restart; a dry run minutes later passed). Posted at 18:30 PT through the loop's io.tiktokPost by Claude, same caption and cover, AI label on."
+    },
+    {
+      "id": 116,
+      "status": "posted",
+      "createdAt": "2026-11-22T02:23:25.152Z",
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "title": "The quiet corner was a fire exit. It worked anyway. #Shorts",
+      "body": "The quiet corner was a fire exit. It worked anyway.\n\nForty minutes of apologies: charming or exhausting? 😅\n\nWatch the whole date: botchelor.com/episodes/cdc14f1e-3b74-4770-9f4e-581a5c72d454?s=youtube\nEvery character is AI, and every date is AI-generated fiction.\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #nightclub #firstdate #romance",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-21-zz-cut-6-doorway-with-ambitions/post.mp4",
+      "episode": "cdc14f1e-3b74-4770-9f4e-581a5c72d454",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-21-zz-cut-6-doorway-with-ambitions",
+      "cut": "6-doorway-with-ambitions",
+      "hash": "0fee39cd3004e433",
+      "approvedAt": "2026-11-22T02:23:25.152Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-22T02:24:49.692Z",
+      "postUrl": "https://www.youtube.com/shorts/GoyIMKEyuRI",
+      "thing": "GoyIMKEyuRI",
+      "image": {
+        "source": "kit",
+        "kit": "2026-11-21-zz-cut-6-doorway-with-ambitions",
+        "ok": true,
+        "how": "thumbnail",
+        "at": "2026-11-22T02:24:49.692Z"
+      }
+    },
+    {
+      "id": 117,
+      "status": "failed",
+      "createdAt": "2026-11-22T02:23:25.153Z",
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "title": "",
+      "body": "The quiet corner was a fire exit. It worked anyway.\n\nForty minutes of apologies: charming or exhausting? 😅\n\nWatch the whole date: botchelor.com/episodes/cdc14f1e-3b74-4770-9f4e-581a5c72d454?s=instagram\nEvery character is AI, and every date is AI-generated fiction.\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #nightclub #firstdate #romance",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-21-zz-cut-6-doorway-with-ambitions/post.mp4",
+      "episode": "cdc14f1e-3b74-4770-9f4e-581a5c72d454",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-21-zz-cut-6-doorway-with-ambitions",
+      "cut": "6-doorway-with-ambitions",
+      "hash": "27b0e21506a56ab5",
+      "approvedAt": "2026-11-22T02:23:25.153Z",
+      "approvedBy": "auto",
+      "error": "Instagram didn't publish the Reel: {\"message\":\"Fatal\",\"code\":-1,\"type\":\"OAuthException\",\"error_subcode\":2207085,\"is_transient\":false,\"error_user_msg\":\"An internal server error occurred. Please try again later.\",\"error_user_title\":\"Gene"
     }
   ],
   "seen": {
@@ -2923,7 +3008,7 @@
     ]
   },
   "last": {
-    "watch": "2026-11-21T21:15:57.834Z",
+    "watch": "2026-11-22T02:23:33.176Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -2949,7 +3034,7 @@
       "draft ai_agents_weekly": "ok",
       "draft help-indiehackers": "ok",
       "draft help-mcp": "ok",
-      "watch": "fail",
+      "watch": "ok",
       "listings": "ok",
       "draft modelcontextprotocol": "ok",
       "draft bluesky": "ok",
@@ -2979,7 +3064,7 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-21T23:16:11.351Z",
+    "syncAt": "2026-11-22T02:23:25.116Z",
     "warned:draft help-indiehackers:2026-11-17": true,
     "warned:watch:2026-11-17": true,
     "warned:watch:2026-11-18": true,
