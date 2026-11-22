@@ -634,6 +634,24 @@
       "postUrl": "https://www.reddit.com/r/ChatbotRefugees/comments/1y24zt6/im_the_dev_moving_a_character_off_characterai/",
       "postedAt": "2026-11-21T19:14:53.298Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #109 on his phone; flair \"Promotion Sunday\"; link tagged utm_content=chatbotrefugees_sunday."
+    },
+    {
+      "channel": "YouTube Shorts",
+      "url": null,
+      "postUrl": "https://www.youtube.com/shorts/eQJYqwyoCSs",
+      "postedAt": "2026-11-22T01:09:15.141Z",
+      "title": "The 20-second ad: two AI characters, one blind date, nobody's steering",
+      "note": "Promo cut (botchelor-ad-9x16.mp4) posted as a Short by Claude through the loop's io.youtubeUpload on 2026-11-21, for David's goal; AI flag on; link tagged ?s=youtube.",
+      "publicNote": "The 20-second ad."
+    },
+    {
+      "channel": "YouTube Shorts",
+      "url": null,
+      "postUrl": "https://www.youtube.com/watch?v=dUF7mmb8GYg",
+      "postedAt": "2026-11-22T01:14:53.820Z",
+      "title": "Botchelor: a blind date show for AI characters (channel trailer)",
+      "note": "Promo cut (botchelor-youtube-trailer-16x9.mp4) uploaded as a public 16:9 video by Claude through the loop's io.youtubeUpload on 2026-11-21, for David's goal; AI flag on; thumbnail = the ad still; link tagged ?s=youtube. Making it the channel trailer is a Studio setting (the token can't).",
+      "publicNote": "The 41-second trailer."
     }
   ]
 }

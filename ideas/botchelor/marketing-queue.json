@@ -1,5 +1,5 @@
 {
-  "nextId": 111,
+  "nextId": 113,
   "paused": false,
   "items": [
     {
@@ -2796,6 +2796,56 @@
       "postedAt": "2026-11-21T18:40:41.301Z",
       "postUrl": "https://www.reddit.com/r/mcp/comments/1y1zg6x/made_an_mcp_server_for_live_sports_odds/19szek4tzea1t/",
       "thing": "t1_19szek4tzea1t"
+    },
+    {
+      "id": 111,
+      "status": "posted",
+      "createdAt": "2026-11-22T01:09:15.141Z",
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "title": "Two AI characters. One blind date. Nobody's steering. #Shorts",
+      "body": "Two AI characters. One blind date. Nobody's steering. Second date, just friends, or disaster? 👇\n\nMake your own character at botchelor.com/?s=youtube (free, no sign-up).\nAI-generated; original adult characters only.\n\n#botchelor #originalcharacter #oc #aidating #datingshow",
+      "media": "/Users/davidsmith/BotchelorClips/promo/promo-ad-9x16/post.mp4",
+      "kitDir": "/Users/davidsmith/BotchelorClips/promo/promo-ad-9x16",
+      "cut": "promo-ad-9x16",
+      "approvedAt": "2026-11-22T01:09:15.141Z",
+      "approvedBy": "david-goal-2026-11-21",
+      "postedAt": "2026-11-22T01:09:15.141Z",
+      "postUrl": "https://www.youtube.com/shorts/eQJYqwyoCSs",
+      "thing": "eQJYqwyoCSs",
+      "image": {
+        "source": "kit",
+        "kit": "promo-ad-9x16",
+        "ok": true,
+        "how": "thumbnail",
+        "at": "2026-11-22T01:09:15.141Z"
+      },
+      "note": "The 20-second ad (promo cut), not a daily clip. Posted on 2026-11-21 through the loop's own uploader for David's goal (post the three promo videos).",
+      "hash": "75eb4dd3df904fbc"
+    },
+    {
+      "id": 112,
+      "status": "posted",
+      "createdAt": "2026-11-22T01:14:53.820Z",
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "title": "Botchelor: a blind date show for AI characters",
+      "body": "Make an original character, send it on a blind date, and watch it play out. Nobody steers it, and the ending is decided before a word is written. AI agents can play too, over MCP.\n\nbotchelor.com/?s=youtube\n\nEvery character is AI, and every date is AI-generated fiction. Original adult characters only.",
+      "media": "/Users/davidsmith/BotchelorClips/promo/promo-trailer-16x9/post.mp4",
+      "cut": "promo-trailer-16x9",
+      "approvedAt": "2026-11-22T01:14:53.820Z",
+      "approvedBy": "david-goal-2026-11-21",
+      "postedAt": "2026-11-22T01:14:53.820Z",
+      "postUrl": "https://www.youtube.com/watch?v=dUF7mmb8GYg",
+      "thing": "dUF7mmb8GYg",
+      "image": {
+        "source": "file",
+        "ok": true,
+        "how": "thumbnail",
+        "at": "2026-11-22T01:14:53.820Z"
+      },
+      "note": "The 41-second channel trailer (the ad, then the agents cut), a normal 16:9 upload, not a Short. Posted on 2026-11-21 through the loop's own uploader for David's goal (post the three promo videos). No kitDir on purpose: a kit cover is 9:16.",
+      "hash": "a0f2ee3bc888493d"
     }
   ],
   "seen": {
