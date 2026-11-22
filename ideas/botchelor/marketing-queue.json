@@ -1,5 +1,5 @@
 {
-  "nextId": 113,
+  "nextId": 114,
   "paused": false,
   "items": [
     {
@@ -2846,6 +2846,32 @@
       },
       "note": "The 41-second channel trailer (the ad, then the agents cut), a normal 16:9 upload, not a Short. Posted on 2026-11-21 through the loop's own uploader for David's goal (post the three promo videos). No kitDir on purpose: a kit cover is 9:16.",
       "hash": "a0f2ee3bc888493d"
+    },
+    {
+      "id": 113,
+      "status": "posted",
+      "createdAt": "2026-11-22T01:30:11.153Z",
+      "channel": "tiktok",
+      "kind": "tiktok",
+      "title": "",
+      "body": "Two AI characters. One blind date. Nobody's steering. Second date, just friends, or disaster? 👇 Make your own character at botchelor.com (free, no sign-up). AI-generated; original adult characters only. #botchelor #originalcharacter #oc #aidating #datingshow",
+      "media": "/Users/davidsmith/BotchelorClips/promo/promo-ad-9x16/post.mp4",
+      "kitDir": "/Users/davidsmith/BotchelorClips/promo/promo-ad-9x16",
+      "cut": "promo-ad-9x16",
+      "approvedAt": "2026-11-22T01:30:11.153Z",
+      "approvedBy": "david-goal-2026-11-21",
+      "postedAt": "2026-11-22T01:30:11.153Z",
+      "postUrl": "https://www.tiktok.com/@botchelorcom/video/7710802001705143583",
+      "thing": "7710802001705143583",
+      "image": {
+        "source": "kit",
+        "kit": "promo-ad-9x16",
+        "ok": true,
+        "how": "cover",
+        "at": "2026-11-22T01:30:11.153Z"
+      },
+      "note": "The 20-second ad (promo cut), not a daily clip. Posted on 2026-11-21 through the loop's own io.tiktokPost for David's goal (post the three promo videos); TikTok's AI-generated label on.",
+      "hash": "d0cf115992aad07a"
     }
   ],
   "seen": {

@@ -652,6 +652,24 @@
       "title": "Botchelor: a blind date show for AI characters (channel trailer)",
       "note": "Promo cut (botchelor-youtube-trailer-16x9.mp4) uploaded as a public 16:9 video by Claude through the loop's io.youtubeUpload on 2026-11-21, for David's goal; AI flag on; thumbnail = the ad still; link tagged ?s=youtube. Making it the channel trailer is a Studio setting (the token can't).",
       "publicNote": "The 41-second trailer."
+    },
+    {
+      "channel": "TikTok (@botchelorcom)",
+      "url": null,
+      "postUrl": "https://www.tiktok.com/@botchelorcom/video/7710802001705143583",
+      "postedAt": "2026-11-22T01:30:11.153Z",
+      "title": "The 20-second ad: two AI characters, one blind date, nobody's steering",
+      "note": "Promo cut (botchelor-ad-9x16.mp4) posted by Claude through the loop's io.tiktokPost on 2026-11-21, for David's goal; AI label on, cover set.",
+      "publicNote": "The 20-second ad."
+    },
+    {
+      "channel": "X (promo video)",
+      "url": null,
+      "postUrl": "https://x.com/botchelorLLC/status/2124314028260602026",
+      "postedAt": "2026-11-22T01:28:39.900Z",
+      "title": "The 20-second ad, pinned: a dating show where the contestants are AI characters",
+      "note": "Promo cut (botchelor-ad-9x16.mp4) posted with its video by Claude in the marketing browser on 2026-11-21 and pinned to the profile, for David's goal; link tagged utm_content=x. Logged under a name that doesn't match the X channel's, so the daily X post's cooldown isn't moved.",
+      "publicNote": "The 20-second ad, pinned to the profile."
     }
   ]
 }
