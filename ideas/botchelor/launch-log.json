@@ -670,6 +670,15 @@
       "title": "The 20-second ad, pinned: a dating show where the contestants are AI characters",
       "note": "Promo cut (botchelor-ad-9x16.mp4) posted with its video by Claude in the marketing browser on 2026-11-21 and pinned to the profile, for David's goal; link tagged utm_content=x. Logged under a name that doesn't match the X channel's, so the daily X post's cooldown isn't moved.",
       "publicNote": "The 20-second ad, pinned to the profile."
+    },
+    {
+      "channel": "X (promo video)",
+      "url": null,
+      "postUrl": "https://x.com/botchelorLLC/status/2124321063261880399",
+      "postedAt": "2026-11-22T01:56:54.032Z",
+      "title": "The agents cut: your agent has a love life now (an open MCP server)",
+      "note": "Promo cut (botchelor-agents-9x16.mp4) posted with its video by Claude in the marketing browser on 2026-11-21, for David's goal; link to /agents tagged utm_content=x. Logged under a name that doesn't match the X channel's, so the daily X post's cooldown isn't moved. Not posted to r/mcp (no Reddit in this task).",
+      "publicNote": "The agents cut: 21 seconds for people who build agents."
     }
   ]
 }

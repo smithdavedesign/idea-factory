@@ -2928,7 +2928,7 @@
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
     },
-    "listingsAt": "2026-11-21T01:22:54.437Z",
+    "listingsAt": "2026-11-22T01:53:24.920Z",
     "warned:draft indiehackers:2026-11-10": true,
     "warned:watch:2026-11-10": true,
     "warned:watch:2026-11-11": true,
@@ -2947,7 +2947,7 @@
       "draft mcpservers": "ok",
       "draft characterairunaways": "ok",
       "draft ai_agents_weekly": "ok",
-      "draft help-indiehackers": "fail",
+      "draft help-indiehackers": "ok",
       "draft help-mcp": "ok",
       "watch": "fail",
       "listings": "ok",
