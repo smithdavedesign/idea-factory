@@ -292,6 +292,51 @@ test('postRetryLater: a spent Reddit budget, or a browser that won\'t start (8 h
   assert.equal(M.postRetryLater(new Error('X\'s composer didn\'t take the text exactly (tried twice); nothing was posted'), { item, now: at('2026-11-14T16:24:50Z') }), false);
 });
 
+test('postRetryLater: a TikTok post that stopped before Post goes again next run, three more times at most', () => {
+  // 2026-11-22: #115, the day's TikTok, 37 s after it was approved; nothing was up, and it waited for a hand retry.
+  const label = new Error('couldn\'t turn on TikTok\'s AI-generated content label (off); nothing was posted');
+  const item = { kind: 'tiktok', channel: 'tiktok', approvedAt: '2026-11-22T02:23:25.000Z' };
+  const now = at('2026-11-22T02:24:02Z');
+  assert.equal(M.postRetryLater(label, { item, now }), 'tiktok');
+  // Every message tiktokPost throws before its Post button takes the click (lib/market-io.js).
+  for (const msg of [
+    'TikTok\'s upload page has no file picker; nothing was posted', // 2026-11-21, #98
+    'couldn\'t open TikTok\'s upload page: [browse] Headed server running (PID 8637) but not responding.\n[browse] Run \'/open-gstack-browser\' to restart.', // 2026-11-21, #102
+    'couldn\'t open TikTok Studio: [browse] timeout',
+    'TikTok didn\'t take the video file: [browse] no such element',
+    'TikTok didn\'t finish uploading the video within 3 minutes; nothing was posted',
+    'TikTok\'s caption box didn\'t take the caption exactly (tried twice); nothing was posted',
+    'TikTok\'s caption changed while setting the cover; nothing was posted',
+    'TikTok\'s Post button was disabled; nothing was posted',
+  ]) {
+    assert.equal(M.tiktokStoppedShort(msg), true, msg);
+    assert.equal(M.postRetryLater(new Error(msg), { item, now }), 'tiktok', msg);
+  }
+  // The caller counts the waits in item.postTries: the first try and TIKTOK_RETRIES more, then it fails as before.
+  assert.equal(M.TIKTOK_RETRIES, 3);
+  assert.equal(M.postRetryLater(label, { item: { ...item, postTries: 2 }, now }), 'tiktok');
+  assert.equal(M.postRetryLater(label, { item: { ...item, postTries: 3 }, now }), false, 'the fourth try was the last');
+  // Inside the browser's 8 h only, and never without an approval time.
+  assert.equal(M.postRetryLater(label, { item, now: at('2026-11-22T10:30:00Z') }), false, 'the day\'s clip has missed its day');
+  assert.equal(M.postRetryLater(label, { item: { kind: 'tiktok' }, now }), false);
+  // Not signed in needs David, and another channel's "nothing was posted" keeps its own rule (X: no retry).
+  const signedOut = new Error('the automated browser isn\'t signed in to TikTok (sign in at tiktok.com in Chrome as @botchelorcom and it copies the sign-in next run)');
+  assert.equal(M.tiktokStoppedShort(signedOut), false);
+  assert.equal(M.postRetryLater(signedOut, { item, now }), false);
+  assert.equal(M.postRetryLater(label, { item: { ...item, kind: 'x', channel: 'x' }, now }), false);
+  assert.equal(M.postRetryLater(new Error('X\'s Post button was disabled; nothing was posted'), { item, now }), false);
+  assert.equal(M.postRetryLater(new Error('no caption'), { item, now }), false);
+});
+
+test('the loop has words for every reason postRetryLater gives for waiting', () => {
+  // bin/idea-market.js postApproved looks the reason up in a map; a reason with no entry would log "undefined".
+  const src = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'bin', 'idea-market.js'), 'utf8');
+  const map = /const why = \{([\s\S]*?)\}\[wait\];/.exec(src);
+  assert.ok(map, 'the why map is in postApproved');
+  for (const reason of ['budget', 'browser', 'reddit', 'tiktok']) assert.match(map[1], new RegExp(`\\b${reason}:`), reason);
+  assert.match(src, /if \(wait === 'tiktok'\) item\.postTries = \(item\.postTries \|\| 0\) \+ 1;/);
+});
+
 // ─── 2026-11-14: the daily clip is daily ───────────────────────────────────────────────────────────────────
 test('the video kit is due once a local day, whatever David answered to the earlier one', () => {
   const c = { ...cfg, timezone: 'America/Los_Angeles' };

@@ -365,9 +365,16 @@ async function postApproved(ctx, reddit, now = new Date()) {
         // posting; a browser that won't start skips only what needs it (Bluesky, Shorts and Reels still go out); a
         // Reddit block (an HTML 403 instead of JSON) holds this run's other Reddit items and waits up to a day.
         const again = String(item.error || '').startsWith('waiting for the next run: Reddit blocked');
+        // TikTok's page stopped before Post: the same item goes again next run, a counted number of times (M.TIKTOK_RETRIES).
+        if (wait === 'tiktok') item.postTries = (item.postTries || 0) + 1;
         item.error = `waiting for the next run: ${String(e.message || e)}`;
         saveQueue(ctx);
-        const why = { budget: 'Reddit budget used up', browser: 'the browser is unavailable', reddit: `Reddit blocked the request (${String(e.message || e).replace(/^.*?\((HTTP[^)]*)\).*$/, '$1')})` }[wait];
+        const why = {
+          budget: 'Reddit budget used up',
+          browser: 'the browser is unavailable',
+          reddit: `Reddit blocked the request (${String(e.message || e).replace(/^.*?\((HTTP[^)]*)\).*$/, '$1')})`,
+          tiktok: `TikTok's page stopped before Post (${String(e.message || e).split('\n')[0].slice(0, 140)}), try ${item.postTries} of ${M.TIKTOK_RETRIES + 1}`,
+        }[wait];
         emit({ component: 'market', event: 'post', status: wait === 'budget' ? 'ok' : wait === 'reddit' && !again ? 'warn' : 'info', subject: { idea: ctx.cfg.slug, channel: item.channel }, message: `#${item.id} ${item.channel}: ${why}, posting next run` });
         if (wait === 'budget') break;
         if (wait === 'reddit') redditBlocked = true;
@@ -481,7 +488,8 @@ function handKit(ctx, item, ch) {
 function cutKit(ctx, ch, now = new Date()) {
   const kit = io.releaseCut(M.localDay(now, ctx.cfg.timezone || 'UTC'));
   if (!kit) return null;
-  const item = M.addItem(ctx.queue, { channel: ch.id, kind: 'video', title: '', body: kit.caption, media: kit.video, episode: kit.episode, kitDir: kit.dir, cut: kit.cut });
+  // Stamped with the same clock that named the kit's day: the day's video slot is counted by this time (M.dueChannels).
+  const item = M.addItem(ctx.queue, { channel: ch.id, kind: 'video', title: '', body: kit.caption, media: kit.video, episode: kit.episode, kitDir: kit.dir, cut: kit.cut }, now);
   emit({ component: 'market', event: 'cut', status: 'ok', subject: { idea: ctx.cfg.slug, channel: ch.id }, message: `released the episode cut ${kit.cut} as today's video kit (${io.stagedCuts().length} still waiting)` });
   handKit(ctx, item, ch);
   followKit(ctx, kit, ch.id);
