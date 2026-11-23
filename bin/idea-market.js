@@ -146,18 +146,19 @@ async function writeDraft(ctx, ch, opts) {
  */
 function stopForRules(ctx, ch, rules) {
   const rule = M.automationRule(rules);
-  if (!rule || !ch) return false;
+  if (!rule || !ch || ch.status === 'hand') return Boolean(rule && ch);
   const day = new Date().toISOString().slice(0, 10);
   const file = path.join(ctx.dir, 'marketing.json');
   const cfg = readJson(file, null);
   const live = cfg && (cfg.channels || []).find((c) => c.id === ch.id);
   if (live && live.status === 'active') {
-    live.status = 'paused';
-    live.note = `${live.note ? `${live.note} ` : ''}PAUSED ${day} (the loop): r/${ch.sub}'s rules forbid automated or AI-written posts ("${rule.slice(0, 200)}"). David posts there by hand, in his own words. Undo: status active, only if the rule changes.`;
+    live.status = 'hand';
+    live.handWhy = `its rules forbid automated or AI-written posts: "${rule.slice(0, 200)}"`;
+    live.note = `${live.note ? `${live.note} ` : ''}HAND ${day} (the loop): r/${ch.sub}'s rules forbid automated or AI-written posts. The loop reminds David when it's due and never posts there. Undo: status active, only if the rule changes.`;
     writeJson(file, cfg);
-    io.tell(`⏸️ Botchelor: I stopped posting in r/${ch.sub}. Its rules now forbid automated or AI-written posts:\n"${rule.slice(0, 300)}"\nIt's yours to post in by hand, in your own words. Nothing else changes.`);
+    io.tell(`⏸️ Botchelor: I stopped posting in r/${ch.sub}. Its rules now forbid automated or AI-written posts:\n"${rule.slice(0, 300)}"\nIt's yours to post in by hand, in your own words; I'll remind you when it's due.`);
   }
-  ch.status = 'paused';
+  ch.status = 'hand';
   emit({ component: 'market', event: `rules ${ch.id}`, status: 'warn', subject: { idea: ctx.cfg.slug, channel: ch.id }, message: `r/${ch.sub} forbids automated posting; channel paused: ${rule.slice(0, 200)}` });
   return true;
 }
@@ -223,6 +224,22 @@ async function findReportCard(ctx) {
     emit({ component: 'market', event: 'report card', status: 'warn', subject: { idea: ctx.cfg.slug }, message: `couldn't pick a report card: ${String(e.message || e).slice(0, 200)}` });
     return null;
   }
+}
+
+/** A hand channel came due: remind David where and when, with no draft (M.handMessage). Never posts. */
+async function remindHand(ctx, ch, reddit) {
+  let thread = null;
+  if (ch.kind === 'reddit-thread') {
+    try { await reddit.ensure(); thread = await reddit.findThread(ch.sub, ch.match || 'megathread'); } catch { thread = null; }
+  }
+  const item = M.addItem(ctx.queue, { channel: ch.id, kind: ch.kind, sub: ch.sub || null, title: '', body: '', hand: true, ...(thread ? { thread } : {}) });
+  item.status = 'sent';
+  item.sentAt = new Date().toISOString();
+  saveQueue(ctx);
+  const last = M.history(ctx.cfg, ctx.launchLog, ctx.queue)[ch.id]?.last;
+  io.tell(M.handMessage(item, ch, { lastPostedAt: last ? new Date(last).toISOString() : null }));
+  emit({ component: 'market', event: `remind ${ch.id}`, status: 'ok', subject: { idea: ctx.cfg.slug, channel: ch.id }, message: `reminded David to post in r/${ch.sub} by hand (#${item.id})` });
+  return item;
 }
 
 async function draftChannel(ctx, ch, reddit) {
@@ -382,7 +399,7 @@ const needsReddit = (item) => Boolean(item.replyTo) || String(item.kind || '').s
 /** Approved items whose window is open: post them and tell David. */
 async function postApproved(ctx, reddit, now = new Date()) {
   let redditBlocked = false;
-  for (const item of ctx.queue.items.filter((i) => i.status === 'approved')) {
+  for (const item of ctx.queue.items.filter((i) => i.status === 'approved' && !i.hand)) {
     const ch = channelOf(ctx, item.channel);
     if (ch && !item.replyTo && !M.mayPostNow(ch, now)) continue;
     // Reddit refused this run already: its other items wait too, the rest still go out.
@@ -677,6 +694,7 @@ async function handleReply(ctx, text, channel, reddit) {
   }
   if (r.cmd === 'post') {
     if (item.status === 'posted') return say(`#${item.id} is already up: ${item.postUrl || ''}`);
+    if (item.hand) return say(`#${item.id} is yours to post by hand on r/${item.sub}; reply mk done ${item.id} <link> once it's up.`);
     if (item.kind === 'video') return say(`#${item.id} is a video for you to upload; reply mk done ${item.id} once it's up.`);
     item.status = 'approved';
     item.approvedAt = new Date().toISOString();
@@ -797,6 +815,7 @@ async function tick(slug, now = new Date()) {
         if (M.localHour(now, tz) >= 18) await step('video', async () => cutKit(ctx, ch, now) || videoKit(ctx, ch));
         continue;
       }
+      if (ch.status === 'hand') { await step(`remind ${ch.id}`, () => remindHand(ctx, ch, reddit)); continue; }
       await step(`draft ${ch.id}`, () => draftChannel(ctx, ch, reddit));
     }
   }

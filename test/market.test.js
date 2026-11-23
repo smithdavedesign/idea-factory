@@ -176,7 +176,7 @@ test('botchelor\'s calendar is valid', () => {
     // Kinds the loop posts (M.AUTO_KINDS), the TikTok kit, and the ones David posts by hand or that aren't built yet.
     assert.ok([...M.AUTO_KINDS, 'video', 'hn', 'producthunt', 'card', 'stream', 'facebook', 'threads'].includes(ch.kind), ch.id);
     if (ch.follows) assert.ok(real.channels.some((o) => o.id === ch.follows), `${ch.id} follows a channel that doesn't exist`);
-    assert.ok(['active', 'paused', 'waiting', 'needs-account', 'off'].includes(ch.status), ch.id);
+    assert.ok(['active', 'hand', 'paused', 'waiting', 'needs-account', 'off'].includes(ch.status), ch.id);
     if (ch.kind.startsWith('reddit')) assert.ok(ch.sub, `${ch.id} needs a sub`);
     if (ch.kind === 'reddit-thread') assert.doesNotThrow(() => new RegExp(ch.match), ch.id), assert.ok(ch.match, `${ch.id} needs a match`);
     if (ch.window) assert.ok(M.weekMinute(ch.window.fromUtc) != null && M.weekMinute(ch.window.toUtc) != null, ch.id);
@@ -257,7 +257,7 @@ test('the botchelor calendar parses and its new channels are wired', () => {
   assert.equal(byId.youtube_shorts.follows, 'video');
   assert.equal(byId.instagram_reels.follows, 'video');
   assert.equal(M.autoPostable(byId.show_hn.kind), false);
-  for (const c of real.channels) assert.ok(['active', 'paused', 'waiting', 'needs-account', 'off'].includes(c.status), c.id);
+  for (const c of real.channels) assert.ok(['active', 'hand', 'paused', 'waiting', 'needs-account', 'off'].includes(c.status), c.id);
 });
 
 test('posts draft before help answers, so help answers cannot spend the Reddit budget first', () => {
@@ -382,4 +382,36 @@ test('automationRule: sub rules that forbid automated or AI-written posts (2026-
   for (const r of fine) assert.equal(M.automationRule([r]), null, r);
   assert.equal(M.automationRule([]), null);
   assert.equal(M.automationRule(undefined), null);
+});
+
+test('hand channels: due like any channel, one reminder per cooldown, never drafted for the loop to post', () => {
+  const c = { timezone: 'UTC', perDay: { reddit: 2 }, channels: [
+    { id: 'jai', kind: 'reddit', sub: 'JanitorAI_Refuges', status: 'hand', cooldownDays: 7, handWhy: 'rule 12: No Automated Content' },
+    { id: 'off', kind: 'reddit', sub: 'Nope', status: 'paused', cooldownDays: 7 },
+  ] };
+  const now = at('2026-11-30T12:00:00Z');
+  assert.deepEqual(ids(M.dueChannels(c, { launchLog: { posts: [] }, queue: M.emptyQueue(), now })), ['jai']);
+  // A reminder two days ago, expired unanswered: not due again until the cooldown passes.
+  const q = M.emptyQueue();
+  const it = M.addItem(q, { channel: 'jai', kind: 'reddit', sub: 'JanitorAI_Refuges', title: '', body: '', hand: true }, at('2026-11-28T12:00:00Z'));
+  it.status = 'expired';
+  assert.deepEqual(ids(M.dueChannels(c, { launchLog: { posts: [] }, queue: q, now })), []);
+  assert.deepEqual(ids(M.dueChannels(c, { launchLog: { posts: [] }, queue: q, now: at('2026-12-06T12:00:00Z') })), ['jai']);
+  // A post David logged three days ago holds it for the cooldown too.
+  const log = { posts: [{ channel: 'r/JanitorAI_Refuges', postedAt: '2026-11-27T12:00:00Z' }] };
+  assert.deepEqual(ids(M.dueChannels(c, { launchLog: log, queue: M.emptyQueue(), now })), []);
+});
+
+test('handMessage: where, why, window, last post and how to log it, with no draft text', () => {
+  const ch = { id: 'sunday', kind: 'reddit', sub: 'ChatbotRefugees', status: 'hand', flair: 'Promotion Sunday', handWhy: 'rule 2 bans automated posting', window: { fromUtc: 'Sat 10:00', toUtc: 'Mon 11:59' } };
+  const msg = M.handMessage({ id: 42, sub: 'ChatbotRefugees' }, ch, { lastPostedAt: '2026-11-21T19:00:00.000Z', now: at('2026-11-29T12:00:00Z') });
+  assert.match(msg, /#42 · your turn on r\/ChatbotRefugees/);
+  assert.match(msg, /rule 2 bans automated posting/);
+  assert.match(msg, /Sat 10:00 to Mon 11:59 UTC \(open now\)/);
+  assert.match(msg, /Flair: Promotion Sunday/);
+  assert.match(msg, /Last post there: 2026-11-21/);
+  assert.match(msg, /mk done 42 <link>/);
+  const t = M.handMessage({ id: 7, sub: 'CharacterAIrunaways', thread: { title: 'November megathread', permalink: 'https://www.reddit.com/r/CharacterAIrunaways/comments/x/' } }, { sub: 'CharacterAIrunaways' });
+  assert.match(t, /Comment in: November megathread https:\/\/www\.reddit\.com/);
+  assert.match(t, /No post there yet/);
 });
