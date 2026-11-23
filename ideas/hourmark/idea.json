@@ -1,0 +1,33 @@
+{
+  "title": "hourmark — supervisor sign-off and audit file for pre-licensure therapist hours",
+  "repoName": "hourmark",
+  "oneLiner": "For licensed therapists who supervise associates, it checks each associate's monthly supervision against the state rule, collects the co-sign, and keeps the board-ready audit file for a flat $19/month instead of $29 per seat.",
+  "overlaps": "none in David's portfolio; outside it, Guidara ($29/seat supervisor software) and associate-side apps like Psych Logger and HourJourney",
+  "tags": [
+    "serious",
+    "business",
+    "saas",
+    "reach:community",
+    "compliance",
+    "healthcare"
+  ],
+  "effort": "Medium",
+  "confidence": "Low",
+  "sources": [
+    "https://www.oregon.gov/oblpct/pages/supervisor.aspx",
+    "https://www.oregon.gov/oblpct/Documents/Hours_Rule_QA.pdf",
+    "https://bbs.ca.gov/pdf/agen_notice/2021/20210506_07_xxvi.pdf",
+    "https://tulip-apricot-ek44.squarespace.com/clinical-supervision",
+    "https://www.capterra.co.uk/software/1100941/Guidara",
+    "https://apps.apple.com/us/app/psych-logger/id1592004219",
+    "https://time2track.com/pricing",
+    "https://www.nicheloom.com/blog/saas-ideas-from-reddit-2026",
+    "https://apps.apple.com/us/app/complete-supervision/id6499280049",
+    "https://www.capterra.in/software/1108333/HourJourney",
+    "https://www.therapytrainings.com/courses/supervision-tracker",
+    "https://apps.apple.com/app/id6466114162",
+    "https://www.simplepractice.com/compare/best-ehr-for-private-practices"
+  ],
+  "slug": "hourmark",
+  "recordedAt": "2026-11-23T17:03:01.695Z"
+}
