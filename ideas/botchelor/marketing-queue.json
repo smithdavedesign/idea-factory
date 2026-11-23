@@ -1,5 +1,5 @@
 {
-  "nextId": 135,
+  "nextId": 137,
   "paused": false,
   "items": [
     {
@@ -3423,6 +3423,49 @@
       "link": "https://botchelor.com/?utm_source=card&utm_medium=social&utm_campaign=season1&utm_content=taaft_thread",
       "hash": "4c4160db3e6af39b",
       "sentAt": "2026-11-23T16:56:09.486Z"
+    },
+    {
+      "id": 135,
+      "status": "posted",
+      "createdAt": "2026-11-23T18:22:02.246Z",
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "sub": null,
+      "title": "",
+      "body": "Character.AI says it's in a Chapter 11 sale (auction Dec 1), and that if no bid keeps it running, the platform will be wound down. It's up for now.\n\nMade characters there? Copy their creator fields to keep them. Its own words, plus 9 other apps' prices and rules from their own sites:",
+      "why": "Hand post (Claude, interactive session, 2026-11-23): Character.AI's own blog says it is in a Chapter 11 sale with an auction on Dec 1; links the /alternatives/character-ai page that quotes it and lists 9 other apps.",
+      "flair": null,
+      "link": "https://botchelor.com/alternatives/character-ai?utm_source=bluesky&utm_medium=social&utm_campaign=alternatives&utm_content=bluesky",
+      "approvedAt": "2026-11-23T18:22:00.000Z",
+      "approvedBy": "standing permission (2026-11-10)",
+      "postedAt": "2026-11-23T18:22:02.246Z",
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2yqptdd4b2p",
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2yqptdd4b2p",
+      "image": {
+        "source": "og",
+        "page": "https://botchelor.com/alternatives/character-ai?utm_source=bluesky&utm_medium=social&utm_campaign=alternatives&utm_content=bluesky",
+        "ok": true,
+        "how": "link card"
+      },
+      "hash": "09620ce61423aaa8"
+    },
+    {
+      "id": 136,
+      "status": "posted",
+      "createdAt": "2026-11-23T18:22:43.991Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "Character.AI says it's in a Chapter 11 sale (auction Dec 1), and that if no bid keeps it running, the platform will be wound down. It's up for now.\n\nMade characters there? Copy their creator fields to keep them. Its own words, plus 9 other apps:\nhttps://botchelor.com/alternatives/character-ai?utm_source=x&utm_medium=social&utm_campaign=alternatives&utm_content=x",
+      "why": "Hand post (Claude, interactive session, 2026-11-23): Character.AI's own blog says it is in a Chapter 11 sale with an auction on Dec 1; links the /alternatives/character-ai page that quotes it and lists 9 other apps.",
+      "flair": null,
+      "link": "https://botchelor.com/alternatives/character-ai?utm_source=x&utm_medium=social&utm_campaign=alternatives&utm_content=x",
+      "approvedAt": "2026-11-23T18:22:06.000Z",
+      "approvedBy": "standing permission (2026-11-10)",
+      "postedAt": "2026-11-23T18:22:43.991Z",
+      "postUrl": "https://x.com/botchelorLLC/status/2124931571040080173",
+      "hash": "d9a8cae9a759107a"
     }
   ],
   "seen": {

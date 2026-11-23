@@ -770,6 +770,20 @@
       "postUrl": "https://www.threads.com/@botchelor/post/DgFza5FlBeh",
       "postedAt": "2026-11-23T16:25:03.649Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #133 on his phone; link tagged utm_content=threads."
+    },
+    {
+      "channel": "Bluesky (news)",
+      "url": null,
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2yqptdd4b2p",
+      "postedAt": "2026-11-23T18:22:02.246Z",
+      "note": "Hand post from an interactive session under David's standing permission (2026-11-10): Character.AI's Chapter 11 sale, linking /alternatives/character-ai; link tagged utm_content=bluesky, utm_campaign=alternatives."
+    },
+    {
+      "channel": "X (news)",
+      "url": null,
+      "postUrl": "https://x.com/botchelorLLC/status/2124931571040080173",
+      "postedAt": "2026-11-23T18:22:43.991Z",
+      "note": "Hand post from an interactive session under David's standing permission (2026-11-10): Character.AI's Chapter 11 sale, linking /alternatives/character-ai; link tagged utm_content=x, utm_campaign=alternatives."
     }
   ]
 }

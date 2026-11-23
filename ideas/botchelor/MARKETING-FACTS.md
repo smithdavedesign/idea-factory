@@ -30,16 +30,22 @@ The marketing loop (bin/idea-market.js) drafts every post from this file. David 
 ## Pages that answer a search (link these, not the homepage, when the post is about the topic)
 Search Console (2026-11-15): Google knows these pages but hasn't crawled most of them, because almost nothing links to them. A post that links one is worth more than another homepage link.
 - Ship names, a couple's name, "what's our ship name": https://botchelor.com/tools/ship-name-generator (free, no account; the only page that gets search clicks so far)
-- OC compatibility, "would my OCs get along", OC prompts: https://botchelor.com/tools/oc-chemistry-test (free, no account)
+- Ship compatibility, a love calculator for two characters, "would my OCs get along": https://botchelor.com/tools/oc-chemistry-test (the ship compatibility test; free, no account)
+- A random ship, two characters paired at random with their ship name: https://botchelor.com/tools/random-ship-generator (free, no account; live 2026-11-23)
 - OC names, "name ideas for my OC", fantasy/sci-fi/gothic/cozy/modern names: https://botchelor.com/tools/oc-name-generator (a page per style, e.g. /tools/oc-name-generator/fantasy; each name opens the builder with it filled in; free, no AI, no account; live 2026-11-16)
 - "Questions to ask your OC", OC asks, character questionnaires, writing prompts: https://botchelor.com/tools/oc-questions (86 questions in 7 themes, one at a time at a shareable link; free, no account; live 2026-11-16)
-- People leaving another app, in refugee or alternatives threads, link that app's page (each lists the honest cons too):
+- People leaving another app, in refugee or alternatives threads, link that app's page. Since 2026-11-23 each one lists 10 apps (Botchelor among them, alphabetical) with what's free, prices, adult-content rules and minimum age, each from the app's own site with a link:
   - Character.AI: https://botchelor.com/alternatives/character-ai
   - JanitorAI: https://botchelor.com/alternatives/janitor-ai
   - SpicyChat: https://botchelor.com/alternatives/spicychat
   - Chai: https://botchelor.com/alternatives/chai
 - Bringing a character over from another app: https://botchelor.com/import
 - One link per post, the one that fits; tag it with the channel's utm as usual.
+
+## News (dated: don't use a line after its re-check date until someone re-checks it)
+- Character.AI is in a court-supervised Chapter 11 sale (its own blog: https://blog.character.ai/an-update-on-character-ai/ on 2026-10-12, and https://blog.character.ai/chapter-11-update-and-transaction-notice/ on 2026-11-05). Bids were due 2026-11-24 and the auction is set for 2026-12-01. It says that if no bid lets the platform keep running, it will be wound down. For now it says the platform is up and running, and that you can export your data in its app or website. Re-check after 2026-12-01.
+  - Our page https://botchelor.com/alternatives/character-ai quotes what it said, with links, and lists 9 other apps with their prices and rules. Link that page in threads about it.
+  - How to talk about it: help people keep what they made (copy each character's creator fields: Name, Tagline, Description, Greeting, Definition). Quote only what Character.AI has said, with its date. Never gloat, never guess who buys it or what happens next, and never say it is shutting down.
 
 ## Honest cons (use them; refugee subs require them)
 - Dates and companion chat are PG. No NSFW.
