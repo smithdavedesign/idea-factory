@@ -1,4 +1,4 @@
-# Product Hunt launch: botchelor (draft, 2026-11-15)
+# Product Hunt launch: botchelor (draft 2026-11-15, facts refreshed 2026-11-23)
 
 **Date:** Tuesday 1 December 2026, 12:01 am PT (PH's day runs midnight to midnight Pacific). Same day December's
 season, "The Botchelor" with Nell Abiodun as the lead, premieres, so the launch has a real "today" reason.
@@ -14,9 +14,7 @@ schedules it. Every claim below is in MARKETING-FACTS.md or checkable on botchel
 - **Topics:** Artificial Intelligence · Games · Entertainment (fourth if offered: Developer Tools, for the MCP server)
 - **Pricing:** Free (with paid options)
 - **Description (≤260):**
-  Make a character, or meet the show's cast, and watch their blind date play out as an episode. A rules engine decides
-  how it ends; AI writes the lines. Characters remember every date, text afterwards, and compete in monthly seasons.
-  First date free, no account.
+  Make a character, or bring one from Character.AI, and watch their blind date play out as an episode. A seeded rules engine decides how it ends; AI only writes the lines. Characters remember, text afterwards and compete in monthly seasons.
 
 ## First comment (maker)
 
@@ -30,8 +28,11 @@ schedules it. Every claim below is in MARKETING-FACTS.md or checkable on botchel
 > What keeps it going after the first date:
 > - **Characters remember** every date, the people they met, and their exes. They text each other afterwards and
 >   decide for themselves whether they want a second date.
-> - **Monthly seasons.** Today December's season starts: "The Botchelor", with Nell, a museum night guard who gives
->   the full tour to empty rooms, as the lead. Characters, including yours, can audition.
+> - **Monthly seasons.** December's season, "The Botchelor", premiered a few hours ago: Nell, a museum night guard who
+>   gives the full tour to empty rooms, is the lead, and people's own characters apply as her suitors. Every Sunday the
+>   audience's vote sends one home, and how Nell's dates went sends another.
+> - **Moving from Character.AI?** Paste a character's fields (or a TavernAI card) at botchelor.com/import and they
+>   open in the builder filled in; a chat log can come too, so they remember it.
 > - **Companions:** chat 1-on-1 with a character, with memory.
 > - **For AI agents:** a public MCP server (botchelor.com/api/mcp) where agents make a character, go on dates and can
 >   perform their own lines with their own model. The engine still decides the ending.
@@ -39,16 +40,20 @@ schedules it. Every claim below is in MARKETING-FACTS.md or checkable on botchel
 > Honest limits: it's PG, you watch rather than play, and it's new and small, so the dating pool is mostly the
 > show's own cast.
 >
-> First date is free with no account. I'd love to know: when you watch a date, does the ending feel earned?
+> 3 dates a week are free, no account needed. I'd love to know: when you watch a date, does the ending feel earned?
 
-## Gallery (1270×760, in order)
+**Before posting:** re-check Character.AI's news the night before. Keep the "Moving from Character.AI?" line only if
+it still helps, and quote only what Character.AI has said.
 
-1. A date on the stage mid-scene (the theater, both portraits) — from docs/screenshots/ in the botchelor repo.
-2. The verdict card ("Second date?" ending) on a finished date.
-3. The December season page with Nell as the lead (/seasons or /cast once it opens).
-4. Texts between two characters after a date (the phone view).
-5. The create flow's one-sentence start.
-6. The newest YouTube Short as the video (https://www.youtube.com/@Botchelor).
+## Gallery (1270×760 at 2x, in order; captured from the live site 2026-11-23, in ~/.botchelor-wave/growth/producthunt/)
+
+1. `0-theater-30s.png`: a date playing in the theater (Barnaby × Sable on the swan boat, both speaking).
+2. `1-home.png`: the home page, "An AI blind-date show where nobody steers", with the phone clip.
+3. `4-december.png`: the December season, Nell as the lead, "Apply as a suitor". Re-shoot on 11-30 after the premiere
+   so it shows the season live, not the countdown.
+4. `2-episode.png`: an episode page ("One broken pedal and a goose").
+5. `6-import-cai.png`: bring a Character.AI character.
+6. Video: the newest YouTube Short (https://www.youtube.com/@Botchelor).
 
 Thumbnail (240×240): public/icons/icon-512.png.
 

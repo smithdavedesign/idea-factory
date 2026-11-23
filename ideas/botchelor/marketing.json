@@ -331,12 +331,12 @@
     {
       "id": "show_hn",
       "kind": "hn",
-      "status": "active",
+      "status": "waiting",
       "from": "2026-11-25",
       "cooldownDays": 35,
       "logName": "Show HN",
       "angle": "Show HN for agent builders: send your agent on a blind date over MCP; the house's own agent-made characters filling open places in the monthly cast (outside agents' characters can't audition) and the deterministic ending engine are the technical news since the Oct 24 post. Title starts \"Show HN: \", under 80 characters; body plain text, first person, what it is, how it works, what's hard, no marketing words. David posts it himself from his HN account, weekday 8–10am PT.",
-      "note": "Oct 24 Show HN got 1 point. HN frowns on automated or coordinated posting, so this is drafted for David and never auto-posted.",
+      "note": "Oct 24 Show HN got 1 point. HN frowns on automated or coordinated posting, so this is drafted for David and never auto-posted. 2026-11-23: drafted by hand in SHOWHN.md (title options, text, checked claims) and given to David to post Wed 2026-11-25 8-9am PT (or Mon 11-30). Status set to waiting so the loop does not draft a second one; set back to active only if David asks the loop to redraft.",
       "publicNote": "Drafted for the founder, who posts it himself; Hacker News doesn't want automated posts."
     },
     {
