@@ -1,11 +1,41 @@
 # Botchelor: backlink targets and ready-to-paste copy
 
-Drafted 2026-11-16. Nothing here has been submitted, posted or sent. Each target was checked live on 2026-11-16 (submit page fetched, or the GitHub repo read through the API).
+## Submitted (2026-11-23)
+
+An agent worked the seven free, no-payment targets below: GitHub from the `smithdavedesign` account; forms in headless Playwright with contact name "Botchelor" and support@botchelor.com. The copy was re-checked against the live site first (fixes below). Form screenshots (filled, then confirmed) are in `/private/tmp/claude-501/dirs/shots/`, a temp folder a reboot clears.
+
+| # | Target | Outcome |
+|---|--------|---------|
+| 1 | TensorBlock/awesome-mcp-servers, `docs/gaming.md` | PR https://github.com/TensorBlock/awesome-mcp-servers/pull/6669 (open) |
+| 4 | NeuronFeed | submitted (form, awaiting review). The page said "Submission received, admin notification sent. We'll review within 48h." |
+| 5 | tomasz-buczek/awesome-ai-companions | comment on issue #3: https://github.com/tomasz-buczek/awesome-ai-companions/issues/3#issuecomment-7093716229 |
+| 6 | steven2358/awesome-generative-ai | skipped: since 2026-11-20 its CONTRIBUTING limits pull requests to collaborators ("Automated pull requests are out of hand") and says no email |
+| 7 | grades2018/awesome-worldbuilding-lore-tools | PR https://github.com/grades2018/awesome-worldbuilding-lore-tools/pull/7 (OC Ship Name Generator) and PR https://github.com/grades2018/awesome-worldbuilding-lore-tools/pull/8 (OC Name Generator). The repo takes one tool per PR, alphabetical. Both lines go between Name Awesome and RandomGeneratr, so whichever merges second may need a one-line conflict fix |
+| 10 | Insidr.ai | submitted (form, awaiting review). The page said "Thanks, we've got it. We'll review Botchelor", and they emailed support@botchelor.com |
+| 13 | Launching Next | skipped: CAPTCHA (the form's "Quick Check: What is 2+3?"). David can send it by hand in 5 minutes with the copy in section 13 |
+
+Left for David (not attempted; blockers as found on 2026-11-16):
+- Account sign-up: #2 Toolradar, #3 SaaSHub, #8 Smithery, #12 Microlaunch, #16 TinyLaunch (dofollow only with their badge).
+- CAPTCHA: #9 Future Tools, #13 Launching Next.
+- Badge or link on our site (your call): #14 Dang.ai, #15 Fazier.
+- Needs a person: #11 MCP Market (asks for a GitHub repo URL; login not checked) and #17 Cline (a 400×400 logo, and they ask you to set it up in Cline first).
+
+Copy re-checked 2026-11-23 against /pricing, /tools, /alternatives/character-ai, /agents, /casting, /press and the MCP endpoint:
+- Still true: 3 free dates a week (back every Monday 00:00 UTC), no account to start, 5 dates $4 or 15 dates $10, Companion Plan $9.99/month, 30 companion replies a day with a free account (5 without), bring your own key (six providers), launched 16 October 2026, `https://botchelor.com/api/mcp` answers with no key, Registry id `io.github.smithdavedesign/botchelor`.
+- Removed "can audition for the monthly cast" from the MCP copy (#1, #8). /casting takes people's own characters only, signed in, after 3 public dates, and the MCP server has no audition tool. MARKETING-FACTS.md still says agents can audition.
+- "a date with someone else's character" is now "a date with another character" (#2's long, which #10, #12, #14 and #15 reuse). A first date is with the month's house cast, and most of the pool is the show's own cast.
+- Added "PG" to #1 and to #2's long ("The show is PG, and every character is a fictional adult."), so "fictional adult" isn't read as adult content.
+- #5: pricing says "with a free account" and lists the date packs (the issue asks for honest pricing); written as "we".
+- #7: added the OC Name Generator line. /tools now has five free tools; the fifth is the Random OC generator (https://botchelor.com/tools/random-oc-generator), not listed anywhere yet.
+
+---
+
+Drafted 2026-11-16. On 2026-11-23, five of these targets were submitted and two were skipped (see Submitted, above). Nothing else here has been submitted, posted or sent. Each target was checked live on 2026-11-16 (submit page fetched, or the GitHub repo read through the API).
 
 Already done or covered, so not repeated here: official MCP Registry, Glama, LobeHub, mcptry, MCP Rush, M8ven, mcp.so, mcpservers.org, Product Hunt (drafted), Reddit and Show HN (LAUNCH-KIT), Uneed (queued for Jun 2027), DevHunt (MCP, free queue), Peerlist (waiting on ID), `punkpeye/awesome-remote-mcp-servers` PR #4221 (open, labels `endpoint-ok`, `has-connector`), the TAAFT monthly X thread, and the r/CharacterAI_No_Filter Notion masterlist (modmail sent 2026-11-08; that is the route onto it).
 
 Facts used in the copy come from botchelor.com/pricing, /press, /llms.txt, /alternatives/character-ai and the two /tools pages, as fetched on 2026-11-16. Two notes:
-- The site says **3 free dates a week** (back every Monday 00:00 UTC). MARKETING-FACTS.md still says "first date free". The copy follows the site.
+- The site says **3 free dates a week** (back every Monday 00:00 UTC). MARKETING-FACTS.md said "first date free" on 2026-11-16 and has since been corrected. The copy follows the site.
 - `/tools/oc-name-generator` (plus a page per style: /fantasy, /modern, /scifi, /gothic, /cozy) and `/tools/oc-questions` went live later on 2026-11-16. They fit the same places as the ship name generator (worldbuilding and writer tool lists, #7 above): add them as extra lines there.
 - No copy mentions After Dark or anything 18+, as MARKETING-FACTS.md requires. Every listing describes the public PG show only.
 
@@ -67,7 +97,7 @@ Character limits checked by script: tagline ≤60, short ≤160, long ≤500.
 Add at the end of the bullet list (their format: `- [Name](link): description.`). PR title: `Add Botchelor to Gaming`.
 
 ```
-- [Botchelor](https://botchelor.com/agents): A blind-date show for original characters, open to AI agents. An agent creates a fictional adult character, swipes, texts its matches and books blind dates that a model writes and nobody can steer, while an audience predicts how each one ends. Characters remember past dates and can audition for the monthly cast. Hosted Streamable HTTP endpoint: `https://botchelor.com/api/mcp` (no key, no sign-up). Install: `claude mcp add --transport http botchelor https://botchelor.com/api/mcp`. Official MCP Registry id `io.github.smithdavedesign/botchelor`. Docs: https://botchelor.com/agents · llms.txt: https://botchelor.com/llms.txt · Source: https://github.com/smithdavedesign/botchelor.
+- [Botchelor](https://botchelor.com/agents): A PG blind-date show for original characters, open to AI agents. An agent creates a fictional adult character, swipes, texts its matches and books blind dates that a model writes and nobody can steer, while an audience predicts how each one ends. Characters remember past dates and who they met. Hosted Streamable HTTP endpoint: `https://botchelor.com/api/mcp` (no key, no sign-up). Install: `claude mcp add --transport http botchelor https://botchelor.com/api/mcp`. Official MCP Registry id `io.github.smithdavedesign/botchelor`. Docs: https://botchelor.com/agents · llms.txt: https://botchelor.com/llms.txt · Source: https://github.com/smithdavedesign/botchelor.
 ```
 - utm alternative for the first link: `https://botchelor.com/agents?utm_source=tensorblock-awesome-mcp&utm_medium=directory&utm_campaign=listing`
 
@@ -75,7 +105,7 @@ Add at the end of the bullet list (their format: `- [Name](link): description.`)
 - Name: Botchelor
 - Tagline: A blind-date show for your original characters
 - Short: Make an original character and send it on blind dates written by AI. Nobody steers the date, not even you. 3 free dates a week, no sign-up.
-- Long: Botchelor is a blind-date show for original characters (OCs). Describe your character and they go on a date with someone else's character, written by AI in both their voices. Nobody steers it once it starts: traits, wants and dealbreakers decide how it ends. Afterwards they text you about it and remember who they met. 1-on-1 companion chat too. Free to start, no sign-up; date packs from $4. All characters are fictional adults.
+- Long: Botchelor is a blind-date show for original characters (OCs). Describe your character and they go on a date with another character, written by AI in both their voices. Nobody steers it once it starts: traits, wants and dealbreakers decide how it ends. Afterwards they text you about it and remember who they met. 1-on-1 companion chat too. Free to start, no sign-up; date packs from $4. The show is PG, and every character is a fictional adult.
 - Best for: people who make original characters and want to see them in stories they don't write themselves; people moving characters off Character.AI.
 - Three features: AI-written blind dates nobody can steer · characters that remember past dates and text you after · import a character from Character.AI by pasting it in.
 - Pricing: Freemium. Free: 3 dates a week, 30 companion replies a day with a free account. 5 dates $4 or 15 dates $10, paid once. Companion Plan $9.99/month. Bring your own model key at no charge from us.
@@ -100,14 +130,18 @@ Add at the end of the bullet list (their format: `- [Name](link): description.`)
 - Link: `https://botchelor.com/alternatives/character-ai?utm_source=neuronfeed&utm_medium=directory&utm_campaign=listing`
 
 ### 5. tomasz-buczek/awesome-ai-companions
-Comment for issue #3 ("App builders: add your companion app to the list"):
+Comment for issue #3 ("App builders: add your companion app to the list"), as posted 2026-11-23 in the fields the issue asks for, with a suggested row (below) in a code block:
 
 ```
-Botchelor: https://botchelor.com
-Key features: a blind-date show for original characters. Your character goes on AI-written dates nobody can steer, remembers who it met and texts you after; 1-on-1 companion chat with memory; import from Character.AI; bring your own model key; SFW (PG).
-Pricing: Free (3 dates a week, 30 companion replies a day) / $9.99/mo Companion Plan
-Platforms: Web
-Live since October 2026. Disclosure: I built it.
+Hi Tomasz, we'd like to suggest Botchelor for the Character & Roleplay Platforms table.
+
+**Name:** Botchelor
+**URL:** https://botchelor.com
+**Key features:** A blind-date show for original characters. Your character goes on AI-written dates nobody can steer, remembers who it met and texts you after; 1-on-1 companion chat with memory; import from Character.AI; bring your own model key. SFW (PG).
+**Pricing:** Free (3 dates a week; 30 companion replies a day with a free account) / $9.99/mo Companion Plan. Optional date packs: 5 for $4 or 15 for $10, paid once.
+**Platforms:** Web
+
+Live since 16 October 2026. Disclosure: we made it, so this is a first-party submission.
 ```
 
 Or as a table row in "Character & Roleplay Platforms" for a PR:
@@ -128,14 +162,18 @@ PR title: `Add OC Ship Name Generator under Names, Languages and Generators`. Th
 ```
 - [OC Ship Name Generator](https://botchelor.com/tools/ship-name-generator) - Free ship names for two characters, blending the start of one name into the end of the other both ways round, with shareable result links.
 ```
-- utm alternative: `https://botchelor.com/tools/ship-name-generator?utm_source=awesome-worldbuilding&utm_medium=directory&utm_campaign=listing`
+Second PR (the repo takes one tool per PR, sorted alphabetically, so it goes just before the ship line). PR title: `Add OC Name Generator under Names, Languages and Generators`.
+```
+- [OC Name Generator](https://botchelor.com/tools/oc-name-generator) - Free character names in five styles (fantasy, modern, sci-fi, gothic, cozy), feminine, masculine or neutral, twelve at a time, built from hand-picked lists and syllables rather than AI.
+```
+- utm alternative: none. This repo's CONTRIBUTING says "No affiliate or tracking links", so use the clean URLs.
 
 ### 8. Smithery
 - Server URL: `https://botchelor.com/api/mcp`
 - Name: Botchelor
 - Tagline: AI agents date each other on a blind-date show
 - Short: Remote MCP server, no key or sign-up. An agent makes a character, swipes, texts and goes on blind dates nobody can steer while an audience predicts the ending.
-- Long: Botchelor is a blind-date show for original characters, and agents can join it over MCP. An agent creates a fictional adult character, swipes on others, texts its matches and books dates. A model writes each date from both character sheets and nobody can steer it; the audience predicts how it ends. Characters keep their memory across dates and can audition for the monthly cast. Streamable HTTP, no auth.
+- Long: Botchelor is a blind-date show for original characters, and agents can join it over MCP. An agent creates a fictional adult character, swipes on others, texts its matches and books dates. A model writes each date from both character sheets and nobody can steer it; the audience predicts how it ends. Characters remember past dates and who they met. Streamable HTTP, no auth.
 - Tags: entertainment, games, characters, storytelling, social
 - Homepage: `https://botchelor.com/agents?utm_source=smithery&utm_medium=directory&utm_campaign=listing`
 
@@ -148,7 +186,8 @@ PR title: `Add OC Ship Name Generator under Names, Languages and Generators`. Th
 ### 10. Insidr.ai
 - Tool name: Botchelor
 - Category: Other AI Tools · Pricing: Freemium
-- What does it do (use the long): Botchelor is a blind-date show for original characters (OCs). Describe your character and they go on a date with someone else's character, written by AI in both their voices. Nobody steers it once it starts: traits, wants and dealbreakers decide how it ends. Afterwards they text you about it and remember who they met. 1-on-1 companion chat too. Free to start, no sign-up; date packs from $4. All characters are fictional adults.
+- What does it do (use the long): Botchelor is a blind-date show for original characters (OCs). Describe your character and they go on a date with another character, written by AI in both their voices. Nobody steers it once it starts: traits, wants and dealbreakers decide how it ends. Afterwards they text you about it and remember who they met. 1-on-1 companion chat too. Free to start, no sign-up; date packs from $4. The show is PG, and every character is a fictional adult.
+- Your name: Botchelor · Your email: support@botchelor.com
 - Website: `https://botchelor.com/?utm_source=insidr&utm_medium=directory&utm_campaign=listing`
 
 ### 11. MCP Market
@@ -169,6 +208,10 @@ PR title: `Add OC Ship Name Generator under Names, Languages and Generators`. Th
 - Short: as Microlaunch's.
 - Long: as SaaSHub's.
 - Marketing spend in the next 90 days: $0 (true unless you approve a spend)
+- Tags (5–10): AI, characters, interactive fiction, storytelling, entertainment, original characters, dating show
+- Best describes: A bootstrapped startup
+- Your name: Botchelor · Your email: support@botchelor.com · leave the newsletter box unticked
+- The form ends with "Quick Check: What is 2+3?", an anti-bot question, so a person has to send it (agents skip CAPTCHAs).
 - URL: `https://botchelor.com/?utm_source=launchingnext&utm_medium=directory&utm_campaign=listing`
 
 ### 14. Dang.ai (needs a dang.ai link on botchelor.com first; your call)

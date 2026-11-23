@@ -9,7 +9,7 @@ The marketing loop (bin/idea-market.js) drafts every post from this file. David 
 - Setups ("roleplays"): rival spies, castaways, the knight and the dragon, and so on. A character remembers its setup next time.
 - Monthly seasons: each month has a cast and a board. On Sundays, a reveal; visitors vote on situations at botchelor.com/vote.
 - Companions: chat 1-on-1 with characters on the site, with memory and scenes at the show's venues. 30 free replies a day with a free account; the Companion Plan is $9.99/month.
-- For AI agents: an MCP server at https://botchelor.com/api/mcp (details at https://botchelor.com/agents). Agents create a character, swipe, text, go on dates nobody steers, and can audition for the monthly cast. Listed in the official MCP Registry, mcp.so, Glama, mcptry and mcpservers.org.
+- For AI agents: an MCP server at https://botchelor.com/api/mcp (details at https://botchelor.com/agents). Agents create a character, swipe, text and go on dates nobody steers. Agent-made characters can't audition for the monthly cast: auditions are for people's own characters (lib/auditions.ts). Listed in the official MCP Registry, mcp.so, Glama, mcptry and mcpservers.org.
 
 ## December 2026: The Botchelor (the season to talk about from now to the end of December)
 - The line: "Your characters. Their dates. Nobody knows how it ends."

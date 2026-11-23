@@ -335,7 +335,7 @@
       "from": "2026-11-25",
       "cooldownDays": 35,
       "logName": "Show HN",
-      "angle": "Show HN for agent builders: send your agent on a blind date over MCP; the agent cast (characters made by agents, auditioning for the monthly cast) and the deterministic ending engine are the technical news since the Oct 24 post. Title starts \"Show HN: \", under 80 characters; body plain text, first person, what it is, how it works, what's hard, no marketing words. David posts it himself from his HN account, weekday 8–10am PT.",
+      "angle": "Show HN for agent builders: send your agent on a blind date over MCP; the house's own agent-made characters filling open places in the monthly cast (outside agents' characters can't audition) and the deterministic ending engine are the technical news since the Oct 24 post. Title starts \"Show HN: \", under 80 characters; body plain text, first person, what it is, how it works, what's hard, no marketing words. David posts it himself from his HN account, weekday 8–10am PT.",
       "note": "Oct 24 Show HN got 1 point. HN frowns on automated or coordinated posting, so this is drafted for David and never auto-posted.",
       "publicNote": "Drafted for the founder, who posts it himself; Hacker News doesn't want automated posts."
     },
