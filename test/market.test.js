@@ -457,3 +457,13 @@ test('rssItems reads a Ghost feed; newsHoldLine holds drafts until the facts fil
   assert.equal(M.newsHoldLine(hold, Date.parse('2026-12-02T09:00:00Z')), null); // facts updated after the news
   assert.equal(M.newsHoldLine(null, 0), null);
 });
+
+test('handDraftBlock: a ready draft for David to change and post himself, or why there is none', () => {
+  const block = M.handDraftBlock({ id: 9, title: "I'm the dev: my OC show now imports Character.AI characters", body: 'Hi all, I made Botchelor…\n\nhttps://botchelor.com/import?from=cai', flair: 'Promotion Sunday' });
+  assert.match(block, /A draft to change as you like and post yourself \(flair: Promotion Sunday\):/);
+  assert.match(block, /Title: I'm the dev/);
+  assert.match(block, /Hi all, I made Botchelor/);
+  assert.match(block, /mk edit 9 <what to change>/);
+  assert.equal(M.handDraftBlock({ id: 3, body: '' }), '');
+  assert.match(M.handDraftBlock({ id: 3 }, { error: 'drafting failed: timeout' }), /No draft this time: drafting failed: timeout/);
+});
