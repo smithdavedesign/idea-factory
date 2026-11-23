@@ -484,3 +484,16 @@ test('replies in a hand sub go to David: the channel lookup and his note', () =>
   assert.doesNotMatch(plain, /A draft/);
   assert.match(M.handReplyMessage(n, { draft: 'Yes, all of it goes into the builder.' }), /A draft to change as you like and post yourself:\n\nYes, all of it/);
 });
+
+test('a video kit with a weekly cooldown waits a week after its last kit; daily stays daily', () => {
+  const c = (cd) => ({ timezone: 'UTC', perDay: { video: 1 }, channels: [{ id: 'video', kind: 'video', status: 'active', cooldownDays: cd }] });
+  const q = M.emptyQueue();
+  M.addItem(q, { channel: 'video', kind: 'video', title: '', body: '' }, at('2026-11-20T02:00:00Z')).status = 'posted';
+  const now = at('2026-11-23T20:00:00Z');
+  assert.deepEqual(ids(M.dueChannels(c(7), { launchLog: { posts: [] }, queue: q, now })), []);
+  assert.deepEqual(ids(M.dueChannels(c(7), { launchLog: { posts: [] }, queue: q, now: at('2026-11-27T02:00:00Z') })), ['video']);
+  assert.deepEqual(ids(M.dueChannels(c(1), { launchLog: { posts: [] }, queue: q, now })), ['video']);
+  const q2 = M.emptyQueue();
+  M.addItem(q2, { channel: 'video', kind: 'video', title: '', body: '' }, at('2026-11-22T02:00:00Z')).status = 'skipped';
+  assert.deepEqual(ids(M.dueChannels(c(7), { launchLog: { posts: [] }, queue: q2, now })), ['video']);
+});
