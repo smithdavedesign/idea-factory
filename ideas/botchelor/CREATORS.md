@@ -1,5 +1,7 @@
 # Creator outreach: draft (2026-11-23)
 
+**PARKED 2026-11-23: David decided not to spend the $250 ("I won't spend that").** Keep this and CREATORS-RESEARCH.md for later; a free version (no fee) is the only one to try until he says otherwise.
+
 The creator list comes from `CREATORS-RESEARCH.md`, which a research agent is filling in. These are the plan and the
 messages. David sends every message and pays every creator. Agents don't contact or pay anyone.
 

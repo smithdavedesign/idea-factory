@@ -241,7 +241,7 @@
       "from": "2026-11-19",
       "logName": "TikTok (@botchelorcom)",
       "note": "Each day's video kit posted by the loop through TikTok Studio in the signed-in marketing browser (io.tiktokPost; TikTok's Content Posting API needs an audited app before posts can be public): caption pasted and read back, TikTok's AI-generated content label on (no label, no post), the kit's cover.png as the cover, then the new post's URL read off tiktokstudio/content. Stats (views, likes, comments) come off the same page once a day. If the browser is signed out it copies the sign-in from David's Chrome (.tiktok.com and www.tiktok.com). Before 2026-11-19 David uploaded each kit by hand (@botchelorcom). PAUSED 2026-11-22 (Claude, David's traffic push): every loop-posted TikTok since 11-19 has 0 views in TikTok Studio, while his hand uploads got 63 and 20. TikTok's integrity rules prohibit automation tools, and repeatedly posting videos that can't be recommended can make the whole account ineligible. Until David's Account Check is clear, the kit goes to him to upload by hand (postsTikTok false). Set status back to active to undo.",
-      "publicNote": "The day's clip on TikTok."
+      "publicNote": "Paused on 23 Nov: our automatic uploads stopped reaching anyone, so clips go up by hand while we find out why."
     },
     {
       "id": "bluesky",
@@ -335,8 +335,8 @@
       "kind": "card",
       "status": "off",
       "logName": "Chub (character cards)",
-      "note": "House cast as character cards on Chub (chub.ai), each linking back to the character's dates. Check the site's rules on links first; one account, posted by hand or by me in David's signed-in Chrome; never After Dark characters. Next: JanitorAI-style libraries only where self-links are allowed. 2026-11-15 DONE (status off = nothing more to post): account @botchelor (David signed in), 5 PG house cards posted by Claude via the creator form (Tavern PNG import fills fields and tags; do not re-add tags, clicking a selected tag removes it). Next: add more house cast only if Chub sends visitors (utm_source=chub).",
-      "publicNote": "Five of the show's cast as character cards, each linking back to their dates."
+      "note": "House cast as character cards on Chub (chub.ai), each linking back to the character's dates. Check the site's rules on links first; one account, posted by hand or by me in David's signed-in Chrome; never After Dark characters. Next: JanitorAI-style libraries only where self-links are allowed. 2026-11-15 DONE (status off = nothing more to post): account @botchelor (David signed in), 5 PG house cards posted by Claude via the creator form (Tavern PNG import fills fields and tags; do not re-add tags, clicking a selected tag removes it). Next: add more house cast only if Chub sends visitors (utm_source=chub). 2026-11-23: 6 more posted by Claude (11 in all): barnaby-thorne, sable-quist, hester-quayle, bramwell-vance (December newcomers, no dates yet), teo-brandt, ines-castellano; 2-3 alternate greetings each. Recipe: bring the create tab to the front, PNG as base64 into the first file input, tagline by #tagline with the native setter; the Chub API is geo-blocked from the terminal, read through Chrome. 4 visitors in 30 days from the first 5.",
+      "publicNote": "Eleven of the show’s cast as character cards, each linking back to their dates."
     },
     {
       "id": "sunday_stream",
@@ -416,6 +416,14 @@
       "publicNote": "The MCP server, listed; the free queue runs to about 2031."
     },
     {
+      "id": "free_directories",
+      "kind": "card",
+      "status": "off",
+      "from": "2026-11-23",
+      "logName": "Free tool and MCP directories",
+      "publicNote": "Sent on 23 Nov, all free: Toolradar, Launching Next, Future Tools, NeuronFeed, Insidr, TensorBlock's MCP index, MCP Market, and awesome lists for MCP servers, AI companions and worldbuilding tools. Each reviews on its own schedule."
+    },
+    {
       "id": "taaft_thread",
       "kind": "card",
       "status": "active",
@@ -479,7 +487,7 @@
       "id": "paid_directories",
       "name": "Futurepedia, Toolify, Ben's Bites, TLDR AI",
       "kind": "listing",
-      "why": "Paid placement only, and we don't pay for listings."
+      "why": "Paid placement only."
     },
     {
       "id": "alternativeto",
@@ -493,20 +501,26 @@
       "name": "Reality-TV subreddits",
       "kind": "reddit",
       "why": "Not ours to post in: those communities are about real shows and real people."
+    },
+    {
+      "id": "paid_creators",
+      "name": "Paid creator videos",
+      "kind": "video",
+      "why": "We aren't paying for promotion yet: free channels first."
+    },
+    {
+      "id": "paid_fast_lanes",
+      "name": "Paid launch fast lanes (Uneed, DevHunt, MCP Market)",
+      "kind": "listing",
+      "why": "Each sells a sooner slot; we wait in the free queues instead."
     }
   ],
   "spend": [
     {
-      "what": "Uneed fast-track",
-      "usd": 19.99,
-      "status": "planned",
-      "note": "A launch in about two weeks instead of June 2027. Coming soon."
-    },
-    {
-      "what": "DevHunt basic launch (the MCP server)",
-      "usd": 19,
-      "status": "planned",
-      "note": "A launch in a week we pick, with a followed search link, instead of the free queue (~2031). Coming soon."
+      "what": "MCP directory listings (mcp.so and Glama)",
+      "usd": 20,
+      "status": "paid",
+      "note": "Paid 21 Oct 2026, once: the MCP server's listings."
     }
   ],
   "upcoming": [
