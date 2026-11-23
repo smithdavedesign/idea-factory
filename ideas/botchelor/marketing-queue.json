@@ -3381,7 +3381,7 @@
     },
     {
       "id": 133,
-      "status": "approved",
+      "status": "posted",
       "createdAt": "2026-11-23T16:22:14.311Z",
       "channel": "threads",
       "kind": "threads",
@@ -3397,7 +3397,17 @@
       },
       "hash": "9e42a4aec62d4b33",
       "approvedAt": "2026-11-23T16:22:14.311Z",
-      "approvedBy": "auto"
+      "approvedBy": "auto",
+      "postedAt": "2026-11-23T16:25:03.649Z",
+      "postUrl": "https://www.threads.com/@botchelor/post/DgFza5FlBeh",
+      "thing": "DgFza5FlBeh",
+      "image": {
+        "source": "og",
+        "page": "https://botchelor.com/episodes/ebc3856b-214d-448c-ad58-50f1df28ba8f/report-card?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+        "ok": true,
+        "how": "attached",
+        "at": "2026-11-23T16:25:03.649Z"
+      }
     }
   ],
   "seen": {
