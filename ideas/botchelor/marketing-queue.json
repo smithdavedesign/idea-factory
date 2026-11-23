@@ -3518,7 +3518,27 @@
       "t1_19t16vzd3zhj4",
       "t1_19t1eqrav4o76",
       "t1_19t2sua5gjl5x"
-    ]
+    ],
+    "news": {
+      "https://blog.character.ai/rss/": [
+        "https://blog.character.ai/chapter-11-update-and-transaction-notice/",
+        "https://blog.character.ai/an-update-on-character-ai/",
+        "https://blog.character.ai/new-styles-new-plan/",
+        "https://blog.character.ai/the-next-chapter-of-entertainment-and-fandom/",
+        "https://blog.character.ai/cai-image-models/",
+        "https://blog.character.ai/creator-spotlight-zairisu/",
+        "https://blog.character.ai/continuing-to-build-upon-our-safety-priorities/",
+        "https://blog.character.ai/cai-comics/",
+        "https://blog.character.ai/cai-series-one-month-in/",
+        "https://blog.character.ai/cai-series/",
+        "https://blog.character.ai/lorebook/",
+        "https://blog.character.ai/creator-bundle/",
+        "https://blog.character.ai/memory/",
+        "https://blog.character.ai/characters-character-the-women-powering-character-ai/",
+        "https://blog.character.ai/cai-books/"
+      ]
+    },
+    "asks": []
   },
   "last": {
     "watch": "2026-11-23T20:56:32.538Z",
@@ -3566,7 +3586,9 @@
       "covers": "ok",
       "draft taaft_thread": "ok",
       "draft mcp": "ok",
-      "draft discord": "ok"
+      "draft discord": "ok",
+      "news": "ok",
+      "asks": "ok"
     },
     "report": "2026-11-16",
     "warned:draft help-indiehackers:2026-11-13": true,
@@ -3598,6 +3620,8 @@
     "warned:draft bluesky:2026-11-22": true,
     "warned:draft x:2026-11-22": true,
     "warned:draft threads:2026-11-22": true,
-    "warned:draft help-mcp:2026-11-22": true
+    "warned:draft help-mcp:2026-11-22": true,
+    "newsAt": "2026-11-23T21:56:41.131Z",
+    "asksAt": "2026-11-23T21:56:41.131Z"
   }
 }

@@ -118,7 +118,9 @@
       "match": "best character ai alternatives|megathread",
       "note": " PAUSED 2026-11-23 (Claude): rule 6 calls members who copy-paste recommendations or \"generate them via AI\" spammers, and rule 7 bans companion products. David replies there by hand, in his own words (REDDIT-HAND.md). Undo: status active, only if the rule changes. HAND 2026-11-23: the loop reminds David when due; he posts in his own words.",
       "handWhy": "rule 6 counts recommendations generated via AI as spam; rule 7 bans companion products",
-      "handTip": "Megathread comment, or a direct reply to someone asking for a recommendation. Pitch the date show and the save guide, never Companions. Plain botchelor.com links, no ?ref/utm (rule 8)."
+      "handTip": "Megathread comment, or a direct reply to someone asking for a recommendation. Pitch the date show and the save guide, never Companions. Plain botchelor.com links, no ?ref/utm (rule 8).",
+      "watchAsks": true,
+      "askTip": "Lead with the save guide (https://botchelor.com/guides/save-character-ai): request the export today, it takes 3-4 weeks. Then one line on Botchelor, PG, saying you made it. Plain links, no utm."
     },
     {
       "id": "ai_agents_weekly",
@@ -152,7 +154,8 @@
       "angle": "Promotion Sunday post. Their AI automod enforces the Sat 10:00 to Mon 11:59 UTC window. Best result so far (9 points): short, disclosure first, one question at the end. David 2026-11-16: next one is the Character.AI rescue post (docs/launch-kit.md, 'Character.AI rescue', r/ChatbotRefugees draft): for people moving characters off Character.AI, paste a character you wrote (name, description, greeting, definition) and the builder opens filled in; first date is a speed date of about a minute, then the character texts you. Say plainly: not a chat app, PG (a character written for adult chat keeps their personality and loses the scenes), nothing is fetched from their Character.AI account, not connected to Character.AI, three free dates a week. Nothing about Character.AI's own affairs. Ask: did the date sound like your character?",
       "note": " PAUSED 2026-11-23 (Claude): the sub's rules now forbid automated posting (rule 2: no bots, scripts or automated programs to post; bot-like accounts are permanently banned); the loop posts through a scripted browser, which risks a ban on the account. David posts here by hand, in his own words. Undo: status active, only if the rule changes. HAND 2026-11-23: the loop reminds David when due; he posts in his own words.",
       "handWhy": "rule 2 bans bots, scripts or automated programs to post (permanent ban)",
-      "handTip": "Promotion Sunday flair, or a comment in the monthly megathread. SFW only. Lead with something new (the Character.AI save guide, a date that went badly)."
+      "handTip": "Promotion Sunday flair, or a comment in the monthly megathread. SFW only. Lead with something new (the Character.AI save guide, a date that went badly).",
+      "handDraft": true
     },
     {
       "id": "janitorai_refuges",
@@ -198,7 +201,8 @@
       "angle": "App promotion with the App Promotion flair; a different angle from the 3 Nov post.",
       "note": " PAUSED 2026-11-23 (Claude): the sub's rules now forbid automated posting (rule 11: no automated scripts to post; accounts must be operated by a human); the loop posts through a scripted browser, which risks a ban on the account. David posts here by hand, in his own words. Undo: status active, only if the rule changes. HAND 2026-11-23: the loop reminds David when due; he posts in his own words.",
       "handWhy": "rule 11: accounts must be operated by a human, no automated scripts",
-      "handTip": "App Promotion flair. Short, with a real date as the hook."
+      "handTip": "App Promotion flair. Short, with a real date as the hook.",
+      "handDraft": true
     },
     {
       "id": "sideproject",
@@ -223,8 +227,8 @@
       "kind": "video",
       "status": "active",
       "from": "2026-11-10",
-      "cooldownDays": 1,
-      "note": "The day's short-video kit (scripts/clips/post-kit.mjs in ~/.botchelor-crowd/repo: a daily episode, or a staged hand cut after 18:00). The channels that follow it post it: TikTok, YouTube Shorts and Instagram Reels, all by the loop since 2026-11-19 (before that David uploaded each kit to TikTok by hand, and TikTok lapsed). Never After Dark.",
+      "cooldownDays": 7,
+      "note": "The day's short-video kit (scripts/clips/post-kit.mjs in ~/.botchelor-crowd/repo: a daily episode, or a staged hand cut after 18:00). The channels that follow it post it: TikTok, YouTube Shorts and Instagram Reels, all by the loop since 2026-11-19 (before that David uploaded each kit to TikTok by hand, and TikTok lapsed). Never After Dark. 2026-11-23 David: once a week (0 visitors from X, Bluesky, YouTube, TikTok in 30 days).",
       "logName": "TikTok/Reels/Shorts (@botchelorcom)",
       "publicNote": "A short clip of one of the day's dates, every day."
     },
@@ -243,13 +247,14 @@
       "id": "bluesky",
       "kind": "bluesky",
       "status": "active",
-      "cooldownDays": 1,
+      "cooldownDays": 7,
       "angle": "One short post a day as @botchelor.bsky.social: a best line or moment from a date that aired on botchelor.com this week (fetch https://botchelor.com/watch to find one; quote it exactly and name both characters), then the link. Say the characters and dates are AI. No hashtags beyond one or two.",
       "logName": "Bluesky",
       "from": "2026-11-10",
       "reportCard": true,
       "reportCardAngle": "Feature the date's report card: lead with what's funny or surprising in it (an F in trust, an A in chemistry that still ended as just friends, a character's own verdict quoted exactly), naming both characters, then the link; the post shows the card. Say the characters and dates are AI. One or two hashtags at most.",
-      "reportCardNote": "2026-11-20 (David: \"point the marketing loop at report cards\"): each day's post features a different aired date's report card (botchelor #1896), most striking grade first; its picture is the card. With no fresh card it falls back to `angle`."
+      "reportCardNote": "2026-11-20 (David: \"point the marketing loop at report cards\"): each day's post features a different aired date's report card (botchelor #1896), most striking grade first; its picture is the card. With no fresh card it falls back to `angle`.",
+      "note": " 2026-11-23 (Claude): daily → every 3 days. 30 days of tagged links (10-24 to 11-23): 0 visitors from X or Bluesky, against 32 from r/ChatbotRefugees, 9 r/JanitorAI_Refuges, 7 Threads. Each draft is a Claude run on David's subscription. Back to 1 if they start sending visitors. 2026-11-23 David: once a week (0 visitors from X, Bluesky, YouTube, TikTok in 30 days)."
     },
     {
       "id": "discord",
@@ -265,13 +270,14 @@
       "id": "x",
       "kind": "x",
       "status": "active",
-      "cooldownDays": 1,
+      "cooldownDays": 7,
       "angle": "One short post a day as @botchelorLLC, different from the day's Bluesky post: a best line or moment from a date that aired on botchelor.com (fetch https://botchelor.com/watch), then the link. Say the characters and dates are AI. At most two hashtags.",
       "logName": "X",
       "from": "2026-11-10",
       "reportCard": true,
       "reportCardAngle": "Feature the date's report card: the verdict first (its overall grade and how it ended, or one character's own line from the card, quoted exactly), naming both characters, then the link; the post shows the card. Different from the day's Bluesky and Threads posts (they feature other dates). Say the characters and dates are AI. At most two hashtags.",
-      "reportCardNote": "2026-11-20 (David: \"point the marketing loop at report cards\"): each day's post features a different aired date's report card (botchelor #1896), most striking grade first; its picture is the card. With no fresh card it falls back to `angle`."
+      "reportCardNote": "2026-11-20 (David: \"point the marketing loop at report cards\"): each day's post features a different aired date's report card (botchelor #1896), most striking grade first; its picture is the card. With no fresh card it falls back to `angle`.",
+      "note": " 2026-11-23 (Claude): daily → every 3 days. 30 days of tagged links (10-24 to 11-23): 0 visitors from X or Bluesky, against 32 from r/ChatbotRefugees, 9 r/JanitorAI_Refuges, 7 Threads. Each draft is a Claude run on David's subscription. Back to 1 if they start sending visitors. 2026-11-23 David: once a week (0 visitors from X, Bluesky, YouTube, TikTok in 30 days)."
     },
     {
       "id": "youtube_shorts",
@@ -513,6 +519,14 @@
       "title": "Launch day, with December's season premiere",
       "source": "product_hunt",
       "note": "Posted from the founder's own account; no vote-asking."
+    }
+  ],
+  "newsWatch": [
+    {
+      "name": "Character.AI",
+      "topic": "Character.AI",
+      "rss": "https://blog.character.ai/rss/",
+      "check": "the dated notes on botchelor.com/alternatives/character-ai (lib/alternative-apps.ts) and /guides/save-character-ai, the News section of MARKETING-FACTS.md, and PRODUCTHUNT.md/SHOWHN.md lines about Character.AI"
     }
   ]
 }
