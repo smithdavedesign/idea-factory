@@ -1,5 +1,5 @@
 {
-  "nextId": 129,
+  "nextId": 130,
   "paused": false,
   "items": [
     {
@@ -3255,6 +3255,32 @@
       "approvedAt": "2026-11-23T02:14:55.244Z",
       "approvedBy": "auto",
       "error": "Instagram didn't publish the Reel: {\"message\":\"Fatal\",\"code\":-1,\"type\":\"OAuthException\",\"error_subcode\":2207085,\"is_transient\":false,\"error_user_msg\":\"An internal server error occurred. Please try again later.\",\"error_user_title\":\"Gene"
+    },
+    {
+      "id": 129,
+      "status": "posted",
+      "createdAt": "2026-11-23T02:48:30.767Z",
+      "channel": "discord",
+      "kind": "discord",
+      "sub": null,
+      "title": "",
+      "body": "**Botchelor weekly: Sunday 22 Nov**\n\nDisclosure, as always: I'm the one developer who built Botchelor. One-person project, built with AI coding tools (Claude Code).\n\n**What's new this week**\n- Short videos went up from 16 to 21 November. They're hand-edited cuts of real aired dates: Pip and Nell's roller-derby disaster, Nell and Sable in the furniture maze, Hester and Barnaby's balloon, the soup speed date and the fire-exit date. The voices are AI (Kokoro). Every word on screen is from the date or is the show's caption.\n- Free dates are 3 a week for everyone. They come back every Monday at 00:00 UTC, and you don't need an account to start.\n\n**December is a different format**\nMost months are Classic Botchelor: everyone's characters on blind dates, nobody steering. December 2026 is **The Botchelor**. There's one lead, up to five suitors, and a rose ceremony every Sunday.\n- The lead is Nell, a house character. She's a museum night guard who gives the full tour to empty rooms, and she wants someone who asks a follow-up question.\n- The suitors are people's characters first, picked by audience votes on the casting board. If fewer apply, the show's own characters fill the places.\n- Each Sunday the audience's vote sends one suitor home, and how Nell's dates went sends another. The last Sunday is the finale.\n- Casting is open now. While it is, a new character's first date is with Nell.\n\n**Straight talk**\n- Dates and companion chat are PG.\n- You watch the date. You don't play it.\n- It's new and small, so the dating pool is mostly the show's own cast. This server is small too.\n\n**This server is for**\n- Feedback, including what's confusing or dull\n- Bug reports\n- Sharing your characters' dates\n\nStart or cast a character here: https://botchelor.com/?utm_source=discord&utm_medium=social&utm_campaign=season1&utm_content=discord\n\nOne question: if your character were a suitor for Nell, what follow-up question would they ask her?",
+      "why": "Weekly update on what changed (videos, 3 free dates a week), the December Botchelor format and Nell, with the real cons and the server's purpose, ending on a character question rather than a vote ask.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=discord&utm_medium=social&utm_campaign=season1&utm_content=discord",
+      "hash": "9726738366061e3d",
+      "approvedAt": "2026-11-23T02:48:30.772Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-23T02:48:44.128Z",
+      "postUrl": null,
+      "thing": "1574255350478278666",
+      "image": {
+        "source": "og",
+        "page": "https://botchelor.com/?utm_source=discord&utm_medium=social&utm_campaign=season1&utm_content=discord",
+        "ok": true,
+        "how": "attached",
+        "at": "2026-11-23T02:48:44.128Z"
+      }
     }
   ],
   "seen": {
@@ -3309,7 +3335,7 @@
     ]
   },
   "last": {
-    "watch": "2026-11-22T23:43:24.995Z",
+    "watch": "2026-11-23T02:48:42.856Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -3353,7 +3379,8 @@
       "stats": "ok",
       "covers": "ok",
       "draft taaft_thread": "ok",
-      "draft mcp": "ok"
+      "draft mcp": "ok",
+      "draft discord": "ok"
     },
     "report": "2026-11-16",
     "warned:draft help-indiehackers:2026-11-13": true,
@@ -3366,7 +3393,7 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-22T23:43:07.226Z",
+    "syncAt": "2026-11-23T02:48:13.649Z",
     "warned:draft help-indiehackers:2026-11-17": true,
     "warned:watch:2026-11-17": true,
     "warned:watch:2026-11-18": true,

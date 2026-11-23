@@ -735,6 +735,13 @@
       "postUrl": "https://www.youtube.com/shorts/kwXnZuq1aTQ",
       "postedAt": "2026-11-23T02:16:24.880Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #127 on his phone; link tagged utm_content=youtube_shorts."
+    },
+    {
+      "channel": "Discord (#announcements)",
+      "url": null,
+      "postUrl": null,
+      "postedAt": "2026-11-23T02:48:44.128Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #129 on his phone; link tagged utm_content=discord."
     }
   ]
 }
