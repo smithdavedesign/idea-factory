@@ -53,28 +53,28 @@
       "id": "help-indiehackers",
       "kind": "reddit-help",
       "sub": "indiehackers",
-      "status": "active",
+      "status": "paused",
       "from": "2026-11-10",
       "cooldownDays": 1,
-      "note": "Answers to build/launch questions; r/indiehackers needs 10 karma in the sub before a post stays up (removed 2026-11-10)."
+      "note": "Answers to build/launch questions; r/indiehackers needs 10 karma in the sub before a post stays up (removed 2026-11-10). PAUSED 2026-11-22 (Claude): Reddit's 2026 crackdown on automated, AI-written comments puts the account at risk, and Reddit promo threads are our only channel that sends users; help answers sent none. Set status back to active to undo."
     },
     {
       "id": "help-mcp",
       "kind": "reddit-help",
       "sub": "mcp",
-      "status": "active",
+      "status": "paused",
       "from": "2026-11-10",
       "cooldownDays": 1,
-      "note": "Answers on building and listing remote MCP servers; our showcase post is due 2026-11-22."
+      "note": "Answers on building and listing remote MCP servers; our showcase post is due 2026-11-22. PAUSED 2026-11-22 (Claude): Reddit's 2026 crackdown on automated, AI-written comments puts the account at risk, and Reddit promo threads are our only channel that sends users; help answers sent none. Set status back to active to undo."
     },
     {
       "id": "help-sideproject",
       "kind": "reddit-help",
       "sub": "SideProject",
-      "status": "active",
+      "status": "paused",
       "from": "2026-11-10",
       "cooldownDays": 1,
-      "note": "Answers on solo building with AI tools; our post is due 2026-11-30."
+      "note": "Answers on solo building with AI tools; our post is due 2026-11-30. PAUSED 2026-11-22 (Claude): Reddit's 2026 crackdown on automated, AI-written comments puts the account at risk, and Reddit promo threads are our only channel that sends users; help answers sent none. Set status back to active to undo."
     },
     {
       "id": "indiehackers",
@@ -221,10 +221,10 @@
       "kind": "tiktok",
       "follows": "video",
       "source": "tiktok",
-      "status": "active",
+      "status": "paused",
       "from": "2026-11-19",
       "logName": "TikTok (@botchelorcom)",
-      "note": "Each day's video kit posted by the loop through TikTok Studio in the signed-in marketing browser (io.tiktokPost; TikTok's Content Posting API needs an audited app before posts can be public): caption pasted and read back, TikTok's AI-generated content label on (no label, no post), the kit's cover.png as the cover, then the new post's URL read off tiktokstudio/content. Stats (views, likes, comments) come off the same page once a day. If the browser is signed out it copies the sign-in from David's Chrome (.tiktok.com and www.tiktok.com). Before 2026-11-19 David uploaded each kit by hand (@botchelorcom).",
+      "note": "Each day's video kit posted by the loop through TikTok Studio in the signed-in marketing browser (io.tiktokPost; TikTok's Content Posting API needs an audited app before posts can be public): caption pasted and read back, TikTok's AI-generated content label on (no label, no post), the kit's cover.png as the cover, then the new post's URL read off tiktokstudio/content. Stats (views, likes, comments) come off the same page once a day. If the browser is signed out it copies the sign-in from David's Chrome (.tiktok.com and www.tiktok.com). Before 2026-11-19 David uploaded each kit by hand (@botchelorcom). PAUSED 2026-11-22 (Claude, David's traffic push): every loop-posted TikTok since 11-19 has 0 views in TikTok Studio, while his hand uploads got 63 and 20. TikTok's integrity rules prohibit automation tools, and repeatedly posting videos that can't be recommended can make the whole account ineligible. Until David's Account Check is clear, the kit goes to him to upload by hand (postsTikTok false). Set status back to active to undo.",
       "publicNote": "The day's clip on TikTok."
     },
     {
