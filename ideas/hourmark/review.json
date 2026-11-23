@@ -1,0 +1,79 @@
+{
+  "verdict": "pass",
+  "score": 4,
+  "summary": "Supervisors have real audit exposure and pay for supervision, but I found no direct demand quote, the space already has Guidara and many $5–$10 apps, and David has no route to therapists. A $19/month price needs about 53 payers from a community he can't reach.",
+  "forcingQuestions": {
+    "demand": {
+      "score": 3,
+      "evidence": "No first-person complaint found; the only 'unsolved pain' lead is a marketing roundup with no quotes or URLs (RESEARCH.md, nicheloom). Paid competitors exist (Guidara $29/seat, Psych Logger $9.99), which shows some spend but is not demand for this wedge. Stronger evidence: a supervisor who has lost or nearly lost an associate's month, or who pays for a tracker today."
+    },
+    "statusQuo": {
+      "score": 5,
+      "evidence": "Spreadsheets per state plus free or cheap associate apps. Rules are strict (Oregon voids a month's hours if supervision is short; 14-day record production). That is a real workaround, but a free spreadsheet plus a calendar reminder covers most of the pain."
+    },
+    "specificity": {
+      "score": 4,
+      "evidence": "Buyer is a private-practice LMFT/LPC/LCSW supervisor with 2–10 associates, charging about $300/month each (Texas example). Role is clear, but there is no named person and no heard-from-their-mouth consequence. Associates, not supervisors, usually pick the tracker (RESEARCH.md risks)."
+    },
+    "wedge": {
+      "score": 5,
+      "evidence": "Flat $19 unlimited associates, a monthly-minimum alarm and a PDF audit file. The M1 rule engine is small and testable, but the wedge is easy to copy and close to Guidara's feature set; per-seat pricing is the only real difference."
+    },
+    "futureFit": {
+      "score": 4,
+      "evidence": "Boards are tightening supervision verification (CA 2021 notice), which helps. But rule tables go stale by hand, and an EHR or board-run portal could absorb the feature. No thesis found that makes a small independent tool more essential."
+    }
+  },
+  "premises": [
+    "Supervisors, not associates, will adopt and pay. Not supported: associates choose trackers, and no supervisor-led adoption evidence exists.",
+    "Audit and voided-month risk is painful enough to buy a tool. Partly supported by Oregon and California rules, not by any user quote.",
+    "A flat price beats Guidara's per-seat price enough to win. Unproven; small supervisors with 2–3 associates pay about the same.",
+    "A hand-kept 3-state rule table can stay correct for a solo developer. Weak: a wrong rule costs a real person real hours."
+  ],
+  "alternatives": [
+    "Extend credclock (David's CAQH and credential tracker for small clinics): add a supervisor-hours module for the same clinic-owner buyer, reusing its reminder and expiry logic and its audience.",
+    "Free single-page state-rule checker (monthly minimum and group-split calculator) as an SEO and community asset, no accounts, to test whether supervisors search for this at all.",
+    "Minimal viable: skip the product and interview 10 supervisors (r/LMFT, r/therapists, state association groups) before any build; the ideal-architecture version is the full invite, co-sign and audit-file SaaS and should wait for evidence."
+  ],
+  "wedge": "A no-login monthly check: pick state, enter a month's individual and group hours, and see ok, at-risk or below-minimum with the board source link. Charge later for invites, co-sign history and the audit PDF.",
+  "feasibility": {
+    "m1Weekend": true,
+    "zeroCost": true,
+    "notes": "Next.js on Vercel or Cloudflare Workers with OpenNext, no LLM, no paid APIs; Turso or Neon free if persistence is needed (not for M1). One test proves M1: checkMonth('TX', 3h individual) returns below-minimum, plus the rule-object sourceUrl test."
+  },
+  "risks": [
+    "Crowded: Guidara plus many cheap associate apps; wedge is copyable.",
+    "No direct demand evidence and David has no therapist network, so the demand test would draw weak traffic.",
+    "Stale or wrong rules harm users; liability and board disclaimers.",
+    "Low price ($19) needs about 53 payers for $1,000/month, and supervisor-led adoption is unproven.",
+    "Overlaps David's compliance-tracker pile (credclock, permitly, vendorfile) without a distribution edge."
+  ],
+  "killCriteria": "Drop it if fewer than 3 of 10 supervisors interviewed describe a missed or near-missed month or pay for a tracker today; if the 14-day test gets fewer than 5 supervisor signups from 50+ qualified visitors; or if supervisors say the associate chooses the tool.",
+  "landing": {
+    "headline": "Never lose an associate's month of supervision hours",
+    "subhead": "Hourmark checks each associate's monthly supervision against your state's rule, collects your co-sign, and keeps the board-ready audit file. $19/month flat.",
+    "bullets": [
+      "Alerts before a month falls under the board minimum",
+      "Monthly co-sign with timestamped signature history",
+      "One-click dated audit file for each associate",
+      "Flat price, unlimited associates; associates log free"
+    ],
+    "cta": "Join the waitlist",
+    "audience": "Licensed LMFT, LPC and LCSW supervisors in CA, OR and TX who supervise 2–10 pre-licensure associates"
+  },
+  "launch": {
+    "channels": [
+      {
+        "name": "r/LMFT",
+        "url": "https://www.reddit.com/r/LMFT/",
+        "why": "Associates and supervisors discuss hour tracking and supervision rules."
+      },
+      {
+        "name": "r/therapists",
+        "url": "https://www.reddit.com/r/therapists/",
+        "why": "Large clinician community; ask the supervisor question honestly."
+      }
+    ],
+    "post": "I'm exploring a small tool for supervisors of pre-licensure therapists: it checks each associate's monthly supervision against the state rule, warns before a month falls short, and keeps a signed audit file. Page: {url}. Supervisors, how do you track this today, and has a month ever been at risk?"
+  }
+}
