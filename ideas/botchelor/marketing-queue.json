@@ -1,5 +1,5 @@
 {
-  "nextId": 124,
+  "nextId": 125,
   "paused": false,
   "items": [
     {
@@ -3154,6 +3154,28 @@
       "postedAt": "2026-11-22T20:41:14.385Z",
       "postUrl": null,
       "thing": "t1_19t1c5wmxpqbo"
+    },
+    {
+      "id": 124,
+      "status": "posted",
+      "createdAt": "2026-11-22T23:43:21.811Z",
+      "channel": "reply:mcp",
+      "kind": "reddit",
+      "sub": "mcp",
+      "title": "",
+      "body": "That makes sense. 15K is too many to check by hand. As someone with a remote server in the registry, I'd say the listing only tells you the URL exists, not whether it's up or what its tools do. So a light check at export time might be enough. For example, only the remotes someone actually picks get an initialize call. Then you wouldn't have to validate the whole registry.",
+      "replyTo": {
+        "name": "t1_19t1eqrav4o76",
+        "author": "Fine_Airline_6832",
+        "body": "For now I am only doing what the registry listing is saying. But I will add in a way to register and validate them when possible, however it has to be scalable with 15K listings :) ",
+        "context": "https://www.reddit.com/r/mcp/comments/1y2pisq/built_an_mcp_allowlist_policy_pack_export_so_you/19t1eqrav4o76/?context=3"
+      },
+      "hash": "5ac043cafe32091b",
+      "approvedAt": "2026-11-22T23:43:21.812Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-22T23:43:25.767Z",
+      "postUrl": null,
+      "thing": "t1_19t1kag7dsgar"
     }
   ],
   "seen": {
@@ -3203,11 +3225,12 @@
       "t1_19szg36cofn8h",
       "t1_19szg31x3o605",
       "t1_19t0kqt1lqgyp",
-      "t1_19t16vzd3zhj4"
+      "t1_19t16vzd3zhj4",
+      "t1_19t1eqrav4o76"
     ]
   },
   "last": {
-    "watch": "2026-11-22T20:41:13.608Z",
+    "watch": "2026-11-22T23:43:24.995Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -3264,7 +3287,7 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-22T20:40:49.331Z",
+    "syncAt": "2026-11-22T23:43:07.226Z",
     "warned:draft help-indiehackers:2026-11-17": true,
     "warned:watch:2026-11-17": true,
     "warned:watch:2026-11-18": true,
