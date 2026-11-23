@@ -80,6 +80,10 @@ function draftPrompt(ctx, ch, { rules = [], thread, previous, change, reply, hel
   const facts = path.join(ctx.dir, 'MARKETING-FACTS.md');
   const recent = (ctx.launchLog.posts || []).filter((p) => M.logMatches(ch || { id: '', sub: reply?.sub }, p)).slice(-3).map((p) => `${p.postedAt?.slice(0, 10)} ${p.postUrl || ''} ${p.note ? `(${p.note.slice(0, 160)})` : ''}`);
   const parts = [`Read ${facts} first: it is the only source of facts about the product and the voice to write in.`];
+  let factsAt = 0;
+  try { factsAt = fs.statSync(facts).mtimeMs; } catch { factsAt = 0; }
+  const hold = M.newsHoldLine(ctx.queue?.newsHold, factsAt);
+  if (hold) parts.push(hold);
   if (help) {
     parts.push(`This is NOT a promotional post. Draft one plain, genuinely useful answer from David (u/${ctx.cfg.reddit?.account || 'the developer'}) to a question in r/${help.sub}, so he takes part in the community like any other member. ` +
       'Use the section "What David can speak to" in the facts file: answer only from that real experience, and never invent experience he does not have.',
@@ -268,6 +272,32 @@ async function watchAsks(ctx, reddit, now = new Date()) {
     }
   }
   ctx.queue.seen.asks = ctx.queue.seen.asks.slice(-500);
+  saveQueue(ctx);
+}
+
+/**
+ * Every 6 h: the feeds in marketing.json `newsWatch` ([{name, topic, rss}]). A new post is sent to David, and drafts
+ * stop mentioning that topic until MARKETING-FACTS.md is edited (M.newsHoldLine). Built for Character.AI's Chapter 11
+ * sale (auction 2026-12-01): the facts and the site's dated notes go stale the day it posts the result. The first
+ * read of a feed only learns what's there.
+ */
+async function watchNews(ctx, now = new Date()) {
+  ctx.queue.last.newsAt = now.toISOString();
+  const seen = (ctx.queue.seen.news ||= {});
+  for (const w of ctx.cfg.newsWatch || []) {
+    const r = await fetch(w.rss, { headers: { 'user-agent': SITE_UA }, signal: AbortSignal.timeout(20_000) });
+    if (!r.ok) throw new Error(`${w.name} feed answered ${r.status}`);
+    const items = M.rssItems(await r.text());
+    const known = new Set(seen[w.rss] || []);
+    const fresh = seen[w.rss] ? items.filter((i) => !known.has(i.link)) : [];
+    seen[w.rss] = [...new Set([...(seen[w.rss] || []), ...items.map((i) => i.link)])].slice(-200);
+    if (fresh.length) {
+      const top = fresh[0];
+      ctx.queue.newsHold = { name: w.name, topic: w.topic || w.name, title: top.title, link: top.link, since: now.toISOString() };
+      io.tell(`📰 ${w.name} posted: "${top.title}"\n${top.link}${fresh.length > 1 ? `\n(+${fresh.length - 1} more)` : ''}\nUntil ideas/botchelor/MARKETING-FACTS.md is updated, drafts say nothing about ${w.topic || w.name}'s situation.${w.check ? `\nAlso check: ${w.check}` : ''}`);
+      emit({ component: 'market', event: 'news', status: 'warn', subject: { idea: ctx.cfg.slug }, message: `${w.name} posted "${top.title}": drafts hold off on ${w.topic || w.name} until the facts are updated` });
+    }
+  }
   saveQueue(ctx);
 }
 
@@ -850,6 +880,7 @@ async function tick(slug, now = new Date()) {
   }
 
   if (now - Date.parse(ctx.queue.last.watch || '1970-01-01') > WATCH_EVERY_MS) await step('watch', () => watchInbox(ctx, reddit));
+  if ((ctx.cfg.newsWatch || []).length && now - Date.parse(ctx.queue.last.newsAt || '1970-01-01') > 6 * 3_600_000) await step('news', () => watchNews(ctx, now));
   if (!ctx.queue.paused && M.localHour(now, tz) >= 8 && M.localHour(now, tz) < 22 && now - Date.parse(ctx.queue.last.asksAt || '1970-01-01') > WATCH_EVERY_MS) await step('asks', () => watchAsks(ctx, reddit, now));
   if (ctx.cfg.autoPost) await step('post', () => postApproved(ctx, reddit, now), { logsItself: true });
   if (now - Date.parse(ctx.queue.last.listingsAt || '1970-01-01') > 24 * 3_600_000) await step('listings', () => watchListings(ctx));

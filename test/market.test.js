@@ -440,3 +440,20 @@ test('pickAskThreads: fresh threads asking for an app or how to keep characters,
   assert.match(msg, /Rule: rule 6/);
   assert.match(msg, /Tip: never Companions/);
 });
+
+test('rssItems reads a Ghost feed; newsHoldLine holds drafts until the facts file is newer', () => {
+  const xml = `<?xml version="1.0"?><rss><channel><title><![CDATA[Character.AI Blog]]></title>
+    <item><title><![CDATA[Chapter 11 Update &amp; Transaction Notice]]></title><link>https://blog.character.ai/chapter-11-update-and-transaction-notice/</link><guid isPermaLink="false">abc</guid><pubDate>Wed, 05 Nov 2026 17:00:00 GMT</pubDate></item>
+    <item><title><![CDATA[An Update on Character&#x2019;s Future]]></title><link>https://blog.character.ai/an-update-on-character-ai/</link><pubDate>Mon, 12 Oct 2026 16:00:00 GMT</pubDate></item>
+  </channel></rss>`;
+  const items = M.rssItems(xml);
+  assert.equal(items.length, 2);
+  assert.deepEqual(items[0], { title: 'Chapter 11 Update & Transaction Notice', link: 'https://blog.character.ai/chapter-11-update-and-transaction-notice/', date: 'Wed, 05 Nov 2026 17:00:00 GMT' });
+  assert.equal(items[1].title, 'An Update on Character’s Future');
+  assert.deepEqual(M.rssItems(''), []);
+
+  const hold = { name: 'Character.AI', topic: 'Character.AI', title: 'Auction results', link: 'https://blog.character.ai/x/', since: '2026-12-01T18:00:00.000Z' };
+  assert.match(M.newsHoldLine(hold, Date.parse('2026-11-23T10:00:00Z')), /say NOTHING about Character.AI's situation/);
+  assert.equal(M.newsHoldLine(hold, Date.parse('2026-12-02T09:00:00Z')), null); // facts updated after the news
+  assert.equal(M.newsHoldLine(null, 0), null);
+});
