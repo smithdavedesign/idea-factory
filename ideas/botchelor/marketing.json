@@ -111,11 +111,14 @@
       "path": "/import?from=cai",
       "kind": "reddit-thread",
       "sub": "CharacterAIrunaways",
-      "status": "active",
+      "status": "hand",
       "from": "2026-11-12",
       "cooldownDays": 30,
       "angle": "A short comment in the alternatives megathread, only in a megathread we have not commented in yet (rule 6: no repeated promotion). David 2026-11-16: lead with moving a character over: paste what you wrote on Character.AI (name, description, greeting, definition) and it goes on a speed date with the cast; nothing is fetched from their account; PG; honest cons; free first date. Rule 7 bans companion products: describe only the date show, never the one-to-one chat or calls.",
-      "match": "best character ai alternatives|megathread"
+      "match": "best character ai alternatives|megathread",
+      "note": " PAUSED 2026-11-23 (Claude): rule 6 calls members who copy-paste recommendations or \"generate them via AI\" spammers, and rule 7 bans companion products. David replies there by hand, in his own words (REDDIT-HAND.md). Undo: status active, only if the rule changes. HAND 2026-11-23: the loop reminds David when due; he posts in his own words.",
+      "handWhy": "rule 6 counts recommendations generated via AI as spam; rule 7 bans companion products",
+      "handTip": "Megathread comment, or a direct reply to someone asking for a recommendation. Pitch the date show and the save guide, never Companions. Plain botchelor.com links, no ?ref/utm (rule 8)."
     },
     {
       "id": "ai_agents_weekly",
@@ -132,7 +135,7 @@
       "path": "/import?from=cai",
       "kind": "reddit",
       "sub": "ChatbotRefugees",
-      "status": "active",
+      "status": "hand",
       "from": "2026-11-14",
       "cooldownDays": 6,
       "flair": "Promotion Sunday",
@@ -146,18 +149,24 @@
         "toUtc": "Mon 11:59",
         "preferUtcHour": 19
       },
-      "angle": "Promotion Sunday post. Their AI automod enforces the Sat 10:00 to Mon 11:59 UTC window. Best result so far (9 points): short, disclosure first, one question at the end. David 2026-11-16: next one is the Character.AI rescue post (docs/launch-kit.md, 'Character.AI rescue', r/ChatbotRefugees draft): for people moving characters off Character.AI, paste a character you wrote (name, description, greeting, definition) and the builder opens filled in; first date is a speed date of about a minute, then the character texts you. Say plainly: not a chat app, PG (a character written for adult chat keeps their personality and loses the scenes), nothing is fetched from their Character.AI account, not connected to Character.AI, three free dates a week. Nothing about Character.AI's own affairs. Ask: did the date sound like your character?"
+      "angle": "Promotion Sunday post. Their AI automod enforces the Sat 10:00 to Mon 11:59 UTC window. Best result so far (9 points): short, disclosure first, one question at the end. David 2026-11-16: next one is the Character.AI rescue post (docs/launch-kit.md, 'Character.AI rescue', r/ChatbotRefugees draft): for people moving characters off Character.AI, paste a character you wrote (name, description, greeting, definition) and the builder opens filled in; first date is a speed date of about a minute, then the character texts you. Say plainly: not a chat app, PG (a character written for adult chat keeps their personality and loses the scenes), nothing is fetched from their Character.AI account, not connected to Character.AI, three free dates a week. Nothing about Character.AI's own affairs. Ask: did the date sound like your character?",
+      "note": " PAUSED 2026-11-23 (Claude): the sub's rules now forbid automated posting (rule 2: no bots, scripts or automated programs to post; bot-like accounts are permanently banned); the loop posts through a scripted browser, which risks a ban on the account. David posts here by hand, in his own words. Undo: status active, only if the rule changes. HAND 2026-11-23: the loop reminds David when due; he posts in his own words.",
+      "handWhy": "rule 2 bans bots, scripts or automated programs to post (permanent ban)",
+      "handTip": "Promotion Sunday flair, or a comment in the monthly megathread. SFW only. Lead with something new (the Character.AI save guide, a date that went badly)."
     },
     {
       "id": "janitorai_refuges",
       "path": "/alternatives/janitor-ai",
       "kind": "reddit",
       "sub": "JanitorAI_Refuges",
-      "status": "active",
+      "status": "hand",
       "from": "2026-11-16",
       "cooldownDays": 7,
       "flair": "self advertising",
-      "angle": "Rule 13 format is mandatory: pros, cons, support link (our Discord https://discord.gg/8VDdRF9YU and support@botchelor.com), proxy support (no reverse proxies; bring your own key from OpenRouter, DeepSeek, Gemini, OpenAI, Anthropic or Groq). Self-ads at most once every 7 days."
+      "angle": "Rule 13 format is mandatory: pros, cons, support link (our Discord https://discord.gg/8VDdRF9YU and support@botchelor.com), proxy support (no reverse proxies; bring your own key from OpenRouter, DeepSeek, Gemini, OpenAI, Anthropic or Groq). Self-ads at most once every 7 days.",
+      "note": " PAUSED 2026-11-23 (Claude): the sub's rules now forbid automated posting (rule 12: No Automated Content, keep it mostly human); the loop posts through a scripted browser, which risks a ban on the account. David posts here by hand, in his own words. Undo: status active, only if the rule changes. HAND 2026-11-23: the loop reminds David when due; he posts in his own words.",
+      "handWhy": "rule 12: No Automated Content, keep the sub mostly human",
+      "handTip": "Rule 13: pros AND cons, a link to our Discord for support, and proxy support (bring your own key: OpenRouter, DeepSeek, Gemini, OpenAI, Anthropic, Groq; no reverse proxies). Weekly at most."
     },
     {
       "id": "mcp",
@@ -182,11 +191,14 @@
       "id": "aichapp",
       "kind": "reddit",
       "sub": "aichapp",
-      "status": "active",
+      "status": "hand",
       "from": "2026-11-17",
       "cooldownDays": 14,
       "flair": "App Promotion",
-      "angle": "App promotion with the App Promotion flair; a different angle from the 3 Nov post."
+      "angle": "App promotion with the App Promotion flair; a different angle from the 3 Nov post.",
+      "note": " PAUSED 2026-11-23 (Claude): the sub's rules now forbid automated posting (rule 11: no automated scripts to post; accounts must be operated by a human); the loop posts through a scripted browser, which risks a ban on the account. David posts here by hand, in his own words. Undo: status active, only if the rule changes. HAND 2026-11-23: the loop reminds David when due; he posts in his own words.",
+      "handWhy": "rule 11: accounts must be operated by a human, no automated scripts",
+      "handTip": "App Promotion flair. Short, with a real date as the hook."
     },
     {
       "id": "sideproject",
