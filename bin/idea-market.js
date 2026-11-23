@@ -100,7 +100,7 @@ function draftPrompt(ctx, ch, { rules = [], thread, previous, change, reply, hel
     parts.push(`Draft a reply from the developer (u/${ctx.cfg.reddit?.account || 'the developer'}) to this Reddit comment in r/${reply.sub}, on the thread "${reply.linkTitle}":`,
       `"""${reply.body.slice(0, 2000)}"""`,
       'Answer what they actually said, briefly (1 to 4 sentences), friendly and specific. No link unless they asked for one. If they found a bug or limit, thank them and say plainly what you will do or that it is how it works. Title: "".',
-      'This reply may be posted without David reading it first. If the comment is from a moderator, hostile or accusing, about money, legal, safety or someone\'s personal situation, or anything you are not sure how David would answer, don\'t draft: return {"title":"","body":"","why":"blocked: needs David: <one line why>"}.');
+      byHand ? 'David will read this reply, change what he likes and post it himself; the loop never posts it. Write it as him, first person, plain. If the comment is from a moderator' : 'This reply may be posted without David reading it first. If the comment is from a moderator, hostile or accusing, about money, legal, safety or someone\'s personal situation, or anything you are not sure how David would answer, don\'t draft: return {"title":"","body":"","why":"blocked: needs David: <one line why>"}.');
   } else {
     const where = ch.kind === 'reddit' ? `a new post in r/${ch.sub}` : ch.kind === 'reddit-thread' ? `a comment in r/${ch.sub}'s thread "${thread?.title}" (${thread?.permalink})` : `a ${ch.kind} post`;
     parts.push(`Draft ${where}. Channel id: ${ch.id}.`, `Angle: ${reportCard ? ch.reportCardAngle || ch.angle : ch.angle || '(choose the angle that fits this community best)'}`);
@@ -533,11 +533,29 @@ async function watchInbox(ctx, reddit) {
     ctx.queue.last.watch = new Date().toISOString();
     return saveQueue(ctx);
   }
+  const rulesBySub = {};
   for (const n of news) {
     ctx.queue.seen.inbox.push(n.name);
     if (n.skip) continue;
     if (n.kind === 'forward') {
       io.tell(`📬 Reddit message from ${n.author}${n.sub ? ` (r/${n.sub})` : ''}: ${n.subject}\n\n${n.body.slice(0, 1500)}`);
+      continue;
+    }
+    // A sub where David posts by hand (its rules forbid automated or AI-written posts): the comment goes to him, with a
+    // draft only where the channel allows one (handDraft), and the loop never replies there.
+    const handCh = M.handChannelFor(ctx.cfg, n.sub);
+    let banned = handCh ? (handCh.handWhy || 'its rules forbid automated replies') : null;
+    if (!banned && n.sub) {
+      if (!(n.sub in rulesBySub)) rulesBySub[n.sub] = await reddit.rules(n.sub).catch(() => []);
+      const rule = M.automationRule(rulesBySub[n.sub]);
+      if (rule) banned = `its rules forbid automated or AI-written posts: "${rule.slice(0, 160)}"`;
+    }
+    if (banned) {
+      let draft = '';
+      if (handCh?.handDraft) {
+        try { draft = (await writeDraft(ctx, null, { reply: n, byHand: true })).body || ''; } catch { draft = ''; }
+      }
+      io.tell(M.handReplyMessage(n, { why: banned, draft }));
       continue;
     }
     try {

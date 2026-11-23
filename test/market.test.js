@@ -467,3 +467,20 @@ test('handDraftBlock: a ready draft for David to change and post himself, or why
   assert.equal(M.handDraftBlock({ id: 3, body: '' }), '');
   assert.match(M.handDraftBlock({ id: 3 }, { error: 'drafting failed: timeout' }), /No draft this time: drafting failed: timeout/);
 });
+
+test('replies in a hand sub go to David: the channel lookup and his note', () => {
+  const c = { channels: [
+    { id: 'sunday', kind: 'reddit', sub: 'ChatbotRefugees', status: 'hand', handDraft: true },
+    { id: 'mcp', kind: 'reddit', sub: 'mcp', status: 'active' },
+  ] };
+  assert.equal(M.handChannelFor(c, 'chatbotrefugees').id, 'sunday');
+  assert.equal(M.handChannelFor(c, 'mcp'), null);
+  assert.equal(M.handChannelFor(c, ''), null);
+  const n = { author: 'someone', sub: 'ChatbotRefugees', body: 'Does it keep the definition?', context: '/r/ChatbotRefugees/comments/x/y/z/' };
+  const plain = M.handReplyMessage(n, { why: 'rule 2 bans automated posting' });
+  assert.match(plain, /u\/someone replied in r\/ChatbotRefugees: "Does it keep the definition\?"/);
+  assert.match(plain, /https:\/\/www\.reddit\.com\/r\/ChatbotRefugees\/comments\/x\/y\/z\//);
+  assert.match(plain, /yours to answer by hand \(rule 2 bans automated posting\); the loop won't reply there/);
+  assert.doesNotMatch(plain, /A draft/);
+  assert.match(M.handReplyMessage(n, { draft: 'Yes, all of it goes into the builder.' }), /A draft to change as you like and post yourself:\n\nYes, all of it/);
+});
