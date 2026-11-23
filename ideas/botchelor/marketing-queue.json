@@ -1,5 +1,5 @@
 {
-  "nextId": 125,
+  "nextId": 129,
   "paused": false,
   "items": [
     {
@@ -3176,6 +3176,85 @@
       "postedAt": "2026-11-22T23:43:25.767Z",
       "postUrl": null,
       "thing": "t1_19t1kag7dsgar"
+    },
+    {
+      "id": 125,
+      "status": "kit",
+      "createdAt": "2026-11-23T02:14:55.224Z",
+      "channel": "video",
+      "kind": "video",
+      "title": "",
+      "body": "Day 1: Star and Sweet: The stubborn Star above.\n\nStar or Sweet: who's in more trouble? 👀\n\nWatch the whole date: botchelor.com/episodes/f3f125e3-9ccc-4951-b511-aac28a0f6c34?s=tiktok\nEvery character is AI, and every date is AI-generated fiction.\nStar is by darood: botchelor.com/creators/darood\nSweet is by darood: botchelor.com/creators/darood\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #aidrama",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-23-star-dust-sweet-thang/post.mp4",
+      "episode": "f3f125e3-9ccc-4951-b511-aac28a0f6c34",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-23-star-dust-sweet-thang",
+      "hash": "1d060b22838a569a"
+    },
+    {
+      "id": 126,
+      "status": "posted",
+      "createdAt": "2026-11-23T02:14:55.241Z",
+      "channel": "tiktok",
+      "kind": "tiktok",
+      "title": "",
+      "body": "Day 1: Star and Sweet: The stubborn Star above.\n\nStar or Sweet: who's in more trouble? 👀\n\nWatch the whole date: botchelor.com/episodes/f3f125e3-9ccc-4951-b511-aac28a0f6c34?s=tiktok\nEvery character is AI, and every date is AI-generated fiction.\nStar is by darood: botchelor.com/creators/darood\nSweet is by darood: botchelor.com/creators/darood\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #aidrama",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-23-star-dust-sweet-thang/post.mp4",
+      "episode": "f3f125e3-9ccc-4951-b511-aac28a0f6c34",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-23-star-dust-sweet-thang",
+      "hash": "1d060b22838a569a",
+      "approvedAt": "2026-11-23T02:14:55.241Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-23T02:15:49.334Z",
+      "postUrl": "https://www.tiktok.com/@botchelorcom/video/7711184824735681822",
+      "thing": "7711184824735681822",
+      "image": {
+        "source": "kit",
+        "kit": "2026-11-23-star-dust-sweet-thang",
+        "ok": true,
+        "how": "cover",
+        "at": "2026-11-23T02:15:49.334Z"
+      }
+    },
+    {
+      "id": 127,
+      "status": "posted",
+      "createdAt": "2026-11-23T02:14:55.243Z",
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "title": "Day 1: Star and Sweet: The stubborn Star above. #Shorts",
+      "body": "Day 1: Star and Sweet: The stubborn Star above.\n\nStar or Sweet: who's in more trouble? 👀\n\nWatch the whole date: botchelor.com/episodes/f3f125e3-9ccc-4951-b511-aac28a0f6c34?s=youtube\nEvery character is AI, and every date is AI-generated fiction.\nStar is by darood: botchelor.com/creators/darood\nSweet is by darood: botchelor.com/creators/darood\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #aidrama",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-23-star-dust-sweet-thang/post.mp4",
+      "episode": "f3f125e3-9ccc-4951-b511-aac28a0f6c34",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-23-star-dust-sweet-thang",
+      "hash": "c3d35622dd4a0006",
+      "approvedAt": "2026-11-23T02:14:55.243Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-23T02:16:24.880Z",
+      "postUrl": "https://www.youtube.com/shorts/kwXnZuq1aTQ",
+      "thing": "kwXnZuq1aTQ",
+      "image": {
+        "source": "kit",
+        "kit": "2026-11-23-star-dust-sweet-thang",
+        "ok": true,
+        "how": "thumbnail",
+        "at": "2026-11-23T02:16:24.880Z"
+      }
+    },
+    {
+      "id": 128,
+      "status": "failed",
+      "createdAt": "2026-11-23T02:14:55.244Z",
+      "channel": "instagram_reels",
+      "kind": "instagram",
+      "title": "",
+      "body": "Day 1: Star and Sweet: The stubborn Star above.\n\nStar or Sweet: who's in more trouble? 👀\n\nWatch the whole date: botchelor.com/episodes/f3f125e3-9ccc-4951-b511-aac28a0f6c34?s=instagram\nEvery character is AI, and every date is AI-generated fiction.\nStar is by darood: botchelor.com/creators/darood\nSweet is by darood: botchelor.com/creators/darood\n\n#botchelor #aicharacters #datingshow #realitytv #originalcharacter #aidrama",
+      "media": "/Users/davidsmith/BotchelorClips/posts/2026-11-23-star-dust-sweet-thang/post.mp4",
+      "episode": "f3f125e3-9ccc-4951-b511-aac28a0f6c34",
+      "kitDir": "/Users/davidsmith/BotchelorClips/posts/2026-11-23-star-dust-sweet-thang",
+      "hash": "134303544cb08676",
+      "approvedAt": "2026-11-23T02:14:55.244Z",
+      "approvedBy": "auto",
+      "error": "Instagram didn't publish the Reel: {\"message\":\"Fatal\",\"code\":-1,\"type\":\"OAuthException\",\"error_subcode\":2207085,\"is_transient\":false,\"error_user_msg\":\"An internal server error occurred. Please try again later.\",\"error_user_title\":\"Gene"
     }
   ],
   "seen": {
@@ -3235,7 +3314,7 @@
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
     },
-    "listingsAt": "2026-11-22T01:53:24.920Z",
+    "listingsAt": "2026-11-23T02:18:12.107Z",
     "warned:draft indiehackers:2026-11-10": true,
     "warned:watch:2026-11-10": true,
     "warned:watch:2026-11-11": true,
