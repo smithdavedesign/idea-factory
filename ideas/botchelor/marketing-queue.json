@@ -1,5 +1,5 @@
 {
-  "nextId": 130,
+  "nextId": 134,
   "paused": false,
   "items": [
     {
@@ -3299,6 +3299,105 @@
         "how": "attached",
         "at": "2026-11-23T02:48:44.128Z"
       }
+    },
+    {
+      "id": 130,
+      "status": "posted",
+      "createdAt": "2026-11-23T16:21:31.297Z",
+      "channel": "janitorai_refuges",
+      "kind": "reddit",
+      "sub": "JanitorAI_Refuges",
+      "title": "I'm the dev: not a Janitor replacement, but a different thing to try. 3 free dates a week, no NSFW (pros and cons inside)",
+      "body": "Disclosure: I built this. One-person project, built with AI coding tools (Claude Code). I posted here on Nov 9 and Nov 16, so this one covers what's changed and what it is, for anyone leaving JAI.\n\n**What it is**\n\nBotchelor is a blind-date show for your original characters (your own, adults only, no real people, no fan fiction). You describe a character, they match with someone, and the date plays out as an episode you watch. You don't steer it. A rules engine picks the ending (second date, friends, disaster and more), and the AI writes the lines on the way there. Characters remember past dates, exes and setups. There is also 1-on-1 companion chat with memory.\n\n**What's new since last time**\n\n- Everyone gets 3 free dates a week (back every Monday 00:00 UTC), no account needed to start. It used to be one free date.\n- December's season is up: one lead, up to five suitors, a rose ceremony every Sunday. Casting is open, and a new character's first date is with the lead while it is.\n- I wrote a page for people coming from JanitorAI, with the cons listed on it too: https://botchelor.com/alternatives/janitor-ai?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=janitorai_refuges\n\n**Pros**\n\n- Free to start. Without a key, the show's own model runs it.\n- Characters remember dates, exes and setups.\n- Bring your own key if you want to pick the model.\n- It is a different format from chat. You watch your character live their life.\n\n**Cons**\n\n- Dates and companion chat are PG. No NSFW. If that is what you left JAI for, this isn't it.\n- You watch the date. You don't play it.\n- It's new and small, so the dating pool is mostly the show's own cast.\n- Companion chat is 30 free replies a day with a free account. More than that is the Companion Plan, $9.99/month.\n- The Discord is brand new and small.\n\n**Proxy support**\n\nNo reverse proxies or custom endpoints. You can bring your own key (free account) from OpenRouter, DeepSeek, Gemini, OpenAI, Anthropic or Groq, with a model picker.\n\n**Support**\n\nDiscord: https://discord.gg/8VDdRF9YU or support@botchelor.com. You can also reply here.\n\nFor people who left JAI for the chat itself: is a show you watch something you'd want, or do you need to be the one in the scene?",
+      "why": "Rule 13 and 15 compliant follow-up (7 days after the last one): honest JAI-refugee framing with PG as the main con, covering what's new (3 free dates a week, December casting, Janitor alternatives page) and ending on a real question.",
+      "flair": "self advertising",
+      "link": "https://botchelor.com/alternatives/janitor-ai?utm_source=reddit&utm_medium=social&utm_campaign=season1&utm_content=janitorai_refuges",
+      "hash": "bf8146d88a8a19e4",
+      "approvedAt": "2026-11-23T16:21:31.298Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-23T16:22:15.954Z",
+      "postUrl": "https://www.reddit.com/r/JanitorAI_Refuges/comments/1y3mkg8/im_the_dev_not_a_janitor_replacement_but_a/",
+      "thing": "t3_1y3mkg8"
+    },
+    {
+      "id": 131,
+      "status": "posted",
+      "createdAt": "2026-11-23T16:21:44.902Z",
+      "channel": "bluesky",
+      "kind": "bluesky",
+      "sub": null,
+      "title": "",
+      "body": "\"I'm not going to dress up a no to make it easier on either of us.\" AI Greta Harlow to AI Edwin Moriarty. Chemistry F, overall D.\n\nhttps://botchelor.com/episodes/de123d83-338b-49e7-a6f1-667594ed56c1/report-card?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "why": "Leads with the character's own blunt rejection line, quoted exactly, then the F in chemistry and the D overall, and says both characters are AI. It's under 300 characters with the link, and I left the hashtag out to fit.",
+      "flair": null,
+      "link": "https://botchelor.com/episodes/de123d83-338b-49e7-a6f1-667594ed56c1/report-card?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+      "reportCard": {
+        "episodeId": "de123d83-338b-49e7-a6f1-667594ed56c1",
+        "title": "Greta Harlow × Edwin Moriarty got a D on their AI blind date (a disaster)"
+      },
+      "hash": "d4f06ee3f8c25bcd",
+      "approvedAt": "2026-11-23T16:21:44.903Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-23T16:22:47.995Z",
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2yk2lylq22w",
+      "thing": "at://did:plc:wrbm5blnt2i4p5fe7hhdyfzv/app.bsky.feed.post/3n2yk2lylq22w",
+      "image": {
+        "source": "og",
+        "page": "https://botchelor.com/episodes/de123d83-338b-49e7-a6f1-667594ed56c1/report-card?utm_source=bluesky&utm_medium=social&utm_campaign=season1&utm_content=bluesky",
+        "ok": true,
+        "how": "link card",
+        "at": "2026-11-23T16:22:47.995Z"
+      }
+    },
+    {
+      "id": 132,
+      "status": "posted",
+      "createdAt": "2026-11-23T16:22:04.273Z",
+      "channel": "x",
+      "kind": "x",
+      "sub": null,
+      "title": "",
+      "body": "Ghosted, graded D: \"Fair. You asked one question and got a sink.\" E × Nell Abiodun, AI characters on an AI blind date. I built it. https://botchelor.com/episodes/a9e1c95a-65ef-4e80-80e4-ca0f5e19d467/report-card?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "why": "Opens on the verdict (D, ghosted) and a quoted card line that earlier posts haven't used. It names both characters, says the characters and the date are AI, and discloses with \"I built it\".",
+      "flair": null,
+      "link": "https://botchelor.com/episodes/a9e1c95a-65ef-4e80-80e4-ca0f5e19d467/report-card?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+      "reportCard": {
+        "episodeId": "a9e1c95a-65ef-4e80-80e4-ca0f5e19d467",
+        "title": "E × Nell Abiodun got a D on their AI blind date (a disaster · ghosted)"
+      },
+      "hash": "d4a40e778bb3c4bd",
+      "approvedAt": "2026-11-23T16:22:04.273Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-23T16:23:56.259Z",
+      "postUrl": "https://x.com/botchelorLLC/status/2124901675064516794",
+      "thing": "2124901675064516794",
+      "image": {
+        "source": "og",
+        "page": "https://botchelor.com/episodes/a9e1c95a-65ef-4e80-80e4-ca0f5e19d467/report-card?utm_source=x&utm_medium=social&utm_campaign=season1&utm_content=x",
+        "ok": true,
+        "how": "attached",
+        "at": "2026-11-23T16:23:56.259Z"
+      }
+    },
+    {
+      "id": 133,
+      "status": "approved",
+      "createdAt": "2026-11-23T16:22:14.311Z",
+      "channel": "threads",
+      "kind": "threads",
+      "sub": null,
+      "title": "",
+      "body": "I built Botchelor. Its AI characters just got an A- on an AI blind date nobody steers (Chemistry A+, Attraction C+).\n\nBarnaby, on the card: \"Sable, let's try something neither of us would ever do: stop pedalling and let the goose steer.\"\n\nFull report card: https://botchelor.com/episodes/ebc3856b-214d-448c-ad58-50f1df28ba8f/report-card?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "why": "Leads with the A- verdict and one exact Barnaby line, with a short builder disclosure, new card and new character pair versus earlier posts.",
+      "flair": null,
+      "link": "https://botchelor.com/episodes/ebc3856b-214d-448c-ad58-50f1df28ba8f/report-card?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "reportCard": {
+        "episodeId": "ebc3856b-214d-448c-ad58-50f1df28ba8f",
+        "title": "Barnaby Thorne × Sable Quist got an A- on their AI blind date (an 11th date)"
+      },
+      "hash": "9e42a4aec62d4b33",
+      "approvedAt": "2026-11-23T16:22:14.311Z",
+      "approvedBy": "auto"
     }
   ],
   "seen": {

@@ -742,6 +742,27 @@
       "postUrl": null,
       "postedAt": "2026-11-23T02:48:44.128Z",
       "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #129 on his phone; link tagged utm_content=discord."
+    },
+    {
+      "channel": "r/JanitorAI_Refuges",
+      "url": "https://www.reddit.com/r/JanitorAI_Refuges/",
+      "postUrl": "https://www.reddit.com/r/JanitorAI_Refuges/comments/1y3mkg8/im_the_dev_not_a_janitor_replacement_but_a/",
+      "postedAt": "2026-11-23T16:22:15.954Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #130 on his phone; flair \"self advertising\"; link tagged utm_content=janitorai_refuges."
+    },
+    {
+      "channel": "Bluesky",
+      "url": null,
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2yk2lylq22w",
+      "postedAt": "2026-11-23T16:22:47.995Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #131 on his phone; link tagged utm_content=bluesky."
+    },
+    {
+      "channel": "X",
+      "url": null,
+      "postUrl": "https://x.com/botchelorLLC/status/2124901675064516794",
+      "postedAt": "2026-11-23T16:23:56.259Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #132 on his phone; link tagged utm_content=x."
     }
   ]
 }
