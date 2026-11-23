@@ -176,7 +176,7 @@ test('botchelor\'s calendar is valid', () => {
     // Kinds the loop posts (M.AUTO_KINDS), the TikTok kit, and the ones David posts by hand or that aren't built yet.
     assert.ok([...M.AUTO_KINDS, 'video', 'hn', 'producthunt', 'card', 'stream', 'facebook', 'threads'].includes(ch.kind), ch.id);
     if (ch.follows) assert.ok(real.channels.some((o) => o.id === ch.follows), `${ch.id} follows a channel that doesn't exist`);
-    assert.ok(['active', 'waiting', 'needs-account', 'off'].includes(ch.status), ch.id);
+    assert.ok(['active', 'paused', 'waiting', 'needs-account', 'off'].includes(ch.status), ch.id);
     if (ch.kind.startsWith('reddit')) assert.ok(ch.sub, `${ch.id} needs a sub`);
     if (ch.kind === 'reddit-thread') assert.doesNotThrow(() => new RegExp(ch.match), ch.id), assert.ok(ch.match, `${ch.id} needs a match`);
     if (ch.window) assert.ok(M.weekMinute(ch.window.fromUtc) != null && M.weekMinute(ch.window.toUtc) != null, ch.id);
@@ -257,7 +257,7 @@ test('the botchelor calendar parses and its new channels are wired', () => {
   assert.equal(byId.youtube_shorts.follows, 'video');
   assert.equal(byId.instagram_reels.follows, 'video');
   assert.equal(M.autoPostable(byId.show_hn.kind), false);
-  for (const c of real.channels) assert.ok(['active', 'waiting', 'needs-account', 'off'].includes(c.status), c.id);
+  for (const c of real.channels) assert.ok(['active', 'paused', 'waiting', 'needs-account', 'off'].includes(c.status), c.id);
 });
 
 test('posts draft before help answers, so help answers cannot spend the Reddit budget first', () => {
@@ -358,4 +358,28 @@ test('the video kit is due once a local day, whatever David answered to the earl
   M.addItem(q2, { channel: 'agents', kind: 'reddit-thread', body: 'x' }, at('2026-11-09T16:00:00Z')).status = 'sent';
   assert.ok(!ids(M.dueChannels(c, { launchLog: { posts: [] }, queue: q2, now: at('2026-11-09T17:00:00Z') })).includes('agents'));
   assert.ok(!ids(M.dueChannels(c, { launchLog: { posts: [{ channel: 'r/JanitorAI_Refuges', postedAt: '2026-11-09T18:00:06Z' }] }, queue: M.emptyQueue(), now: at('2026-11-10T17:00:00Z') })).includes('jai'));
+});
+
+test('automationRule: sub rules that forbid automated or AI-written posts (2026-11-23 rule texts)', () => {
+  const banned = [
+    "2. Don't spam: Please avoid spam and repetitive content. This includes the use of bots, scripts, or automated programs to post, comment, or artificially manipulate engagement.",
+    '11. No Bots, Farming, or Artificial Engagement: Do not use automated scripts ("bots") to post, comment, or interact. Accounts must be operated by a human for genuine community participation.',
+    "12. No Automated Content: Please keep this subreddit mostly human (despite the content of it). Do your part as a human",
+    "6. No Spam or Off-Topic: Spammers are members who copy and paste recommendations, generate them via AI, or repeatedly promote the same service regardless of context.",
+    '6. Human posts only: Posts must be human-written.',
+    '3. No AI-generated posts or comments.',
+  ];
+  for (const r of banned) assert.equal(M.automationRule(['1. Be kind: no harassment.', r]), r, r);
+  const fine = [
+    '1. Be kind: no harassment.',
+    '4. App Promotions Allowed (Use Flair): You\'re welcome to promote your bots, apps, or characters, but use the "Bot Promotion" or "App Promotion" flair.',
+    'JAI bot promotion is only allowed on Thursday/Friday.',
+    '8. Self-promotion limited: Developers are only allowed to make promotional posts on Sundays, using the "Promotion Sunday" post flair.',
+    '5. AI-generated images must be flaired as AI art.',
+    '2. Share your chatbot screenshots and roleplay logs; generated media must remain SFW.',
+    '6. No bypassing automatic removals: some topics are removed by automod.',
+  ];
+  for (const r of fine) assert.equal(M.automationRule([r]), null, r);
+  assert.equal(M.automationRule([]), null);
+  assert.equal(M.automationRule(undefined), null);
 });

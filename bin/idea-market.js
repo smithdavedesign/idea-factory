@@ -138,12 +138,37 @@ async function writeDraft(ctx, ch, opts) {
   return d;
 }
 
+/**
+ * A sub whose rules forbid automated or AI-written posts (M.automationRule) is paused here, before a draft or a post,
+ * and David hears once which rule and that the sub is his to post in by hand (2026-11-23: four subs had added such a
+ * rule while the loop kept posting). Returns true when the channel was stopped. The pause is written to
+ * marketing.json; set the channel back to "active" only if the rule goes away.
+ */
+function stopForRules(ctx, ch, rules) {
+  const rule = M.automationRule(rules);
+  if (!rule || !ch) return false;
+  const day = new Date().toISOString().slice(0, 10);
+  const file = path.join(ctx.dir, 'marketing.json');
+  const cfg = readJson(file, null);
+  const live = cfg && (cfg.channels || []).find((c) => c.id === ch.id);
+  if (live && live.status === 'active') {
+    live.status = 'paused';
+    live.note = `${live.note ? `${live.note} ` : ''}PAUSED ${day} (the loop): r/${ch.sub}'s rules forbid automated or AI-written posts ("${rule.slice(0, 200)}"). David posts there by hand, in his own words. Undo: status active, only if the rule changes.`;
+    writeJson(file, cfg);
+    io.tell(`⏸️ Botchelor: I stopped posting in r/${ch.sub}. Its rules now forbid automated or AI-written posts:\n"${rule.slice(0, 300)}"\nIt's yours to post in by hand, in your own words. Nothing else changes.`);
+  }
+  ch.status = 'paused';
+  emit({ component: 'market', event: `rules ${ch.id}`, status: 'warn', subject: { idea: ctx.cfg.slug, channel: ch.id }, message: `r/${ch.sub} forbids automated posting; channel paused: ${rule.slice(0, 200)}` });
+  return true;
+}
+
 // ─── the pieces of a tick ──────────────────────────────────────────────────────────────────────────────────
 
 /** A help answer: find fresh questions in the sub, let Claude pick one it can really help with, send it to David. */
 async function draftHelp(ctx, ch, reddit) {
   await reddit.ensure();
   const rules = await reddit.rules(ch.sub);
+  if (stopForRules(ctx, ch, rules)) return null;
   const offered = new Set(ctx.queue.items.filter((i) => i.helpOn?.name).map((i) => i.helpOn.name));
   const picks = M.pickHelpPosts(await reddit.newPosts(ch.sub), { me: ctx.cfg.reddit?.account, skip: offered, max: 5, ...(ch.maxAgeHours ? { maxAgeHours: ch.maxAgeHours } : {}), ...(ch.maxComments ? { maxComments: ch.maxComments } : {}) });
   if (!picks.length) {
@@ -207,6 +232,7 @@ async function draftChannel(ctx, ch, reddit) {
   if (ch.kind.startsWith('reddit')) {
     await reddit.ensure();
     rules = await reddit.rules(ch.sub);
+    if (stopForRules(ctx, ch, rules)) return null;
     if (ch.kind === 'reddit-thread') {
       thread = await reddit.findThread(ch.sub, ch.match || 'megathread');
       if (!thread) throw new Error(`no open pinned thread in r/${ch.sub} matching /${ch.match}/`);
@@ -297,6 +323,15 @@ async function publish(ctx, item, reddit) {
   if (M.draftHash(item) !== item.hash) throw new Error('the text changed after David saw it; resend it first');
   const ch = channelOf(ctx, item.channel) || { id: item.channel, kind: item.kind, sub: item.sub };
   // Covers on every post but Reddit (David 2026-11-19): the kit's cover, or the linked page's og:image.
+  if (needsReddit(item) && (item.sub || ch.sub)) {
+    await reddit.ensure();
+    if (stopForRules(ctx, channelOf(ctx, item.channel) || ch, await reddit.rules(item.sub || ch.sub))) {
+      item.status = 'skipped';
+      item.error = `r/${item.sub || ch.sub}'s rules forbid automated or AI-written posts; not posted`;
+      saveQueue(ctx);
+      return { url: null, skipped: true };
+    }
+  }
   const pic = await pictureFor(item);
   const image = pic.image || undefined;
   let res;
@@ -354,6 +389,7 @@ async function postApproved(ctx, reddit, now = new Date()) {
     if (redditBlocked && needsReddit(item)) continue;
     try {
       const res = await publish(ctx, item, reddit);
+      if (res.skipped) continue; // its sub's rules stopped it; stopForRules told David
       const where = item.sub ? `r/${item.sub}` : item.channel;
       io.tell(item.approvedBy === 'auto'
         ? `✅ Posted for you · #${item.id} · ${item.helpOn ? `answer in ${where} to "${item.helpOn.title}"` : item.replyTo ? `reply in ${where} to u/${item.replyTo.author}` : where}\n${res.url || ''}\n———\n${item.title ? item.title + '\n\n' : ''}${item.body.slice(0, 1200)}`
