@@ -242,6 +242,35 @@ async function remindHand(ctx, ch, reddit) {
   return item;
 }
 
+/**
+ * Every 3 h from 8:00 to 22:00: new threads in opted-in hand channels (`watchAsks: true`) where someone asks for an app
+ * or how to keep their characters, sent to David as links to answer by hand (M.pickAskThreads). A thread whose own
+ * text asks not to be pitched is dropped. Each thread is offered once (queue.seen.asks).
+ */
+async function watchAsks(ctx, reddit, now = new Date()) {
+  const chs = (ctx.cfg.channels || []).filter((c) => c.status === 'hand' && c.watchAsks && c.sub);
+  ctx.queue.last.asksAt = now.toISOString();
+  if (!chs.length) return saveQueue(ctx);
+  await reddit.ensure();
+  const seen = new Set(ctx.queue.seen.asks ||= []);
+  for (const ch of chs) {
+    const picks = M.pickAskThreads(await reddit.newPosts(ch.sub), { now: now.getTime(), me: ctx.cfg.reddit?.account, skip: seen, ...(ch.askMaxAgeHours ? { maxAgeHours: ch.askMaxAgeHours } : {}) });
+    const keep = [];
+    for (const p of picks) {
+      seen.add(p.name);
+      ctx.queue.seen.asks.push(p.name);
+      const t = await reddit.thread(p.permalink, 3);
+      if (!M.refusesPitch(`${p.title}\n${t.selftext}`)) keep.push(p);
+    }
+    if (keep.length) {
+      io.tell(M.asksMessage(ch, keep, now.getTime()));
+      emit({ component: 'market', event: `asks ${ch.id}`, status: 'ok', subject: { idea: ctx.cfg.slug, channel: ch.id }, message: `${keep.length} thread(s) asking for an app in r/${ch.sub} sent to David` });
+    }
+  }
+  ctx.queue.seen.asks = ctx.queue.seen.asks.slice(-500);
+  saveQueue(ctx);
+}
+
 async function draftChannel(ctx, ch, reddit) {
   if (ch.kind === 'reddit-help') return draftHelp(ctx, ch, reddit);
   let rules = [];
@@ -821,6 +850,7 @@ async function tick(slug, now = new Date()) {
   }
 
   if (now - Date.parse(ctx.queue.last.watch || '1970-01-01') > WATCH_EVERY_MS) await step('watch', () => watchInbox(ctx, reddit));
+  if (!ctx.queue.paused && M.localHour(now, tz) >= 8 && M.localHour(now, tz) < 22 && now - Date.parse(ctx.queue.last.asksAt || '1970-01-01') > WATCH_EVERY_MS) await step('asks', () => watchAsks(ctx, reddit, now));
   if (ctx.cfg.autoPost) await step('post', () => postApproved(ctx, reddit, now), { logsItself: true });
   if (now - Date.parse(ctx.queue.last.listingsAt || '1970-01-01') > 24 * 3_600_000) await step('listings', () => watchListings(ctx));
   // Once a day from 7:00: how the posts do, and any Short still missing its cover.

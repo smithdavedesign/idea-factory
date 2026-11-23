@@ -415,3 +415,28 @@ test('handMessage: where, why, window, last post and how to log it, with no draf
   assert.match(t, /Comment in: November megathread https:\/\/www\.reddit\.com/);
   assert.match(t, /No post there yet/);
 });
+
+test('pickAskThreads: fresh threads asking for an app or how to keep characters, newest first', () => {
+  const now = at('2026-11-23T20:00:00Z').getTime();
+  const t = (name, title, hoursAgo, extra = {}) => ({ name, title, author: 'someone', permalink: `/r/CharacterAIrunaways/comments/${name}/x/`, ts: now - hoursAgo * 3_600_000, comments: 3, self: true, ...extra });
+  const things = [
+    t('a', 'Anyone else looking for a SFW Character.AI alternative?', 2),
+    t('b', "Is Character.AI down or shutting down? What's a good backup", 5),
+    t('c', 'My favourite bot said the funniest thing', 1),
+    t('d', 'Looking for the best alternative', 20), // too old
+    t('e', 'Please stop advertising your apps in here', 1),
+    t('f', 'How do I export my chats before the auction?', 3, { comments: 80 }), // too busy
+    t('g', 'Where do we go now?', 0.2), // too new (under 30 min)
+    t('h', 'Recommend me something like c.ai', 4, { author: 'Outside_Sir_9341' }), // our own
+  ];
+  assert.deepEqual(M.pickAskThreads(things, { now, me: 'Outside_Sir_9341' }).map((x) => x.name), ['a', 'b']);
+  assert.deepEqual(M.pickAskThreads(things, { now, skip: new Set(['a']) }).map((x) => x.name), ['h', 'b']);
+  assert.equal(M.refusesPitch("I don't want new sites made by random people, just tell me if c.ai stays"), true);
+  assert.equal(M.refusesPitch('No self promo please, I want real opinions'), true);
+  assert.equal(M.refusesPitch('What app do you all use now? I liked the group chats.'), false);
+  const msg = M.asksMessage({ sub: 'CharacterAIrunaways', handWhy: 'rule 6', handTip: 'never Companions' }, M.pickAskThreads(things, { now, me: 'Outside_Sir_9341' }), now);
+  assert.match(msg, /2 new threads in r\/CharacterAIrunaways/);
+  assert.match(msg, /"Anyone else looking for a SFW Character.AI alternative\?" \(2 h ago, 3 comments\) https:\/\/www\.reddit\.com\/r\/CharacterAIrunaways\/comments\/a\/x\//);
+  assert.match(msg, /Rule: rule 6/);
+  assert.match(msg, /Tip: never Companions/);
+});
