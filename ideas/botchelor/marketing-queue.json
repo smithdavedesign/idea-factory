@@ -1,5 +1,5 @@
 {
-  "nextId": 134,
+  "nextId": 135,
   "paused": false,
   "items": [
     {
@@ -2425,7 +2425,7 @@
     },
     {
       "id": 95,
-      "status": "sent",
+      "status": "expired",
       "createdAt": "2026-11-20T16:28:49.500Z",
       "channel": "taaft_thread",
       "kind": "card",
@@ -3408,6 +3408,21 @@
         "how": "attached",
         "at": "2026-11-23T16:25:03.649Z"
       }
+    },
+    {
+      "id": 134,
+      "status": "sent",
+      "createdAt": "2026-11-23T16:55:42.538Z",
+      "channel": "taaft_thread",
+      "kind": "card",
+      "sub": null,
+      "title": "Botchelor: a blind-date show for your own characters",
+      "body": "Disclosure: I built this, solo, with Claude Code. AI writes the dates, a rules engine decides the ending, and you watch. Free, no account. PG only, and the cast is small. https://botchelor.com/?utm_source=card&utm_medium=social&utm_campaign=season1&utm_content=taaft_thread",
+      "why": "TAAFT's monthly X reply thread picks one small tool, so this is a short disclosed reply that leads with the AI-writes-lines, rules-engine-decides-ending split and states two real cons, in under 280 characters.",
+      "flair": null,
+      "link": "https://botchelor.com/?utm_source=card&utm_medium=social&utm_campaign=season1&utm_content=taaft_thread",
+      "hash": "4c4160db3e6af39b",
+      "sentAt": "2026-11-23T16:56:09.486Z"
     }
   ],
   "seen": {
