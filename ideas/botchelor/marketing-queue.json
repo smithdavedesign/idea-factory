@@ -3541,7 +3541,8 @@
       "t1_19t0kqt1lqgyp",
       "t1_19t16vzd3zhj4",
       "t1_19t1eqrav4o76",
-      "t1_19t2sua5gjl5x"
+      "t1_19t2sua5gjl5x",
+      "t1_19t3v62glmmg4"
     ],
     "news": {
       "https://blog.character.ai/rss/": [
@@ -3565,7 +3566,7 @@
     "asks": []
   },
   "last": {
-    "watch": "2026-11-24T05:59:19.425Z",
+    "watch": "2026-11-24T09:01:33.991Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
