@@ -3637,7 +3637,7 @@
     "asks": []
   },
   "last": {
-    "watch": "2026-11-24T20:41:38.123Z",
+    "watch": "2026-11-24T23:42:22.898Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -3697,7 +3697,7 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-24T20:41:25.207Z",
+    "syncAt": "2026-11-24T23:42:19.001Z",
     "warned:draft help-indiehackers:2026-11-17": true,
     "warned:watch:2026-11-17": true,
     "warned:watch:2026-11-18": true,
@@ -3717,7 +3717,7 @@
     "warned:draft x:2026-11-22": true,
     "warned:draft threads:2026-11-22": true,
     "warned:draft help-mcp:2026-11-22": true,
-    "newsAt": "2026-11-24T17:39:04.439Z",
-    "asksAt": "2026-11-24T20:41:25.207Z"
+    "newsAt": "2026-11-24T23:42:19.001Z",
+    "asksAt": "2026-11-24T23:42:19.001Z"
   }
 }
