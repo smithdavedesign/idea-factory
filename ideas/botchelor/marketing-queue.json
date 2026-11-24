@@ -1,5 +1,5 @@
 {
-  "nextId": 137,
+  "nextId": 138,
   "paused": false,
   "items": [
     {
@@ -3466,6 +3466,30 @@
       "postedAt": "2026-11-23T18:22:43.991Z",
       "postUrl": "https://x.com/botchelorLLC/status/2124931571040080173",
       "hash": "d9a8cae9a759107a"
+    },
+    {
+      "id": 137,
+      "status": "posted",
+      "createdAt": "2026-11-24T02:46:07.570Z",
+      "channel": "youtube_shorts",
+      "kind": "youtube",
+      "title": "The making of Botchelor: 42 days, 1,658 pull requests, built with Claude Code (time-lapse)",
+      "body": "Botchelor is a blind-date show for AI characters, built in public by one person and a crew of AI coding agents: 98% of its 1,658 pull requests were opened by Claude Code. This time-lapse plays the site as it grew, day by day, from the screenshots those pull requests committed, over 42 days from the first commit on Oct 13 to Nov 23, 2026.\n\nEvery frame, the pull request behind it, and the numbers: botchelor.com/making-of?s=youtube\nThe show: botchelor.com/?s=youtube\n\nEvery character is AI, and every date is AI-generated fiction. Original adult characters only.",
+      "media": "/Users/davidsmith/BotchelorClips/promo/promo-making-of-16x9/post.mp4",
+      "cut": "promo-making-of-16x9",
+      "approvedAt": "2026-11-24T02:46:07.570Z",
+      "approvedBy": "david-chat-2026-11-23",
+      "postedAt": "2026-11-24T02:46:07.570Z",
+      "postUrl": "https://www.youtube.com/watch?v=Fs8zkCqAlYQ",
+      "thing": "Fs8zkCqAlYQ",
+      "image": {
+        "source": "file",
+        "ok": true,
+        "how": "thumbnail",
+        "at": "2026-11-24T02:46:07.570Z"
+      },
+      "note": "The 33-second making-of time-lapse (botchelor.com/making-of), a normal 16:9 upload, not a Short. Posted on 2026-11-23 through the loop's own uploader because David asked (\"upload the time-lapse to YouTube\"). No kitDir, like the trailer.",
+      "hash": "286680650c08b026"
     }
   ],
   "seen": {

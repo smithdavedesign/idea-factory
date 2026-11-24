@@ -791,6 +791,15 @@
       "url": "https://chub.ai/users/botchelor",
       "campaign": "cards",
       "note": "6 more house cast cards, public SFW, 2-3 alternate greetings each, creator notes link to each character page (utm_source=chub, utm_campaign=cards): barnaby-thorne-144cf595a0bf, sable-quist-fbbd2082a034, hester-quayle-5ae0d07850fd, bramwell-vance-50c9d3c8a087, teo-brandt-ffb0ffff2bd8, ines-castellano-a3e7c4b30279"
+    },
+    {
+      "channel": "YouTube Shorts",
+      "url": null,
+      "postUrl": "https://www.youtube.com/watch?v=Fs8zkCqAlYQ",
+      "postedAt": "2026-11-24T02:46:07.570Z",
+      "title": "The making of Botchelor (time-lapse)",
+      "note": "The /making-of time-lapse (Remotion MakingOf, 1080p, 33 s) uploaded as a public 16:9 video by Claude through the loop's io.youtubeUpload on 2026-11-23, because David asked; AI flag on; not made for kids; thumbnail = the #1994 slate and stage frame; links tagged ?s=youtube. For Show HN (11-25) and the Product Hunt gallery (12-01).",
+      "publicNote": "The 33-second making-of time-lapse."
     }
   ]
 }

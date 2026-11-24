@@ -55,9 +55,10 @@ it still helps, and quote only what Character.AI has said.
    so it shows the season live, not the countdown.
 4. `2-episode.png`: an episode page ("One broken pedal and a goose").
 5. `6-import-cai.png`: bring a Character.AI character.
-6. Video: the newest YouTube Short (https://www.youtube.com/@Botchelor), or the making-of time-lapse
-   (botchelor.com/press/video/botchelor-making-of-16x9.mp4; the 1080p cut is `npm run render:ads -- MakingOf` in
-   video/, into video/out/). PH takes a YouTube link, so it needs uploading first: David's call.
+6. Video: the making-of time-lapse, https://www.youtube.com/watch?v=Fs8zkCqAlYQ (34 s, 1080p, public, uploaded
+   2026-11-23 at David's ask; the same cut plays on botchelor.com/making-of; its numbers are as of 11-23). The 41 s
+   trailer (https://www.youtube.com/watch?v=dUF7mmb8GYg) is the alternative if the gallery should show the
+   show rather than how it was built.
 7. `making-of/share.png` from botchelor.com (1200×630): "42 days, on camera", the site on a laptop and a phone.
 
 Thumbnail (240×240): public/icons/icon-512.png.
