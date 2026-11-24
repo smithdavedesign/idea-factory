@@ -800,6 +800,24 @@
       "title": "The making of Botchelor (time-lapse)",
       "note": "The /making-of time-lapse (Remotion MakingOf, 1080p, 33 s) uploaded as a public 16:9 video by Claude through the loop's io.youtubeUpload on 2026-11-23, because David asked; AI flag on; not made for kids; thumbnail = the #1994 slate and stage frame; links tagged ?s=youtube. For Show HN (11-25) and the Product Hunt gallery (12-01).",
       "publicNote": "The 33-second making-of time-lapse."
+    },
+    {
+      "channel": "X (promo video)",
+      "url": null,
+      "postUrl": "https://x.com/botchelorLLC/status/2125103527966265652",
+      "postedAt": "2026-11-24T05:46:09.264Z",
+      "title": "The making of Botchelor (time-lapse)",
+      "note": "The making-of time-lapse (1080p, 33 s) posted with its video by Claude in the marketing browser on 2026-11-23 (x-video.js, dry run first), because David asked (\"post it on X and Bluesky too\"); link to /making-of tagged utm_campaign=making-of, utm_content=x. Logged under a name that doesn't match the X channel's, so the daily X post's cooldown isn't moved.",
+      "publicNote": "The making-of time-lapse: the site growing day by day, 42 days in 33 seconds."
+    },
+    {
+      "channel": "Bluesky (promo video)",
+      "url": null,
+      "postUrl": "https://bsky.app/profile/botchelor.bsky.social/post/3n2zwyzfeun2t",
+      "postedAt": "2026-11-24T05:47:16.385Z",
+      "title": "The making of Botchelor (time-lapse)",
+      "note": "Posted by Claude on 2026-11-23 because David asked, as a YouTube card (https://www.youtube.com/watch?v=Fs8zkCqAlYQ, our cover as its thumbnail; the Bluesky app plays it in the feed), not a native video: Bluesky refuses video uploads until the account's email is confirmed, and the confirmation code goes to an inbox we can't read. Text link botchelor.com/making-of tagged utm_campaign=making-of, utm_content=bluesky. Logged under a name that doesn't match the Bluesky channel's, so the daily post's cooldown isn't moved.",
+      "publicNote": "The making-of time-lapse: the site growing day by day, 42 days in 33 seconds."
     }
   ]
 }
