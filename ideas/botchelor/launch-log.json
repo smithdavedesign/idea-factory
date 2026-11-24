@@ -818,6 +818,24 @@
       "title": "The making of Botchelor (time-lapse)",
       "note": "Posted by Claude on 2026-11-23 because David asked, as a YouTube card (https://www.youtube.com/watch?v=Fs8zkCqAlYQ, our cover as its thumbnail; the Bluesky app plays it in the feed), not a native video: Bluesky refuses video uploads until the account's email is confirmed, and the confirmation code goes to an inbox we can't read. Text link botchelor.com/making-of tagged utm_campaign=making-of, utm_content=bluesky. Logged under a name that doesn't match the Bluesky channel's, so the daily post's cooldown isn't moved.",
       "publicNote": "The making-of time-lapse: the site growing day by day, 42 days in 33 seconds."
+    },
+    {
+      "channel": "Threads (promo video)",
+      "url": null,
+      "postUrl": "https://www.threads.com/@botchelor/post/DgHSzhlFSor",
+      "postedAt": "2026-11-24T06:19:05.616Z",
+      "title": "The making of Botchelor (time-lapse)",
+      "note": "The making-of time-lapse (1080p, 33 s) posted with its video by Claude in the marketing browser on 2026-11-23 (threads-video.js, between ticks), because David asked (\"post it on Threads and Discord too\"); link to /making-of tagged utm_campaign=making-of, utm_content=threads. Checked through the post's link preview (text, video player). Logged under a name that doesn't match the Threads channel's, so the daily post's cooldown isn't moved.",
+      "publicNote": "The making-of time-lapse: the site growing day by day, 42 days in 33 seconds."
+    },
+    {
+      "channel": "Discord (promo video)",
+      "url": null,
+      "postUrl": "https://discord.com/channels/1569479419003932723/1569479504315945161/1574671833196789773",
+      "postedAt": "2026-11-24T06:23:41.634Z",
+      "title": "The making of Botchelor (time-lapse)",
+      "note": "Posted by Claude to #announcements through the loop's webhook on 2026-11-23 (discord-video.js), because David asked: the 720p time-lapse attached (2 MB; plays inline), the usual disclosure line, no pings, link to /making-of tagged utm_campaign=making-of, utm_content=discord, and the YouTube link. Logged under a name that doesn't match the weekly Discord channel's, so its cooldown isn't moved.",
+      "publicNote": "The making-of time-lapse: the site growing day by day, 42 days in 33 seconds."
     }
   ]
 }
