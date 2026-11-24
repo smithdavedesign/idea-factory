@@ -1,5 +1,5 @@
 {
-  "nextId": 139,
+  "nextId": 140,
   "paused": false,
   "items": [
     {
@@ -3538,6 +3538,28 @@
         "how": "attached",
         "at": "2026-11-24T17:40:20.049Z"
       }
+    },
+    {
+      "id": 139,
+      "status": "posted",
+      "createdAt": "2026-11-24T20:41:37.234Z",
+      "channel": "reply:mcp",
+      "kind": "reddit",
+      "sub": "mcp",
+      "title": "",
+      "body": "Nice, that's a good spread. Using the no-login demo as the test is smart, because it checks the description the way a model will actually read it, with no human filling in the gaps. Do you run it against more than one model? In my experience a description that works for one can still send another to the wrong tool.",
+      "replyTo": {
+        "name": "t1_19t4s4bkgdjvk",
+        "author": "Noahowshhh",
+        "body": "Good call. It's now on the official MCP Registry, Glama, mcp.so and mcpservers.org. Agreed on the descriptions too. The no-login demo is how I check them: if a model picks the wrong tool there, the fault is in the description.",
+        "context": "https://www.reddit.com/r/mcp/comments/1y0axab/i_built_a_finance_mcp_server_with_oauth_21_pkce/19t4s4bkgdjvk/?context=3"
+      },
+      "hash": "7cc28683744e5934",
+      "approvedAt": "2026-11-24T20:41:37.235Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-24T20:41:41.201Z",
+      "postUrl": null,
+      "thing": "t1_19t4wn13nl339"
     }
   ],
   "seen": {
@@ -3590,7 +3612,8 @@
       "t1_19t16vzd3zhj4",
       "t1_19t1eqrav4o76",
       "t1_19t2sua5gjl5x",
-      "t1_19t3v62glmmg4"
+      "t1_19t3v62glmmg4",
+      "t1_19t4s4bkgdjvk"
     ],
     "news": {
       "https://blog.character.ai/rss/": [
@@ -3614,7 +3637,7 @@
     "asks": []
   },
   "last": {
-    "watch": "2026-11-24T17:39:27.102Z",
+    "watch": "2026-11-24T20:41:38.123Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -3674,7 +3697,7 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-24T17:39:04.439Z",
+    "syncAt": "2026-11-24T20:41:25.207Z",
     "warned:draft help-indiehackers:2026-11-17": true,
     "warned:watch:2026-11-17": true,
     "warned:watch:2026-11-18": true,
@@ -3695,6 +3718,6 @@
     "warned:draft threads:2026-11-22": true,
     "warned:draft help-mcp:2026-11-22": true,
     "newsAt": "2026-11-24T17:39:04.439Z",
-    "asksAt": "2026-11-24T17:39:04.439Z"
+    "asksAt": "2026-11-24T20:41:25.207Z"
   }
 }
