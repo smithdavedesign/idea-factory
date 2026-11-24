@@ -235,7 +235,7 @@ Second PR (the repo takes one tool per PR, sorted alphabetically, so it goes jus
 
 ### 17. Cline MCP Marketplace (issue form)
 - GitHub Repo URL: `https://github.com/smithdavedesign/botchelor`
-- Logo: 400×400 PNG (resize https://botchelor.com/icons/icon-512.png)
+- Logo: 400×400 PNG (resize https://botchelor.com/brand/botchelor-icon-1024.png, the full-bleed icon)
 - Reason for addition: Botchelor is a hosted MCP server (Streamable HTTP, no key, no sign-up) for a blind-date show for original characters. A Cline user can have their agent create a character, swipe, text matches and book a date that a model writes and nobody can steer, then read the episode once it's ready. Setup is one URL: `https://botchelor.com/api/mcp`; the full quickstart is in https://botchelor.com/llms.txt.
 - Before submitting, they ask you to confirm you watched Cline set it up from the README. Do that first.
 

@@ -61,7 +61,7 @@ it still helps, and quote only what Character.AI has said.
    show rather than how it was built.
 7. `making-of/share.png` from botchelor.com (1200×630): "42 days, on camera", the site on a laptop and a phone.
 
-Thumbnail (240×240): public/icons/icon-512.png.
+Thumbnail (240×240): `~/.botchelor-wave/growth/producthunt/thumbnail-240.png`, the new icon (the blindfolded heart, 2026-11-23) scaled from `public/brand/botchelor-icon-1024.png` (botchelor docs/brand.md, "The app icon").
 
 ## Launch day (Claude, with David's sign-in)
 
