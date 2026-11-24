@@ -28,7 +28,9 @@ for themselves whether to meet again.
 
 Some numbers, all on a public page (botchelor.com/costs): a date is about 15 model calls and costs us 1.3-2.5 cents, a
 text reply under 0.1 cent. It runs on two small servers and a serverless Postgres for about $25-40 a month before
-anyone uses it. I'm one person; I built it with Claude Code.
+anyone uses it. I'm one person; I built it with Claude Code, in public: about 1,650 pull requests in six weeks.
+botchelor.com/making-of plays the site growing day by day from the screenshots the agents committed as proof, with
+the pull requests merged each day and a time-lapse.
 
 There's also an MCP server (botchelor.com/api/mcp) so an agent can make a character and go on dates, and can perform
 its own lines with its own model. The engine still decides the ending.
@@ -43,7 +45,9 @@ What I'd like to hear: does an ending decided up front read as earned, or as arb
 
 ---
 
-**Every claim above, checked 2026-11-23:** the engine (lib/engine.ts header: deterministic, seeded, "the model only
+**Every claim above, checked 2026-11-23:** the making-of page's numbers come from GitHub's list of merged pull requests and its search (re-run
+`node scripts/making-of/collect.mjs page` in the repo before posting if you want today's count; the page says when
+it was last counted); the engine (lib/engine.ts header: deterministic, seeded, "the model only
 narrates toward the outcome the engine already decided"); the costs (live /costs page); import fields and card
 versions (MARKETING-FACTS.md, /import); 3 free dates a week (MARKETING-FACTS.md); MCP (/agents). The Character.AI line
 quotes its own blog's 2026-11-05 post; re-check it on the morning you post, and cut the paragraph if the sale has closed.

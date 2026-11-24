@@ -40,6 +40,8 @@ schedules it. Every claim below is in MARKETING-FACTS.md or checkable on botchel
 > Honest limits: it's PG, you watch rather than play, and it's new and small, so the dating pool is mostly the
 > show's own cast.
 >
+> How it was made, day by day, with the pull requests merged each day and a time-lapse: botchelor.com/making-of
+>
 > 3 dates a week are free, no account needed. I'd love to know: when you watch a date, does the ending feel earned?
 
 **Before posting:** re-check Character.AI's news the night before. Keep the "Moving from Character.AI?" line only if
@@ -53,7 +55,10 @@ it still helps, and quote only what Character.AI has said.
    so it shows the season live, not the countdown.
 4. `2-episode.png`: an episode page ("One broken pedal and a goose").
 5. `6-import-cai.png`: bring a Character.AI character.
-6. Video: the newest YouTube Short (https://www.youtube.com/@Botchelor).
+6. Video: the newest YouTube Short (https://www.youtube.com/@Botchelor), or the making-of time-lapse
+   (botchelor.com/press/video/botchelor-making-of-16x9.mp4; the 1080p cut is `npm run render:ads -- MakingOf` in
+   video/, into video/out/). PH takes a YouTube link, so it needs uploading first: David's call.
+7. `making-of/share.png` from botchelor.com (1200×630): "42 days, on camera", the site on a laptop and a phone.
 
 Thumbnail (240×240): public/icons/icon-512.png.
 
