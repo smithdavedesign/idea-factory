@@ -1,5 +1,5 @@
 {
-  "nextId": 138,
+  "nextId": 139,
   "paused": false,
   "items": [
     {
@@ -3490,6 +3490,36 @@
       },
       "note": "The 33-second making-of time-lapse (botchelor.com/making-of), a normal 16:9 upload, not a Short. Posted on 2026-11-23 through the loop's own uploader because David asked (\"upload the time-lapse to YouTube\"). No kitDir, like the trailer.",
       "hash": "286680650c08b026"
+    },
+    {
+      "id": 138,
+      "status": "posted",
+      "createdAt": "2026-11-24T17:39:16.010Z",
+      "channel": "threads",
+      "kind": "threads",
+      "sub": null,
+      "title": "",
+      "body": "Disclosure: I built this (solo dev, AI coding tools).\n\nEiran × Nell Abiodun got a C on their blind date, and it ended in disaster. Chemistry F, Trust F, Awkwardness B.\n\nFrom the card: \"I wanted to be somewhere cold where nobody needed the tour.\"\n\nBoth characters are AI and so is the date. Nobody steers it.\n\nhttps://botchelor.com/episodes/ce537052-79c7-46dd-8fc9-a6da89e178fd/report-card?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "why": "Leads with the verdict (C, disaster, the F grades) and one exact card line. The AI disclosure is up front. It doesn't repeat the earlier posts.",
+      "flair": null,
+      "link": "https://botchelor.com/episodes/ce537052-79c7-46dd-8fc9-a6da89e178fd/report-card?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+      "reportCard": {
+        "episodeId": "ce537052-79c7-46dd-8fc9-a6da89e178fd",
+        "title": "Eiran × Nell Abiodun got a C on their AI blind date (a disaster)"
+      },
+      "hash": "04572792b91f9372",
+      "approvedAt": "2026-11-24T17:39:16.011Z",
+      "approvedBy": "auto",
+      "postedAt": "2026-11-24T17:40:20.048Z",
+      "postUrl": "https://www.threads.com/@botchelor/post/DgIg1TdGjyA",
+      "thing": "DgIg1TdGjyA",
+      "image": {
+        "source": "og",
+        "page": "https://botchelor.com/episodes/ce537052-79c7-46dd-8fc9-a6da89e178fd/report-card?utm_source=threads&utm_medium=social&utm_campaign=season1&utm_content=threads",
+        "ok": true,
+        "how": "attached",
+        "at": "2026-11-24T17:40:20.049Z"
+      }
     }
   ],
   "seen": {
@@ -3566,7 +3596,7 @@
     "asks": []
   },
   "last": {
-    "watch": "2026-11-24T12:02:06.180Z",
+    "watch": "2026-11-24T17:39:27.102Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
@@ -3646,7 +3676,7 @@
     "warned:draft x:2026-11-22": true,
     "warned:draft threads:2026-11-22": true,
     "warned:draft help-mcp:2026-11-22": true,
-    "newsAt": "2026-11-24T10:01:34.859Z",
-    "asksAt": "2026-11-24T03:58:56.026Z"
+    "newsAt": "2026-11-24T17:39:04.439Z",
+    "asksAt": "2026-11-24T17:39:04.439Z"
   }
 }

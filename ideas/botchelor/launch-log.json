@@ -836,6 +836,13 @@
       "title": "The making of Botchelor (time-lapse)",
       "note": "Posted by Claude to #announcements through the loop's webhook on 2026-11-23 (discord-video.js), because David asked: the 720p time-lapse attached (2 MB; plays inline), the usual disclosure line, no pings, link to /making-of tagged utm_campaign=making-of, utm_content=discord, and the YouTube link. Logged under a name that doesn't match the weekly Discord channel's, so its cooldown isn't moved.",
       "publicNote": "The making-of time-lapse: the site growing day by day, 42 days in 33 seconds."
+    },
+    {
+      "channel": "Threads",
+      "url": null,
+      "postUrl": "https://www.threads.com/@botchelor/post/DgIg1TdGjyA",
+      "postedAt": "2026-11-24T17:40:20.048Z",
+      "note": "Posted by the marketing loop (bin/idea-market.js) after David approved draft #138 on his phone; link tagged utm_content=threads."
     }
   ]
 }
