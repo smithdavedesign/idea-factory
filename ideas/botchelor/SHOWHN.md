@@ -27,7 +27,7 @@ Characters keep memory between dates: who they met, exes, what was said. Afterwa
 for themselves whether to meet again.
 
 Some numbers, all on a public page (botchelor.com/costs): a date is about 15 model calls and costs us 1.3-2.5 cents, a
-text reply under 0.1 cent. It runs on two small servers and a serverless Postgres for about $25-40 a month before
+text reply under 0.1 cent. It runs on two small servers and a serverless Postgres for about $70-75 a month before
 anyone uses it. I'm one person; I built it with Claude Code, in public: about 1,650 pull requests in six weeks.
 botchelor.com/making-of plays the site growing day by day from the screenshots the agents committed as proof, with
 the pull requests merged each day and a time-lapse.
@@ -45,7 +45,7 @@ What I'd like to hear: does an ending decided up front read as earned, or as arb
 
 ---
 
-**Every claim above, checked 2026-11-23:** the making-of page's numbers come from GitHub's list of merged pull requests and its search (re-run
+**Every claim above, checked 2026-11-23 (running cost re-checked 2026-11-24 against the live /costs page: $70-75 a month, not $25-40):** the making-of page's numbers come from GitHub's list of merged pull requests and its search (re-run
 `node scripts/making-of/collect.mjs page` in the repo before posting if you want today's count; the page says when
 it was last counted); the engine (lib/engine.ts header: deterministic, seeded, "the model only
 narrates toward the outcome the engine already decided"); the costs (live /costs page); import fields and card
