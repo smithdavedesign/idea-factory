@@ -3613,7 +3613,8 @@
       "t1_19t1eqrav4o76",
       "t1_19t2sua5gjl5x",
       "t1_19t3v62glmmg4",
-      "t1_19t4s4bkgdjvk"
+      "t1_19t4s4bkgdjvk",
+      "t1_19t59l2afp8v7"
     ],
     "news": {
       "https://blog.character.ai/rss/": [
@@ -3637,12 +3638,12 @@
     "asks": []
   },
   "last": {
-    "watch": "2026-11-24T23:42:22.898Z",
+    "watch": "2026-11-25T02:43:06.001Z",
     "listings": {
       "awesome-remote-mcp": "OPEN",
       "lobehub": "live"
     },
-    "listingsAt": "2026-11-24T02:28:32.459Z",
+    "listingsAt": "2026-11-25T02:43:07.891Z",
     "warned:draft indiehackers:2026-11-10": true,
     "warned:watch:2026-11-10": true,
     "warned:watch:2026-11-11": true,
@@ -3697,7 +3698,7 @@
     "warned:draft chatbotrefugees_sunday:2026-11-15": true,
     "warned:draft help-indiehackers:2026-11-15": true,
     "warned:draft help-mcp:2026-11-15": true,
-    "syncAt": "2026-11-24T23:42:19.001Z",
+    "syncAt": "2026-11-25T02:42:34.241Z",
     "warned:draft help-indiehackers:2026-11-17": true,
     "warned:watch:2026-11-17": true,
     "warned:watch:2026-11-18": true,
@@ -3718,6 +3719,6 @@
     "warned:draft threads:2026-11-22": true,
     "warned:draft help-mcp:2026-11-22": true,
     "newsAt": "2026-11-24T23:42:19.001Z",
-    "asksAt": "2026-11-24T23:42:19.001Z"
+    "asksAt": "2026-11-25T02:42:34.241Z"
   }
 }
